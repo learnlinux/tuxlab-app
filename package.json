@@ -4,13 +4,12 @@
   "description": "develop an accessible, yet adaptable platform for educators to teach individuals to",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
+    "angular2-meteor": "^0.5.5",
     "meteor-node-stubs": "~0.2.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
