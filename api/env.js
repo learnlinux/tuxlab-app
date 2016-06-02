@@ -1,10 +1,7 @@
 //importing dockerode and swarmerode
 var dockerode = require('dockerode');
 var swarmerode = require('swarmerode');
-var Promise = require('bluebird');
 var underscore = require('underscore');
-var async = require('async');
-var waterfall = require('promise-waterfall');
 function isPromise(obj){ return obj && typeof obj.then === 'function'; }
 
 Promise.prototype.next = function(nextPromise){
@@ -53,9 +50,9 @@ env.prototype.shell = function(cont,com,opts){
   var slf = this;
   return (function(){ return slf.shell1(cont,com,opts) });
 }
-/** 
+/**
  *init
- * returns a promise to pull alpine -if not yet pulled in the docker node- and 
+ * returns a promise to pull alpine -if not yet pulled in the docker node- and
  * create the labVm container with the alpine image
  * @param opts: {{},{}} two options file,dockerodeCreateOptions,dockerodeStartOptions
  * should be defined as {dockerodeCreateOptions: {--your options here--},
@@ -63,10 +60,10 @@ env.prototype.shell = function(cont,com,opts){
  */
 env.prototype.init = function(opts){
   var fn1 = null;
-  //check whether the environment has been initialized	
+  //check whether the environment has been initialized
   if(this.vmList.find(function(a){ return a.name == "labVm"; }))
     return new Promise(function(res,rej){
-      rej("this environment has been initialized before");}); 
+      rej("this environment has been initialized before");});
 
   //create unique labVm name to avoid collisions
   this.labVm = "labVm"+((new Date).getTime()).toString();
@@ -75,33 +72,33 @@ env.prototype.init = function(opts){
   //image defaults to alpine
   var img = 'alpine'
 
-  var crtOpts = null 
+  var crtOpts = null
   var strOpts = null;
-	
-  //parse container create and container start options	
+
+  //parse container create and container start options
   if(opts){
     crtOpts = opts.dockerodeCreateOptions;
     strOpts = opts.dockerodeStartOptions;
   }
-  
+
   //declare final options
   var crtOptsf = {Image: 'alpine',CMD: ['/bin/sh'], name: this.labVm}
-	
+
   //change final options according to opts input, if there is any
   underscore.extend(crtOptsf, crtOpts);
   //this.vmList.push({name: "labVm",id:this.labVm});
-  var slf = this;	
+  var slf = this;
   return new Promise(function(resolve,reject){
     //pull the supplied image if not already pulled
     dck.pull(img, function(err,stream){
-      if(err) { reject(err); }	
+      if(err) { reject(err); }
       else{
 	dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
 	  else {
 	    container.start(strOpts,function(err,data){
               if(err) { reject(err); }
-	      else { 
+	      else {
                 //add labVm to vmList
 	        //console.log("{name: \"labVm\",id:slf.labVm})");
 	        //resolve(data);
@@ -118,7 +115,7 @@ env.prototype.init = function(opts){
 
 
 /* creates a new container with an image from the options provided,
- * downloads image if it does not yet exist. 
+ * downloads image if it does not yet exist.
  * @param {{},{}} : two options file, dockerodeCreateOptions,dockerodeStartOptions
  * should be defined as {dockerodeCreateOptions: {--your options here--},
 			{dockerodeStartOptions: {--your options here--}}
@@ -130,21 +127,21 @@ env.prototype.createVm1 = function(opts) {
   //parse container create and container start options
   var crtOpt = opts.dockerodeCreateOptions;
   var strOpt = opts.dockerodeStartOptions;
-  
+
   //checks whether name for virtual machine is supplied
-  if(crtOpt.name == null) 
+  if(crtOpt.name == null)
     return new Promise(function(resolve,reject)
-      { reject("please provide a name for your vm"); }); 
- 
+      { reject("please provide a name for your vm"); });
+
   name = crtOpt.name;
-  
+
   //checks if there are any containers with the same name in this env
   if(this.vmList.find(function(a){ console.log("checking: "+a); return a.name == name; })){
-    console.log("here"); 
+    console.log("here");
    return new Promise(function(resolve,reject){
       reject("there is already a vm running with this name, please choose a new name for your vm");});
-  } 
-  
+  }
+
   //create unique name for the container to be created
   var cName = "vm"+((new Date).getTime()).toString();
 
@@ -153,7 +150,7 @@ env.prototype.createVm1 = function(opts) {
   if(crtOpt.img) img = crtOpt.img;
 
   var crtOptsf = {Image:img,CMD:['/bin/sh']}
-  
+
   //extend the final options with the supplied options
   underscore.extend(crtOptsf,crtOpt);
   crtOptsf.name = cName;
@@ -163,13 +160,13 @@ env.prototype.createVm1 = function(opts) {
   return new Promise(function(resolve,reject){
     dck.pull(img,function(err,stream){
       if(err) { console.log("couldnt pull"); reject(err); }
-      else { 
+      else {
         dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
           else{
             container.start(strOpt,function(err,data){
               if(err) { reject(err); }
-              else{ 
+              else{
 //              console.log("{name: crtOpt.name,id: cName");
 	        //resolve(data);
 		slf.vmList.push({name: crtOpt.name, id: cName});
@@ -186,11 +183,11 @@ env.prototype.createVm1 = function(opts) {
 
 
 //takes the id or containerName of a vm and removes the vm, also removing it
-//from the vmList 
+//from the vmList
 env.prototype.removeVm1 = function (vmName,opts) {
   var i = this.vmList.indexOf(vmName)
   var isInstance = i > -1;
-  if(isInstance){ 
+  if(isInstance){
     var cont = this.docker.getContainer(vmName);
   }
   var slf = this;
@@ -206,7 +203,7 @@ env.prototype.removeVm1 = function (vmName,opts) {
       }
     });
   }
-}	
+}
 
 	//calls container.remove
 env.prototype.updateVm1 = function(vmName, opts) {
@@ -225,7 +222,7 @@ env.prototype.updateVm1 = function(vmName, opts) {
     }
   });
 }
-	
+
 env.prototype.shell1 = function(container,command,opts) {
   return new Promise(function(resolve,reject){
     options = {AttachStdout: true, AttachStderr: true, Cmd: command.split(" ")};
@@ -254,7 +251,7 @@ env.prototype.shell1 = function(container,command,opts) {
 	      else{ reject(dat,err,null) }
 	    });
 	  }
-	});	
+	});
       }
     });
   });
