@@ -1,0 +1,40 @@
+{
+  "name": "tuxlab",
+  "version": "0.1.0",
+  "description": "develop an accessible, yet adaptable platform for educators to teach individuals to",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "@angular/common": "^2.0.0-rc.1",
+    "@angular/compiler": "^2.0.0-rc.1",
+    "@angular/core": "^2.0.0-rc.1",
+    "@angular/platform-browser": "^2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
+    "angular2-meteor": "^0.5.5",
+    "dockerode": "^2.2.10",
+    "es6-shim": "^0.35.1",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.6",
+    "swarmerode": "^2.1.0",
+    "zone.js": "^0.6.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learnlinux/TuxLab.git"
+  },
+  "keywords": [
+    "tuxlab"
+  ],
+  "author": "TuxLab Team",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/learnlinux/TuxLab/issues"
+  },
+  "homepage": "https://github.com/learnlinux/TuxLab#readme"
+}
