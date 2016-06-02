@@ -1,7 +1,7 @@
 # TuxLab
 Platform for creating Interactive Linux Courses
 
-[![wercker status](https://app.wercker.com/status/3337e3523b008413601cf5d207430c13/m "wercker status")](https://app.wercker.com/project/bykey/3337e3523b008413601cf5d207430c13)
+[![wercker status](https://app.wercker.com/status/153c62fdbaf17191aed5cacc0a14e150/m "wercker status")](https://app.wercker.com/project/bykey/153c62fdbaf17191aed5cacc0a14e150)
 
 ## Running the Development Environment
 In order to make development easier, we have created a Vagrant Enviornment to simulate the servers needed to run the TuxLab Site. You can get this up and running by first installing the following pre-requisites:
