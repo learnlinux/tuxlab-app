@@ -1,0 +1,27 @@
+{
+  "name": "TuxLab",
+  "version": "0.1.0",
+  "description": "develop an accessible, yet adaptable platform for educators to teach individuals to",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
+    "angular2-meteor": "^0.5.5",
+    "meteor-node-stubs": "~0.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learnlinux/TuxLab.git"
+  },
+  "keywords": [
+    "tuxlab"
+  ],
+  "author": "TuxLab Team",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/learnlinux/TuxLab/issues"
+  },
+  "homepage": "http://tuxlab.org"
+}

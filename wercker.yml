@@ -1,0 +1,58 @@
+box: exkazuu/wercker-meteor
+dev:
+  steps:
+    - npm-install
+    - internal/watch:
+        code: meteor run
+build:
+  steps:
+   - script:
+        name: update meteor
+        code: |
+           meteor --version
+           meteor update
+           meteor --version
+
+   - script:
+        name: install npm dependencies
+        code: |
+            npm install --production
+deploy:
+  steps:
+   - script:
+        name: update meteor
+        code: |
+           meteor --version
+           meteor update
+           meteor --version
+
+   - script:
+        name: install npm dependencies
+        code: |
+            npm install --production
+
+   - script:
+      name: build tuxlab
+      code: |
+          meteor build /build
+
+   - script:
+      name: apt-update/install file, jq
+      code: |
+          apt-get update -qy && apt-get install -qy file jq
+
+   - script:
+      name: get git tag
+      code: |
+        echo "Wercker commit: $WERCKER_GIT_COMMIT"
+        export GIT_TAG=$(curl https://api.github.com/repos/learnlinux/tuxlab-app/tags | jq -r ".[] | select(.commit.sha == \"${WERCKER_GIT_COMMIT}\") | .name")
+        echo "Git tag is: $GIT_TAG"
+        test -n "$GIT_TAG"
+
+   - github-create-release:
+      token: $GITHUB_TOKEN
+      tag: $GIT_TAG
+
+   - github-upload-asset:
+      token: $GITHUB_TOKEN
+      file: build/tuxlab-app.tar.gz
