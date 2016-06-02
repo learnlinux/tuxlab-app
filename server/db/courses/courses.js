@@ -1,22 +1,19 @@
-/* Create Courses database collection */
-Courses = new Mongo.Collection('Courses');
-
 /* Create Courses database schema */
 courseSchema = new SimpleSchema({
-    name: {
+    course_name: {
         type: String,
         label: "Course Name"
     },
-    number: {
-        type: Number,
+    course_number: {
+        type: String,
         label: "Course Number"
     },
-    description: {
+    course_description: {
         type: String, 
         defaultValue: "",
         label: "Course Description"
     },
-    openInfo: {
+    course_openInfo: {
         type: [String],
         label: "Customizable Course Information"
     }
@@ -38,7 +35,7 @@ function addCourse(newCourse) {
 /*
 const myCourse = {
     name: 'Great Practical Ideas for Computer Scientists',
-    number: 15131,
+    number: "15131",
     description: 'This course focuses on teaching students how to use the popular tools for software development.',
     openInfo: ["Homework:", "hw1", "Labs", "lab1"]
 };
@@ -55,17 +52,17 @@ function getCourse(id) {
 }
 
 function getCourseName(id) {
-    return getCourse(id).name;
+    return getCourse(id).course_name;
 }
 
 function getCourseNumber(id) {
-    return getCourse(id).number;
+    return getCourse(id).course_number;
 }
 
 function getCourseDescription(id) {
-    return getCourse(id).description;
+    return getCourse(id).course_description;
 }
 
 function getCourseOpenInfo(id) {
-    return getCourse(id).openInfo;
+    return getCourse(id).course_openInfo;
 }
