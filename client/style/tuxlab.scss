@@ -1,0 +1,10 @@
+/** TuxLab Stylesheet **/
+
+// Angular Material 2
+@import "{}/node_modules/ng2-material/all.scss";
+
+// Base Packages
+@import "{}/client/style/base/_body.scss";
+@import "{}/client/style/base/_fonts.scss";
+@import "{}/public/assets/fonts/tuxlab-icon/scss/tuxlab-icons.scss";
+@import "{}/client/style/base/_toolbar.scss";
