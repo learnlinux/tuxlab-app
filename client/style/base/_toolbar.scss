@@ -1,0 +1,69 @@
+.tux-toolbar{
+  md-toolbar{
+    min-height:inherit;
+
+    .wrapper{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+
+      width:100%;
+      max-width:1260px;
+      margin: 0 auto;
+
+      div{
+        height: 100%;
+      }
+
+      .tux-toolbar-logo{
+          margin-right:30px;
+          img{
+            margin-top:4px;
+            height:30px;
+            padding:10px 12px;
+          }
+      }
+
+      .tux-toolbar-nav{
+        [md-button]{
+          font-weight: 300;
+        }
+      }
+
+      .tux-toolbar-profile{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+
+          .tux-toolbar-profile-pic {
+              height:36px;
+              margin-bottom:7px;
+              border-radius:50%;
+          }
+
+          .tux-toolbar-info{
+              h1, h2 {
+                font-family: 'Open Sans', sans-serif;
+                font-size:12pt;
+                font-weight: 300;
+                margin:0px;
+                margin-left:12px;
+              }
+
+              h2{
+                font-size:8pt;
+              }
+           }
+
+           .tux-toolbar-menu{
+             color:#ccc;
+           }
+        }
+
+    }
+  }
+}
