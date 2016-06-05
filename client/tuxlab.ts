@@ -7,11 +7,12 @@
   import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { Component, provide } from '@angular/core';
+  import { Component, ViewEncapsulation, provide } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
 
   import { APP_BASE_HREF } from '@angular/common';
   import { RouterLink } from '@angular/router-deprecated';
+  import {HTTP_PROVIDERS} from '@angular/http';
   import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
   import { InjectUser } from 'angular2-meteor-accounts-ui';
@@ -20,33 +21,40 @@
   import {MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES} from 'ng2-material';
   import {MeteorComponent} from 'angular2-meteor';
 
+  // Button
+  import {MD_BUTTON_DIRECTIVES} from '@angular2-material/button';
+
   // Toolbar
-  import {MdToolbar} from '@angular2-material/toolbar';
-  import '../node_modules/@angular2-material/toolbar/toolbar.css'
+  import {MD_TOOLBAR_DIRECTIVES} from '@angular2-material/toolbar';
+  import "../node_modules/@angular2-material/toolbar/toolbar.css";
 
   // Icon
-  import {MdIcon, mdIconRegistry} from '@angular2-material/icon'
+  import {MD_ICON_DIRECTIVES, MdIconRegistry} from '@angular2-material/icon'
 
+// Component
 @Component({
   selector: 'tuxlab',
   templateUrl: '/client/tuxlab.html',
   directives: [ROUTER_DIRECTIVES,
                MATERIAL_DIRECTIVES,
-               MdToolbar,
-               MdIcon,
+               MD_TOOLBAR_DIRECTIVES,
+               MD_ICON_DIRECTIVES,
                RouterLink],
-  viewProviders: [mdIconRegistry],
+  viewProviders: [MdIconRegistry],
+  encapsulation: ViewEncapsulation.None,
 })
 
-class TuxLab extends MeteorComponent{
-    user: Meteor.User;
+class TuxLab extends MeteorComponent {
+  user: Meteor.User;
 
-    // Setup Icon Font
-    constructor(mdIconRegistry: mdIconRegistry) {
-      mdIconRegistry.registerFontClassAlias('tux','tuxlabicon');
+  constructor(mdIconRegistry: MdIconRegistry) {
 
-      super();
-    }
+    // Create Icon Font
+      mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+      mdIconRegistry.setDefaultFontSetClass('tuxicon');
+
+    super();
+  }
 
   logout() {
     this.autorun(() => {
@@ -55,7 +63,10 @@ class TuxLab extends MeteorComponent{
   }
 }
 
+
 bootstrap(TuxLab, [
 MATERIAL_PROVIDERS,
+HTTP_PROVIDERS,
+MdIconRegistry,
 ROUTER_PROVIDERS,
 provide(APP_BASE_HREF, { useValue: '/' })]);
