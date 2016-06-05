@@ -1,3 +1,0 @@
-[submodule "client/imports/assets"]
-	path = client/imports/assets
-	url = https://github.com/learnlinux/tuxlab-assets.git
