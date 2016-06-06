@@ -21,6 +21,7 @@
     "angular2-meteor": "^0.5.5",
     "angular2-meteor-auto-bootstrap": "^0.5.5",
     "dockerode": "^2.2.10",
+    "eval": "^0.1.1",
     "meteor-node-stubs": "^0.2.3",
     "ng2-material": "^0.4.1",
     "reflect-metadata": "0.1.2",
