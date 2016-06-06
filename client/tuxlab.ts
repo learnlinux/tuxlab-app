@@ -12,7 +12,7 @@
 
   import { APP_BASE_HREF } from '@angular/common';
   import { RouterLink } from '@angular/router-deprecated';
-  import {HTTP_PROVIDERS} from '@angular/http';
+  import { HTTP_PROVIDERS } from '@angular/http';
   import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
   import { InjectUser } from 'angular2-meteor-accounts-ui';
@@ -31,18 +31,24 @@
   // Icon
   import {MD_ICON_DIRECTIVES, MdIconRegistry} from '@angular2-material/icon'
 
-// Component
-@Component({
-  selector: 'tuxlab',
-  templateUrl: '/client/tuxlab.html',
-  directives: [ROUTER_DIRECTIVES,
-               MATERIAL_DIRECTIVES,
-               MD_TOOLBAR_DIRECTIVES,
-               MD_ICON_DIRECTIVES,
-               RouterLink],
-  viewProviders: [MdIconRegistry],
-  encapsulation: ViewEncapsulation.None,
-})
+// Define TuxLab Component
+  @Component({
+    selector: 'tuxlab',
+    templateUrl: '/client/tuxlab.html',
+    directives: [ROUTER_DIRECTIVES,
+                 MATERIAL_DIRECTIVES,
+                 MD_TOOLBAR_DIRECTIVES,
+                 MD_ICON_DIRECTIVES,
+                 RouterLink],
+    viewProviders: [MdIconRegistry],
+    encapsulation: ViewEncapsulation.None,
+  })
+
+// Define TuxLab Routes
+  @RouteConfig([
+    { path: '/', as: 'Dashboard', component: Dashboard },
+    { path: '/account/:userid', as: 'AccountView', component: AccountView }
+  ])
 
 class TuxLab extends MeteorComponent {
   user: Meteor.User;
