@@ -34,6 +34,9 @@ env.prototype.vmList = [];                      //list of all vm instances
   var slf = this;
   return (function(){ return slf.init1(opts); });
 }*/
+env.prototype.start = function(){
+  return Promise.resolve();
+}
 env.prototype.createVm = function(opts){
   var slf = this;
   return (function(){ return slf.createVm1(opts); });
