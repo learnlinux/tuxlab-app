@@ -1,10 +1,10 @@
 {
   "name": "TuxLab",
   "version": "0.1.0",
-  "description": "develop an accessible, yet adaptable platform for educators to teach individuals to",
+  "description": "Learn Linux Interactively",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gagarin tests/gagarin"
   },
   "dependencies": {
     "@angular/common": "^2.0.0-rc.1",
@@ -29,6 +29,7 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
+    "gagarin": "^0.4.12",
     "typings": "^1.0.4"
   },
   "repository": {
