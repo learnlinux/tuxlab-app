@@ -23,3 +23,6 @@ fourseven:scss
 aldeed:simple-schema
 standard-minifier-css
 anti:gagarin@=0.4.12
+accounts-google
+service-configuration
+accounts-base

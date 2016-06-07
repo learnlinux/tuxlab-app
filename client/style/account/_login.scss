@@ -1,0 +1,67 @@
+
+.tuxlab-login{
+    height: 600px;
+
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+.login-logo{
+  display:block;
+  background: $university_logo;
+  background-size: contain;
+  background-repeat:no-repeat;
+  background-position: center;
+
+  height:100px;
+  max-width:400px;
+  width: 100%;
+  margin:0 auto !important;
+
+  }
+
+  .google-login-button{
+    margin:0 auto !important;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+
+    height:60px;
+    width: 100%;
+    margin:10px 20px;
+    max-width: 300px;
+
+    color:#fff;
+    background-color:$primary-color;
+
+    &:hover{
+        background-color: $primary-color-dark;
+    }
+
+    .google-icon{
+      height: 60px;
+      width: 60px;
+
+      background-color:$primary-color-dark;
+      text-align:center;
+
+      md-icon{
+        width:60px !important;
+        height: 60px !important;
+
+        &::before{
+          font-size:48px;
+          line-height:60px;
+        }
+      }
+    }
+
+    .google-text{
+      line-height:60px;
+      margin-left:20px;
+    }
+  }
