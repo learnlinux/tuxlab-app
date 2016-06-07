@@ -11,7 +11,7 @@
 
   import { APP_BASE_HREF } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
-  import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
+  import { Router, ROUTER_PROVIDERS } from '@angular/router-deprecated';
 
   import { LoginButtons } from 'angular2-meteor-accounts-ui'
 
@@ -27,21 +27,27 @@
   @Component({
     selector: 'tuxlab-login',
     templateUrl: '/client/imports/ui/pages/account/login.html',
-    directives:
-    [LoginButtons,
-     MD_ICON_DIRECTIVES
-    ]
+    providers: [ROUTER_PROVIDERS],
+    directives: [LoginButtons, MD_ICON_DIRECTIVES]
   })
 
 export class Login extends MeteorComponent {
   user: Meteor.User;
 
-  constructor() {
+  constructor(private router: Router) {
+
     super();
   }
 
   login(){
-    Meteor.loginWithGoogle({
+    Meteor.logout();
+    Meteor.loginWithGoogle(function(res){
+      if(!res){
+          //TODO Redirect to Account
+      }
+      else{
+          //TODO Handle Login Errors
+      }
     });
   }
 
