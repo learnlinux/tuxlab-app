@@ -1,8 +1,8 @@
 /* TuxLab - TuxLab.ts */
 
-
 // Meteor Imports
   import { Meteor } from 'meteor/meteor';
+  import { Mongo }       from 'meteor/mongo';
   import 'reflect-metadata';
   import 'zone.js/dist/zone';
 
@@ -21,15 +21,16 @@
   import {MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES} from 'ng2-material';
   import {MeteorComponent} from 'angular2-meteor';
 
-  // Button
-  import {MD_BUTTON_DIRECTIVES} from '@angular2-material/button';
-
   // Toolbar
-  import {MD_TOOLBAR_DIRECTIVES} from '@angular2-material/toolbar';
+  import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
   import "../node_modules/@angular2-material/toolbar/toolbar.css";
 
   // Icon
-  import {MD_ICON_DIRECTIVES, MdIconRegistry} from '@angular2-material/icon'
+  import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
+
+// TuxLab Imports
+  import { Dashboard } from "./imports/ui/pages/dashboard/dashboard"
+  import { Login } from "./imports/ui/pages/account/login"
 
 // Define TuxLab Component
   @Component({
@@ -47,14 +48,19 @@
 // Define TuxLab Routes
   @RouteConfig([
     { path: '/', as: 'Dashboard', component: Dashboard },
-    { path: '/account/:userid', as: 'AccountView', component: AccountView }
+    { path: '/login', as: 'Login', component: Login },
+//  { path: '/course/:courseid', as: 'CourseView', component: CourseView },
+//  { path: '/course/:courseid/users', as: 'UserList', component: UserList },
+//  { path: '/course/:courseid/user/:userid', as: 'UserView', component: UserView },
+//  { path: '/course/:courseid/labs', as: 'LabList', component: LabList },
+//  { path: '/course/:courseid/lab/:labid', as: 'LabView', component: LabView },
+//  { path: '/account/:userid', as: 'Account', component: Account }
   ])
 
 class TuxLab extends MeteorComponent {
   user: Meteor.User;
 
   constructor(mdIconRegistry: MdIconRegistry) {
-
     // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
@@ -62,11 +68,6 @@ class TuxLab extends MeteorComponent {
     super();
   }
 
-  logout() {
-    this.autorun(() => {
-      Meteor.logout();
-    });
-  }
 }
 
 
