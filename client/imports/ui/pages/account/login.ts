@@ -19,21 +19,30 @@
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
   import { MeteorComponent } from 'angular2-meteor';
 
+  // Icon
+  import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
+
+
 // Define TuxLab Component
   @Component({
     selector: 'tuxlab-login',
     templateUrl: '/client/imports/ui/pages/account/login.html',
-    directives: [LoginButtons]
+    directives:
+    [LoginButtons,
+     MD_ICON_DIRECTIVES
+    ]
   })
 
 export class Login extends MeteorComponent {
   user: Meteor.User;
 
   constructor() {
+    super();
+  }
+
+  login(){
     Meteor.loginWithGoogle({
     });
-
-    super();
   }
 
 }

@@ -67,9 +67,7 @@ class TuxLab extends MeteorComponent {
 
     super();
   }
-
 }
-
 
 bootstrap(TuxLab, [
 MATERIAL_PROVIDERS,

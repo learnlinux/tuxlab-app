@@ -1,5 +1,5 @@
-## AWS Config File
-ansible/aws/vars/aws_credentials.yml
+## TuxLab Config
+private/tuxlab.json
 
 ## Meteor
 .meteor/local
