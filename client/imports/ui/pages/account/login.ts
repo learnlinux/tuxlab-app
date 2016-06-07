@@ -35,6 +35,7 @@ export class Login extends MeteorComponent {
   user: Meteor.User;
 
   constructor(private router: Router) {
+
     super();
   }
 

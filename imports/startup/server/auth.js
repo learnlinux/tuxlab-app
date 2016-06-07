@@ -3,8 +3,6 @@
   var tuxconf = {};
   tuxconf = JSON.parse(Assets.getText("tuxlab.json"));
 
-// Validate that Google Auth Users are from Domain
-
 // Configure Google Auth
   ServiceConfiguration.configurations.remove({
     service: "google"
