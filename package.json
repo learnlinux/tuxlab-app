@@ -31,6 +31,7 @@
     "dockerode": "^2.2.10",
     "es6-shim": "^0.35.1",
     "eval": "^0.1.1",
+    "marked": "^0.3.5",
     "meteor-node-stubs": "^0.2.3",
     "node-etcd": "^4.2.1",
     "reflect-metadata": "0.1.2",

@@ -1,18 +1,20 @@
 
-<!-- Toolbar -->
+<!-- Main Toolbar -->
   <div class="tux-toolbar">
     <md-toolbar>
       <div class="wrapper">
           <!-- Logo -->
           <div class="tux-toolbar-logo">
-            <img src="assets/logo/v1.dark.png" />
+            <a href="/">
+              <img src="assets/logo/v1.dark.png" />
+            </a>
           </div>
 
           <!-- Navigation -->
           <div class="tux-toolbar-nav">
-            <button md-button> Dashboard </button>
-            <button md-button> Explore </button>
-            <button md-button> Courses </button>
+            <a md-button href="/"> Dashboard </a>
+            <a md-button href="#"> Explore </a>
+            <a md-button href="#"> Courses </a>
           </div>
 
           <span flex></span>
@@ -32,6 +34,22 @@
       </div>
     </md-toolbar>
   </div>
+  
+  <!-- Course Toolbar -->
+	<div id="course-toolbar">
+		<md-toolbar class="md-medium-tall">
+			<div class="wrapper">
+				<!-- Navigation -->
+				<div class="course-toolbar-nav">
+					<a md-button href="/course">Main Page</a>
+					<a md-button href="/labs">Labs</a>
+					<a md-button href="/grades">Grades</a>
+					<a md-button href="/course#lectures">Lectures</a>
+          <a md-button href="/course#assignments">Assignments</a>
+				</div>
+			</div>
+		</md-toolbar>
+	</div>
 
 <!-- Page -->
   <div class="tux-content">

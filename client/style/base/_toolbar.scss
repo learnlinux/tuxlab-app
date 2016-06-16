@@ -30,6 +30,9 @@
         [md-button]{
           font-weight: 300;
         }
+        a {
+          color: black;
+        }
       }
 
       .tux-toolbar-profile{
@@ -66,4 +69,41 @@
 
     }
   }
+}
+
+// Sub-toolbar
+#course-toolbar{
+  display: none;
+	margin-bottom: 30px;
+	
+	md-toolbar{
+		min-height:inherit;
+		background-color: #f0f0f0;
+		
+		.wrapper{
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			justify-content: flex-start;
+			align-items: center;
+
+			width:100%;
+			max-width:1260px;
+			margin: 0 auto;
+
+			div{
+				height: 100%;
+			}
+
+			.course-toolbar-nav{
+				
+				[md-button]{
+					font-weight: 300;
+				}
+				a {
+					color: black;
+				}
+			}
+		}
+	}
 }

@@ -16,7 +16,11 @@ build:
    - script:
         name: install npm dependencies
         code: |
-            npm install --production
+            npm install
+   - script:
+        name: running gagarin tests
+        code: |
+            npm test
 deploy:
   steps:
    - script:

@@ -2,7 +2,15 @@
 var dockerode = require('dockerode');
 var swarmerode = require('swarmerode');
 var underscore = require('underscore');
+var Etcd = require('node-etcd');
+var tuxConfig = {}
+tuxConfig = JSON.parse(Assets.getText("tuxlab.json"));
+//var tuxConfig = require('../../private/tuxlab.json');
 function isPromise(obj){ return obj && typeof obj.then === 'function'; }
+var dir = (tuxConfig.root_domain.split('.'));
+dir.reverse().push("john");
+var dd = dir.join('/')
+
 
 Promise.prototype.next = function(nextPromise){
   var slf = this;
@@ -21,15 +29,21 @@ Promise.prototype.next = function(nextPromise){
  */
 var env = function(){
 
-	//this.labVm = dockerode.createContainer();
-	this.docker = new dockerode({host: '10.100.1.10', port: '2375'}); //aaron
+  //this.labVm = dockerode.createContainer();
+  this.docker = new dockerode({host: '10.100.1.10', port: '2375'}); //aaron
+  this.etcd = new Etcd('192.168.56.102','2379');
+  this.root_dom = tuxConfig.root_domain;
+}
+
+env.prototype.setUrl = function(usr){
+  this.usr = usr
 }
 
 //environment variables
 env.prototype.labVm = 'labVm';
 env.prototype.docker = null;
 env.prototype.vmList = [];                      //list of all vm instances
-
+env.prototype.usr = null;
 /*env.prototype.init = function(opts){
   var slf = this;
   return (function(){ return slf.init1(opts); });
@@ -63,6 +77,14 @@ env.prototype.shell = function(cont,com,opts){
  */
 env.prototype.init = function(opts){
   var fn1 = null;
+  var usr = this.usr;
+  var dir = this.root_dom.split('.');
+  dir.reverse().push(usr,'A');
+  var dd = dir.join('/');
+  var eJson = { NAME: usr+'.'+this.root_dom,
+	        TTL: 3600,
+		TYPE: 'A',
+		DATA: 'IP'}; //TODO: change this to dynamically get the IP
   //check whether the environment has been initialized
   if(this.vmList.find(function(a){ return a.name == "labVm"; }))
     return new Promise(function(res,rej){
@@ -103,10 +125,13 @@ env.prototype.init = function(opts){
               if(err) { reject(err); }
 	      else {
                 //add labVm to vmList
-	        //console.log("{name: \"labVm\",id:slf.labVm})");
-	        //resolve(data);
-		slf.vmList.push({name: "labVm", id: slf.labVm});
-		resolve();
+	        //add labVm properties to etcd db
+		etcd.set('/redbird/'+usr+'.'+slf.root_dom,{Docker: slf.labVm},function(){
+		  etcd.set(dd,eJson,function(){
+		    slf.vmList.push({name: "labVm", id: slf.labVm});
+		    resolve();
+                  });
+                });
 	      }
 	    });
 	  }

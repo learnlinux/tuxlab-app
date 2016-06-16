@@ -12,4 +12,15 @@
 @import "{}/client/style/base/_toolbar.scss";
 
 // Account Packages
-@import "{}/client/style/account/_login.scss"
+@import "{}/client/style/account/_login.scss";
+
+// Lab Packages
+@import "{}/client/style/lab/_terminal.scss";
+@import "{}/client/style/lab/_markdown.scss";
+
+// Course Packages
+@import "{}/client/style/course/_courseview.scss";
+@import "{}/client/style/course/_lablist.scss";
+
+// Dashboard Packages
+@import "{}/client/style/dashboard/_dashboard.scss";
