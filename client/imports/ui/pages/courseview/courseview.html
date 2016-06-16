@@ -1,0 +1,126 @@
+<div class="tuxlab-courseview">
+	<!--Course View Content-->
+	<div class="course-content">
+		<!--Course Description Card-->
+		<a name="description"></a>
+		<md-card>
+      		<md-card-title>
+        		<md-card-title-text>
+          			<span class="md-headline">Course Description</span>
+        		</md-card-title-text>
+      		</md-card-title>
+      		<md-card-content>
+				<p [innerHTML]="courseDescription"></p>
+      		</md-card-content>
+      		<md-card-actions layout="row" layout-align="end center">
+        		<a md-button href="https://www.cs.cmu.edu/~15131/f15/">Course Website</a>
+      		</md-card-actions>
+    	</md-card>
+		
+		<!--Responsive Section for Lectures and Assignments-->
+		<div layout="row" layout-xs="column">
+			<div flex>
+				<!--Lectures Card-->
+				<a name="lectures"></a>
+				<md-card>
+					<md-card-title>
+						<md-card-title-text>
+							<span class="md-headline">Lectures</span>
+						</md-card-title-text>
+					</md-card-title>
+					<md-card-content>
+						
+						<md-data-table layout-fill>
+							<thead>
+								<tr>
+									<th class="md-text-cell">Lecture Content</th>
+									<th>Lecture Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let lecture of lectures">
+									<td class="md-text-cell">{{ lecture.name }}</td>
+									<td>{{ lecture.date }}</td>
+								</tr>
+							</tbody>
+						</md-data-table>
+						
+					</md-card-content>
+					<md-card-actions layout="row" layout-align="end center">
+						<a md-button href="#">Ask a Question</a>
+					</md-card-actions>
+				</md-card>
+			</div>
+			<div flex>
+				<!--Assignments Card-->
+				<a name="assignments"></a>
+				<md-card>
+					<md-card-title>
+						<md-card-title-text>
+							<span class="md-headline">Assignments</span>
+						</md-card-title-text>
+					</md-card-title>
+					<md-card-content>
+						
+						<md-data-table layout-fill>
+							<thead>
+								<tr>
+									<th class="md-text-cell">Assignment</th>
+									<th>Due Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let assign of assignments">
+									<td class="md-text-cell">{{ assign.name }}</td>
+									<td>{{ assign.date }}</td>
+								</tr>
+							</tbody>
+						</md-data-table>
+						
+					</md-card-content>
+					<md-card-actions layout="row" layout-align="end center">						
+						<md-dialog #alert>
+							Nice try. Go home.
+							<md-dialog-actions ok="Got It"></md-dialog-actions>
+						</md-dialog>
+						<button md-button (click)="alert.show()">Complain</button>
+					</md-card-actions>
+				</md-card>
+			</div>
+		</div>
+		
+		<!--Lab List Card-->
+		<a name="labs"></a>
+		<md-card>
+      		<md-card-title>
+        		<md-card-title-text>
+          			<span class="md-headline">Labs</span>
+        		</md-card-title-text>
+      		</md-card-title>
+      		<md-card-content>
+				<tuxlab-lablist></tuxlab-lablist>
+      		</md-card-content>
+      		<md-card-actions layout="row" layout-align="end center">
+        		<a md-button href="/labs">Continue</a>
+      		</md-card-actions>
+    	</md-card>
+		
+		<!--Grade Card-->
+		<a name="grades"></a>
+		<md-card>
+      		<md-card-title>
+        		<md-card-title-text>
+          			<span class="md-headline">Course Grades</span>
+        		</md-card-title-text>
+      		</md-card-title>
+      		<md-card-content>
+				  <tuxlab-gradelist></tuxlab-gradelist>
+      		</md-card-content>
+      		<md-card-actions layout="row" layout-align="end center">
+        		<a md-button href="/grades">Specifics</a>
+      		</md-card-actions>
+    	</md-card>
+		
+		
+	</div>
+</div>

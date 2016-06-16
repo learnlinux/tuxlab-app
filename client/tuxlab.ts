@@ -29,8 +29,12 @@
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
 // TuxLab Imports
-  import { Dashboard } from "./imports/ui/pages/dashboard/dashboard"
-  import { Login } from "./imports/ui/pages/account/login"
+  import { Dashboard } from "./imports/ui/pages/dashboard/dashboard";
+  import { Login } from "./imports/ui/pages/account/login";
+  import { TaskView } from "./imports/ui/pages/lab/taskview";
+  import { CourseView } from "./imports/ui/pages/courseview/courseview";
+  import { LabView } from "./imports/ui/pages/courseview/labview";
+  import { GradeView } from "./imports/ui/pages/courseview/gradeview";
 
 // Define TuxLab Component
   @Component({
@@ -47,8 +51,12 @@
 
 // Define TuxLab Routes
   @RouteConfig([
-    { path: '/', as: 'Dashboard', component: Dashboard },
-    { path: '/login', as: 'Login', component: Login },
+	  { path: '/', as: 'Dashboard', component: Dashboard },
+	  { path: '/login', as: 'Login', component: Login },
+	  { path: '/lab', as: 'TaskView', component: TaskView },
+    { path: '/course', as: 'CourseView', component: CourseView },
+    { path: '/labs', as: 'LabView', component: LabView },
+    { path: 'grades', as: 'GradeView', component: GradeView }
 //  { path: '/course/:courseid', as: 'CourseView', component: CourseView },
 //  { path: '/course/:courseid/users', as: 'UserList', component: UserList },
 //  { path: '/course/:courseid/user/:userid', as: 'UserView', component: UserView },

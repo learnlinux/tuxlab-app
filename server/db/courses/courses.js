@@ -1,3 +1,4 @@
+// Courses = new Meteor.Collection('Courses');
 /* Create Courses database schema */
 courseSchema = new SimpleSchema({
     course_name: {
@@ -34,20 +35,19 @@ function addCourse(newCourse) {
 /* Insert Course example */
 /*
 const myCourse = {
-    name: 'Great Practical Ideas for Computer Scientists',
-    number: "15131",
-    description: 'This course focuses on teaching students how to use the popular tools for software development.',
-    openInfo: ["Homework:", "hw1", "Labs", "lab1"]
+    course_name: 'Great Practical Ideas for Computer Scientists',
+    course_number: "15-131",
+    course_description: 'This course focuses on teaching students how to use the popular tools for software development.',
+    course_openInfo: ["Homework:", "hw1", "Labs", "lab1"]
 };
 addCourse(myCourse);
 */
 
-
-/* Get Course function */
-// var myId = "BNFc6X5Tc6x6PuMSu";
-
 /* Functions to get course data when given id */
 function getCourse(id) {
+    if (Courses.find({_id: id}).count() != 1) {
+        throw "ERROR";
+    }
     return Courses.findOne({_id: id});
 }
 

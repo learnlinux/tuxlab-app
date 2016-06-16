@@ -32,6 +32,7 @@
     "es6-promise": "^3.2.1",
     "es6-shim": "^0.35.1",
     "eval": "^0.1.1",
+    "marked": "^0.3.5",
     "meteor-node-stubs": "^0.2.3",
     "ng2-material": "^0.4.1",
     "node-etcd": "^4.2.1",

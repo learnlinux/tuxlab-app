@@ -1,0 +1,19 @@
+<div class="tuxlab-lablist">
+	<md-progress-bar mode="determinate" [value]="determinateValue"></md-progress-bar>
+	<md-data-table layout-fill>
+		<thead>
+			<tr>
+				<th class="md-text-cell">Lab</th>
+				<th>Tasks Completed</th>
+				<th>Due Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let lab of labs">
+				<td class="md-text-cell" (click)="toLab(lab.name)">{{ lab.name }}</td>
+				<td (click)="toLab(lab.name)">{{ lab.comp }}</td>
+				<td (click)="toLab(lab.name)">{{ lab.date }}</td>
+			</tr>
+		</tbody>
+	</md-data-table>
+</div>
