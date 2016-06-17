@@ -5,7 +5,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
 ```
 {
   _id : "574465a21109160b518a4299",
-  course_number: "15-151",
+  course_number: "15-131",
   course_name: "Great Practical Ideas for Computer Scientists",
 
   labs: [
@@ -14,7 +14,11 @@ The following document describes the MongoDB Schema used by the TuxLab app:
       lab_name: "Getting Started with Git",
       labfile: "##################",
       tasks: [
-        {task_id: 1, task_name: "Git Clone"}
+        {
+          task_id: 1,
+          task_name: "Git Clone",
+          task_doc: ""##################","
+        }
       ]
     }
     {
@@ -22,7 +26,11 @@ The following document describes the MongoDB Schema used by the TuxLab app:
       lab_name: "Advanced Git 1",
       labfile: "##################",
       tasks: [
-        {task_id: 1, task_name: "Git Submodules"}
+        {
+          task_id: 1,
+          task_name: "Git Submodules",
+          task_doc: ""##################","
+        }
       ]
     }
   ]
