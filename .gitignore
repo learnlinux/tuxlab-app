@@ -1,5 +1,5 @@
 ## TuxLab Config
-private/tuxlab.json
+private/settings.*
 
 ## Meteor
 .meteor/local
