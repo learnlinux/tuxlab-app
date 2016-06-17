@@ -21,7 +21,13 @@
 	<div class="markdown-content">
 		<div id="task-markdown">Task loading...</div>
 		<div class="markdown-check-button">
-			<button md-raised-button class="md-raised" (click)="check()">
+			<md-dialog #alert>
+				<md-dialog-title>Score: 3/10</md-dialog-title>
+				Truth be told you may fail the course, perhaps drop it
+				while you can?
+				<md-dialog-actions ok="Fine"></md-dialog-actions>
+			</md-dialog>
+			<button md-raised-button (click)="alert.show()">
 				Check
 				<md-icon fontIcon="tuxicon-tick"></md-icon>
 			</button>

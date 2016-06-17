@@ -13,7 +13,7 @@
           <!-- Navigation -->
           <div class="tux-toolbar-nav">
             <a md-button href="/"> Dashboard </a>
-            <a md-button href="#"> Explore </a>
+            <a md-button href="/explore"> Explore </a>
             <a md-button href="#"> Courses </a>
           </div>
 
@@ -41,11 +41,11 @@
 			<div class="wrapper">
 				<!-- Navigation -->
 				<div class="course-toolbar-nav">
-					<a md-button href="/course">Main Page</a>
-					<a md-button href="/labs">Labs</a>
-					<a md-button href="/grades">Grades</a>
-					<a md-button href="/course#lectures">Lectures</a>
-          <a md-button href="/course#assignments">Assignments</a>
+					<a md-button href="/course" [innerHTML]="courseName" class="home-button" id="toolbar-course">Course Name</a>
+					<a md-button href="/labs" id="toolbar-labs">Labs</a>
+					<a md-button href="/grades" id="toolbar-grades">Grades</a>
+					<a md-button href="/course#lectures" id="toolbar-lectures">Lectures</a>
+          <a md-button href="/course#assignments" id="toolbar-assignments">Assignments</a>
 				</div>
 			</div>
 		</md-toolbar>

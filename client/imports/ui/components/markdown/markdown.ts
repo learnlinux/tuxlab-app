@@ -14,6 +14,7 @@
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MeteorComponent } from 'angular2-meteor';
+	import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
 		
 // Toolbar
   	import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
@@ -32,7 +33,8 @@
 		directives: [MATERIAL_DIRECTIVES,
 					 MD_TOOLBAR_DIRECTIVES,
 					 MD_ICON_DIRECTIVES],
-		viewProviders: [MdIconRegistry],
+		viewProviders: [ MdIconRegistry ],
+		providers: [ OVERLAY_PROVIDERS ],
 		encapsulation: ViewEncapsulation.None
 	})
 
@@ -54,10 +56,5 @@
 					document.getElementById('task-markdown').innerHTML = mdTask;
 				}
 			});
-		}
-		
-		// Check Button
-		check() {
-			alert('You will fail this class.');
 		}
 	}

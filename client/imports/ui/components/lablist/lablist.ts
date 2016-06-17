@@ -47,7 +47,7 @@
 		// Link to lab function
 		toLab(lab) {
 			console.log("Redirecting to " + lab + "page.");
-			window.location = "/lab";
+			window.location.href = "/lab";
 		}
 
 		constructor(mdIconRegistry: MdIconRegistry) {
