@@ -12,15 +12,25 @@ build:
            meteor --version
            meteor update
            meteor --version
+   - script:
+       name: update npm
+       code: npm install -g npm
+       
+   - script:
+       name: install typings
+       code: npm install -g typings
 
    - script:
-        name: install npm dependencies
-        code: |
-            npm install
+       name: install npm dependencies
+       code: npm install
+
+   - script:
+        name: typings install
+        code: typings install
+
    - script:
         name: running gagarin tests
-        code: |
-            npm test
+        code: npm test
 deploy:
   steps:
    - script:
