@@ -1,8 +1,3 @@
-
-// Get JSON Config
-  var tuxconf = {};
-  tuxconf = JSON.parse(Assets.getText("tuxlab.json"));
-
 // Configure Google Auth
   ServiceConfiguration.configurations.remove({
     service: "google"
@@ -10,8 +5,8 @@
 
   ServiceConfiguration.configurations.insert({
     service: "google",
-    clientId: tuxconf.google_client,
-    secret: tuxconf.google_secret
+    clientId: nconf.get("google_client"),
+    secret: nconf.get("google_secret")
   });
 
 // Configure Login Validation
@@ -21,7 +16,7 @@
 
         // Verify Google Domain
         var google_user = params.user.services.google;
-        return (google_user.email.match(new RegExp(tuxconf.google_domain)));
+        return (google_user.email.match(new RegExp(nconf.get("google_domain"))));
 
       default:
         throw new Meteor.Error(403, 'Non-Google Logins are not Supported.');
