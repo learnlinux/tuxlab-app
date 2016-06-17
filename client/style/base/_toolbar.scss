@@ -102,7 +102,22 @@
 				}
 				a {
 					color: black;
+          border-radius: 0;
+          height: 66px;
+          padding-top: 14px;
 				}
+        a.home-button, a.home-button:visited {
+          font-weight: bold;
+          font-size: 20px;
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        a.active-button, a.active-button:visited {
+          border-bottom: solid 4px #ffd600;
+        }
+        a.active-button:hover {
+          border-bottom: solid 5px #ffc400;
+        }
 			}
 		}
 	}

@@ -35,6 +35,7 @@
   import { CourseView } from "./imports/ui/pages/courseview/courseview";
   import { LabView } from "./imports/ui/pages/courseview/labview";
   import { GradeView } from "./imports/ui/pages/courseview/gradeview";
+  import { Explore } from "./imports/ui/pages/explore/explore"; 
 
 // Define TuxLab Component
   @Component({
@@ -56,7 +57,8 @@
 	  { path: '/lab', as: 'TaskView', component: TaskView },
     { path: '/course', as: 'CourseView', component: CourseView },
     { path: '/labs', as: 'LabView', component: LabView },
-    { path: 'grades', as: 'GradeView', component: GradeView }
+    { path: 'grades', as: 'GradeView', component: GradeView },
+    { path: '/explore', as: 'Explore', component: Explore }
 //  { path: '/course/:courseid', as: 'CourseView', component: CourseView },
 //  { path: '/course/:courseid/users', as: 'UserList', component: UserList },
 //  { path: '/course/:courseid/user/:userid', as: 'UserView', component: UserView },
@@ -67,13 +69,12 @@
 
 class TuxLab extends MeteorComponent {
   user: Meteor.User;
-
+  courseName = "GPI" + " Home";
   constructor(mdIconRegistry: MdIconRegistry) {
+    super();
     // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
-
-    super();
   }
 }
 
