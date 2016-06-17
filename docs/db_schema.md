@@ -1,5 +1,5 @@
 # Database Schema
-The following document describes the MongoDB Schema used by the TuxLab app.
+The following document describes the MongoDB Schema used by the TuxLab app:
 
 ### Courses Database
 ```
@@ -35,12 +35,17 @@ The following document describes the MongoDB Schema used by the TuxLab app.
   firstName : "Derek",
   lastName : "Brown",
   email : "derek@tuxlab.org",
-  profile_pic : "https://placekitten.com/g/250/250"
+  profile_pic : "https://placekitten.com/g/250/250",
+  administrator: false,
+  instructor_courses: [
+    574465a21109160b518a4291,
+    574465a21109160b518a4292
+  ],
   course_records : [
     "574467bc1109160b518a429d",
     "574467a21109160b518a429c",
     "574467fc1109160b518a429e"
-  ]
+  ],
 }
 ```
 
