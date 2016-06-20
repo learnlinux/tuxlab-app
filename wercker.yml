@@ -12,7 +12,10 @@ build:
            meteor --version
            meteor update
            meteor --version
-
+   - script:
+       name: update npm
+       code: |
+            npm install -g npm
    - script:
         name: install npm dependencies
         code: |
