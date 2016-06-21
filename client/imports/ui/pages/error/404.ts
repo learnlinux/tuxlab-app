@@ -1,6 +1,5 @@
 /* TuxLab - TuxLab.ts */
 
-
 // Meteor Imports
   import { Meteor } from 'meteor/meteor';
   import { Mongo } from 'meteor/mongo';
@@ -13,9 +12,6 @@
   import { APP_BASE_HREF } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
 
-  import { LoginButtons } from 'angular2-meteor-accounts-ui'
- // import { RouteParams } from '@angular/router-deprecated';
-
 
 // Angular Material Imports
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -24,38 +20,18 @@
   // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
-
 // Define TuxLab Component
   @Component({
-    selector: 'tuxlab-login',
-    templateUrl: '/client/imports/ui/pages/account/login.html',
-    directives: [LoginButtons, MD_ICON_DIRECTIVES]
+    selector: 'tuxlab-err404',
+    templateUrl: '/client/imports/ui/pages/error/404.html',
   })
 
-export class Login extends MeteorComponent {
+export class Err404 extends MeteorComponent {
   user: Meteor.User;
 
   constructor() {
 
     super();
   }
-
-  login(){
-    var slf = this;
-    Meteor.logout();
-    Meteor.loginWithGoogle(function(res){
-      if(!res){
-       console.log("accept");
- //      slf.router.navigate(['Account',{userid: Meteor.user()._id}]);
-       console.log(Meteor.user());
-      }
-      else{
-          //alert(res);
-        console.log("here");
-          //TODO: implement popup etc
-      }
-    });
-  }
-
 }
 

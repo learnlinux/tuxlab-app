@@ -11,9 +11,8 @@
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
 
   import { APP_BASE_HREF } from '@angular/common';
-  import { RouterLink } from '@angular/router-deprecated';
   import { HTTP_PROVIDERS } from '@angular/http';
-  import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
+  import { ROUTER_DIRECTIVES, provideRouter, RouterConfig } from '@angular/router';
 
   import { InjectUser } from 'angular2-meteor-accounts-ui';
 
@@ -29,8 +28,10 @@
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
 // TuxLab Imports
-  import { Dashboard } from "./imports/ui/pages/dashboard/dashboard";
-  import { Login } from "./imports/ui/pages/account/login";
+  import { Dashboard } from "./imports/ui/pages/dashboard/dashboard"
+  import { Login } from "./imports/ui/pages/account/login"
+  import { Account } from "./imports/ui/pages/account/account"
+  import { Err404 } from "./imports/ui/pages/error/404"
   import { TaskView } from "./imports/ui/pages/lab/taskview";
   import { CourseView } from "./imports/ui/pages/courseview/courseview";
   import { LabView } from "./imports/ui/pages/courseview/labview";
@@ -44,28 +45,35 @@
     directives: [ROUTER_DIRECTIVES,
                  MATERIAL_DIRECTIVES,
                  MD_TOOLBAR_DIRECTIVES,
-                 MD_ICON_DIRECTIVES,
-                 RouterLink],
+                 MD_ICON_DIRECTIVES],
     viewProviders: [MdIconRegistry],
     encapsulation: ViewEncapsulation.None,
   })
 
 // Define TuxLab Routes
-  @RouteConfig([
-	  { path: '/', as: 'Dashboard', component: Dashboard },
-	  { path: '/login', as: 'Login', component: Login },
-	  { path: '/lab', as: 'TaskView', component: TaskView },
-    { path: '/course', as: 'CourseView', component: CourseView },
-    { path: '/labs', as: 'LabView', component: LabView },
-    { path: 'grades', as: 'GradeView', component: GradeView },
-    { path: '/explore', as: 'Explore', component: Explore }
+export const routes : RouterConfig =([
+    { path: '/', component: Dashboard },
+    { path: '/login', component: Login },
+    { path: '/404', component: Err404 },
+    { path: '/', component: Dashboard },
+    { path: '/login', component: Login },
+    { path: '/lab', component: TaskView },
+    { path: '/course', component: CourseView },
+    { path: '/labs', component: LabView },
+    { path: 'grades', component: GradeView },
+    { path: '/explore', component: Explore },
 //  { path: '/course/:courseid', as: 'CourseView', component: CourseView },
 //  { path: '/course/:courseid/users', as: 'UserList', component: UserList },
 //  { path: '/course/:courseid/user/:userid', as: 'UserView', component: UserView },
 //  { path: '/course/:courseid/labs', as: 'LabList', component: LabList },
 //  { path: '/course/:courseid/lab/:labid', as: 'LabView', component: LabView },
-//  { path: '/account/:userid', as: 'Account', component: Account }
-  ])
+    { path: '/account/:userid', component: Account },
+    { path: '/**', component: Err404 }
+]);
+
+export const TUXLAB_ROUTER_PROVIDERS = [
+	  provideRouter(routes)
+];
 
 class TuxLab extends MeteorComponent {
   user: Meteor.User;
@@ -80,7 +88,7 @@ class TuxLab extends MeteorComponent {
 
 bootstrap(TuxLab, [
 MATERIAL_PROVIDERS,
+TUXLAB_ROUTER_PROVIDERS,
 HTTP_PROVIDERS,
 MdIconRegistry,
-ROUTER_PROVIDERS,
 provide(APP_BASE_HREF, { useValue: '/' })]);
