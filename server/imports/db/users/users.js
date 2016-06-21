@@ -42,6 +42,9 @@ userSchema = new SimpleSchema({
         type: Object, 
         blackbox: true 
     },
+    profilePicture: {
+        type: String
+    },
     newInfo: {
         type: addInfoSchema
     }
@@ -68,6 +71,7 @@ function createNewUser(user) {
     Accounts.createUser(user);
     Accounts.onCreateUser(function(ninfo, usr) {
         usr.newInfo = myUser.newInfo;
+	console.log("here");
         return usr;
     });
 }

@@ -44,3 +44,6 @@ jspm_packages
 ## Vagrant
 .vagrant
 *.retry
+
+#gagarin
+.gagarin
