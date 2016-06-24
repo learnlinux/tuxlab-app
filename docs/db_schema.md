@@ -17,7 +17,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
         {
           task_id: 1,
           task_name: "Git Clone",
-          task_doc: ""##################","
+          task_doc: "##################"
         }
       ]
     }
@@ -29,7 +29,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
         {
           task_id: 1,
           task_name: "Git Submodules",
-          task_doc: ""##################","
+          task_doc: "##################"
         }
       ]
     }
