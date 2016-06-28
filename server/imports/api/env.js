@@ -2,11 +2,15 @@
 var dockerode = require('dockerode');
 var swarmerode = require('swarmerode');
 var underscore = require('underscore');
-var Etcd = require('node-etcd');
+var etcd = require('node-etcd');
+var nconf = require('nconf');
 
+/*
 var dir = (nconf.get("root_domain").split('.'));
 dir.reverse().push("john");
 var dd = dir.join('/')
+var Etcd = require('node-etcd');
+*/
 
 
 Promise.prototype.next = function(nextPromise){
@@ -28,7 +32,7 @@ var env = function(){
 
   //this.labVm = dockerode.createContainer();
   this.docker = new dockerode({host: '10.100.1.10', port: '2375'}); //aaron
-  this.etcd = new Etcd('192.168.56.102','2379');
+  this.etcd = new etcd('192.168.56.102','2379');
   this.root_dom = nconf.get("root_domain");
 
 }

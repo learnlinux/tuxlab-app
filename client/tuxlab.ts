@@ -12,7 +12,7 @@
 
   import { APP_BASE_HREF } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
-  import { ROUTER_DIRECTIVES, provideRouter, RouterConfig } from '@angular/router';
+  import { RouterLink, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
   import { InjectUser } from 'angular2-meteor-accounts-ui';
 
@@ -55,10 +55,7 @@
   })
 
 // Define TuxLab Routes
-export const routes : RouterConfig =([
-    { path: '/', component: Dashboard },
-    { path: '/login', component: Login },
-    { path: '/404', component: Err404 },
+@RouteConfig([
     { path: '/', component: Dashboard },
     { path: '/login', component: Login },
     { path: '/lab', component: TaskView },
@@ -74,11 +71,8 @@ export const routes : RouterConfig =([
 //  { path: '/course/:courseid/lab/:labid', as: 'LabView', component: LabView },
     { path: '/account/:userid', component: Account },
     { path: '/**', component: Err404 }
-]);
+])
 
-export const TUXLAB_ROUTER_PROVIDERS = [
-	  provideRouter(routes)
-];
 
 class TuxLab extends MeteorComponent {
   user: Meteor.User;
@@ -95,7 +89,7 @@ class TuxLab extends MeteorComponent {
 
 bootstrap(TuxLab, [
 MATERIAL_PROVIDERS,
-TUXLAB_ROUTER_PROVIDERS,
 HTTP_PROVIDERS,
 MdIconRegistry,
+ROUTER_PROVIDERS,
 provide(APP_BASE_HREF, { useValue: '/' })]);

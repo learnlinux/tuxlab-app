@@ -1,5 +1,5 @@
 /* Additional Information Schema that will be added to the user account */
-addInfoSchema = new SimpleSchema({
+/*addInfoSchema = new SimpleSchema({
     firstName: {
         type: String
     },
@@ -13,8 +13,9 @@ addInfoSchema = new SimpleSchema({
         type: String
     }
 });
-
+*/
 /* Create Users Schema */
+/*
 userSchema = new SimpleSchema({
     _id: {
         type: String
@@ -26,6 +27,10 @@ userSchema = new SimpleSchema({
         type: String,
         label: "Username"
     },
+    picUrl: {
+	type: String,
+	label: "picUrl"
+    }
     'emails.$': { 
         type: Object 
     },
@@ -49,8 +54,9 @@ userSchema = new SimpleSchema({
         type: addInfoSchema
     }
 });
-
+*/
 /* Example Data */
+/*
 const myNewInfo = {
     firstName: 'Cem',
     lastName: 'Ersoz',
@@ -63,10 +69,10 @@ const myUser = {
     email: 'cersoz@andrew.cmu.edu',
     newInfo: myNewInfo
 };
-
-
+*/
 
 /* This function creates a new user with additional information */
+/*
 function createNewUser(user) {
     Accounts.createUser(user);
     Accounts.onCreateUser(function(ninfo, usr) {
@@ -74,4 +80,4 @@ function createNewUser(user) {
 	console.log("here");
         return usr;
     });
-}
+}*/

@@ -21,6 +21,8 @@
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
   import { MeteorComponent } from 'angular2-meteor';
 
+  import { ROUTER_PROVIDERS, RouterLink, RouteConfig, Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+
   // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
@@ -29,13 +31,13 @@
   @Component({
     selector: 'tuxlab-login',
     templateUrl: '/client/imports/ui/pages/account/login.html',
-    directives: [LoginButtons, MD_ICON_DIRECTIVES]
+    directives: [LoginButtons,RouterLink, MD_ICON_DIRECTIVES,ROUTER_DIRECTIVES]
   })
 
 export class Login extends MeteorComponent {
   user: Meteor.User;
 
-  constructor() {
+  constructor(private router: Router) {
 
     super();
   }
@@ -45,14 +47,12 @@ export class Login extends MeteorComponent {
     Meteor.logout();
     Meteor.loginWithGoogle(function(res){
       if(!res){
-       console.log("accept");
- //      slf.router.navigate(['Account',{userid: Meteor.user()._id}]);
-       console.log(Meteor.user());
+	//slf.router.navigate(['Account',{userid: Meteor.user()._id}]);
+	console.log(Meteor.user());
       }
       else{
-          //alert(res);
-        console.log("here");
-          //TODO: implement popup etc
+        console.log(res)
+ //      slf.router.navigate(['Account',{userid: Meteor.user()._id}]);
       }
     });
   }
