@@ -18,31 +18,26 @@
 
 // Icon
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
+	
+// Editor Component
+	import { Editor } from '../../components/editor/editor';
 
-// Define Dashboard Component
+// Define InstructorView Component
 	@Component({
-		selector: 'tuxlab-dashboard',
-		templateUrl: '/client/imports/ui/pages/dashboard/dashboard.html',
+		selector: 'tuxlab-instructor',
+		templateUrl: '/client/imports/ui/pages/instructor/instructor.html',
 		directives: [ 
 			MATERIAL_DIRECTIVES, 
 			MD_ICON_DIRECTIVES, 
-			MD_SIDENAV_DIRECTIVES 
+			MD_SIDENAV_DIRECTIVES,
+			Editor
 		],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export Dashboard Class 
-export class Dashboard extends MeteorComponent {
-	
-	courses: Array<any> = [
-		{'id': 1, 'number': '15-131', 'name': 'Great Practical Ideas for Computer Scientists', 'quantity': '12', 'grade': '99'},
-		{'id': 7, 'number': '21-299', 'name': 'Calculus in Twelve Dimensions', 'quantity': '76', 'grade': '100'},
-		{'id': 9, 'number': '15-999', 'name': 'Introduction to Linux', 'quantity': '44', 'grade': '98'},
-		{'id': 10, 'number': '15-998', 'name': 'Vim Usage', 'quantity': '1', 'grade': '99'},
-		{'id': 11, 'number': '15-000', 'name': 'Emacs Usage', 'quantity': '2', 'grade': '44'},
-		{'id': 12, 'number': '15-997', 'name': 'Bash Commands', 'quantity': '3', 'grade': '85'}
-	];
+// Export Instructor Class 
+export class Instructor extends MeteorComponent {
 	
 	constructor(mdIconRegistry: MdIconRegistry) {
 		super();
@@ -52,13 +47,6 @@ export class Dashboard extends MeteorComponent {
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
 		
 	}
-	
-	toCourse(courseId) {
-		console.log('Going to course page with course id: ' + courseId);
-		window.location.href = '/course';
-	}
-	
-	
 	
 }
 

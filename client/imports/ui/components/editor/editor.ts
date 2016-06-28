@@ -14,38 +14,34 @@
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MeteorComponent } from 'angular2-meteor';
+	import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
+		
+// Toolbar
+  	import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
+	import "../../../../../node_modules/@angular2-material/toolbar/toolbar.css";
 
 // Icon
-  	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
+  	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 	
-// Grades import	  
-	import { GradeList } from "../../components/gradelist/gradelist";
-	
-// Define GradeView Component
+
+// Define Editor Component
 	@Component({
-		selector: 'tuxlab-gradeview',
-		templateUrl: '/client/imports/ui/pages/courseview/gradeview.html',
+		selector: 'tuxlab-editor',
+		templateUrl: '/client/imports/ui/components/editor/editor.html',
 		directives: [MATERIAL_DIRECTIVES,
-					 MD_ICON_DIRECTIVES,
-					 GradeList],
-		viewProviders: [MdIconRegistry],
+					 MD_TOOLBAR_DIRECTIVES,
+					 MD_ICON_DIRECTIVES],
+		viewProviders: [ MdIconRegistry ],
+		providers: [ OVERLAY_PROVIDERS ],
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export GradeView Class 
-	export class GradeView {
-
+// Export Editor Class 
+	export class Editor {
 		constructor(mdIconRegistry: MdIconRegistry) {
 			// Create Icon Font
 			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 			mdIconRegistry.setDefaultFontSetClass('tuxicon');
 			
-			// Display Course Toolbar
-			document.getElementById('course-toolbar').style.display = "block";
-			
-			// Activate toolbar button
-			document.getElementById('toolbar-grades').className += "active-button";
-			
-			document.getElementById('tux-content').style.marginTop = "20px";
 		}
 	}

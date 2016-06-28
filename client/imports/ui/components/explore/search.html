@@ -1,0 +1,44 @@
+<div class="tuxlab-searchview">
+	<div class="md-whiteframe-5dp course-search-list">
+		
+		<h2 id="search-string">Search Results</h2>
+		
+		<div class="selector">
+			<select id="mySelector" [ngModel]="selectedPage" (ngModelChange)="numItemsChange($event)">
+				<option *ngFor="let i of ipp" [value]="i">{{ i }}</option>
+			</select>
+			<span [innerHTML]="getCurrentInfo()"></span>
+			<button md-button (click)="prevPage()" class="right">Previous Page</button>
+			<button md-button (click)="nextPage()" class="right">Next Page</button>
+		</div>
+		
+		<hr>
+		<md-data-table layout-fill>
+			<thead>
+				<tr>
+					<th class="md-text-cell">Course Number</th>
+					<th class="md-text-cell">Course Name</th>
+					<th>Seats Left</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let course of pagedCourses">
+					<td class="md-text-cell">{{ course.number }}</td>
+					<td class="md-text-cell">{{ course.name }}</td>
+					<td>{{ course.quantity }}</td>
+				</tr>
+			</tbody>
+		</md-data-table>
+		<hr>
+		
+		<div class="selector">
+			<select id="mySelector2" [ngModel]="selectedPage" (ngModelChange)="numItemsChange2($event)">
+				<option *ngFor="let i of ipp" [value]="i">{{ i }}</option>
+			</select>
+			<span [innerHTML]="getCurrentInfo()"></span>
+			<button md-button (click)="prevPage()" class="right">Previous Page</button>
+			<button md-button (click)="nextPage()" class="right">Next Page</button>
+		</div>
+		
+	</div>
+</div>

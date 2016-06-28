@@ -17,8 +17,9 @@
   import { InjectUser } from 'angular2-meteor-accounts-ui';
 
 // Angular Material Imports
-  import {MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES} from 'ng2-material';
-  import {MeteorComponent} from 'angular2-meteor';
+  import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
+  import { MeteorComponent } from 'angular2-meteor';
+  import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
 
   // Toolbar
   import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
@@ -37,6 +38,7 @@
   import { LabView } from "./imports/ui/pages/courseview/labview";
   import { GradeView } from "./imports/ui/pages/courseview/gradeview";
   import { Explore } from "./imports/ui/pages/explore/explore"; 
+  import { Instructor } from "./imports/ui/pages/instructor/instructor";
 
 // Define TuxLab Component
   @Component({
@@ -45,7 +47,9 @@
     directives: [ROUTER_DIRECTIVES,
                  MATERIAL_DIRECTIVES,
                  MD_TOOLBAR_DIRECTIVES,
-                 MD_ICON_DIRECTIVES],
+                 MD_ICON_DIRECTIVES,
+                 MD_SIDENAV_DIRECTIVES,
+                 RouterLink],
     viewProviders: [MdIconRegistry],
     encapsulation: ViewEncapsulation.None,
   })
@@ -61,7 +65,8 @@ export const routes : RouterConfig =([
     { path: '/course', component: CourseView },
     { path: '/labs', component: LabView },
     { path: 'grades', component: GradeView },
-    { path: '/explore', component: Explore },
+	{ path: '/explore', component: Explore },
+	{ path: '/instructor', component: Instructor },
 //  { path: '/course/:courseid', as: 'CourseView', component: CourseView },
 //  { path: '/course/:courseid/users', as: 'UserList', component: UserList },
 //  { path: '/course/:courseid/user/:userid', as: 'UserView', component: UserView },
@@ -83,7 +88,9 @@ class TuxLab extends MeteorComponent {
     // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
+      
   }
+  
 }
 
 bootstrap(TuxLab, [

@@ -1,57 +1,91 @@
+<md-sidenav-layout>
+    <md-sidenav #right align="end" layout-padding id="sidenav"> <!--mode="side"-->
+        <!--Sidenav Profile Zone-->
+        <div class="sidenav-profile">
+            <div class="sidenav-profile-pic"></div>
+            <p>Derek Brown</p>
+            <p>Carnegie Mellon University</p>
+        </div>
+        <!--Buttons-->
+        <div class="sidenav-buttons">
+            <button md-button>
+                <md-icon fontIcon="tuxicon-journal"></md-icon>
+                My Courses
+            </button>
+            <button md-button>
+                <md-icon fontIcon="tuxicon-aplus"></md-icon>
+                My Grades
+            </button>
+            <button md-button>
+                <md-icon fontIcon="tuxicon-console"></md-icon>
+                Terminal
+            </button>
+            <button md-button>
+                <md-icon fontIcon="tuxicon-list"></md-icon>
+                Current Assignments
+            </button>
+            <button md-button>
+                <md-icon fontIcon="tuxicon-potion"></md-icon>
+                Upcoming Labs
+            </button>
+            <button md-button>
+                <md-icon fontIcon="tuxicon-book"></md-icon>
+                Upcoming Exams
+            </button>
+        </div>
+    </md-sidenav>
+    <md-content class="page-content">
+        <!-- Main Toolbar -->
+        <div class="tux-toolbar fixed-nav">
+            <md-toolbar>
+                <div class="wrapper">
+                    <!-- Logo -->
+                    <div class="tux-toolbar-logo">
+                        <a href="/">
+                        <img src="assets/logo/v1.dark.png" />
+                        </a>
+                    </div>
+                    <!-- Navigation -->
+                    <div class="tux-toolbar-nav">
+                        <a md-button href="/"> Dashboard </a>
+                        <a md-button href="/explore"> Explore </a>
+                        <a md-button href="/"> Courses </a>
+                        <a md-button href="/instructor">*Become Instructor*</a>
+                    </div>
+                    <span flex></span>
+                    <!-- Profile Dropdown -->
+                    <div class="tux-toolbar-profile " (click)="right.toggle()">
+                        <img class="tux-toolbar-profile-pic" src="https://avatars3.githubusercontent.com/u/6845676?v=3&u=eca077840fc0214b4fc7c4636ccc9df7e86c1805&s=140">
+                        <div class="tux-toolbar-info">
+                            <h1> Derek Brown </h1>
+                            <h2> Carnegie Mellon </h2>
+                        </div>
+                        <div class="tux-toolbar-menu">
+                            <md-icon fontIcon="tuxicon-down"></md-icon>
+                        </div>
+                    </div>
+                </div>
+            </md-toolbar>
+        </div>
+        <!-- Course Toolbar -->
+        <div id="course-toolbar">
+            <md-toolbar class="md-medium-tall">
+                <div class="wrapper">
+                    <!-- Navigation -->
+                    <div class="course-toolbar-nav">
+                        <a md-button href="/course" [innerHTML]="courseName" class="home-button" id="toolbar-course">Course Name</a>
+                        <a md-button href="/labs" id="toolbar-labs">Labs</a>
+                        <a md-button href="/grades" id="toolbar-grades">Grades</a>
+                    </div>
+                </div>
+            </md-toolbar>
+        </div>
+        
+        <!-- Page -->
+        <div class="tux-content" id="tux-content">
+            <router-outlet></router-outlet>
+        </div>
 
-<!-- Main Toolbar -->
-  <div class="tux-toolbar">
-    <md-toolbar>
-      <div class="wrapper">
-          <!-- Logo -->
-          <div class="tux-toolbar-logo">
-            <a href="/">
-              <img src="assets/logo/v1.dark.png" />
-            </a>
-          </div>
+    </md-content>
+</md-sidenav-layout>
 
-          <!-- Navigation -->
-          <div class="tux-toolbar-nav">
-            <a md-button href="/"> Dashboard </a>
-            <a md-button href="/explore"> Explore </a>
-            <a md-button href="#"> Courses </a>
-          </div>
-
-          <span flex></span>
-
-          <!-- Profile Dropdown -->
-          <div class="tux-toolbar-profile " >
-              <img class="tux-toolbar-profile-pic" src="https://avatars3.githubusercontent.com/u/6845676?v=3&u=eca077840fc0214b4fc7c4636ccc9df7e86c1805&s=140">
-              <div class="tux-toolbar-info">
-                <h1> Derek Brown </h1>
-                <h2> Carnegie Mellon </h2>
-              </div>
-              <div class="tux-toolbar-menu">
-                  <md-icon fontIcon="tuxicon-down"></md-icon>
-              </div>
-          </div>
-
-      </div>
-    </md-toolbar>
-  </div>
-  
-  <!-- Course Toolbar -->
-	<div id="course-toolbar">
-		<md-toolbar class="md-medium-tall">
-			<div class="wrapper">
-				<!-- Navigation -->
-				<div class="course-toolbar-nav">
-					<a md-button href="/course" [innerHTML]="courseName" class="home-button" id="toolbar-course">Course Name</a>
-					<a md-button href="/labs" id="toolbar-labs">Labs</a>
-					<a md-button href="/grades" id="toolbar-grades">Grades</a>
-					<a md-button href="/course#lectures" id="toolbar-lectures">Lectures</a>
-          <a md-button href="/course#assignments" id="toolbar-assignments">Assignments</a>
-				</div>
-			</div>
-		</md-toolbar>
-	</div>
-
-<!-- Page -->
-  <div class="tux-content">
-    <router-outlet></router-outlet>
-  </div>
