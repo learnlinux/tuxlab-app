@@ -6,6 +6,9 @@
 // Define Course Collection
 	Tasks = new Mongo.Collection('Tasks');
 	
+	console.log('hey');
+	
+	
 	var testString = 
 	'# tuxlab-assets \n' + 
 	'TuxLab is an open source platform for creating Interactive Linux Courses. ' +

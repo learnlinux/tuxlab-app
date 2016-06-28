@@ -1,0 +1,42 @@
+<div class="tuxlab-exploreview">
+	<!--Tab Groups-->
+	<md-tab-group class="md-whiteframe-5dp" *ngFor="let course of courses">
+		<!--First Tab-->
+		<md-tab>
+			<template md-tab-label>Description</template>
+			<template md-tab-content>
+				<md-content class="md-padding">
+					<h1 class="md-display-1">{{ course.courseName }}</h1>
+					<p>
+						{{ course.description }}
+					</p>
+				</md-content>
+			</template>
+		</md-tab>
+		<!--Second Tab-->
+		<md-tab>
+			<template md-tab-label>Syllabus</template>
+			<template md-tab-content>
+				<md-content class="md-padding">
+					<h1 class="md-display-1">Syllabus</h1>
+					<p>
+						{{ course.syllabus }}
+					</p>
+				</md-content>
+			</template>
+		</md-tab>
+		<!--Third Tab-->
+		<md-tab>
+			<template md-tab-label>Content</template>
+			<template md-tab-content>
+				<md-content class="md-padding">
+					<h1 class="md-display-1">Content</h1>
+					<p>
+						{{ course.content }}
+					</p>
+				</md-content>
+			</template>
+		</md-tab>
+	</md-tab-group>
+	
+</div>

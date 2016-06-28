@@ -1,3 +1,34 @@
+<!-- Search Toolbar -->
+<div class="search-toolbar">
+	<md-toolbar class="md-medium-tall">
+		<!-- Navigation -->
+		<div class="search-toolbar-nav">
+			<div class="wrapper">
+				<div class="icon" (click)="searchFocus()">
+					<md-icon fontIcon="tuxicon-search"></md-icon>
+				</div>
+				<div class="searchbar">
+					<form (ngSubmit)="findCourse()">
+						<input placeholder="Find Course" name="cname" type="text" id="search-input" />
+						<input type="submit" style="display: none" />
+					</form>
+				</div>
+				<div class="icon" (click)="findCourse()">
+					<md-icon fontIcon="tuxicon-right"></md-icon>
+				</div>
+			</div>
+		</div>  
+	</md-toolbar>
+</div>
+	
 <div class="tuxlab-explore">
-	<h2>Available Courses</h2>
+	<!-- Explore View -->	
+	<div id="explore-view">
+		<tuxlab-exploreview></tuxlab-exploreview>
+	</div>
+	
+	<!-- Search View -->
+	<div id="search-view">
+		<tuxlab-searchview></tuxlab-searchview>
+	</div>
 </div>

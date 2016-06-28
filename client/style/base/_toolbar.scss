@@ -1,124 +1,179 @@
-.tux-toolbar{
-  md-toolbar{
-    min-height:inherit;
-
-    .wrapper{
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      align-items: center;
-
-      width:100%;
-      max-width:1260px;
-      margin: 0 auto;
-
-      div{
-        height: 100%;
-      }
-
-      .tux-toolbar-logo{
-          margin-right:30px;
-          img{
-            margin-top:4px;
-            height:30px;
-            padding:10px 12px;
-          }
-      }
-
-      .tux-toolbar-nav{
-        [md-button]{
-          font-weight: 300;
+.tux-toolbar {
+    md-toolbar {
+        min-height: inherit;
+        .wrapper {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            max-width: 1260px;
+            margin: 0 auto;
+            div {
+                height: 100%;
+            }
+            .tux-toolbar-logo {
+                margin-right: 30px;
+                img {
+                    margin-top: 4px;
+                    height: 30px;
+                    padding: 10px 12px;
+                }
+            }
+            .tux-toolbar-nav {
+                [md-button] {
+                    font-weight: 300;
+                }
+                a {
+                    color: black;
+                }
+            }
+            .tux-toolbar-profile {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                align-items: center;
+                cursor: pointer;
+                height: 100%;
+                padding: 10px;
+                .tux-toolbar-profile-pic {
+                    height: 36px;
+                    margin-bottom: 7px;
+                    border-radius: 50%;
+                }
+                .tux-toolbar-info {
+                    h1, h2 {
+                        font-family: 'Open Sans',sans-serif;
+                        font-size: 12pt;
+                        font-weight: 300;
+                        margin: 0px;
+                        margin-left: 12px;
+                    }
+                    h2 {
+                        font-size: 8pt;
+                    }
+                }
+                .tux-toolbar-menu {
+                    color: #777;
+                }
+            }
+            .tux-toolbar-profile:hover {
+                background-color: #dfdfdf;
+            }
         }
-        a {
-          color: black;
-        }
-      }
-
-      .tux-toolbar-profile{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        align-items: center;
-
-          .tux-toolbar-profile-pic {
-              height:36px;
-              margin-bottom:7px;
-              border-radius:50%;
-          }
-
-          .tux-toolbar-info{
-              h1, h2 {
-                font-family: 'Open Sans', sans-serif;
-                font-size:12pt;
-                font-weight: 300;
-                margin:0px;
-                margin-left:12px;
-              }
-
-              h2{
-                font-size:8pt;
-              }
-           }
-
-           .tux-toolbar-menu{
-             color:#ccc;
-           }
-        }
-
     }
-  }
+}
+// Sub-toolbar
+#course-toolbar {
+    display: none;
+    margin-top: 60px;
+    md-toolbar {
+        min-height: inherit;
+        background-color: #f0f0f0;
+        .wrapper {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            max-width: 1260px;
+            margin: 0 auto;
+            div {
+                height: 100%;
+            }
+            .course-toolbar-nav {
+                [md-button] {
+                    font-weight: 300;
+                }
+                a {
+                    color: black;
+                    border-radius: 0;
+                    height: 66px;
+                    padding-top: 14px;
+                    line-height: 45px;
+                }
+                a.home-button, a.home-button:visited {
+                    font-weight: bold;
+                    font-size: 20px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                }
+                a.active-button, a.active-button:visited {
+                    border-bottom: solid 4px #ffd600;
+                }
+                a.active-button:hover {
+                    border-bottom: solid 5px #ffc400;
+                }
+            }
+        }
+    }
+}
+.fixed-nav {
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+// Sidenav
+#sidenav {
+    padding-left: 0;
+    padding-right: 0;
+    height: 100vh;
+    width: 260px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: white;
+    z-index: 998;
+    padding-top: 0;
+    .sidenav-profile {
+        background-image: $university_picture;
+        background-position: center;
+        height: 150px;
+        background-size: 100%;
+        padding: 15px;
+        color: #fafafa;
+        box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.5);
+        p {
+            text-align: center;
+        }
+        .sidenav-profile-pic {
+            background-image: url("https://avatars3.githubusercontent.com/u/6845676?v=3&u=eca077840fc0214b4fc7c4636ccc9df7e86c1805&s=140");
+            height: 56px;
+            width: 56px;
+            border-radius: 50%;
+            background-position: center;
+            background-size: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: solid 1px #fafafa;
+        }
+    }
+    .sidenav-buttons {
+        margin-top: 10px;
+        button {
+            width: 260px;
+            display: block;
+            border-radius: 0;
+            margin: 0;
+            height: 50px;
+            text-align: left;
+            md-icon {
+                vertical-align: top;
+            }
+        }
+    }
 }
 
-// Sub-toolbar
-#course-toolbar{
-  display: none;
-	margin-bottom: 30px;
-	
-	md-toolbar{
-		min-height:inherit;
-		background-color: #f0f0f0;
-		
-		.wrapper{
-			display: flex;
-			flex-direction: row;
-			flex-wrap: nowrap;
-			justify-content: flex-start;
-			align-items: center;
-
-			width:100%;
-			max-width:1260px;
-			margin: 0 auto;
-
-			div{
-				height: 100%;
-			}
-
-			.course-toolbar-nav{
-				
-				[md-button]{
-					font-weight: 300;
-				}
-				a {
-					color: black;
-          border-radius: 0;
-          height: 66px;
-          padding-top: 14px;
-				}
-        a.home-button, a.home-button:visited {
-          font-weight: bold;
-          font-size: 20px;
-          padding-left: 16px;
-          padding-right: 16px;
-        }
-        a.active-button, a.active-button:visited {
-          border-bottom: solid 4px #ffd600;
-        }
-        a.active-button:hover {
-          border-bottom: solid 5px #ffc400;
-        }
-			}
-		}
-	}
+md-sidenav-layout {
+    .page-content {
+        padding: 0;
+        background-color: #e5e6e6;
+    }
 }

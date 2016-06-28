@@ -76,5 +76,7 @@
 			
 			// Activate toolbar button
 			document.getElementById('toolbar-course').className += " active-button";
+			
+			document.getElementById('tux-content').style.marginTop = "20px";
 		}
 	}
