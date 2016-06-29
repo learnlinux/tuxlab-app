@@ -26,8 +26,8 @@
 
 // Define Editor Component
 	@Component({
-		selector: 'tuxlab-editor',
-		templateUrl: '/client/imports/ui/components/editor/editor.html',
+		selector: 'tuxlab-mdeditor',
+		templateUrl: '/client/imports/ui/components/mdeditor/mdeditor.html',
 		directives: [MATERIAL_DIRECTIVES,
 					 MD_TOOLBAR_DIRECTIVES,
 					 MD_ICON_DIRECTIVES],
@@ -37,7 +37,7 @@
 	})
 
 // Export Editor Class 
-	export class Editor {
+	export class MDEditor {
 		constructor(mdIconRegistry: MdIconRegistry) {
 			// Create Icon Font
 			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');

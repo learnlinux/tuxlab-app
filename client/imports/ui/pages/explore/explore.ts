@@ -60,7 +60,7 @@ export class Explore extends MeteorComponent {
 			document.getElementById('explore-view').style.display = 'none';
 			document.getElementById('search-view').style.display = 'block';
 			document.getElementById('search-input').blur();
-			document.getElementById('search-string').innerHTML = "Search Results for " + searchQuery;
+			document.getElementById('search-string').innerHTML = "Search Results for '" + searchQuery + "'";
 		} 
 		else {
 			document.getElementById('explore-view').style.display = 'block';
