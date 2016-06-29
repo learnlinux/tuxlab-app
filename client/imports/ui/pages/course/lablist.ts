@@ -18,22 +18,22 @@
 // Icon
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 	
-// Grades import	  
-	import { GradeList } from "../../components/gradelist/gradelist";
+// LabList import	  
+	import { LabList } from "../../components/lablist/lablist";
 	
-// Define GradeView Component
+// Define LabsView Component
 	@Component({
-		selector: 'tuxlab-gradeview',
-		templateUrl: '/client/imports/ui/pages/courseview/gradeview.html',
+		selector: 'tuxlab-labview',
+		templateUrl: '/client/imports/ui/pages/course/lablist.html',
 		directives: [MATERIAL_DIRECTIVES,
 					 MD_ICON_DIRECTIVES,
-					 GradeList],
+					 LabList],
 		viewProviders: [MdIconRegistry],
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export GradeView Class 
-	export class GradeView {
+// Export LabsView Class 
+	export class LabView {
 
 		constructor(mdIconRegistry: MdIconRegistry) {
 			// Create Icon Font
@@ -44,7 +44,7 @@
 			document.getElementById('course-toolbar').style.display = "block";
 			
 			// Activate toolbar button
-			document.getElementById('toolbar-grades').className += "active-button";
+			document.getElementById('toolbar-labs').className += "active-button";
 			
 			document.getElementById('tux-content').style.marginTop = "20px";
 		}

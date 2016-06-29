@@ -34,11 +34,13 @@
   import { Account } from "./imports/ui/pages/account/account"
   import { Err404 } from "./imports/ui/pages/error/404"
   import { TaskView } from "./imports/ui/pages/lab/taskview";
-  import { CourseView } from "./imports/ui/pages/courseview/courseview";
-  import { LabView } from "./imports/ui/pages/courseview/labview";
-  import { GradeView } from "./imports/ui/pages/courseview/gradeview";
+  import { CourseView } from "./imports/ui/pages/course/course";
+  import { LabView } from "./imports/ui/pages/course/lablist";
+  import { GradeView } from "./imports/ui/pages/course/gradelist";
   import { Explore } from "./imports/ui/pages/explore/explore"; 
   import { Instructor } from "./imports/ui/pages/instructor/instructor";
+  import { Terms } from "./imports/ui/pages/static/terms";
+  import { Privacy } from "./imports/ui/pages/static/privacy";
 
 // Define TuxLab Component
   @Component({
@@ -61,9 +63,11 @@
     { path: '/lab', component: TaskView },
     { path: '/course', component: CourseView },
     { path: '/labs', component: LabView },
-    { path: 'grades', component: GradeView },
-	{ path: '/explore', component: Explore },
-	{ path: '/instructor', component: Instructor },
+    { path: '/grades', component: GradeView },
+    { path: '/explore', component: Explore },
+    { path: '/instructor', component: Instructor },
+    { path: '/terms', component: Terms },
+    { path: '/privacy', component: Privacy },
 //  { path: '/course/:courseid', as: 'CourseView', component: CourseView },
 //  { path: '/course/:courseid/users', as: 'UserList', component: UserList },
 //  { path: '/course/:courseid/user/:userid', as: 'UserView', component: UserView },

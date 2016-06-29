@@ -20,7 +20,7 @@
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 	
 // Editor Component
-	import { Editor } from '../../components/editor/editor';
+	import { MDEditor } from '../../components/mdeditor/mdeditor';
 
 // Define InstructorView Component
 	@Component({
@@ -30,7 +30,7 @@
 			MATERIAL_DIRECTIVES, 
 			MD_ICON_DIRECTIVES, 
 			MD_SIDENAV_DIRECTIVES,
-			Editor
+			MDEditor
 		],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None

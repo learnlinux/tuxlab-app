@@ -26,7 +26,7 @@
 // Define CourseView Component
 	@Component({
 		selector: 'tuxlab-courseview',
-		templateUrl: '/client/imports/ui/pages/courseview/courseview.html',
+		templateUrl: '/client/imports/ui/pages/course/course.html',
 		directives: [MATERIAL_DIRECTIVES,
 					 MD_ICON_DIRECTIVES,
 					 LabList,

@@ -36,5 +36,23 @@ footer{
   .wrapper{
     width: 100%;
     max-width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #e0e0e0;
+    a {
+      float: right;
+      text-decoration: none;
+      line-height: 50px;
+      color: #e0e0e0;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    a:hover {
+      color: #ffffff;
+    }
+    p {
+      line-height: 50px;
+      float: left;
+    }
   }
 }
