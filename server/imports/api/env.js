@@ -5,40 +5,19 @@ var underscore = require('underscore');
 var etcd = require('node-etcd');
 var nconf = require('nconf');
 
-/*
-var dir = (nconf.get("root_domain").split('.'));
-dir.reverse().push("john");
-var dd = dir.join('/')
-var Etcd = require('node-etcd');
-*/
-
-
-Promise.prototype.next = function(nextPromise){
-  var slf = this;
-  var lst = [function(){ return slf; }, function(){ return nextPromise; }];
-  return waterfall(lst);
-}
-
-
-/* env constructor
- * intializes variables and creates the lab virtual machine, putting it in
- * the vmList
- */
-
 /* constructor
  * intializes docker connection
  */
 var env = function(){
 
-  //this.labVm = dockerode.createContainer();
+  var etcd_auth = {
+	  user: nconf.get(etcd_user),
+	  password: nconf.get(etcd_pass)
+	}
   this.docker = new dockerode({host: '10.100.1.10', port: '2375'}); //aaron
-  this.etcd = new etcd('192.168.56.102','2379');
+  this.etcd = new etcd('192.168.56.102:2379',auth);
   this.root_dom = nconf.get("root_domain");
 
-}
-
-env.prototype.setUrl = function(usr){
-  this.usr = usr
 }
 
 //environment variables
@@ -46,29 +25,72 @@ env.prototype.labVm = 'labVm';
 env.prototype.docker = null;
 env.prototype.vmList = [];                      //list of all vm instances
 env.prototype.usr = null;
-/*env.prototype.init = function(opts){
-  var slf = this;
-  return (function(){ return slf.init1(opts); });
-}*/
+env.prototype.helixKey = null;
+env.prototype.redRouterKey = null;
+
+env.prototype.setUser = function(user){
+  this.usr = user;
+}
+
+
+
+//returns resolved promise for chaining
 env.prototype.start = function(){
   return Promise.resolve();
 }
+
+//function wrappers for api functions for promise chaining
 env.prototype.createVm = function(opts){
   var slf = this;
   return (function(){ return slf.createVm1(opts); });
 }
+
 env.prototype.updateVm = function(vmName,opts){
   var slf = this;
   return (function(){ return slf.updateVm1(vmName,opts); });
 }
+
 env.prototype.removeVm = function(vmName,opts){
   var slf = this;
   return (function(){ return slf.removeVm1(vmName,opts); });
 }
+
 env.prototype.shell = function(cont,com,opts){
   var slf = this;
   return (function(){ return slf.shell1(cont,com,opts) });
 }
+
+/* deleteRecords
+ * delete helix and redRouter records for given user
+ * callback is optional
+ * callback(err) called
+ */
+env.deleteRecords = function(user,callback){
+  var error;
+  if(!helixKey || !redRouterKey){
+    console.log("no records have been initialized");
+    error = "no records initialized"
+  }
+  var slf = this;
+  etcd.del(this.helixKey,{recursive: true}, function(err,res){
+    if(err){
+      console.log("helixKey cannot be deleted. This may be an etcd error: "+err);
+      error = err;
+    }
+    else{
+      etcd.del(this.redRouterKey,{recursive: true}, function(err,res){
+        if(err){
+	  console.log("redRouterKey cannot be deleted. This may be an etcd error"+err);
+	  error = err;
+	}
+	else{
+	  callback(error);
+	}
+      })
+    }
+  })
+}
+
 /**
  *init
  * returns a promise to pull alpine -if not yet pulled in the docker node- and
@@ -78,11 +100,11 @@ env.prototype.shell = function(cont,com,opts){
 			{dockerodeStartOptions: {--your options here--}}
  */
 env.prototype.init = function(opts){
-  var fn1 = null;
-  var usr = this.usr;
-  var dir = this.root_dom.split('.');
-  dir.reverse().push(usr,'A');
-  var dd = dir.join('/');
+  if(!this.usr){
+    return new Promise(function(res,rej){
+      rej("no user initialized");
+    });
+  }
   var eJson = { NAME: usr+'.'+this.root_dom,
 	        TTL: 3600,
 		TYPE: 'A',
@@ -122,14 +144,37 @@ env.prototype.init = function(opts){
       else{
 	dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
+	  
+	  //containerId to be stored in helix
+	  var containerId = container.id.substring(0,7);
+
 	  else {
 	    container.start(strOpts,function(err,data){
               if(err) { reject(err); }
 	      else {
-                //add labVm to vmList
-	        //add labVm properties to etcd db
-		etcd.set('/redbird/'+usr+'.'+slf.root_dom,{Docker: slf.labVm},function(){
-		  etcd.set(dd,eJson,function(){
+		//create etcd record file for redrouter
+                var etcd_redrouter = {
+			host: "docker:"+slf.labVm,
+			port: 22,
+			username: usr,
+			allowed_auth: ["password"]
+			}
+		var dir = slf.root_dom.split('.');
+		dir.reverse().push(this.usr,'A');
+		slf.helixKey = dir.join('/');
+
+		slf.redRouterKey = '/redrouter/ssh::'+slf.usr;
+	        //set etcd record for redrouter
+		etcd.set(slf.redRouterKey,etcd_redrouter,function(err,res){
+		  if(err){
+		    console.log("Error creating redrouter etcd log: "+err);
+		  }
+
+		  //set etcd record for helixdns
+		  etcd.set(slf.helixKey,containerId,function(err,res){
+		    if(err){
+		      console.log("Error creating hekixdns etcd log: "+err);
+		    }
 		    slf.vmList.push({name: "labVm", id: slf.labVm});
 		    resolve();
                   });
@@ -167,7 +212,6 @@ env.prototype.createVm1 = function(opts) {
 
   //checks if there are any containers with the same name in this env
   if(this.vmList.find(function(a){ console.log("checking: "+a); return a.name == name; })){
-    console.log("here");
    return new Promise(function(resolve,reject){
       reject("there is already a vm running with this name, please choose a new name for your vm");});
   }
@@ -197,7 +241,6 @@ env.prototype.createVm1 = function(opts) {
             container.start(strOpt,function(err,data){
               if(err) { reject(err); }
               else{
-//              console.log("{name: crtOpt.name,id: cName");
 	        //resolve(data);
 		slf.vmList.push({name: crtOpt.name, id: cName});
 		resolve();
