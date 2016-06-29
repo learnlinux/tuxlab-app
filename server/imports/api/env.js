@@ -13,18 +13,6 @@ var Etcd = require('node-etcd');
 */
 
 
-Promise.prototype.next = function(nextPromise){
-  var slf = this;
-  var lst = [function(){ return slf; }, function(){ return nextPromise; }];
-  return waterfall(lst);
-}
-
-
-/* env constructor
- * intializes variables and creates the lab virtual machine, putting it in
- * the vmList
- */
-
 /* constructor
  * intializes docker connection
  */
@@ -37,19 +25,12 @@ var env = function(){
 
 }
 
-env.prototype.setUrl = function(usr){
-  this.usr = usr
-}
-
 //environment variables
 env.prototype.labVm = 'labVm';
 env.prototype.docker = null;
 env.prototype.vmList = [];                      //list of all vm instances
 env.prototype.usr = null;
-/*env.prototype.init = function(opts){
-  var slf = this;
-  return (function(){ return slf.init1(opts); });
-}*/
+
 env.prototype.start = function(){
   return Promise.resolve();
 }
@@ -167,7 +148,6 @@ env.prototype.createVm1 = function(opts) {
 
   //checks if there are any containers with the same name in this env
   if(this.vmList.find(function(a){ console.log("checking: "+a); return a.name == name; })){
-    console.log("here");
    return new Promise(function(resolve,reject){
       reject("there is already a vm running with this name, please choose a new name for your vm");});
   }
@@ -197,7 +177,6 @@ env.prototype.createVm1 = function(opts) {
             container.start(strOpt,function(err,data){
               if(err) { reject(err); }
               else{
-//              console.log("{name: crtOpt.name,id: cName");
 	        //resolve(data);
 		slf.vmList.push({name: crtOpt.name, id: cName});
 		resolve();

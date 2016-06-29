@@ -10,21 +10,26 @@ The following document describes the MongoDB Schema used by the TuxLab app:
 
   labs: [
     {
-      lab_id: 1,
+      _id: 1,
       lab_name: "Getting Started with Git",
-      labfile: "##################",
+      file: "##################",
       tasks: [
         {
-          task_id: 1,
-          task_name: "Git Clone",
-          task_doc: "##################"
+          _id: 1,
+          name: "Git Clone",
+          md: "##################"
+        },
+        {
+          _id: 2,
+          name: "Git Pull",
+          md: "#################"
         }
       ]
     }
     {
-      lab_id: 2,
+      _id: 2,
       lab_name: "Advanced Git 1",
-      labfile: "##################",
+      file: "##################",
       tasks: [
         {
           task_id: 1,
@@ -40,10 +45,23 @@ The following document describes the MongoDB Schema used by the TuxLab app:
 ```
 {
   _id : "573de804b17eca6c452d9ff7",
-  firstName : "Derek",
-  lastName : "Brown",
-  email : "derek@tuxlab.org",
-  profile_pic : "https://placekitten.com/g/250/250",
+  services: {
+    Google: {
+      #########
+    },
+    Facebook: {
+      #########
+    },
+    Github: {
+      ########
+    }
+  },
+  profile: {
+    first_name : "Derek",
+    last_name : "Brown",
+    email : "derek@tuxlab.org",
+    picture : "https://placekitten.com/g/250/250",
+  },
   roles: [{administrator: 'global'}, {'instructor' : '574465a21109160b518a4291'}]
   course_records : [
     "574467bc1109160b518a429d",
@@ -61,13 +79,13 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   course_id : "574465a21109160b518a4299",
   labs: [
     {
-      lab_id: 1,
+      _id: 1,
       data: {
         // INSTRUCTORS INJECT DATA
       },
       tasks: [
         {
-          task_id: 1,
+          _id: 1,
           status: COMPLETED // ONE OF SUCCESS, FAILURE, SKIPPED, ATTEMPTED, NOT_ATTEMPTED
           grade: {16,100} // TUPLE
           data: {
@@ -77,13 +95,13 @@ The following document describes the MongoDB Schema used by the TuxLab app:
       ]
     },
     {
-      lab_id: 2,
+      _id: 2,
       data: {
         // INSTRUCTORS INJECT DATA
       },
       tasks: [
         {
-          task_id: 1,
+          _id: 1,
           status: COMPLETED // ONE OF SUCCESS, FAILURE, SKIPPED, ATTEMPTED, NOT_ATTEMPTED
           grade: {16,100} // TUPLE
           data: {
