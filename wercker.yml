@@ -15,7 +15,7 @@ build:
    - script:
        name: update npm
        code: npm install -g npm
-       
+
    - script:
        name: install typings
        code: npm install -g typings
@@ -23,10 +23,6 @@ build:
    - script:
        name: install npm dependencies
        code: npm install
-
-   - script:
-        name: typings install
-        code: typings install
 
    - script:
         name: running gagarin tests
