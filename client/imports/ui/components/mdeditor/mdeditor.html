@@ -1,27 +1,17 @@
-<script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-<link rel="stylesheet" href="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-
-<script>
-    var simplemde = new SimpleMDE();
-    simplemde.codemirror.on("change", function(){
-        console.log(simplemde.value());
-        $scope.simplemde = simplemde.value();
-    });
-    console.log("Hello World!");
-</script>
-
 
 <div class="tuxlab-mdeditor">
+
 	<md-card>
 		<md-card-title>
 			<md-card-title-text>
-				<span class="md-headline">Editor Component</span>	
-			</md-card-title-text>	
-		</md-card-title>	
+				<span class="md-headline">
+					Editor	
+				</span>	
+			</md-card-title-text>
+		</md-card-title>
 		<md-card-content>
-			<p>This is the content of the editor component.</p>	
-            <textarea placeholder="text">
-            </textarea>
+			<textarea></textarea>
 		</md-card-content>
 	</md-card>
+
 </div>

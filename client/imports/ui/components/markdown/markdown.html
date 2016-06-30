@@ -19,7 +19,7 @@
 
 	<!--Markdown-->
 	<div class="markdown-content">
-		<div id="task-markdown">Task loading...</div>
+		<div id="task-markdown" [innerHTML]="convertedData">Task loading...</div>
 		<div class="markdown-check-button">
 			<md-dialog #alert>
 				<md-dialog-title>Score: 3/10</md-dialog-title>

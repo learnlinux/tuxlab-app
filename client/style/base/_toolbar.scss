@@ -29,6 +29,11 @@
                     color: black;
                 }
             }
+            .tux-toolbar-login {
+                a, a:visited {
+                    color: black;
+                }
+            }
             .tux-toolbar-profile {
                 display: flex;
                 flex-direction: row;
@@ -68,7 +73,6 @@
 // Sub-toolbar
 #course-toolbar {
     display: none;
-    margin-top: 60px;
     md-toolbar {
         min-height: inherit;
         background-color: #f0f0f0;
@@ -111,13 +115,7 @@
         }
     }
 }
-.fixed-nav {
-    position: fixed;
-    z-index: 999;
-    width: 100%;
-    top: 0;
-    left: 0;
-}
+
 // Sidenav
 #sidenav {
     padding-left: 0;

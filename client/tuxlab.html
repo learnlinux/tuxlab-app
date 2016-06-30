@@ -32,6 +32,10 @@
                 <md-icon fontIcon="tuxicon-book"></md-icon>
                 Upcoming Exams
             </button>
+            <button md-button>
+                <md-icon fontIcon="tuxicon-window"></md-icon>
+                Logout
+            </button>
         </div>
     </md-sidenav>
     <md-content class="page-content">
@@ -54,7 +58,7 @@
                     </div>
                     <span flex></span>
                     <!-- Profile Dropdown -->
-                    <div class="tux-toolbar-profile " (click)="right.toggle()">
+                    <div class="tux-toolbar-profile " (click)="right.toggle()" *ngIf="user">
                         <img class="tux-toolbar-profile-pic" src="https://avatars3.githubusercontent.com/u/6845676?v=3&u=eca077840fc0214b4fc7c4636ccc9df7e86c1805&s=140">
                         <div class="tux-toolbar-info">
                             <h1> Derek Brown </h1>
@@ -63,6 +67,10 @@
                         <div class="tux-toolbar-menu">
                             <md-icon fontIcon="tuxicon-down"></md-icon>
                         </div>
+                    </div>
+                    <div *ngIf="!user" class="tux-toolbar-login">
+                        <a md-button href="/login">Login</a>
+                        <a md-button href="/login">Sign Up</a>
                     </div>
                 </div>
             </md-toolbar>

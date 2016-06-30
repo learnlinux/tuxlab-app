@@ -21,7 +21,10 @@
 	import "../../../../../node_modules/@angular2-material/toolbar/toolbar.css";
 
 // Icon
-  	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
+  	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
+	  
+// Markdown Imports
+	import * as marked from 'marked';
 	
 // Define Tasks Collection
 	let Tasks = new Mongo.Collection('Tasks');
@@ -40,21 +43,17 @@
 
 // Export MarkdownView Class 
 	export class MarkdownView {
+		// Replace with markdown from the database
+		data = "# Markdown\n This is a short **markdown** string, and this is *italic* text. Here is some ***bold and italic*** text.  \n ## Subtitle here";
+		convertedData = this.data;
+		
 		constructor(mdIconRegistry: MdIconRegistry) {
 			// Create Icon Font
 			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 			mdIconRegistry.setDefaultFontSetClass('tuxicon');
 			
-			// Subscribe to markdown
-			Meteor.subscribe('markdown', () => {
-				let task = Tasks.findOne({ task_name: 'task7' });
-				if (!task.task_markdown) {
-					throw "Task does not exist";
-				}
-				else {
-					let mdTask = task.task_markdown;
-					document.getElementById('task-markdown').innerHTML = mdTask;
-				}
-			});
+			// Parse markdown string 
+			let md = marked.setOptions({});
+			this.convertedData = md.parse(this.data);
 		}
 	}
