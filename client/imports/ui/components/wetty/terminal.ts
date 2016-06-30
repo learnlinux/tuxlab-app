@@ -22,68 +22,109 @@ export class Terminal {
   constructor (el : ElementRef){
 
     var term;
-    var socket = io(location.origin, {path: '/ssh'})
     var buf = '';
 
-    function Wetty(argv) {
-        this.argv_ = argv;
-        this.io = null;
-        this.pid_ = -1;
-    }
+    function Wetty(settings) {
+        var _this = this;
 
-    Wetty.prototype.run = function() {
-        this.io = this.argv_.io.push();
-
-        this.io.onVTKeystroke = this.sendString_.bind(this);
-        this.io.sendString = this.sendString_.bind(this);
-        this.io.onTerminalResize = this.onTerminalResize.bind(this);
-    }
-
-    Wetty.prototype.sendString_ = function(str) {
-        socket.emit('input', str);
-    };
-
-    Wetty.prototype.onTerminalResize = function(col, row) {
-        socket.emit('resize', { col: col, row: row });
-    };
-
-    socket.on('connect', function() {
-        lib.init(function() {
-            hterm.defaultStorage = new lib.Storage.Local();
-            term = new hterm.Terminal();
-            window.term = term;
-            term.decorate(el.nativeElement);
-
-            term.setCursorPosition(0, 0);
-            term.setCursorVisible(true);
-            term.prefs_.set('ctrl-c-copy', true);
-            term.prefs_.set('ctrl-v-paste', true);
-            term.prefs_.set('use-default-window-copy', true);
-
-            term.runCommandClass(Wetty, document.location.hash.substr(1));
-            socket.emit('resize', {
-                col: term.screenSize.width,
-                row: term.screenSize.height
-            });
-
-            if (buf && buf != '')
-            {
-                term.io.writeUTF16(buf);
-                buf = '';
-            }
-        });
-    });
-
-    socket.on('output', function(data) {
-        if (!term) {
-            buf += data;
-            return;
+        // Connection Defaults
+        var opts = {
+          // SSH Connection
+          username : settings.username || 'root',
+          host: settings.host,
+          // Socket.io Connection
+          domain : settings.domain || 'http://localhost' ,
+          path : settings.path || '/wetty/socket.io',
         }
-        term.io.writeUTF16(data);
-    });
 
-    socket.on('disconnect', function() {
-        console.log("Socket.io connection closed");
-    });
+        // Create Query Object
+        var query = "username="+opts.username;
+        if (typeof opts.host !== "undefined")
+          query = query + "&host=" + opts.host;
+
+        // Create Socket
+        var socket = io(opts.domain, {path : opts.path, query : query});
+
+        // Define WettyTerm Object
+        function WettyTerm(argv){
+            this.argv_ = argv || [];
+            this.pid_ = -1;
+            this.io = null;
+        }
+
+        WettyTerm.prototype.run = function() {
+            this.io = this.argv_.io.push();
+
+            this.io.onVTKeystroke = this.sendString_.bind(this);
+            this.io.sendString = this.sendString_.bind(this);
+            this.io.onTerminalResize = this.onTerminalResize.bind(this);
+        }
+
+        WettyTerm.prototype.sendString_ = function(str) {
+            socket.emit('input', str);
+        };
+
+        WettyTerm.prototype.onTerminalResize = function(col, row) {
+            var resizeObj = {
+              cols : col,
+              rows : row,
+              height : window.term.div_.clientHeight,
+              width :  window.term.div_.clientWidth
+            }
+            socket.emit('resize', resizeObj );
+        };
+
+        socket.on('connect', function() {
+            var _this = this;
+
+            lib.init(function() {
+                hterm.defaultStorage = new lib.Storage.Local();
+                term = new hterm.Terminal();
+                window.term = term;
+                term.decorate(el.nativeElement);
+
+                term.setCursorPosition(0, 0);
+                term.setCursorVisible(true);
+                term.prefs_.set('ctrl-c-copy', true);
+                term.prefs_.set('ctrl-v-paste', true);
+                term.prefs_.set('use-default-window-copy', true);
+
+                term.runCommandClass(WettyTerm, document.location.hash.substr(1));
+
+                if (buf && buf != '')
+                {
+                    term.io.writeUTF16(buf);
+                    buf = '';
+                }
+            });
+        });
+
+        // Handles Interactive Prompts
+        socket.on('prompt', function(data){
+          if (!term){
+            buf += data.prompt;
+            return;
+          }
+          if (!data.echo){
+            //todo hide user input
+          }
+          term.io.writeUTF16(data.prompt);
+        });
+
+        // Handles Regular Output
+        socket.on('output', function(data) {
+            if (!term) {
+                buf += data;
+                return;
+            }
+            term.io.writeUTF16(data);
+        });
+
+        socket.on('disconnect', function() {
+            console.log("Socket.io connection closed");
+        });
+    }
+
+
   }
 }
