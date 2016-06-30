@@ -27,8 +27,9 @@ labExec.prototype.check = function(str){
            (tux.newTask.toString() === tuxOrig.newTask.toString());
 }
 
-labExec.prototype.init = function(courseId,labId){
+labExec.prototype.init = function(user,courseId,labId){
   var slf = this;
+  this.env.setUser(user);
   labMongo.importLab(courseId,labId,function(lab){
     if(!slf.check(lab.file)){
       console.log("labFile corrupt");

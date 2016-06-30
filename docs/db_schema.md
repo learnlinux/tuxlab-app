@@ -62,11 +62,34 @@ The following document describes the MongoDB Schema used by the TuxLab app:
     email : "derek@tuxlab.org",
     picture : "https://placekitten.com/g/250/250",
   },
-  roles: [{administrator: 'global'}, {'instructor' : '574465a21109160b518a4291'}]
+roles: {'administrator': ['global'], 'instructor' : ['574465a21109160b518a4291'], student: ['global']}
   course_records : [
     "574467bc1109160b518a429d",
     "574467a21109160b518a429c",
     "574467fc1109160b518a429e"
+  ],
+},
+{
+  _id : "23123454ab2d765eef993343",
+  services: {
+    Google: {
+      #########
+    },
+    Github: {
+      ########
+    }
+  },
+  profile: {
+    first_name : "Cem",
+    last_name : "Ersoz",
+    email : "cem@tuxlab.org",
+    picture : "https://placekitten.com/g/250/250",
+  },
+roles: {student: ['574465a21109160b518a4291','2322ea67ff85ebb8765ae981']}
+  course_records : [
+    "574467bc1109160b518a4333",
+    "574467a21109160b518a4334",
+    "574467fc1109160b518a4335"
   ],
 }
 ```
