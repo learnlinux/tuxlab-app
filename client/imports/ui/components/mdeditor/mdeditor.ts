@@ -21,8 +21,16 @@
 	import "../../../../../node_modules/@angular2-material/toolbar/toolbar.css";
 
 // Icon
-  	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
-	
+  	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
+
+// Import SimpleMDE
+	// let mde = require("./simplemde");
+	// import * as mde from './simplemde';
+	// import SimpleMDE from 'simplemde';
+	// import mde = require("./simplemde");
+
+// Declare Global Variable
+	declare var SimpleMDE: any;
 
 // Define Editor Component
 	@Component({
@@ -38,10 +46,14 @@
 
 // Export Editor Class 
 	export class MDEditor {
+		testData: String = "# Title";
+		
 		constructor(mdIconRegistry: MdIconRegistry) {
 			// Create Icon Font
 			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 			mdIconRegistry.setDefaultFontSetClass('tuxicon');
 			
+			// let simplemde = new SimpleMDE();
+			// var simplemde = new SimpleMDE();	
 		}
 	}
