@@ -61,13 +61,12 @@ The following document describes the MongoDB Schema used by the TuxLab app:
     last_name : "Brown",
     email : "derek@tuxlab.org",
     picture : "https://placekitten.com/g/250/250",
-  },
-roles: {'administrator': ['global'], 'instructor' : ['574465a21109160b518a4291'], student: ['global']}
-  course_records : [
-    "574467bc1109160b518a429d",
-    "574467a21109160b518a429c",
-    "574467fc1109160b518a429e"
-  ],
+    roles: {
+      'administrator': ['global'],
+      'instructor' : ['574465a21109160b518a4291'], // Array of IDs to Courses
+      student: [['574465a21109160b518a4299','574467bc1109160b518a429d]] // Array of Tuples of {CourseID, CourseRecordID}
+    }
+  }
 },
 {
   _id : "23123454ab2d765eef993343",
@@ -84,13 +83,11 @@ roles: {'administrator': ['global'], 'instructor' : ['574465a21109160b518a4291']
     last_name : "Ersoz",
     email : "cem@tuxlab.org",
     picture : "https://placekitten.com/g/250/250",
-  },
-roles: {student: ['574465a21109160b518a4291','2322ea67ff85ebb8765ae981']}
-  course_records : [
-    "574467bc1109160b518a4333",
-    "574467a21109160b518a4334",
-    "574467fc1109160b518a4335"
-  ],
+    roles: {
+      student: ['574465a21109160b518a4299','574467a21109160b518a4334']
+    }
+  }
+
 }
 ```
 

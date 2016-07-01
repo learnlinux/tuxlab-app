@@ -1,6 +1,8 @@
 .tuxlab-explore {
-	max-width: 1260px;
-	margin: 0 auto;
+	width:100%;
+	max-width:$tuxlab-max-width;
+	margin:0 auto;
+
 	md-tab-group {
 		background-color: white;
 		margin: 30px;
@@ -14,7 +16,7 @@
 	.md-tab-header {
 		background-color: #ffc400;
 	}
-	
+
 	#search-view {
 		display: none;
 	}
@@ -37,7 +39,7 @@
 				justify-content: flex-start;
 				width:100%;
 				height: 100%;
-				max-width:1260px;
+				max-width:$tuxlab-max-width;
 				margin: 0 auto;
 				.icon {
 					cursor: pointer;
@@ -46,7 +48,7 @@
 				.icon:hover {
 					background-color: #efefef;
 				}
-				
+
 				.tuxicon:before {
 					font-size: 48px;
 				}
@@ -91,16 +93,16 @@
 		background-color: white;
 		padding: 40px;
 		margin-bottom: 40px;
-		
+
 		h2 {
 			color: #999999;
 		}
-		
+
 		.selector {
 			text-align: right;
 			color: #999999;
 		}
-		
+
 		select {
 			background-color: transparent;
 			width: 50px;
@@ -109,10 +111,10 @@
 			color: #999999;
 			border-bottom: solid 1px #999999;
 		}
-		
+
 		select:focus {
 			outline: none;
 		}
-		
+
 	}
 }
