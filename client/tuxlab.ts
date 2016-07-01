@@ -77,7 +77,8 @@
     { path: '/**', component: Err404 }
 ])
 
-
+@InjectUser("user")
+ 
 class TuxLab extends MeteorComponent {
     user: Meteor.User;
     courseName = "GPI" + " Home";
@@ -86,9 +87,13 @@ class TuxLab extends MeteorComponent {
         // Create Icon Font
         mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
         mdIconRegistry.setDefaultFontSetClass('tuxicon');
-        
+        console.log(this.user);
     }
-}
+    tuxLogout() {
+        Meteor.logout();
+    }
+}    
+
 
 bootstrap(TuxLab, [
 	MATERIAL_PROVIDERS,
