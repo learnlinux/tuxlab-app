@@ -24,7 +24,7 @@ export class Terminal {
     var term;
     var buf = '';
 
-    function Wetty(settings) {
+    function Wetty(settings, obj) {
         var _this = this;
 
         // Connection Defaults
