@@ -23,6 +23,10 @@
 	import { LabList } from "../../components/lablist/lablist";
 	import { GradeList } from "../../components/gradelist/gradelist";
 	
+// Courses and Course Record Imports
+	import { Courses } from "../../../../../collections/courses";
+	import { Course_records } from "../../../../../collections/course_records";
+	
 // Define CourseView Component
 	@Component({
 		selector: 'tuxlab-courseview',
@@ -37,16 +41,11 @@
 	})
 
 // Export CourseView Class 
-	export class CourseView {
-		
-		courseDescription = `
-			Throughout your education as a Computer Scientist at Carnegie Mellon, 
-			you will take courses on programming, theoretical ideas, logic, systems, etc. 
-			As you progress, you will be expected to pick up the so-called 
-			“tools of the trade.” This course is intended to help you learn what 
-			you need to know in a friendly, low-stress, high-support way. We will 
-			discuss UNIX, LaTeX, debugging and many other essential tools.
-			`;
+	export class CourseView extends MeteorComponent { 
+		collection: Mongo.Collection<Object>;
+		course;
+		courseDescription: String;
+		courseName: String;
 		
 		lectures: Array<any> = [
     		{'id': 1, 'name': 'Initial Setup', 'date': 'ASAP'},
@@ -67,6 +66,7 @@
 		];
 
 		constructor(mdIconRegistry: MdIconRegistry) {
+			super();
 			// Create Icon Font
 			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 			mdIconRegistry.setDefaultFontSetClass('tuxicon');
@@ -77,6 +77,9 @@
 			// Activate toolbar button
 			document.getElementById('toolbar-course').className += " active-button";
 			
-			document.getElementById('tux-content').style.marginTop = "20px";
+			this.collection = Courses;
+			this.course = Courses.findOne({ course_number: '15-251' });
+			this.courseDescription = this.course.course_description;
+			this.courseName = this.course.course_name;
 		}
 	}

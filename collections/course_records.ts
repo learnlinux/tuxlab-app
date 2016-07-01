@@ -1,6 +1,9 @@
-import {Mongo} from 'meteor/mongo';
-import {Meteor} from 'meteor/meteor';
- 
+import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor';
+
+export let Course_records = new Mongo.Collection('course_records');
+
+/*
 export let Course_records = new Mongo.Collection('course_records');
  
 Course_records.allow({
@@ -21,8 +24,7 @@ Course_records.allow({
     let user = Meteor.user().profile
     if (typeof user !== 'undefined') {
       if (typeof user.roles !== 'undefined') {  
-        return 
-               ((typeof user.roles.administrator !== 'undefined') &&
+        return ((typeof user.roles.administrator !== 'undefined') &&
                  ((user.roles.administrator.indexOf('global') >= 0) ||
                   (typeof doc.course_id !== 'undefined' &&
                    user.roles.administrator.indexOf(doc.course_id) >= 0))) ||
@@ -52,3 +54,4 @@ Course_records.allow({
     return false;
   }
 });
+*/
