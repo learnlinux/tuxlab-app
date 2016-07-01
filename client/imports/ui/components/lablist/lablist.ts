@@ -18,7 +18,12 @@
 
 // Icon
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-	
+	  
+// course_record database imports
+    import { course_records } from '../../../../../collections/course_records';
+    
+@InjectUser("user")
+
 // Define LabList Component
 	@Component({
 		selector: 'tuxlab-lablist',
@@ -31,31 +36,60 @@
 	})
 
 // Export LabList Class 
-	export class LabList {
+	export class LabList extends MeteorComponent {
+        user: Meteor.User;
+        courseId: String;   // TODO: Get from URL
+        userId: String = '1';     // TODO: Get from Meteor.userId
+        labs: Array<Object> = [];
+        courseRecord;
+        
 		// Progress Bar Value
 		public determinateValue: number = 30;
-
-		labs: Array<any> = [
-			{'id': 1, 'name': 'Lab1', 'comp': '10/10', 'date': 'Sept. 3rd'},
-			{'id': 2, 'name': 'Lab2', 'comp': '10/10', 'date': 'Sept. 10th'},
-			{'id': 3, 'name': 'Lab3', 'comp': '1/10', 'date': 'Sept. 17th'},
-			{'id': 4, 'name': 'Lab4', 'comp': '0/10', 'date': 'Sept. 24th'},
-			{'id': 5, 'name': 'Lab5', 'comp': '0/10', 'date': 'Oct. 1st'},
-			{'id': 6, 'name': 'Lab6', 'comp': '0/10', 'date': 'Oct. 8th'}
-		];
+		
+		constructor(mdIconRegistry: MdIconRegistry) {
+			super();
+			// Create Icon Font
+			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+			mdIconRegistry.setDefaultFontSetClass('tuxicon');
+			
+            this.setLab(this.courseId, this.userId);
+		}
+		
+		// Method to subscribe to course_records database and set Lab data
+		setLab(courseId: String, userId: String) {
+			this.subscribe('course-records', [courseId, userId], () => {
+                this.courseRecord = course_records.findOne({ user_id: userId }); //TODO: add course_id
+                if(this.courseRecord !== undefined) {
+                    let labs = this.courseRecord.labs;
+                    let totalCompleted = 0;
+                    let totalNumTasks = 0;
+                    for (let i = 0; i < labs.length; i++) {
+                        let lab = labs[i];
+                        let tasksCompleted = 0;
+                        let tasks = lab.tasks;
+                        for (let j = 0; j < tasks.length; j++) {
+                            let task = tasks[j];
+                            if (task.status === 'SUCCESS') {
+                                tasksCompleted++;
+                            }
+                        }
+                        this.labs.push({
+                            'name': 'Lab ' + (i + 1).toString(),
+                            'completed': tasksCompleted.toString() + '/' + tasks.length.toString(),
+                            'date': lab.data.due_date
+                        });
+                        totalCompleted += tasksCompleted;
+                        totalNumTasks += tasks.length;
+                    }
+                    this.determinateValue = (totalCompleted * 100.0) / totalNumTasks;
+                }
+            }, true);
+		}
 		
 		// Link to lab function
 		toLab(lab) {
 			console.log("Redirecting to " + lab + "page.");
 			window.location.href = "/lab";
-		}
-
-		constructor(mdIconRegistry: MdIconRegistry) {
-			// Create Icon Font
-			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-			mdIconRegistry.setDefaultFontSetClass('tuxicon');
-			
-			
 		}
 	}
 	

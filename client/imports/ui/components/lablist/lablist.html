@@ -11,7 +11,7 @@
 		<tbody>
 			<tr *ngFor="let lab of labs">
 				<td class="md-text-cell" (click)="toLab(lab.name)">{{ lab.name }}</td>
-				<td (click)="toLab(lab.name)">{{ lab.comp }}</td>
+				<td (click)="toLab(lab.name)">{{ lab.completed }}</td>
 				<td (click)="toLab(lab.name)">{{ lab.date }}</td>
 			</tr>
 		</tbody>

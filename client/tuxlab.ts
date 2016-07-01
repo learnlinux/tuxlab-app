@@ -81,13 +81,11 @@
  
 class TuxLab extends MeteorComponent {
     user: Meteor.User;
-    courseName = "GPI" + " Home";
     constructor(mdIconRegistry: MdIconRegistry) {
         super();   
         // Create Icon Font
         mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
         mdIconRegistry.setDefaultFontSetClass('tuxicon');
-        console.log(this.user);
     }
     tuxLogout() {
         Meteor.logout();
