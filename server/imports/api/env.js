@@ -1,6 +1,9 @@
-//importing dockerode and swarmerode
+// Import Dockerode and Swarmerode
 var dockerode = require('dockerode');
 var swarmerode = require('swarmerode');
+
+// Import other libraries
+var async = require('async');
 var underscore = require('underscore');
 var etcd = require('node-etcd');
 var nconf = require('nconf');
@@ -66,29 +69,34 @@ env.prototype.shell = function(cont,com,opts){
  * callback(err) called
  */
 env.deleteRecords = function(user,callback){
-  var error;
-  if(!helixKey || !redRouterKey){
-    console.log("no records have been initialized");
-    error = "no records initialized"
+  if(!this.helixKey || !this.redRouterKey){
+    TuxLog.log('silly', 'No Records to Delete!');
   }
   var slf = this;
-  etcd.del(this.helixKey,{recursive: true}, function(err,res){
-    if(err){
-      console.log("helixKey cannot be deleted. This may be an etcd error: "+err);
-      error = err;
+  async.parallel([
+    function(cb){
+      if(this.recRouterKey){
+        etcd.del(this.redRouterKey,{recursive: true}, function(err, res){
+          cb(err);
+        });
+      }
+      else{
+        cb(new Error('silly', 'No redRouterKey to Delete.'));
+      }
+    },
+    function(cb){
+      if(this.helixKey){
+        etcd.del(this.helixKey,{recursive: true}, function(err, res){
+          cb(err);
+        });
+      }
+      else{
+        cb(new Error('silly', 'No HelixKey to Delete.'));
+      }
     }
-    else{
-      etcd.del(this.redRouterKey,{recursive: true}, function(err,res){
-        if(err){
-	  console.log("redRouterKey cannot be deleted. This may be an etcd error"+err);
-	  error = err;
-	}
-	else{
-	  callback(error);
-	}
-      })
-    }
-  })
+  ], function(err, results){
+    callback(err);
+  });
 }
 
 /**
@@ -144,7 +152,7 @@ env.prototype.init = function(opts){
       else{
 	dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
-	  
+
 	  //containerId to be stored in helix
 	  var containerId = container.id.substring(0,7);
 
@@ -167,13 +175,13 @@ env.prototype.init = function(opts){
 	        //set etcd record for redrouter
 		etcd.set(slf.redRouterKey,etcd_redrouter,function(err,res){
 		  if(err){
-		    console.log("Error creating redrouter etcd log: "+err);
+		    TuxLog.log('debug', err);
 		  }
 
 		  //set etcd record for helixdns
 		  etcd.set(slf.helixKey,containerId,function(err,res){
 		    if(err){
-		      console.log("Error creating hekixdns etcd log: "+err);
+          TuxLog.log('debug', err);
 		    }
 		    slf.vmList.push({name: "labVm", id: slf.labVm});
 		    resolve();
@@ -233,7 +241,7 @@ env.prototype.createVm1 = function(opts) {
   var slf = this;
   return new Promise(function(resolve,reject){
     dck.pull(img,function(err,stream){
-      if(err) { console.log("couldnt pull"); reject(err); }
+      if(err) { TuxLog.log('debug', err); reject(err); }
       else {
         dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
