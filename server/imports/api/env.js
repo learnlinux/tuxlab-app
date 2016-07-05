@@ -69,9 +69,6 @@ env.prototype.shell = function(cont,com,opts){
  * callback(err) called
  */
 env.deleteRecords = function(user,callback){
-  if(!this.helixKey || !this.redRouterKey){
-    TuxLog.log('silly', 'No Records to Delete!');
-  }
   var slf = this;
   async.parallel([
     function(cb){
