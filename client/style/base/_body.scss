@@ -1,3 +1,11 @@
+/**
+  Body Themes for TuxLab
+**/
+
+// Sizing
+$tuxlab-max-width: 1260px;
+$tuxlab-footer-height: 50px;
+
 * {
   margin: 0px;
 }
@@ -9,39 +17,34 @@ html, body {
   font-family: 'Open Sans', sans-serif;
 }
 
-/* Page Wrap */
+// Page Wrap
 tuxlab{
   min-height: 100%;
-  margin-bottom: -50px;
+  margin-bottom: -$tuxlab-footer-height;
 
   &:after{
-    height: 50px;
+    height: $tuxlab-footer-height;
     content:"";
     display:block;
   }
-
-  .tux-content{
-    width: 100%;
-    margin: 0 auto;
-    max-width: 1260px;
-  }
 }
+
 
 /* Footer */
 footer{
-  height:50px;
+  height:$tuxlab-footer-height;
   background-color:#2c3e50;
 
   .wrapper{
     width: 100%;
-    max-width: 1260px;
+    max-width: $tuxlab-max-width;
     margin-left: auto;
     margin-right: auto;
     color: #e0e0e0;
     a {
       float: right;
       text-decoration: none;
-      line-height: 50px;
+      line-height: $tuxlab-footer-height;
       color: #e0e0e0;
       padding-left: 15px;
       padding-right: 15px;
@@ -50,7 +53,7 @@ footer{
       color: #ffffff;
     }
     p {
-      line-height: 50px;
+      line-height: $tuxlab-footer-height;
       float: left;
       padding-left: 15px;
     }

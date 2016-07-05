@@ -9,7 +9,8 @@
 .course-content {
 	margin-top: 20px;
 	width: 100%;
-	max-width: 1260px;
+	margin: 0 auto;
+	max-width: $tuxlab-max-width;
 	md-card {
 		a {
 			color: black;

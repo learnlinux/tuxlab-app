@@ -1,5 +1,10 @@
 
 .tuxlab-login{
+    width:100%;
+    max-width: $tuxlab-max-width;
+    margin:0 auto;
+
+
     height: 600px;
 
     display:flex;

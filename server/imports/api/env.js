@@ -1,21 +1,24 @@
-//importing dockerode and swarmerode
+// Import Dockerode and Swarmerode
 var dockerode = require('dockerode');
 var swarmerode = require('swarmerode');
+
+// Import other libraries
+var async = require('async');
 var underscore = require('underscore');
 var etcd = require('node-etcd');
 var nconf = require('nconf');
 
 /* constructor
- * intializes docker connection
+ * intializes docker, etcd connection
  */
 var env = function(){
-
   var etcd_auth = {
 	  user: nconf.get(etcd_user),
 	  password: nconf.get(etcd_pass)
 	}
+  var auth = null;
   this.docker = new dockerode({host: '10.100.1.10', port: '2375'}); //aaron
-  this.etcd = new etcd('192.168.56.102:2379',auth);
+  this.etcd = new etcd('192.168.56.102:2379',etcd_auth);
   this.root_dom = nconf.get("root_domain");
 
 }
@@ -23,16 +26,16 @@ var env = function(){
 //environment variables
 env.prototype.labVm = 'labVm';
 env.prototype.docker = null;
-env.prototype.vmList = [];                      //list of all vm instances
+env.prototype.vmList = {};                      //list of all vm instances
 env.prototype.usr = null;
 env.prototype.helixKey = null;
 env.prototype.redRouterKey = null;
 
+
+//sets user
 env.prototype.setUser = function(user){
   this.usr = user;
 }
-
-
 
 //returns resolved promise for chaining
 env.prototype.start = function(){
@@ -66,30 +69,37 @@ env.prototype.shell = function(cont,com,opts){
  * callback(err) called
  */
 env.deleteRecords = function(user,callback){
-  var error;
-  if(!helixKey || !redRouterKey){
-    console.log("no records have been initialized");
-    error = "no records initialized"
+  if(!this.helixKey || !this.redRouterKey){
+    TuxLog.log('silly', 'No Records to Delete!');
   }
   var slf = this;
-  etcd.del(this.helixKey,{recursive: true}, function(err,res){
-    if(err){
-      console.log("helixKey cannot be deleted. This may be an etcd error: "+err);
-      error = err;
+  async.parallel([
+    function(cb){
+      if(this.recRouterKey){
+        etcd.del(this.redRouterKey,{recursive: true}, function(err, res){
+          cb(err);
+        });
+      }
+      else{
+        cb(new Error('silly', 'No redRouterKey to Delete.'));
+      }
+    },
+    function(cb){
+      if(this.helixKey){
+        etcd.del(this.helixKey,{recursive: true}, function(err, res){
+	  cb(err);
+        });
+      }
+      else{
+        cb(new Error('silly', 'No HelixKey to Delete.'));
+      }
     }
-    else{
-      etcd.del(this.redRouterKey,{recursive: true}, function(err,res){
-        if(err){
-	  console.log("redRouterKey cannot be deleted. This may be an etcd error"+err);
-	  error = err;
-	}
-	else{
-	  callback(error);
-	}
-      })
-    }
-  })
+  ], function(err, results){
+    callback(err);
+  });
 }
+
+//TODO: Error messages do not make sense
 
 /**
  *init
@@ -102,17 +112,13 @@ env.deleteRecords = function(user,callback){
 env.prototype.init = function(opts){
   if(!this.usr){
     return new Promise(function(res,rej){
-      rej("no user initialized");
+      rej("no user initialized"); //TODO: move this into actual promise?
     });
   }
-  var eJson = { NAME: usr+'.'+this.root_dom,
-	        TTL: 3600,
-		TYPE: 'A',
-		DATA: 'IP'}; //TODO: change this to dynamically get the IP
   //check whether the environment has been initialized
-  if(this.vmList.find(function(a){ return a.name == "labVm"; }))
+  if(this.vmList.labVm)
     return new Promise(function(res,rej){
-      rej("this environment has been initialized before");});
+      rej("this environment has been initialized before");}); //TODO: move this into actual promise?
 
   //create unique labVm name to avoid collisions
   this.labVm = "labVm"+((new Date).getTime()).toString();
@@ -144,41 +150,57 @@ env.prototype.init = function(opts){
       else{
 	dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
-	  
-	  //containerId to be stored in helix
-	  var containerId = container.id.substring(0,7);
 
+	  //containerId to be stored in helix
 	  else {
+	    var containerId = container.id.substring(0,7);
 	    container.start(strOpts,function(err,data){
               if(err) { reject(err); }
 	      else {
-		//create etcd record file for redrouter
+	        //create etcd record file for redrouter
                 var etcd_redrouter = {
-			host: "docker:"+slf.labVm,
+			docker: containerId,
 			port: 22,
-			username: usr,
+			username: "root",
 			allowed_auth: ["password"]
 			}
 		var dir = slf.root_dom.split('.');
 		dir.reverse().push(this.usr,'A');
 		slf.helixKey = dir.join('/');
-
+		
 		slf.redRouterKey = '/redrouter/ssh::'+slf.usr;
+
 	        //set etcd record for redrouter
 		etcd.set(slf.redRouterKey,etcd_redrouter,function(err,res){
 		  if(err){
-		    console.log("Error creating redrouter etcd log: "+err);
+                    TuxLog.log('debug', err); //TODO: why not camelCase
+		    reject("Error creating redrouter etcd log: "+err); //TODO: how to reject?
 		  }
-
+                  
 		  //set etcd record for helixdns
-		  etcd.set(slf.helixKey,containerId,function(err,res){
+		  docker.getContainer(containerId).inspect(function(err,container){
 		    if(err){
-		      console.log("Error creating hekixdns etcd log: "+err);
+                      //TODO: are we not logging the error here? is this not debug?
+		      reject("docker cannot find the container it just created");
 		    }
-		    slf.vmList.push({name: "labVm", id: slf.labVm});
-		    resolve();
+		    else{
+		      etcd.set(slf.helixKey,container.NetworkSettings,function(err,res){
+		        if(err){
+		          reject("Error creating helixdns etcd log: "+err);
+			  //TODO: same as above
+		        }
+			else{
+		          slf.vmList.labVm = slf.labVm;
+		          resolve();
+			}
+                      });
+
+          TuxLog.log('debug', err); //TODO: what error? #kafamdadelisorular
+
+		    }
                   });
-                });
+                );
+		resolve();
 	      }
 	    });
 	  }
@@ -206,14 +228,14 @@ env.prototype.createVm1 = function(opts) {
   //checks whether name for virtual machine is supplied
   if(crtOpt.name == null)
     return new Promise(function(resolve,reject)
-      { reject("please provide a name for your vm"); });
+      { reject("please provide a name for your vm"); }); //TODO: move this into actual promise?
 
   name = crtOpt.name;
 
   //checks if there are any containers with the same name in this env
-  if(this.vmList.find(function(a){ console.log("checking: "+a); return a.name == name; })){
+  if(underscore.has(slf.vmList,crtOpt.name)){
    return new Promise(function(resolve,reject){
-      reject("there is already a vm running with this name, please choose a new name for your vm");});
+      reject("there is already a vm running with this name, please choose a new name for your vm");}); //TODO: move this into actual promise?
   }
 
   //create unique name for the container to be created
@@ -233,7 +255,7 @@ env.prototype.createVm1 = function(opts) {
   var slf = this;
   return new Promise(function(resolve,reject){
     dck.pull(img,function(err,stream){
-      if(err) { console.log("couldnt pull"); reject(err); }
+      if(err) { TuxLog.log('debug', err); reject(err); }
       else {
         dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
@@ -242,7 +264,7 @@ env.prototype.createVm1 = function(opts) {
               if(err) { reject(err); }
               else{
 	        //resolve(data);
-		slf.vmList.push({name: crtOpt.name, id: cName});
+		slf.vmList[crtOpt.name] = cName;
 		resolve();
               }
 	    });
@@ -298,7 +320,7 @@ env.prototype.updateVm1 = function(vmName, opts) {
 
 env.prototype.shell1 = function(container,command,opts) {
   return new Promise(function(resolve,reject){
-    options = {AttachStdout: true, AttachStderr: true, Cmd: command.split(" ")};
+    var options = {AttachStdout: true, AttachStderr: true, Cmd: command.split(" ")};
     container.exec(options, function(err, exec){
       if(err){ reject("","",err); }
       else{
@@ -311,7 +333,7 @@ env.prototype.shell1 = function(container,command,opts) {
 	    var header = null;
 	    stream.on('readable',function(){
 	      header = header || stream.read(8);
-	      while(header !== nul){
+	      while(header !== null){
 	        var type = header.readUInt8(0);
 	        var payload = stream.read(header.readUInt32BE(4));
 	        if(payload == null) break;
@@ -320,6 +342,7 @@ env.prototype.shell1 = function(container,command,opts) {
 	        }
 	      });
 	    stream.on('end',function(){
+	
 	      if(err ===''){ resolve(dat); }
 	      else{ reject(dat,err,null) }
 	    });
@@ -329,9 +352,12 @@ env.prototype.shell1 = function(container,command,opts) {
     });
   });
 }
+
+env.prototype.getPass = function(vmName,callback){
+  this.shell1(vmName, "cat /pass")
+    .then(function(sOut){ callback(sOut); }, function(s1,s2,s3){callback(s1,s2,s3);});
+}
 	//executes bash command in given container
-env.prototype.loadImage = function() {}		//Don't know what this does
-env.prototype.importImage = function() {}	//Don't know what this does
 env.prototype.getNetwork = function() {}	//Don't know what this does
 env.prototype.getVolume = function() {}		//Don't know what this does
 env.prototype.getExec = function() {} 		//Don't know what this does
