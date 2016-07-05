@@ -92,12 +92,15 @@ var myCourse1 = {
   ]
 };
 
-if (Courses.find().count() === 0) {
-  Courses.insert(myCourse);
-  Courses.insert(myCourse1);
-  console.log('inserted');  
+if(Meteor.isServer) {
+  if(Courses.find().count() === 0) {
+    Courses.insert(myCourse);
+    Courses.insert(myCourse1);
+  }
+  Meteor.publish('courses', function() {
+    return Courses.find();
+  });
 }
-
 
 /* 
 export let Courses = new Mongo.Collection('courses');

@@ -1,7 +1,100 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 
-export let Course_records = new Mongo.Collection('course_records');
+export let course_records = new Mongo.Collection('course_records');
+
+var myCourseRecord = {
+  user_id: '1',
+  course_id: 'wJ492j3YqcCH7saAx',
+  labs: [
+    {
+      _id: '1',
+      data: {
+        test_data: 'test-data',
+        due_date: 'Sept. 7th'
+      },
+      tasks: [
+        {
+          _id: '1',
+          status: 'SUCCESS',
+          grade: {
+            earned: 88, 
+            total: 100
+          },
+          data: {
+            // Additional Data
+          }
+        },
+        {
+          _id: '2',
+          status: 'SUCCESS',
+          grade: {
+            earned: 95, 
+            total: 100
+          },
+          data: {
+            // Additional Data
+          }
+        },
+        {
+          _id: '3',
+          status: 'SUCCESS',
+          grade: {
+            earned: 85, 
+            total: 100
+          },
+          data: {
+            //Additional Data
+          }
+        }
+      ]
+    },
+    {
+      _id: '2',
+      data: {
+        test_data: 'test-data',
+        due_date: 'Sept. 14th'
+      },
+      tasks: [
+        {
+          _id: '1',
+          status: 'SUCCESS',
+          grade: {
+            earned: 78,
+            total: 100
+          },
+          data: {
+            //Additional Data
+          }
+        },
+        {
+          _id: '2',
+          status: 'SUCCESS',
+          grade: {
+            earned: 89,
+            total: 100
+          },
+          data: {
+            //Additional Data
+          }
+        }
+      ]
+    }
+  ]
+};
+
+if(Meteor.isServer) {
+  if(course_records.find().count() === 0) {
+    course_records.insert(myCourseRecord); 
+  }
+  Meteor.publish('course-records', function() {
+    return course_records.find();
+  });
+}
+
+
+
+
 
 /*
 export let Course_records = new Mongo.Collection('course_records');

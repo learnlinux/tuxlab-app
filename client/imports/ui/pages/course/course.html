@@ -44,7 +44,7 @@
 				<md-card>
 					<md-card-title>
 						<md-card-title-text>
-							<span class="md-headline">Assignments</span>
+							<span class="md-headline">Announcements</span>
 						</md-card-title-text>
 					</md-card-title>
 					<md-card-content>
@@ -52,14 +52,22 @@
 						<md-data-table layout-fill>
 							<thead>
 								<tr>
-									<th class="md-text-cell">Assignment</th>
-									<th>Due Date</th>
+									<th class="md-text-cell">Announcement</th>
+									<th>Date</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let assign of assignments">
-									<td class="md-text-cell">{{ assign.name }}</td>
-									<td>{{ assign.date }}</td>
+								<tr>
+									<td class="md-text-cell">Course Begins</td>
+									<td>Sept. 1st</td>
+								</tr>
+                                <tr>
+									<td class="md-text-cell">Midterm Exam</td>
+									<td>Oct. 25th</td>
+								</tr>
+                                <tr>
+									<td class="md-text-cell">Final Exam</td>
+									<td>Dec. 19th</td>
 								</tr>
 							</tbody>
 						</md-data-table>
@@ -94,9 +102,5 @@
         		<a md-button href="/labs">Continue</a>
       		</md-card-actions>
     	</md-card>
-		
-		
-		
-		
 	</div>
 </div>
