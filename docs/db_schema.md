@@ -65,7 +65,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   roles: {
     'administrator': ['global'],
     'instructor' : ['574465a21109160b518a4291'], // Array of IDs to Courses
-    student: ['574467bc1109160b518a429d'] // Array of IDs to Course Records
+    student: [{'574465a21109160b518a4299','574467bc1109160b518a429d}] // Array of Tuples of {CourseID, CourseRecordID}
   }
 },
 {
@@ -85,7 +85,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
     picture : "https://placekitten.com/g/250/250",
   },
   roles: {
-    student: ['574467bc1109160b518a4333','574467a21109160b518a4334']
+    student: ['574465a21109160b518a4299','574467a21109160b518a4334']
   }
 
 }
