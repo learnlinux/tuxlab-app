@@ -1,6 +1,19 @@
-/* TuxLab - main.js */
+/**
+  TuxLab - Learn Linux Interactively
+**/
 
-// Server-side Include
-import "../imports/startup/server"
-import "../collections/courses.ts"
-import "../collections/course_records.ts"
+// Get Meteor Object
+import {Meteor} from 'meteor/meteor';
+
+// Startup
+import "./imports/startup/index.js";
+
+// Create Collections
+Collections = {};
+import "../collections/users.ts";
+
+import {courses} from "../collections/courses.ts";
+Collections.courses = courses;
+
+import {course_records} from "../collections/course_records.ts";
+Collections.course_records = course_records;

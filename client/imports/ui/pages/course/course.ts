@@ -27,7 +27,6 @@
 	import { courses } from "../../../../../collections/courses";
 	import { course_records } from "../../../../../collections/course_records";
 
-
 // Define CourseView Component
 	@Component({
 		selector: 'tuxlab-courseview',

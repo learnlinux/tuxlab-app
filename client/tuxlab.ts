@@ -23,12 +23,11 @@
 
 // Toolbar
     import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
-    import "../node_modules/@angular2-material/toolbar/toolbar.css";
 
 // Icon
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
-// TuxLab Imports
+// UI Imports
     import { Dashboard } from "./imports/ui/pages/dashboard/dashboard"
     import { Login } from "./imports/ui/pages/account/login"
     import { Account } from "./imports/ui/pages/account/account"
@@ -37,7 +36,7 @@
     import { CourseView } from "./imports/ui/pages/course/course";
     import { LabView } from "./imports/ui/pages/course/lablist";
     import { GradeView } from "./imports/ui/pages/course/gradelist";
-    import { Explore } from "./imports/ui/pages/explore/explore"; 
+    import { Explore } from "./imports/ui/pages/explore/explore";
     import { Instructor } from "./imports/ui/pages/instructor/instructor";
     import { Terms } from "./imports/ui/pages/static/terms";
     import { Privacy } from "./imports/ui/pages/static/privacy";
@@ -46,12 +45,12 @@
 @Component({
     selector: 'tuxlab',
     templateUrl: '/client/tuxlab.html',
-    directives: [ROUTER_DIRECTIVES,
-                    MATERIAL_DIRECTIVES,
-                    MD_TOOLBAR_DIRECTIVES,
-                    MD_ICON_DIRECTIVES,
-                    MD_SIDENAV_DIRECTIVES,
-                    RouterLink],
+    directives: [ ROUTER_DIRECTIVES,
+                  MATERIAL_DIRECTIVES,
+                  MD_TOOLBAR_DIRECTIVES,
+                  MD_ICON_DIRECTIVES,
+                  MD_SIDENAV_DIRECTIVES,
+                  RouterLink ],
     viewProviders: [MdIconRegistry],
     encapsulation: ViewEncapsulation.None
 })
@@ -78,11 +77,10 @@
 ])
 
 @InjectUser("user")
- 
 class TuxLab extends MeteorComponent {
     user: Meteor.User;
     constructor(mdIconRegistry: MdIconRegistry) {
-        super();   
+        super();
         // Create Icon Font
         mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
         mdIconRegistry.setDefaultFontSetClass('tuxicon');
@@ -90,8 +88,7 @@ class TuxLab extends MeteorComponent {
     tuxLogout() {
         Meteor.logout();
     }
-}    
-
+}
 
 bootstrap(TuxLab, [
 	MATERIAL_PROVIDERS,

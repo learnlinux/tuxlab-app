@@ -1,51 +1,55 @@
-/* Tuxlab - Tuxlab Account */
 // Meteor Imports
-  import { Meteor } from 'meteor/meteor';
-  import { Mongo } from 'meteor/mongo';
-  import {InjectUser} from 'angular2-meteor-accounts-ui';
-
-  import 'reflect-metadata';
-  import 'zone.js/dist/zone';
-
-//Template Imports
-  import { Template } from 'meteor/templating';
-  import './account.html'
+    import { Meteor } from 'meteor/meteor';
+    import { Mongo }       from 'meteor/mongo';
+    import 'reflect-metadata';
+    import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { Component } from '@angular/core';
-  
+    import { Component, ViewEncapsulation, provide } from '@angular/core';
+    import { bootstrap } from 'angular2-meteor-auto-bootstrap';
 
-  import { APP_BASE_HREF } from '@angular/common';
-  import { HTTP_PROVIDERS } from '@angular/http';
+    import { APP_BASE_HREF } from '@angular/common';
+    import { HTTP_PROVIDERS } from '@angular/http';
+    import { RouterLink, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
-//Router Imports --not used atm
-
+    import { InjectUser, RequireUser } from 'angular2-meteor-accounts-ui';
 
 // Angular Material Imports
-  import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
-  import { MeteorComponent } from 'angular2-meteor';
+    import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
+    import { MeteorComponent } from 'angular2-meteor';
 
-  // Icon
-  import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
-  
-  //cards
-  import { MD_CARD_DIRECTIVES } from '@angular2-material/card/card';
+// Icon
+    import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
+
 
 // Define TuxLab Component
   @Component({
     selector: 'tuxlab-account',
     templateUrl: '/client/imports/ui/pages/account/account.html',
-    directives: [ MD_CARD_DIRECTIVES, MD_ICON_DIRECTIVES]
+    directives: [ MD_ICON_DIRECTIVES,
+                  MATERIAL_DIRECTIVES ],
+    viewProviders: [ MdIconRegistry ],
+    encapsulation: ViewEncapsulation.None
   })
-
+  
+@InjectUser("user")
 export class Account extends MeteorComponent {
   user: Meteor.User;
-  img;
-  constructor() {
+  name: String = "Name Here";
+  school: String = "School Here";
+  email: String = "example@example.com";
+  imgsrc: String = "http://www.placekitten.com/g/250/250";
+  constructor(mdIconRegistry: MdIconRegistry) {
     super();
-    console.log("help");
-    Tracker.autorun(() => {
-      this.img = 'https://avatars3.githubusercontent.com/u/6845676?v=3&u=eca077840fc0214b4fc7c4636ccc9df7e86c1805&s=140';
-    });
+    // Create Icon Font
+    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+    mdIconRegistry.setDefaultFontSetClass('tuxicon');
+    
+  }
+  test() {
+    this.name = this.user.profile.name;
+    this.school = "Carnegie Mellon University";
+    this.imgsrc = this.user.profile.picture;
+    this.email = this.user.profile.email;
   }
 }

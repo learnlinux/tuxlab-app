@@ -34,7 +34,6 @@
 
 // Export Dashboard Class 
 export class Dashboard extends MeteorComponent {
-	
 	courses: Array<any> = [
 		{'id': 1, 'number': '15-131', 'name': 'Great Practical Ideas for Computer Scientists', 'quantity': '12', 'grade': '99'},
 		{'id': 7, 'number': '21-299', 'name': 'Calculus in Twelve Dimensions', 'quantity': '76', 'grade': '100'},
@@ -50,7 +49,6 @@ export class Dashboard extends MeteorComponent {
 		// Create Icon Font
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
-		
 	}
 	
 	toCourse(courseId) {

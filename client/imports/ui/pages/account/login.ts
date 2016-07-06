@@ -1,6 +1,3 @@
-/* TuxLab - TuxLab.ts */
-
-
 // Meteor Imports
   import { Meteor } from 'meteor/meteor';
   import { Mongo } from 'meteor/mongo';
@@ -47,12 +44,10 @@ export class Login extends MeteorComponent {
     Meteor.logout();
     Meteor.loginWithGoogle(function(res){
       if(!res){
-	//slf.router.navigate(['Account',{userid: Meteor.user()._id}]);
-	console.log(Meteor.user());
+	      //slf.router.navigate(['Account',{userid: Meteor.user()._id}]);
       }
       else{
-        console.log(res)
- //      slf.router.navigate(['Account',{userid: Meteor.user()._id}]);
+        //slf.router.navigate(['Account',{userid: Meteor.user()._id}]);
       }
     });
   }
