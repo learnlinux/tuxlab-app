@@ -22,7 +22,7 @@ course_records.allow({
       return false;
     }
   },
-  remove: function(userid, doc) {
+  remove: function(userid, doc : any) {
     return (typeof doc.course_id !== "undefined" && Roles.isAdministratorFor(doc.course_id));
   }
 });

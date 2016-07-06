@@ -41,10 +41,18 @@ export class Roles {
   }
 
   /*
-    Determines if the user is an administrator
+    Determines if the user is an administrator for a course
   */
   static isAdministratorFor(courseid){
     let user = Meteor.user().profile;
     return (this.isLoggedIn() && typeof user.roles.administrator === "array" && (user.roles.administrator.contains('global') || user.roles.administrator.contains(courseid)));
+  }
+
+  /*
+    Determines if the user is a global administrator
+  */
+  static isGlobalAdministrator(){
+    let user = Meteor.user().profile;
+    return (this.isLoggedIn() && typeof user.roles.administrator === "array" && user.roles.administrator.contains('global'));
   }
 };

@@ -164,7 +164,7 @@ env.prototype.init = function(opts){
 		var dir = slf.root_dom.split('.');
 		dir.reverse().push(this.usr,'A');
 		slf.helixKey = dir.join('/');
-		
+
 		slf.redRouterKey = '/redrouter/ssh::'+slf.usr;
 
 	        //set etcd record for redrouter
@@ -173,7 +173,7 @@ env.prototype.init = function(opts){
                     TuxLog.log('debug', err); //TODO: why not camelCase
 		    reject("Error creating redrouter etcd log: "+err); //TODO: how to reject?
 		  }
-                  
+
 		  //set etcd record for helixdns
 		  docker.getContainer(containerId).inspect(function(err,container){
 		    if(err){
@@ -339,7 +339,7 @@ env.prototype.shell1 = function(container,command,opts) {
 	        }
 	      });
 	    stream.on('end',function(){
-	
+
 	      if(err ===''){ resolve(dat); }
 	      else{ reject(dat,err,null) }
 	    });
