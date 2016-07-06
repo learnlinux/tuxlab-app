@@ -22,6 +22,7 @@
                 }
             }
             .tux-toolbar-nav {
+                white-space:nowrap;
                 [md-button] {
                     font-weight: 300;
                 }
@@ -55,6 +56,7 @@
                         font-weight: 300;
                         margin: 0px;
                         margin-left: 12px;
+                        white-space:nowrap;
                     }
                     h2 {
                         font-size: 8pt;
