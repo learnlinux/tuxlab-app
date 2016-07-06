@@ -4,7 +4,7 @@
   "description": "Learn Linux Interactively",
   "private": true,
   "scripts": {
-    "test": "gagarin tests/gagarin",
+    "test": "gagarin ./tests/tuxlab.js",
     "postinstall": "typings install; typings install registry:env/meteor --global"
   },
   "dependencies": {
