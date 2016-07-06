@@ -41,6 +41,6 @@ export class LoadScreen extends MeteorComponent {
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
     mdIconRegistry.setDefaultFontSetClass('tuxicon');
-
+	
   }
 }
