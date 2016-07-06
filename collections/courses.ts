@@ -20,7 +20,6 @@ courses.allow({
   }
 });
 
-
 /* Schema */
 declare var SimpleSchema: any;
 

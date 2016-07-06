@@ -27,7 +27,7 @@
 // Icon
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
-// TuxLab Imports
+// UI Imports
     import { Dashboard } from "./imports/ui/pages/dashboard/dashboard"
     import { Login } from "./imports/ui/pages/account/login"
     import { Account } from "./imports/ui/pages/account/account"
@@ -36,7 +36,7 @@
     import { CourseView } from "./imports/ui/pages/course/course";
     import { LabView } from "./imports/ui/pages/course/lablist";
     import { GradeView } from "./imports/ui/pages/course/gradelist";
-    import { Explore } from "./imports/ui/pages/explore/explore"; 
+    import { Explore } from "./imports/ui/pages/explore/explore";
     import { Instructor } from "./imports/ui/pages/instructor/instructor";
     import { Terms } from "./imports/ui/pages/static/terms";
     import { Privacy } from "./imports/ui/pages/static/privacy";
@@ -80,7 +80,7 @@
 class TuxLab extends MeteorComponent {
     user: Meteor.User;
     constructor(mdIconRegistry: MdIconRegistry) {
-        super();   
+        super();
         // Create Icon Font
         mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
         mdIconRegistry.setDefaultFontSetClass('tuxicon');
