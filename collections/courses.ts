@@ -28,7 +28,18 @@ declare var SimpleSchema: any;
 if (Meteor.isServer){
   Meteor.startup(function(){
     var courseSchema = new SimpleSchema({
-      //TODO @sander
+      course_name: {
+        type: String
+      },
+      course_number: {
+        type: String
+      },
+      labs: {
+        type: [labSchema]
+      },
+      instructor_name: {
+        type: String
+      }
     });
     (<any>courses).attachSchema(courseSchema);
   });

@@ -22,40 +22,25 @@
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
-// Markdown Imports
-/// <reference path="./marked.d.ts" />
-  import * as marked from 'marked';
-
-// Define Tasks Collection
-  let Tasks = new Mongo.Collection('Tasks');
-
-// Define Markdown Component
+// Define LoadScreen Component
   @Component({
-    selector: 'tuxlab-markdown',
-    templateUrl: '/client/imports/ui/components/markdown/markdown.html',
-    directives: [MATERIAL_DIRECTIVES,
-                 MD_TOOLBAR_DIRECTIVES,
-                 MD_ICON_DIRECTIVES],
-
+    selector: 'tuxlab-loadscreen',
+    templateUrl: '/client/imports/ui/components/loadscreen/loadscreen.html',
+    directives: [ MATERIAL_DIRECTIVES,
+                  MD_TOOLBAR_DIRECTIVES,
+                  MD_ICON_DIRECTIVES ],
     viewProviders: [ MdIconRegistry ],
     providers: [ OVERLAY_PROVIDERS ],
     encapsulation: ViewEncapsulation.None
   })
 
-// Export MarkdownView Class
-export class MarkdownView {
-
-  //TODO: Replace with markdown from the database
-  data = "# Markdown\n This is a short **markdown** string, and this is *italic* text. Here is some ***bold and italic*** text.  \n ## Subtitle here";
-  convertedData = this.data;
-
+// Export LoadScreen Class
+export class LoadScreen extends MeteorComponent {
   constructor(mdIconRegistry: MdIconRegistry) {
+	super();
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
     mdIconRegistry.setDefaultFontSetClass('tuxicon');
-
-    // Parse markdown string
-    let md = marked.setOptions({});
-    this.convertedData = md.parse(this.data);
+	
   }
 }

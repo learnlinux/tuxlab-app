@@ -21,6 +21,8 @@
 	
 // Editor Component
 	import { MDEditor } from '../../components/mdeditor/mdeditor';
+	
+	import { LoadScreen } from '../../components/loadscreen/loadscreen';
 
 // Define InstructorView Component
 	@Component({
@@ -30,7 +32,8 @@
 			MATERIAL_DIRECTIVES, 
 			MD_ICON_DIRECTIVES, 
 			MD_SIDENAV_DIRECTIVES,
-			MDEditor
+			MDEditor,
+			LoadScreen
 		],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
@@ -45,7 +48,6 @@ export class Instructor extends MeteorComponent {
 		// Create Icon Font
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
-		
 	}
 	
 }
