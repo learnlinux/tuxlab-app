@@ -8,8 +8,47 @@ declare var SimpleSchema: any;
 
 if (Meteor.isServer){
   Meteor.startup(function(){
+    var profileSchema = new SimpleSchema({
+      first_name: {
+        type: String
+      },
+      last_name: {
+        type: String
+      },
+      email: {
+        type: String
+      },
+      picture: {
+        type: String
+      }
+    });
+    var roleSchema = new SimpleSchema({
+      administrator: {
+        type: [String]
+      },
+      instructor: {
+        type: [String]
+      },
+      student: {
+        type: [{
+          type: [String],
+          maxCount: 2,
+          minCount: 2
+        }]
+      }
+    });
     var userSchema = new SimpleSchema({
-      //TODO @sander
+      services: {
+        type: Object,
+        optional: true,
+        blackbox: true
+      },
+      profile: {
+        type: profileSchema
+      },
+      roles: {
+        type: roleSchema
+      }
     });
     (<any> Meteor.users).attachSchema(userSchema);
   });
