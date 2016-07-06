@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "gagarin tests/gagarin",
-    "postinstall": "typings install"
+    "postinstall": "typings install; typings install registry:env/meteor --global"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.1",
