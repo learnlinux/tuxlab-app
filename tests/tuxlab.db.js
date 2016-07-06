@@ -19,18 +19,23 @@ describe('Setup Example Database', function(){
   // Clean Database
   it('should be clean', function(){
     return server.execute(function(){
+
       // Delete All Collections
-      var collections = [new Mongo.Collection('users'), new Mongo.Collection('courses'), new Mongo.Collection('course_records')];
-      for (var i = 0; i < collections.length; i++){
-        collections[i].remove({});
+      for(var index in Collections){
+        Collections[index].remove({});
       }
+
     });
   });
 
   // Create Some Courses
   it('should have courses', function(){
-    return server.execute(function(){
-    });
+
+    var example_course = require('./example_data/example_course.js');
+
+    return server.execute(function(example_course){
+      Collections.courses.insert(example_course);
+    }, [example_course]);
   });
 
 

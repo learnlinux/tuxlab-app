@@ -9,6 +9,7 @@ aldeed:simple-schema@1.5.3
 allow-deny@1.0.5
 angular2-compilers@0.5.7
 angular2-html-templates@0.5.3
+anti:gagarin@0.4.12
 autoupdate@1.2.10
 babel-compiler@6.8.3
 babel-runtime@0.1.9_1
