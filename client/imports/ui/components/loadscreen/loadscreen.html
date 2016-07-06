@@ -1,0 +1,10 @@
+<div class="tuxlab-loadscreen">
+	<md-dialog #alert>
+      <md-dialog-title>This is an alert title</md-dialog-title>
+      You can specify some description text in here
+      <md-dialog-actions ok="Got It"></md-dialog-actions>
+    </md-dialog>
+    <button md-raised-button class="md-primary" (click)="alert.show()" flex="auto">
+      Alert Dialog
+    </button>
+</div>
