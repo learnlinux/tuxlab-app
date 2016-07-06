@@ -63,6 +63,9 @@ if (Meteor.isServer){
       },
       labs: {
         type: [labSchema]
+      },
+      instructor_name: {
+        type: String
       }
     });
     (<any>courses).attachSchema(courseSchema);

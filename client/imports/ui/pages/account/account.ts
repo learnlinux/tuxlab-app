@@ -12,44 +12,42 @@
     import { HTTP_PROVIDERS } from '@angular/http';
     import { RouterLink, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
-    import { InjectUser, RequireUser } from 'angular2-meteor-accounts-ui';
+    import { InjectUser } from 'angular2-meteor-accounts-ui';
 
 // Angular Material Imports
     import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
     import { MeteorComponent } from 'angular2-meteor';
+    import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
+
+// Toolbar
+    import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
 
 // Icon
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
-
-// Define TuxLab Component
-  @Component({
+// Define Account Component
+@Component({
     selector: 'tuxlab-account',
     templateUrl: '/client/imports/ui/pages/account/account.html',
-    directives: [ MD_ICON_DIRECTIVES,
-                  MATERIAL_DIRECTIVES ],
+    directives: [ MATERIAL_DIRECTIVES,
+                  MD_TOOLBAR_DIRECTIVES,
+                  MD_ICON_DIRECTIVES ],
     viewProviders: [ MdIconRegistry ],
     encapsulation: ViewEncapsulation.None
-  })
-  
+})
+
 @InjectUser("user")
 export class Account extends MeteorComponent {
-  user: Meteor.User;
-  name: String = "Name Here";
-  school: String = "School Here";
-  email: String = "example@example.com";
-  imgsrc: String = "http://www.placekitten.com/g/250/250";
-  constructor(mdIconRegistry: MdIconRegistry) {
-    super();
-    // Create Icon Font
-    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-    mdIconRegistry.setDefaultFontSetClass('tuxicon');
-    
-  }
-  test() {
-    this.name = this.user.profile.name;
-    this.school = "Carnegie Mellon University";
-    this.imgsrc = this.user.profile.picture;
-    this.email = this.user.profile.email;
-  }
-}
+    user: Meteor.User;
+    imgsrc: String = "http://www.placekitten.com/g/250/250";
+    name: String = "Name Here";
+    school: String = "School Name Here";
+    email: String = "example@example.com";
+    constructor(mdIconRegistry: MdIconRegistry) {
+        super();   
+        // Create Icon Font
+        mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+        mdIconRegistry.setDefaultFontSetClass('tuxicon');   
+        
+    }
+}    

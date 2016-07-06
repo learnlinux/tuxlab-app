@@ -15,6 +15,9 @@ if (Meteor.isServer){
       last_name: {
         type: String
       },
+      school: {
+        type: String
+      },
       email: {
         type: String
       },
