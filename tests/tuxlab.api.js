@@ -1,8 +1,8 @@
 /** Test Suite for TuxLab-App
     using Meteor Gagarian (https://github.com/anticoders/gagarin)
 **/
-describe('tuxlab.task tests',function(){
-  var tuxlab = require('../../server/imports/api/tuxlab.js');
+describe('tuxlab.api.task tests',function(){
+  var tuxlab = require('../server/imports/api/tuxlab.js');
   var task1 = tuxlab.newTask("titr","md",function(){},function(){});
   console.log(task1);
   it('should have fields initialized',function(){
@@ -30,8 +30,8 @@ describe('tuxlab.task tests',function(){
   });
 });
 
-describe('more tuxlab.task tests',function(){
-  var tuxlab = require('../../server/imports/api/tuxlab.js');
+describe('more tuxlab.api.task tests',function(){
+  var tuxlab = require('../server/imports/api/tuxlab.js');
   var task1 = tuxlab.newTask("title1","md1",function(){}, function(){});
   var task2 = tuxlab.newTask("title2","md2",function(){}, function(){});
   var task3 = tuxlab.newTask("title3","md3",function(){}, function(){});
@@ -64,8 +64,8 @@ describe('more tuxlab.task tests',function(){
   });
 });
 
-describe('tuxlab.init tests',function(){
-  var tuxlab = require('../../server/imports/api/tuxlab.js');
+describe('tuxlab.api.init tests',function(){
+  var tuxlab = require('../server/imports/api/tuxlab.js');
   var init = tuxlab.init();
   it('should have a proper parent',function(){
     expect(init).to.have.property('prnt')
@@ -82,7 +82,7 @@ describe('tuxlab.init tests',function(){
     expect(tuxlab).to.have.property('taskList')
       .and.equal([init]);*/
   });
-  var tuxlab1 = require('../../server/imports/api/tuxlab.js');
+  var tuxlab1 = require('../server/imports/api/tuxlab.js');
   var init1 = tuxlab1.init();
   var task1 = tuxlab1.newTask("title","md",function(){},function(){});
   var tsk1 = init1.nextTask(task1);
