@@ -7,7 +7,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   _id : "574465a21109160b518a4299",
   course_number: "15-131",
   course_name: "Great Practical Ideas for Computer Scientists",
-
+  instructor_name: "Tom Cortina",
   labs: [
     {
       _id: 1,
@@ -59,6 +59,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   profile: {
     first_name : "Derek",
     last_name : "Brown",
+    school : "School of Computer Science",
     email : "derek@tuxlab.org",
     picture : "https://placekitten.com/g/250/250",
     roles: {
