@@ -33,7 +33,3 @@ if (Meteor.isServer){
     (<any>courses).attachSchema(courseSchema);
   });
 }
-
-/**
-  LABS
-**/

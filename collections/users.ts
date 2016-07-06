@@ -36,7 +36,7 @@ export class Roles {
   /*
     Determines if the user is a student in a particular course
   */
-  static isStudentFor(courseid){
+  static isStudentFor(courseid : string){
     let user : any = Meteor.user();
 
     if(this.isLoggedIn() && typeof user.roles.student === "array"){
@@ -55,7 +55,7 @@ export class Roles {
   /*
     Determines if the user is an instructor for a particular course
   */
-  static isInstructorFor(courseid){
+  static isInstructorFor(courseid : string){
     let user : any = Meteor.user();
     return (this.isLoggedIn() && typeof user.roles.instructor === "array" && user.roles.instructor.contains(courseid));
   }
@@ -63,7 +63,7 @@ export class Roles {
   /*
     Determines if the user is an administrator for a course
   */
-  static isAdministratorFor(courseid){
+  static isAdministratorFor(courseid : string){
     let user : any = Meteor.user();
     return (this.isLoggedIn() && typeof user.roles.administrator === "array" && (user.roles.administrator.contains('global') || user.roles.administrator.contains(courseid)));
   }
