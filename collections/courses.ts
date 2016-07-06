@@ -20,51 +20,53 @@ courses.allow({
   }
 });
 
+/* SCHEMA */
+  declare var SimpleSchema: any;
 
-/* Schema */
-declare var SimpleSchema: any;
+  if (Meteor.isServer){
+    Meteor.publish('courses', function() {
+  	return courses.find();
+    });
+    Meteor.startup(function(){
+      var taskSchema = new SimpleSchema({
+        _id: {
+          type: String
+        },
+        name: {
+          type: String
+        },
+        md: {
+          type: String
+        }
+      });
+      var labSchema = new SimpleSchema({
+        _id: {
+          type: String
+        },
+        lab_name: {
+          type: String
+        },
+        file: {
+          type: String
+        },
+        tasks: {
+          type: [taskSchema]
+        }
+      });
+      var courseSchema = new SimpleSchema({
+        course_name: {
+          type: String
+        },
+        course_number: {
+          type: String
+        },
+        labs: {
+          type: [labSchema]
+        }
+      });
+      (<any>courses).attachSchema(courseSchema);
+    });
+  }
 
-if (Meteor.isServer){
-  Meteor.publish('courses', function() {
-	return courses.find();
-  });
-  Meteor.startup(function(){
-    var taskSchema = new SimpleSchema({
-      _id: {
-        type: String
-      },
-      name: {
-        type: String
-      },
-      md: {
-        type: String
-      }
-    });
-    var labSchema = new SimpleSchema({
-      _id: {
-        type: String
-      },
-      lab_name: {
-        type: String
-      },
-      file: {
-        type: String
-      },
-      tasks: {
-        type: [taskSchema]
-      }
-    });
-    var courseSchema = new SimpleSchema({
-      course_name: {
-        type: String
-      },
-      course_number: {
-        type: String
-      },
-      labs: {
-        type: [labSchema]
-      }
-    });
-    (<any>courses).attachSchema(courseSchema);
-  });
-}
+/* COURSE UPDATES */
+  
