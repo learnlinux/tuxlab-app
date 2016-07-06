@@ -3,12 +3,13 @@
 **/
 
 // Import LabFile
-var course_labfile = require('fs').readFileSync('./tests/example_data/example_labfile.js');
+var course_labfile = require('fs').readFileSync('./tests/example_data/example_labfile.js', "utf8").toString();
 
 var course_obj = {
   course_number: "15-131",
   course_name: "Great Practical Ideas for Computer Scientists",
   instructor_name: "Tom Cortina",
+  file: course_labfile,
   labs: [
     {
       _id: 1,
