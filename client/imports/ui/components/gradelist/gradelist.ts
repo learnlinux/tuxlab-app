@@ -18,6 +18,11 @@
 // Icon
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 	
+// Course Records Import
+	import { course_records } from '../../../../../collections/course_records';
+	
+@InjectUser("user")
+
 // Define Grades Component
 	@Component({
 		selector: 'tuxlab-gradelist',
@@ -29,19 +34,51 @@
 	})
 
 // Export Grades Class 
-	export class GradeList {
+    export class GradeList extends MeteorComponent{
+        user: Meteor.User;
 
-		grades: Array<any> = [
-			{'id': 1, 'name': 'Exam 1', 'grade': '95%'},
-			{'id': 2, 'name': 'Exam 2', 'grade': '99%'},
-			{'id': 3, 'name': 'Exam 3', 'grade': '100%'},
-			{'id': 4, 'name': 'Final Exam', 'grade': '97%'}
-		];
+        // Used to locate course record
+        userId: String = '1'; // TODO: Get from user
+        courseId: String;	  // TODO: Get from URL
 
-		constructor(mdIconRegistry: MdIconRegistry) {
-			// Create Icon Font
-			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-			mdIconRegistry.setDefaultFontSetClass('tuxicon');		
-		}
-	}
-	
+        courseRecord;
+        grades: Array<any> = [];
+
+        constructor(mdIconRegistry: MdIconRegistry) {
+            super();
+            // Create Icon Font
+            mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+            mdIconRegistry.setDefaultFontSetClass('tuxicon');
+            
+            this.setGrades(this.courseId, this.userId);
+        }
+        // Method to Subscribe course_records database and set grades
+        setGrades(courseId: String, userId: String) {
+            this.subscribe('course-records', [userId, courseId], () => {
+                this.courseRecord = course_records.findOne({ user_id: userId }); //TODO: add course_id
+                if (this.courseRecord !== undefined) {
+                    let labs = this.courseRecord.labs;
+                    let totalEarned = 0;
+                    let totalFull = 0;
+                    for (let i = 0; i < labs.length; i++) {
+                        let lab = labs[i];
+                        let tasks = lab.tasks;
+                        for (let j = 0; j < tasks.length; j++) {
+                            let task = tasks[j];
+                            totalEarned += task.grade.earned;
+                            totalFull += task.grade.total;
+                            this.grades.push({
+                                'name': 'lab ' + (i + 1).toString() + ' task ' + (j + 1).toString(),
+                                'grade': ((task.grade.earned * 100.0) / task.grade.total).toString() + '%'
+                            });
+                        }
+                    }
+                    this.grades.push({
+                        'name': 'Course Average',
+                        'grade': ((totalEarned * 100.0) / totalFull).toString() + '%'
+                    });
+                }
+            }, true);
+        }
+    }
+

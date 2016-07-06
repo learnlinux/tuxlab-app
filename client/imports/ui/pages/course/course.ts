@@ -23,6 +23,11 @@
 	import { LabList } from "../../components/lablist/lablist";
 	import { GradeList } from "../../components/gradelist/gradelist";
 	
+// Courses and Course Record Imports
+	import { Courses } from "../../../../../collections/courses";
+	import { course_records } from "../../../../../collections/course_records";
+	
+
 // Define CourseView Component
 	@Component({
 		selector: 'tuxlab-courseview',
@@ -37,46 +42,34 @@
 	})
 
 // Export CourseView Class 
-	export class CourseView {
-		
-		courseDescription = `
-			Throughout your education as a Computer Scientist at Carnegie Mellon, 
-			you will take courses on programming, theoretical ideas, logic, systems, etc. 
-			As you progress, you will be expected to pick up the so-called 
-			“tools of the trade.” This course is intended to help you learn what 
-			you need to know in a friendly, low-stress, high-support way. We will 
-			discuss UNIX, LaTeX, debugging and many other essential tools.
-			`;
-		
-		lectures: Array<any> = [
-    		{'id': 1, 'name': 'Initial Setup', 'date': 'ASAP'},
-			{'id': 2, 'name': 'Terminal Usage', 'date': 'Sept. 3rd'},
-			{'id': 3, 'name': 'Vim Usage', 'date': 'Sept. 10th'},
-			{'id': 4, 'name': 'Bash Usage', 'date': 'Sept. 17th'},
-			{'id': 5, 'name': 'Git Usage', 'date': 'Sept. 24th'},
-			{'id': 6, 'name': 'Terminal Configuration', 'date': 'Oct. 1st'},
-			{'id': 7, 'name': 'Final Exam Preperation', 'date': 'Oct. 2nd'}
-  		];
-		assignments: Array<any> = [
-			{'id': 1, 'name': 'Install a Linux distribution', 'date': 'Sept. 3rd'},
-			{'id': 2, 'name': 'Memorize ALL terminal commands', 'date': 'Sept. 10th'},
-			{'id': 3, 'name': 'Memorize ALL Vim commands', 'date': 'Sept. 17th'},
-			{'id': 4, 'name': 'Reimplement Bash', 'date': 'Sept. 24th'},
-			{'id': 5, 'name': 'Memorize ALL git commands', 'date': 'Oct. 1st'},
-			{'id': 6, 'name': 'Reimplement the terminal', 'date': 'Oct. 8th'}
-		];
+    export class CourseView extends MeteorComponent { 
+        course;
+        courseNumber: String = '15-251'; // TODO: Get from URL
+        courseDescription: String = "Course Description Not Found";
+        courseName: String = "Course Name Not Found";
 
-		constructor(mdIconRegistry: MdIconRegistry) {
-			// Create Icon Font
-			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-			mdIconRegistry.setDefaultFontSetClass('tuxicon');
-			
-			// Display Course Toolbar
-			document.getElementById('course-toolbar').style.display = "block";
-			
-			// Activate toolbar button
-			document.getElementById('toolbar-course').className += " active-button";
-			
-			document.getElementById('tux-content').style.marginTop = "20px";
-		}
-	}
+        constructor(mdIconRegistry: MdIconRegistry) {
+            super();
+            // Create Icon Font
+            mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+            mdIconRegistry.setDefaultFontSetClass('tuxicon');
+
+            // Display Course Toolbar
+            document.getElementById('course-toolbar').style.display = "block";
+
+            // Activate toolbar button
+            document.getElementById('toolbar-course').className += " active-button";
+
+            this.setCourse(this.courseNumber);
+        }
+        // Method to Subscribe to courses database and set the current course
+        setCourse(courseNumber) {
+            this.subscribe('courses', courseNumber, () => {
+                this.course = Courses.findOne({ course_number: courseNumber });
+                if (this.course !== undefined) {
+                    this.courseName = this.course.course_name;
+                    this.courseDescription = this.course.course_description;    
+                }
+            }, true);
+        }
+    }
