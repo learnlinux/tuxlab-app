@@ -1,5 +1,6 @@
 var fs = require('fs');
 var tuxlab = function(){}
+
 tuxlab.prototype.init = function(){
   var slf = this;
   var ts = {  prnt: slf,

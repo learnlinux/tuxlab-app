@@ -4,8 +4,8 @@
   "description": "Learn Linux Interactively",
   "private": true,
   "scripts": {
-    "test": "gagarin ./tests/tuxlab.js",
-    "postinstall": "typings install; typings install registry:env/meteor --global"
+    "postinstall": "typings install; typings install registry:env/meteor --global",
+    "test": "gagarin -t 10000 -T 10000 ./tests/tuxlab.js"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.1",
@@ -45,12 +45,11 @@
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.6",
     "simplemde": "^1.11.2",
-    "swarmerode": "^2.1.0",
-    "underscore": "^1.8.3",
     "winston": "^2.2.0",
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
+    "bson": "^0.5.0",
     "gagarin": "^0.4.12",
     "typings": "^1.0.4"
   },

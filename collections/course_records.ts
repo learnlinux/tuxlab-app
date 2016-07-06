@@ -1,3 +1,4 @@
+
 import {Mongo} from 'meteor/mongo';
 import {Meteor} from 'meteor/meteor';
 
@@ -30,15 +31,54 @@ course_records.allow({
   }
 });
 
-/**
-  SCHEMA
-**/
+/* Schema */
 declare var SimpleSchema: any;
 
-if (Meteor.isServer){
-  Meteor.startup(function(){
+if(Meteor.isServer) {
+  Meteor.publish('course-records', function() {
+    return course_records.find();
+  });
+  Meteor.startup(function() {
+    var taskSchema = new SimpleSchema({
+      _id: {
+        type: String
+      },
+      status: {
+        type: String
+      },
+      grade: {
+        type: [Number],
+        minCount: 2,
+        maxCount: 2
+      },
+      data: {
+        type: Object,
+        optional: true
+      }
+    });
+    var labSchema = new SimpleSchema({
+      _id: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id
+      },
+      data: {
+        type: Object,
+        optional: true
+      },
+      tasks: {
+        type: [taskSchema]
+      }
+    });
     var recordSchema = new SimpleSchema({
-      //TODO @sander
+      user_id: {
+        type: String
+      },
+      course_id: {
+        type: String
+      },
+      labs: {
+        type: [labSchema]
+      }
     });
     (<any>course_records).attachSchema(recordSchema);
   });

@@ -5,7 +5,7 @@ tuxlab.setup = function(env){
     .then(env.createVm({dockerodeCreateOptions: {name: "jonathan"}}))
     .then(env.createVm({dockerodeCreateOptions: {name: "michael"}}))
     .then(env.shell("labVm","mkdir derek"))
-    .then(function(sOut){ console.log("succ: "+sOut); }, 
+    .then(function(sOut){ console.log("succ: "+sOut); },
           function(sOut,sErr,sDock){ throw sOut+sErr+sDock; })
     .then(env.removeVm("michael"));
 }

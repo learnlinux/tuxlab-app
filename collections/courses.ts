@@ -1,9 +1,9 @@
-import {Mongo} from 'meteor/mongo';
-import {Meteor} from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
 
-export let courses = new Mongo.Collection('courses');
+export const courses = new Mongo.Collection('courses');
 
 /**
   AUTHENTICATION
@@ -20,31 +20,23 @@ courses.allow({
   }
 });
 
-/**
-  SCHEMA
-**/
-declare var SimpleSchema: any;
+/* SCHEMA */
+  declare var SimpleSchema: any;
 
-if (Meteor.isServer){
-  Meteor.startup(function(){
-    var courseSchema = new SimpleSchema({
-      course_name: {
-        type: String
-      },
-      course_number: {
-        type: String
-      },
-      labs: {
-        type: [labSchema]
-      },
-      instructor_name: {
-        type: String
-      }
+  if (Meteor.isServer){
+    Meteor.startup(function(){
+      var courseSchema = new SimpleSchema({
+        course_name: {
+          type: String
+        },
+        course_number: {
+          type: String
+        },
+        labs: {
+          type: [String],
+          regEx: SimpleSchema.RegEx.Id
+        }
+      });
+      (<any>courses).attachSchema(courseSchema);
     });
-    (<any>courses).attachSchema(courseSchema);
-  });
-}
-
-/**
-  LABS
-**/
+  }

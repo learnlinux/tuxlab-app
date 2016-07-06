@@ -16,17 +16,16 @@ var env = function(){
 	  user: nconf.get(etcd_user),
 	  password: nconf.get(etcd_pass)
 	}
-  var auth = null;
-  this.docker = new dockerode({host: '10.100.1.10', port: '2375'}); //aaron
+  this.docker = new dockerode({host: '10.100.1.10', port: '2375'}); //TODO: nconf.get???
   this.etcd = new etcd('192.168.56.102:2379',etcd_auth);
   this.root_dom = nconf.get("root_domain");
 
 }
 
 //environment variables
-env.prototype.labVm = 'labVm';
+env.prototype.labVm = '';
 env.prototype.docker = null;
-env.prototype.vmList = {};                      //list of all vm instances
+env.prototype.vmList = {};                     
 env.prototype.usr = null;
 env.prototype.helixKey = null;
 env.prototype.redRouterKey = null;
@@ -96,7 +95,6 @@ env.deleteRecords = function(user,callback){
   });
 }
 
-//TODO: Error messages do not make sense
 
 /**
  *init
@@ -107,18 +105,13 @@ env.deleteRecords = function(user,callback){
 			{dockerodeStartOptions: {--your options here--}}
  */
 env.prototype.init = function(opts){
-  if(!this.usr){
-    return new Promise(function(res,rej){
-      rej("no user initialized"); //TODO: move this into actual promise?
-    });
-  }
-  //check whether the environment has been initialized
-  if(this.vmList.labVm)
-    return new Promise(function(res,rej){
-      rej("this environment has been initialized before");}); //TODO: move this into actual promise?
 
-  //create unique labVm name to avoid collisions
-  this.labVm = "labVm"+((new Date).getTime()).toString();
+  /* create unique labVm name to avoid collisions
+   * for usr: cemersoz, at time 1467752963922
+   * labvm = "labVm_cemersoz_1467752963922"
+   */
+  this.labVm = "labVm_"+usr+"_"+((new Date).getTime()).toString();
+
   var dck = this.docker;
 
   //image defaults to alpine
@@ -141,10 +134,22 @@ env.prototype.init = function(opts){
   //this.vmList.push({name: "labVm",id:this.labVm});
   var slf = this;
   return new Promise(function(resolve,reject){
+ 
+    //Check whether environment has been initialized correctly
+    if(!slf.usr){ 
+      TuxLog.log('debug','no env user initialized');	    
+      reject("Internal Error");
+    }
+    if(slf.vmList.labVm){
+      TuxLog.log('labfile_error','trying to init env twice');
+      reject("Internal error");     
+    }
+
     //pull the supplied image if not already pulled
     dck.pull(img, function(err,stream){
       if(err) { reject(err); }
       else{
+	//create container
 	dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
 
@@ -152,15 +157,19 @@ env.prototype.init = function(opts){
 	  else {
 	    var containerId = container.id.substring(0,7);
 	    container.start(strOpts,function(err,data){
-              if(err) { reject(err); }
+              if(err) { 
+	        TuxLog.log('debug','container start err: '+err);	      
+	        reject("Internal error"); 
+	      }
 	      else {
-	        //create etcd record file for redrouter
                 var etcd_redrouter = {
 			docker: containerId,
 			port: 22,
 			username: "root",
 			allowed_auth: ["password"]
 			}
+		
+		//etcd directory for helix record
 		var dir = slf.root_dom.split('.');
 		dir.reverse().push(this.usr,'A');
 		slf.helixKey = dir.join('/');
@@ -170,34 +179,33 @@ env.prototype.init = function(opts){
 	        //set etcd record for redrouter
 		etcd.set(slf.redRouterKey,etcd_redrouter,function(err,res){
 		  if(err){
-                    TuxLog.log('debug', err); //TODO: why not camelCase
-		    reject("Error creating redrouter etcd log: "+err); //TODO: how to reject?
+                    TuxLog.log('debug', 'error creating redrotuer etcd record: '+err); 
+		    reject("Internal error"); 
 		  }
 
 		  //set etcd record for helixdns
 		  docker.getContainer(containerId).inspect(function(err,container){
 		    if(err){
-                      //TODO: are we not logging the error here? is this not debug?
-		      reject("docker cannot find the container it just created");
+		      TuxLog.log('debug', 'docker cannot find the container it just created: '+err);
+		      reject("Internal error");
+		      //TODO: get the actual information that we actually want. Perhaps change this entirely
 		    }
 		    else{
+
+		      //set etcd record for helix
 		      etcd.set(slf.helixKey,container.NetworkSettings,function(err,res){
 		        if(err){
-		          reject("Error creating helixdns etcd log: "+err);
-			  //TODO: same as above
+			  TuxLog.log('debug','error creating helix etcd record: '+err);
+		          reject("Internal error");
 		        }
 			else{
 		          slf.vmList.labVm = slf.labVm;
 		          resolve();
 			}
                       });
-
-          TuxLog.log('debug', err); //TODO: what error? #kafamdadelisorular
-
 		    }
                   });
-                );
-		resolve();
+		});
 	      }
 	    });
 	  }
@@ -222,21 +230,12 @@ env.prototype.createVm1 = function(opts) {
   var crtOpt = opts.dockerodeCreateOptions;
   var strOpt = opts.dockerodeStartOptions;
 
-  //checks whether name for virtual machine is supplied
-  if(crtOpt.name == null)
-    return new Promise(function(resolve,reject)
-      { reject("please provide a name for your vm"); }); //TODO: move this into actual promise?
-
   name = crtOpt.name;
-
-  //checks if there are any containers with the same name in this env
-  if(underscore.has(slf.vmList,crtOpt.name)){
-   return new Promise(function(resolve,reject){
-      reject("there is already a vm running with this name, please choose a new name for your vm");}); //TODO: move this into actual promise?
-  }
-
-  //create unique name for the container to be created
-  var cName = "vm"+((new Date).getTime()).toString();
+  /* create unique name for the container to be created
+   * for usr: cemersoz at time 1467752963922
+   * cName = "vm_cemersoz_1467752963922"
+   */
+  var cName = "vm_"+usr+'_'+((new Date).getTime()).toString();
 
   //image defaults to alpine
   var img = 'alpine';
@@ -251,8 +250,23 @@ env.prototype.createVm1 = function(opts) {
   //clone this into slf to use in the promise
   var slf = this;
   return new Promise(function(resolve,reject){
+    
+    //check for valid name
+    if(crtOpt.name == null){
+      TuxLog.log('labfile_error',"name not specified for vm");
+      reject("Internal error");
+    }
+
+    if(underscore.has(slf.vmList,crtOpt.name)){
+      TuxLog.log('labfile_error', 'there is already a vm with this name: '+crtOpt.name);
+      reject("Internal error");
+    }
+
     dck.pull(img,function(err,stream){
-      if(err) { TuxLog.log('debug', err); reject(err); }
+      if(err) { 
+        TuxLog.log('debug', "docker pull error: "+err);
+       	reject("Internal error"); 
+      }
       else {
         dck.createContainer(crtOptsf,function(err,container){
           if(err) { reject(err); }
@@ -260,7 +274,6 @@ env.prototype.createVm1 = function(opts) {
             container.start(strOpt,function(err,data){
               if(err) { reject(err); }
               else{
-	        //resolve(data);
 		slf.vmList[crtOpt.name] = cName;
 		resolve();
               }
@@ -277,56 +290,70 @@ env.prototype.createVm1 = function(opts) {
 //takes the id or containerName of a vm and removes the vm, also removing it
 //from the vmList
 env.prototype.removeVm1 = function (vmName,opts) {
-  var i = this.vmList.indexOf(vmName)
-  var isInstance = i > -1;
-  if(isInstance){
-    var cont = this.docker.getContainer(vmName);
-  }
   var slf = this;
-  return function(){
-    return new Promise(function(resolve,reject){
-      if(!isInstance){ reject( "this is not an existing vm you created" ); }
-      else{
-	slf.vmList.splice(i,1);
-        cont.remove(opts,function(err,data){
-          if(err) { reject(err); }
-	  else { resolve(data); }
-        });
+  return new Promise(function(resolve,reject){
+
+   //check if container initialized 
+   if(!underscore.has(this.vmList,vmName)){
+      TuxLog.log('labfile_error',"trying to delete non-existing vm");
+      reject("Internal error");
+    }
+
+    slf.vmList[vmName].remove(opts,function(err,data){
+      if(err){
+        TuxLog.log('debug',"error removing container: "+err);
+	reject("Internal error");
       }
+      resolve();     
     });
-  }
+  });
 }
 
-	//calls container.remove
+
 env.prototype.updateVm1 = function(vmName, opts) {
-  var i = this.vmList.indexOf(vmName)
-  var isInstance = i > -1;
-  if(isInstance){ this.vmList.splice(i,-1);
-    var cont = this.docker.getContainer.vmName
-  }
+  var slf = this;
   return new Promise(function(resolve,reject){
-    if(!isInstance){ reject("this is not an existing vm you created\n if you are trying to create a new container you can call \"env.createContainer\""); }
+    if(!underscore.has(slf.vmList,vmName)){
+      TuxLog.log('labfile_error','trying to update non-existing vm');
+      reject("Internal error");
+    }
     else{
-      cont.update(opts,function(err,data){
-        if(err){ reject(err); }
-        else{ resolve(data); }
+      slf.docker.getContainer(slf.vmList[vmName]).update(opts,function(err,data){
+        if(err){ 
+	  TuxLog.log('debug','error updating container: '+err);  
+	  reject("Internal error"); 
+	}
+        else{ 
+	  resolve(data); 
+	}
       });
     }
   });
 }
 
-env.prototype.shell1 = function(container,command,opts) {
+env.prototype.shell1 = function(vmName,command,opts) {
+  var slf = this;
   return new Promise(function(resolve,reject){
+    if(!underscore.has(slf.vmList,vmName)){
+      TuxLog.log('labfile_error','trying to run shell on non-existing vm');
+      reject("Internal error");
+    }
     var options = {AttachStdout: true, AttachStderr: true, Cmd: command.split(" ")};
-    container.exec(options, function(err, exec){
-      if(err){ reject("","",err); }
+    this.docker.getContainer(slf.vmList[vmName]).exec(options, function(err, exec){
+      if(err){ 
+        TuxLog.log('debug','error trying to container.exec: '+err);	
+	reject("Internal error"); 
+      }
       else{
         exec.start({hijack: true, stdin: true, stdout: true, stderr: true},
 	function(err, stream){
-          if(err){ reject("","",err); }
+          if(err){ 
+            TuxLog.log('debug','error trying to exec.start: '+err);
+	    reject("Internal error"); 
+	  }
           else{
             var dat = ''
-	    var err = ''
+	    var errr = ''
 	    var header = null;
 	    stream.on('readable',function(){
 	      header = header || stream.read(8);
@@ -337,7 +364,7 @@ env.prototype.shell1 = function(container,command,opts) {
 		else{ dat += payload; }
 		  header = stream.read(8);
 	        }
-	      });
+	      });//TODO: split stdout and stderr
 	    stream.on('end',function(){
 
 	      if(err ===''){ resolve(dat); }
@@ -350,11 +377,13 @@ env.prototype.shell1 = function(container,command,opts) {
   });
 }
 
+/* gets pass for given virtual machine
+ * calls callback(password)
+ */
 env.prototype.getPass = function(vmName,callback){
   this.shell1(vmName, "cat /pass")
     .then(function(sOut){ callback(sOut); }, function(s1,s2,s3){callback(s1,s2,s3);});
 }
-	//executes bash command in given container
 env.prototype.getNetwork = function() {}	//Don't know what this does
 env.prototype.getVolume = function() {}		//Don't know what this does
 env.prototype.getExec = function() {} 		//Don't know what this does
