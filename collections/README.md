@@ -104,7 +104,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
       },
       tasks: [
         {
-          status: COMPLETED // ONE OF SUCCESS, FAILURE, SKIPPED, ATTEMPTED, NOT_ATTEMPTED
+          status: COMPLETED // ONE OF SUCCESS, FAILURE, SKIPPED, IN_PROGRESS, NOT_ATTEMPTED
           grade: {16,100} // TUPLE
           data: {
             // INSTRUCTORS INJECT DATA
