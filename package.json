@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "postinstall": "typings install; typings install registry:env/meteor --global",
-    "pretest": "sudo npm install -g gagarin",
     "test": "gagarin -t 10000 -T 10000 ./tests/tuxlab.js"
   },
   "dependencies": {
