@@ -76,7 +76,7 @@ export class Roles {
     Determines if the user is a student in a particular course
   */
   static isStudentFor(courseid : string, userid? : number){
-      let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
+    let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
 
     if(this.isLoggedIn() && typeof user.roles.student === "array"){
       for (var i = 0; i < user.roles.student.length; i++){
