@@ -39,10 +39,6 @@
 @InjectUser("user")
 export class Account extends MeteorComponent {
     user: Meteor.User;
-    imgsrc: String = "http://www.placekitten.com/g/250/250";
-    name: String = "Name Here";
-    school: String = "School Name Here";
-    email: String = "example@example.com";
     constructor(mdIconRegistry: MdIconRegistry) {
         super();   
         // Create Icon Font

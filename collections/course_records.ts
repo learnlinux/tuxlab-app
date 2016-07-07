@@ -35,11 +35,11 @@ declare var SimpleSchema: any;
 
 
 if(Meteor.isServer) {
-  Meteor.publish('course-records', function() {
+	Meteor.publish('course-records', function() {
 		const user = Meteor.users.findOne(this.userId);
 		if(user) {
 			return course_records.find({
-				user_id: '1' // Change to user_id: this.userId
+				user_id: this.userId
 			}, {
 				fields: {
 					'labs.data': 0,
@@ -50,7 +50,7 @@ if(Meteor.isServer) {
 		else {
 			return null;
 		}
-  });
+	});
   Meteor.startup(function() {
     var taskSchema = new SimpleSchema({
       _id: {

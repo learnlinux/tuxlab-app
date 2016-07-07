@@ -29,12 +29,12 @@
 		selector: 'tuxlab-exploreview',
 		templateUrl: '/client/imports/ui/components/explore/explore.html',
 		directives: [ 
-      MATERIAL_DIRECTIVES, 
+			MATERIAL_DIRECTIVES, 
 			MD_ICON_DIRECTIVES, 
 			MD_TABS_DIRECTIVES,
 			MD_INPUT_DIRECTIVES,
 			MdToolbar 
-    ],
+		],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})

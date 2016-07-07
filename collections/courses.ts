@@ -8,8 +8,6 @@ import { course_records } from './course_records.ts';
 
 export const courses = new Mongo.Collection('courses');
 
-const MAX_COURSES = 4;
-
 /**
   AUTHENTICATION
 **/
@@ -30,16 +28,17 @@ courses.allow({
 
   if (Meteor.isServer){
 		Meteor.publish('courses', function() {
-			const user = Meteor.users.findOne(this.userId);
-			if(user) {
+			if(this.userId) {
 				let courseRecords = course_records.find({ _id: this.userId });
-				let publishCourses = new Mongo.Collection(null);
-				courseRecords.forEach(function(cr) {
-					let courseId = cr.course_id;
-					publishCourses.insert(courses.findOne({ _id: courseId }));
+				let courseIds = courseRecords.map(function(cr) {
+					return (<any>cr).course_id;
 				});
-				return courses.find({});
-				// return publishCourses.find();
+				const query = {
+					'_id': {
+						$in: courseIds
+					}
+				};
+				return courses.find(query);
 			}
 			else {
 				return null;

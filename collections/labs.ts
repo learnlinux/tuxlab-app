@@ -27,16 +27,8 @@ labs.allow({
 
 	if(Meteor.isServer) {
 		Meteor.publish('labs', function() {
-			const user = Meteor.users.findOne({ _id: this.userId });
-			if(user) {
-				let publishLabs = new Mongo.Collection(null);
-				labs.forEach(function(lb) {
-					let lab = <any>lb;
-					if (lab.hidden === false) {
-						publishLabs.insert(lb);
-					}
-				});
-				return publishLabs.find();
+			if(this.userId) {
+				return labs.find({ hidden: false });
 			}
 			else {
 				return null;
