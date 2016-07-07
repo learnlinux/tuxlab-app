@@ -3,17 +3,9 @@
 **/
 
 /**
-  Test Client-Side Insertion
-**/
-
-/**
-  Test Schema Enforcement
-**/
-
-/**
   Insert Example Data for Testing
 **/
-describe('Example Database', function(){
+describe('Database Schema', function(){
   var server = meteor();
 
   // Clean Database
@@ -30,7 +22,7 @@ describe('Example Database', function(){
 
   // Create Example Course
   var course_id;
-  it('should have example course', function(){
+  it('should include courses', function(){
     return server.promise(function(resolve, reject){
       var example_course = {
         course_number: "15-131",
@@ -55,13 +47,12 @@ describe('Example Database', function(){
 
   // Create Example Lab
   var lab_id;
-  it('should have example lab', function(){
+  it('should include labs', function(){
 
     var labfile = require('fs').readFileSync('./tests/example_data/labfile1.js', "utf8").toString();
 
     return server.promise(function(resolve, reject, labfile, course_id){
       var example_lab = {
-        _id : "574467bc11091623418a429d",
         course_id : course_id,
         lab_name: "Getting Started with Git",
         file: labfile,
@@ -93,9 +84,9 @@ describe('Example Database', function(){
   });
 
   // Validate that Records Exists
-  if('should have uploaded these records', function(){
+  it('should be accepted by database', function(){
     return server.execute(function(course_id, lab_id){
-      var course = Collections.findOne(course_id).fetch();
+      var course = Collections.courses.findOne(course_id).fetch();
 
           // Check Lab Injection
           expect(course).to.have.property('labs');
@@ -107,6 +98,17 @@ describe('Example Database', function(){
 
     }, [course_id, lab_id]);
   });
+});
 
+/**
+  Test Client-Side Insertion
+**/
+describe('Client-Side Insertion', function(){
 
 });
+
+
+
+/**
+  Test Schema Enforcement
+**/

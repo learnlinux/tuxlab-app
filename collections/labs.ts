@@ -57,7 +57,8 @@ labs.allow({
           type: String
         },
         md: {
-          type: String
+          type: String,
+          defaultValue: ""
         }
       });
       var labSchema = new SimpleSchema({
