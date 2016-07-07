@@ -71,6 +71,9 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   _id : "574467bc11091623418a429d",
   course_id : "574465a21109160b518a4299",
   lab_name: "Getting Started with Git",
+  updated: 1467905228238, // Epoch time lab was last updated
+  hidden: true, // Lab is hidden from students.  Default is true.
+  disabled: false, // Lab can no longer be attempted by students. Default is false.
   file: "##################",
   tasks: [
     {

@@ -22,12 +22,17 @@ labs.allow({
 
 /* SCHEMA */
   declare var SimpleSchema: any;
+  declare var Collections: any;
+  declare var TuxLog: any;
 
   if (Meteor.isServer){
     Meteor.startup(function(){
       var taskSchema = new SimpleSchema({
         _id: {
           type: String
+        },
+        updated: {
+          type: Number
         },
         name: {
           type: String
@@ -53,6 +58,14 @@ labs.allow({
             return Date.now();
           }
         },
+        hidden:{
+          type: Boolean,
+          defaultValue: true
+        },
+        disabled:{
+          type: Boolean,
+          defaultValue: false
+        },
         file: {
           type: String
         },
@@ -75,5 +88,18 @@ labs.allow({
       }
       labs.before.update(LabValidator);
       labs.before.insert(LabValidator);
+    });
+  }
+
+/* INJECT LAB INTO COURSE */
+  if(Meteor.isServer){
+    Meteor.startup(function(){
+      labs.after.insert(function(userid, doc){
+        Collections.courses.update(doc.course_id,{ $push : { 'labs' : doc._id}}, function(err, num){
+          if(err){
+            TuxLog.log('warn', err);
+          }
+        });
+      });
     });
   }

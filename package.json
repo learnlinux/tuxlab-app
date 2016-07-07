@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "postinstall": "typings install; typings install registry:env/meteor --global",
-    "test": "gagarin -t 10000 -T 10000 ./tests/tuxlab.js"
+    "test": "gagarin -t 10000 -T 10000 ./tests/tuxlab.js",
+    "test-verbose": "gagarin -t 10000 -T 10000 --verbose ./tests/tuxlab.js"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.1",

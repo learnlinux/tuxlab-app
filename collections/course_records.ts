@@ -35,18 +35,6 @@ declare var SimpleSchema: any;
 
 
 if(Meteor.isServer) {
-  Meteor.publish('course-records', function() {
-		const options = {
-			
-		};
-		const user = Meteor.users.findOne(this.userId);
-		if(user) {
-			return course_records.find({ user_id: this.userId }, options);
-		}
-		else {
-			return null;
-		}
-  });
   Meteor.startup(function() {
     var taskSchema = new SimpleSchema({
       _id: {
