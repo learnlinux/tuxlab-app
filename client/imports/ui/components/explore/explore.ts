@@ -29,12 +29,12 @@
 		selector: 'tuxlab-exploreview',
 		templateUrl: '/client/imports/ui/components/explore/explore.html',
 		directives: [ 
-      MATERIAL_DIRECTIVES, 
+			MATERIAL_DIRECTIVES, 
 			MD_ICON_DIRECTIVES, 
 			MD_TABS_DIRECTIVES,
 			MD_INPUT_DIRECTIVES,
 			MdToolbar 
-    ],
+		],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})
@@ -50,12 +50,9 @@ export class ExploreView extends MeteorComponent {
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
-		this.getCourses();
-	}
-	getCourses() {
-		this.subscribe('courses', () => {
+		this.subscribe('all-courses', () => {
 			this.courses = courses.find().fetch();
 		}, true);
-	}	
+	}
 }
 

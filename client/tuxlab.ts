@@ -79,6 +79,7 @@
 @InjectUser("user")
 class TuxLab extends MeteorComponent {
     user: Meteor.User;
+		userId = Meteor.userId();
     constructor(mdIconRegistry: MdIconRegistry) {
         super();
         // Create Icon Font

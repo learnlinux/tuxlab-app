@@ -35,6 +35,10 @@ tuxlab{
   }
 }
 
+.page-content {
+	overflow-x: hidden;
+}
+
 
 /* Footer */
 footer{
@@ -49,11 +53,11 @@ footer{
     color: #e0e0e0;
     a {
       float: right;
-      text-decoration: none;
-      line-height: $tuxlab-footer-height;
       color: #e0e0e0;
-      padding-left: 15px;
-      padding-right: 15px;
+			display: block;
+			margin: 0;
+			line-height: $tuxlab-footer-height;
+			height: $tuxlab-footer-height;
     }
     a:hover {
       color: #ffffff;

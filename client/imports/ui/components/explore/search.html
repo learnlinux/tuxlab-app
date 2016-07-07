@@ -4,12 +4,15 @@
 		<h2 id="search-string">Search Results</h2>
 		
 		<div class="selector">
-			<select id="mySelector" [ngModel]="selectedPage" (ngModelChange)="numItemsChange($event)">
-				<option *ngFor="let i of ipp" [value]="i">{{ i }}</option>
-			</select>
+			<button md-button (click)="prevPage()" class="right">
+				<md-icon fontIcon="tuxicon-left"></md-icon>
+				Prev
+			</button>
 			<span [innerHTML]="getCurrentInfo()"></span>
-			<button md-button (click)="prevPage()" class="right">Previous Page</button>
-			<button md-button (click)="nextPage()" class="right">Next Page</button>
+			<button md-button (click)="nextPage()" class="right">
+				Next
+				<md-icon fontIcon="tuxicon-right"></md-icon>
+			</button>
 		</div>
 		
 		<hr>
@@ -32,12 +35,15 @@
 		<hr>
 		
 		<div class="selector">
-			<select id="mySelector2" [ngModel]="selectedPage" (ngModelChange)="numItemsChange2($event)">
-				<option *ngFor="let i of ipp" [value]="i">{{ i }}</option>
-			</select>
+			<button md-button (click)="prevPage()" class="right">
+				<md-icon fontIcon="tuxicon-left"></md-icon>
+				Prev
+			</button>
 			<span [innerHTML]="getCurrentInfo()"></span>
-			<button md-button (click)="prevPage()" class="right">Previous Page</button>
-			<button md-button (click)="nextPage()" class="right">Next Page</button>
+			<button md-button (click)="nextPage()" class="right">
+				Next
+				<md-icon fontIcon="tuxicon-right"></md-icon>
+			</button>
 		</div>
 		
 	</div>

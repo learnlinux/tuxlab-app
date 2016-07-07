@@ -79,11 +79,13 @@ The following document describes the MongoDB Schema used by the TuxLab app:
     {
       _id: 1,
       name: "Git Clone",
+      updated: 1467905228238, // Epoch of when this task last changed
       md: "##################"
     },
     {
       _id: 2,
       name: "Git Pull",
+      updated: 1467905228238,
       md: "##################"
     }
   ]
@@ -104,7 +106,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
       },
       tasks: [
         {
-          status: COMPLETED // ONE OF SUCCESS, FAILURE, SKIPPED, ATTEMPTED, NOT_ATTEMPTED
+          status: COMPLETED // ONE OF SUCCESS, FAILURE, SKIPPED, IN_PROGRESS, NOT_ATTEMPTED
           grade: {16,100} // TUPLE
           data: {
             // INSTRUCTORS INJECT DATA

@@ -35,13 +35,29 @@ declare var SimpleSchema: any;
 
 
 if(Meteor.isServer) {
+	Meteor.publish('course-records', function() {
+		if(this.userId !== "undefined") {
+			return course_records.find({
+				user_id: this.userId
+			}, {
+				fields: {
+					'labs.data': 0,
+					'labs.tasks.data': 0
+				}
+			});
+		}
+		else {
+			return null;
+		}
+	});
   Meteor.startup(function() {
     var taskSchema = new SimpleSchema({
       _id: {
         type: String
       },
       status: {
-        type: String
+        type: String,
+        allowedValues: ['SUCCESS', 'FAILURE', 'SKIPPED', 'IN_PROGRESS', 'NOT_ATTEMPTED']
       },
       grade: {
         type: [Number],

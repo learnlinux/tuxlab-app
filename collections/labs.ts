@@ -25,6 +25,17 @@ labs.allow({
   declare var Collections: any;
   declare var TuxLog: any;
 
+	if(Meteor.isServer) {
+		Meteor.publish('labs', function() {
+			if(this.userId) {
+				return labs.find({ hidden: false });
+			}
+			else {
+				return null;
+			}
+		});
+	}
+
   if (Meteor.isServer){
     Meteor.startup(function(){
       var taskSchema = new SimpleSchema({
@@ -38,7 +49,8 @@ labs.allow({
           type: String
         },
         md: {
-          type: String
+          type: String,
+          defaultValue: ""
         }
       });
       var labSchema = new SimpleSchema({

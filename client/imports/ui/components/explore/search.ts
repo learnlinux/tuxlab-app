@@ -43,15 +43,12 @@ export class SearchView extends MeteorComponent {
 	courses: Array<any> = [];
 	pagination = {
 		currentPage: 1,
-		itemsPerPage: 10,
+		itemsPerPage: 15,
 		totalItems: this.courses.length
 	};
-	ipp: Array<number> = [5, 10, 15];
-	selectedPage = 10;
 	pagedCourses: Array<any> = [];
 	
 	constructor(mdIconRegistry: MdIconRegistry) {
-		
 		super();
 		
 		// Create Icon Font
@@ -59,16 +56,13 @@ export class SearchView extends MeteorComponent {
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
     
     // Subscribe Courses Database
-    this.getCourses();
+    //this.getCourses();
+		this.subscribe('all-courses', () => {
+			this.courses = courses.find().fetch();
+			this.pagination.totalItems = this.courses.length;
+			this.refreshCourses();
+		}, true);
 	}
-  
-  getCourses() {
-    this.subscribe('courses', () => {
-      this.courses = courses.find().fetch();
-      this.pagination.totalItems = this.courses.length;
-      this.refreshCourses();    
-    }, true);
-  }
 	
 	// Refresh Courses List
 	refreshCourses() {
@@ -93,64 +87,6 @@ export class SearchView extends MeteorComponent {
 		}
 		
 		return start.toString() + "-" + end.toString() + " of " + this.pagination.totalItems.toString();
-	}
-	
-	// Change state when number of items change in selector
-	numItemsChange(newValue) {
-		
-		// Save old state
-		let currentPage = this.pagination.currentPage;
-		let itemsPerPage = this.pagination.itemsPerPage;
-		
-		// Get selector value
-		let e = <HTMLSelectElement>document.getElementById('mySelector');
-		let num = (<HTMLOptionElement>e.options[e.selectedIndex]).value;
-		
-		// Change bottom selector value
-		let f = <HTMLSelectElement>document.getElementById('mySelector2');
-		f.selectedIndex = e.selectedIndex;
-		
-		// Set itemsPerPage value
-		let newItemsPerPage = parseInt(num, 10);
-		this.pagination.itemsPerPage = newItemsPerPage;
-		
-		//Change page number if needed
-		let lastPage = Math.ceil(this.pagination.totalItems / this.pagination.itemsPerPage);
-		if (currentPage > lastPage) {
-			this.pagination.currentPage --;
-		}
-		
-		// Refresh Course List
-		this.refreshCourses();
-	}
-	
-	// Change state when number of items change in selector (Bottom)
-	numItemsChange2(newValue) {
-		
-		// Save old state
-		let currentPage = this.pagination.currentPage;
-		let itemsPerPage = this.pagination.itemsPerPage;
-		
-		// Get selector value
-		let e = <HTMLSelectElement>document.getElementById('mySelector2');
-		let num = (<HTMLOptionElement>e.options[e.selectedIndex]).value;
-		
-		// Change top selector value
-		let f = <HTMLSelectElement>document.getElementById('mySelector');
-		f.selectedIndex = e.selectedIndex; 
-		
-		// Set itemsPerPage value
-		let newItemsPerPage = parseInt(num, 10);
-		this.pagination.itemsPerPage = newItemsPerPage;
-		
-		//Change page number if needed
-		let lastPage = Math.ceil(this.pagination.totalItems / this.pagination.itemsPerPage);
-		if (currentPage > lastPage) {
-			this.pagination.currentPage --;
-		}
-		
-		// Refresh Course List
-		this.refreshCourses();
 	}
 	
 	// Go to next page function

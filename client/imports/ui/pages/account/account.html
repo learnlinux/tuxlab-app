@@ -2,12 +2,12 @@
   <md-card>
     <md-card-content>
       <div class="account-profile-picture">
-        <img src="{{ imgsrc }}">
+        <img src="{{ user.profile.picture }}">
       </div>
       <div class="account-display-name">
-        <h2>{{ name }}</h2>
-        <p>{{ school }}</p>
-        <p>{{ email }}</p>
+        <h2>{{ user.profile.name }}</h2>
+        <p>{{ user.profile.school }}</p>
+        <p>{{ user.profile.email }}</p>
       </div>
     </md-card-content>  
   </md-card>

@@ -11,30 +11,22 @@
             </div>
             <!--Buttons-->
             <div class="sidenav-buttons">
-                <button md-button>
-                    <md-icon fontIcon="tuxicon-journal"></md-icon>
-                    My Courses
-                </button>
-                <button md-button>
-                    <md-icon fontIcon="tuxicon-aplus"></md-icon>
-                    My Grades
-                </button>
-                <button md-button>
+                <a md-button>
+                    <md-icon fontIcon="tuxicon-speaker"></md-icon>
+										Announcements
+                </a>
+                <a md-button>
                     <md-icon fontIcon="tuxicon-console"></md-icon>
                     Terminal
-                </button>
-                <button md-button>
-                    <md-icon fontIcon="tuxicon-potion"></md-icon>
-                    Upcoming Labs
-                </button>
-                <button md-button (click)="toAccount()">
+                </a>
+								<a md-button [href]="'/account/' + userId">
                     <md-icon fontIcon="tuxicon-cog"></md-icon>
-                    My Account
-                </button>
-                <button md-button (click)="right.toggle(); tuxLogout()">
+										Settings
+                </a>
+                <a md-button (click)="right.toggle(); tuxLogout()">
                     <md-icon fontIcon="tuxicon-window"></md-icon>
                     Logout
-                </button>
+                </a>
             </div>
         </div>
     </md-sidenav>

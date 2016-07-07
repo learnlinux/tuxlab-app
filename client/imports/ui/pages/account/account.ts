@@ -37,22 +37,12 @@
   
 @InjectUser("user")
 export class Account extends MeteorComponent {
-  user: Meteor.User;
-  name: String = "Name Here";
-  school: String = "School Here";
-  email: String = "example@example.com";
-  imgsrc: String = "http://www.placekitten.com/g/250/250";
-  constructor(mdIconRegistry: MdIconRegistry) {
-    super();
-    // Create Icon Font
-    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-    mdIconRegistry.setDefaultFontSetClass('tuxicon');
-    
-  }
-  test() {
-    this.name = this.user.profile.name;
-    this.school = "Carnegie Mellon University";
-    this.imgsrc = this.user.profile.picture;
-    this.email = this.user.profile.email;
-  }
-}
+    user: Meteor.User;
+    constructor(mdIconRegistry: MdIconRegistry) {
+        super();   
+        // Create Icon Font
+        mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+        mdIconRegistry.setDefaultFontSetClass('tuxicon');   
+        
+    }
+}    

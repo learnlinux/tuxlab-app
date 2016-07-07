@@ -39,7 +39,7 @@
   export class LabList extends MeteorComponent {
     user: Meteor.User;
     courseId: String;   // TODO: Get from URL
-    userId: String = '1';     // TODO: Get from Meteor.userId
+    userId: String = Meteor.userId();
     labs: Array<Object> = [];
     courseRecord;
 
@@ -58,8 +58,8 @@
 		// Method to subscribe to course_records database and set Lab data
     setLab(courseId: String, userId: String) {
       this.subscribe('course-records', [courseId, userId], () => {
-        this.courseRecord = course_records.findOne({ user_id: userId }); //TODO: add course_id
-        if(this.courseRecord !== undefined) {
+        this.courseRecord = course_records.findOne({ user_id: userId, course_id: courseId }); 
+        if(typeof this.courseRecord !== "undefined") {
           let labs = this.courseRecord.labs;
           let totalCompleted = 0;
           let totalNumTasks = 0;

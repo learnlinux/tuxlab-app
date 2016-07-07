@@ -5,8 +5,6 @@ import { Roles } from './users.ts';
 
 export const courses = new Mongo.Collection('courses');
 
-const MAX_COURSES = 4;
-
 /**
   AUTHENTICATION
 **/
@@ -26,13 +24,34 @@ courses.allow({
   declare var SimpleSchema: any;
 
   if (Meteor.isServer){
-		Meteor.publish('courses', function() {
-			console.log(this.userId);
-			const options = {
-				sort: { course_number: 1 },
-				limit: MAX_COURSES
-			};
-			return courses.find({}, options);
+		Meteor.publish('user-courses', function() {
+			if(this.userId) {
+				let courseRecords = course_records.find({ user_id: this.userId });
+				let courseIds = courseRecords.map(function(cr) {
+					return (<any>cr).course_id;
+				});
+				const query = {
+					'_id': {
+						$in: courseIds
+					}
+				};
+				return courses.find(query);
+			}
+			else {
+				return null;
+			}
+		});
+		Meteor.publish('all-courses', function() {
+			if(this.userId !== "undefined") {
+				const MAX_COURSES = 10;
+				const query = {
+
+				};
+				const options = {
+					limit: MAX_COURSES
+				};
+				return courses.find(query, options);
+			}
 		});
     Meteor.startup(function(){
       var courseSchema = new SimpleSchema({
