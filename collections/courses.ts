@@ -33,8 +33,7 @@ courses.allow({
           type: String
         },
         labs: {
-          type: [String],
-          regEx: SimpleSchema.RegEx.Id
+          type: [String]
         }
       });
       (<any>courses).attachSchema(courseSchema);
