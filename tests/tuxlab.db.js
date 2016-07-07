@@ -28,15 +28,50 @@ describe('Setup Example Database', function(){
     });
   });
 
-  // Create Some Courses
-  it('should have courses', function(){
+  // Create Example Course
+  it('should have example course', function(){
 
-    var example_course = require('./example_data/example_course.js');
+    var example_course = {
+      course_number: "15-131",
+      course_name: "Great Practical Ideas for Computer Scientists",
+      instructor_name: "Tom Cortina",
+      labs: []
+    }
+
     return server.execute(function(example_course){
       Collections.courses.insert(example_course);
     }, [example_course]);
 
   });
+
+  // Create Example Lab
+  it('should have example lab', function(){
+    var example_lab = {
+      _id : "574467bc11091623418a429d",
+      course_id : "574465a21109160b518a4299",
+      lab_name: "Getting Started with Git",
+      file: require('fs').readFileSync('./tests/example_data/labfile1.js', "utf8").toString(),
+      tasks: [
+        {
+          _id: 1,
+          name: "Git Clone",
+          md: "##################"
+        },
+        {
+          _id: 2,
+          name: "Git Pull",
+          md: "##################"
+        }
+      ]
+    }
+
+    return server.execute(function(example_lab){
+      Collections.labs.insert(example_lab);
+    }, [example_lab]);
+
+  });
+
+  // Inject Lab into Course
 
 
 });
