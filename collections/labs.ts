@@ -55,6 +55,14 @@ labs.allow({
             return Date.now();
           }
         },
+        hidden:{
+          type: Boolean,
+          defaultValue: true
+        },
+        disabled:{
+          type: Boolean,
+          defaultValue: false
+        },
         file: {
           type: String
         },
