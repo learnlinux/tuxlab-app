@@ -18,14 +18,14 @@
 				<tr>
 					<th class="md-text-cell">Course Number</th>
 					<th class="md-text-cell">Course Name</th>
-					<th>Seats Left</th>
+					<th>Instructor</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr *ngFor="let course of pagedCourses">
-					<td class="md-text-cell">{{ course.number }}</td>
-					<td class="md-text-cell">{{ course.name }}</td>
-					<td>{{ course.quantity }}</td>
+					<td class="md-text-cell">{{ course.course_number }}</td>
+					<td class="md-text-cell">{{ course.course_name }}</td>
+					<td>{{ course.instructor_name }}</td>
 				</tr>
 			</tbody>
 		</md-data-table>

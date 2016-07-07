@@ -6,33 +6,33 @@
 			<template md-tab-label>Description</template>
 			<template md-tab-content>
 				<md-content class="md-padding">
-					<h1 class="md-display-1">{{ course.courseName }}</h1>
+					<h1 class="md-display-1">{{ course.course_name }}</h1>
 					<p>
-						{{ course.description }}
+						{{ course.course_description }}
 					</p>
 				</md-content>
 			</template>
 		</md-tab>
 		<!--Second Tab-->
 		<md-tab>
-			<template md-tab-label>Syllabus</template>
+			<template md-tab-label>Instructor</template>
 			<template md-tab-content>
 				<md-content class="md-padding">
-					<h1 class="md-display-1">Syllabus</h1>
+					<h1 class="md-display-1">Instructor</h1>
 					<p>
-						{{ course.syllabus }}
+						{{ course.instructor_name }}
 					</p>
 				</md-content>
 			</template>
 		</md-tab>
 		<!--Third Tab-->
 		<md-tab>
-			<template md-tab-label>Content</template>
+			<template md-tab-label>Course Number</template>
 			<template md-tab-content>
 				<md-content class="md-padding">
-					<h1 class="md-display-1">Content</h1>
+					<h1 class="md-display-1">Course Number</h1>
 					<p>
-						{{ course.content }}
+						{{ course.course_number }}
 					</p>
 				</md-content>
 			</template>

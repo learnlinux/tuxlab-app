@@ -5,6 +5,8 @@ import { Roles } from './users.ts';
 
 export const courses = new Mongo.Collection('courses');
 
+const MAX_COURSES = 4;
+
 /**
   AUTHENTICATION
 **/
@@ -24,6 +26,14 @@ courses.allow({
   declare var SimpleSchema: any;
 
   if (Meteor.isServer){
+		Meteor.publish('courses', function() {
+			console.log(this.userId);
+			const options = {
+				sort: { course_number: 1 },
+				limit: MAX_COURSES
+			};
+			return courses.find({}, options);
+		});
     Meteor.startup(function(){
       var courseSchema = new SimpleSchema({
         course_name: {
