@@ -77,7 +77,6 @@
 ])
 
 @InjectUser("user")
- 
 class TuxLab extends MeteorComponent {
     user: Meteor.User;
     constructor(mdIconRegistry: MdIconRegistry) {
@@ -89,8 +88,7 @@ class TuxLab extends MeteorComponent {
     tuxLogout() {
         Meteor.logout();
     }
-}    
-
+}
 
 bootstrap(TuxLab, [
 	MATERIAL_PROVIDERS,
