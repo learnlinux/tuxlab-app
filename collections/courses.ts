@@ -20,53 +20,23 @@ courses.allow({
   }
 });
 
-/* Schema */
-declare var SimpleSchema: any;
+/* SCHEMA */
+  declare var SimpleSchema: any;
 
-if (Meteor.isServer){
-  Meteor.publish('courses', function() {
-	return courses.find();
-  });
-  Meteor.startup(function(){
-    var taskSchema = new SimpleSchema({
-      _id: {
-        type: String
-      },
-      name: {
-        type: String
-      },
-      md: {
-        type: String
-      }
+  if (Meteor.isServer){
+    Meteor.startup(function(){
+      var courseSchema = new SimpleSchema({
+        course_name: {
+          type: String
+        },
+        course_number: {
+          type: String
+        },
+        labs: {
+          type: [String],
+          regEx: SimpleSchema.RegEx.Id
+        }
+      });
+      (<any>courses).attachSchema(courseSchema);
     });
-    var labSchema = new SimpleSchema({
-      _id: {
-        type: String
-      },
-      lab_name: {
-        type: String
-      },
-      file: {
-        type: String
-      },
-      tasks: {
-        type: [taskSchema]
-      }
-    });
-    var courseSchema = new SimpleSchema({
-      course_name: {
-        type: String
-      },
-      course_number: {
-        type: String
-      },
-      labs: {
-        type: [labSchema]
-      },
-      instructor_name: {
-        type: String
-      }
-    });
-    (<any>courses).attachSchema(courseSchema);
-  });
-}
+  }

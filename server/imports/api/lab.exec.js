@@ -17,7 +17,7 @@ labExec.prototype.check = function(str){
       return false;
     }
     var tuxOrig = require('./tuxlab.js');
-    return tux.setup &&
+    return tux.setup &&	
            tux.tasks &&
            tux.init &&
            tux.newTask &&
