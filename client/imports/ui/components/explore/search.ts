@@ -21,6 +21,9 @@
 // Icon
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
+// Courses Database Imports
+  import { courses } from '../../../../../collections/courses';
+
 // Define SearchView Component
 	@Component({
 		selector: 'tuxlab-searchview',
@@ -37,30 +40,14 @@
 // Export Explore Class 
 export class SearchView extends MeteorComponent {
 
-	courses: Array<any> = [
-		{'id': 1, 'number': '15-131', 'name': 'Great Practical Ideas for Computer Scientists', 'quantity': '12'},
-		{'id': 2, 'number': '15-251', 'name': 'Great Theoretical Ideas in Computer Science', 'quantity': '12'},
-		{'id': 3, 'number': '15-122', 'name': 'Principles of Imperative Computation', 'quantity': '23'},
-		{'id': 4, 'number': '15-112', 'name': 'Principles of Programming', 'quantity': '11'},
-		{'id': 5, 'number': '15-150', 'name': 'Principles of Functional Programming', 'quantity': '14'},
-		{'id': 6, 'number': '21-127', 'name': 'Concepts of Mathematics', 'quantity': '54'},
-		{'id': 7, 'number': '21-299', 'name': 'Calculus in Twelve Dimensions', 'quantity': '76'},
-		{'id': 8, 'number': '79-104', 'name': 'Global Histories', 'quantity': '56'},
-		{'id': 9, 'number': '15-999', 'name': 'Introduction to Linux', 'quantity': '44'},
-		{'id': 10, 'number': '15-998', 'name': 'Vim Usage', 'quantity': '1'},
-		{'id': 11, 'number': '15-000', 'name': 'Emacs Usage', 'quantity': '2'},
-		{'id': 12, 'number': '15-997', 'name': 'Bash Commands', 'quantity': '3'},
-		{'id': 13, 'number': '21-241', 'name': 'Matrices and Linear Transformations', 'quantity': '4'},
-		{'id': 14, 'number': '21-341', 'name': 'Matrix Theory', 'quantity': '5'},
-		{'id': 15, 'number': '36-225', 'name': 'Probability Theory', 'quantity': '6'}
-	];
+	courses: Array<any> = [];
 	pagination = {
 		currentPage: 1,
-		itemsPerPage: 5,
+		itemsPerPage: 10,
 		totalItems: this.courses.length
 	};
 	ipp: Array<number> = [5, 10, 15];
-	selectedPage = 5;
+	selectedPage = 10;
 	pagedCourses: Array<any> = [];
 	
 	constructor(mdIconRegistry: MdIconRegistry) {
@@ -70,11 +57,18 @@ export class SearchView extends MeteorComponent {
 		// Create Icon Font
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
-		
-		// Refresh Courses List on load
-		this.refreshCourses();
-		
+    
+    // Subscribe Courses Database
+    this.getCourses();
 	}
+  
+  getCourses() {
+    this.subscribe('courses', () => {
+      this.courses = courses.find().fetch();
+      this.pagination.totalItems = this.courses.length;
+      this.refreshCourses();    
+    }, true);
+  }
 	
 	// Refresh Courses List
 	refreshCourses() {
