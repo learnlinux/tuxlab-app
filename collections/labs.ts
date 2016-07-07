@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
 
-export const labs = new Mongo.Collection('labs');
+export const labs : any = new Mongo.Collection('labs');
 
 /**
   AUTHENTICATION
@@ -47,6 +47,12 @@ labs.allow({
         lab_name: {
           type: String
         },
+        updated: {
+          type: Number,
+          autoValue: function(){
+            return Date.now();
+          }
+        },
         file: {
           type: String
         },
@@ -55,5 +61,19 @@ labs.allow({
         }
       });
       (<any>labs).attachSchema(labSchema);
+    });
+  }
+
+/* LAB VALIDATOR */
+  if(Meteor.isServer){
+    Meteor.startup(function(){
+      var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
+        if (typeof fieldNames === "undefined" || fieldNames.includes('tasks') || fieldNames.includes('file')){
+          //TODO @CEM: Validate Lab
+          //TODO @CEM: Generate tasks array
+        }
+      }
+      labs.before.update(LabValidator);
+      labs.before.insert(LabValidator);
     });
   }
