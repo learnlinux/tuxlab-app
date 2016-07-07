@@ -13,7 +13,7 @@
 /**
   Insert Example Data for Testing
 **/
-describe('Setup Example Database', function(){
+describe('Example Database', function(){
   var server = meteor();
 
   // Clean Database
@@ -35,6 +35,7 @@ describe('Setup Example Database', function(){
       var example_course = {
         course_number: "15-131",
         course_name: "Great Practical Ideas for Computer Scientists",
+				course_description: '',
         instructor_name: "Tom Cortina",
         labs: []
       }
@@ -91,11 +92,21 @@ describe('Setup Example Database', function(){
     });
   });
 
-  // Inject Lab into Course
-  it('should have lab added to example course', function(){
+  // Validate that Records Exists
+  if('should have uploaded these records', function(){
     return server.execute(function(course_id, lab_id){
-      Collections.labs.update(course_id, {$set: {labs : [course_id]}});
+      var course = Collections.findOne(course_id).fetch();
+
+          // Check Lab Injection
+          expect(course).to.have.property('labs');
+          expect(course.labs).to.include(lab_id);
+
+      var lab = Collections.findOne(lab_id).fetch();
+
+          // Confirm LabFile verifications were run
+
     }, [course_id, lab_id]);
-  })
+  });
+
 
 });

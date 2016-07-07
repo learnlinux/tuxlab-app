@@ -36,12 +36,16 @@ declare var SimpleSchema: any;
 
 if(Meteor.isServer) {
   Meteor.publish('course-records', function() {
-		const options = {
-			
-		};
 		const user = Meteor.users.findOne(this.userId);
 		if(user) {
-			return course_records.find({ user_id: this.userId }, options);
+			return course_records.find({
+				user_id: '1' // Change to user_id: this.userId
+			}, {
+				fields: {
+					'labs.data': 0,
+					'labs.tasks.data': 0
+				}
+			});
 		}
 		else {
 			return null;

@@ -3,6 +3,9 @@ import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
 
+// Course Records Import
+import { course_records } from './course_records.ts';
+
 export const courses = new Mongo.Collection('courses');
 
 const MAX_COURSES = 4;
@@ -27,12 +30,20 @@ courses.allow({
 
   if (Meteor.isServer){
 		Meteor.publish('courses', function() {
-			console.log(this.userId);
-			const options = {
-				sort: { course_number: 1 },
-				limit: MAX_COURSES
-			};
-			return courses.find({}, options);
+			const user = Meteor.users.findOne(this.userId);
+			if(user) {
+				let courseRecords = course_records.find({ _id: this.userId });
+				let publishCourses = new Mongo.Collection(null);
+				courseRecords.forEach(function(cr) {
+					let courseId = cr.course_id;
+					publishCourses.insert(courses.findOne({ _id: courseId }));
+				});
+				return courses.find({});
+				// return publishCourses.find();
+			}
+			else {
+				return null;
+			}
 		});
     Meteor.startup(function(){
       var courseSchema = new SimpleSchema({
@@ -43,8 +54,7 @@ courses.allow({
           type: String
         },
         labs: {
-          type: [String],
-          regEx: SimpleSchema.RegEx.Id
+          type: [String]
         }
       });
       (<any>courses).attachSchema(courseSchema);
