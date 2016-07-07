@@ -41,7 +41,8 @@ if(Meteor.isServer) {
         type: String
       },
       status: {
-        type: String
+        type: String,
+        allowedValues: ['SUCCESS', 'FAILURE', 'SKIPPED', 'IN_PROGRESS', 'NOT_ATTEMPTED']
       },
       grade: {
         type: [Number],
