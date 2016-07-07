@@ -35,9 +35,6 @@ course_records.allow({
 declare var SimpleSchema: any;
 
 if(Meteor.isServer) {
-  Meteor.publish('course-records', function() {
-    return course_records.find();
-  });
   Meteor.startup(function() {
     var taskSchema = new SimpleSchema({
       _id: {
