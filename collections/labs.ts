@@ -31,6 +31,9 @@ labs.allow({
         _id: {
           type: String
         },
+        updated: {
+          type: Number
+        },
         name: {
           type: String
         },
