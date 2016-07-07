@@ -58,7 +58,8 @@ if(Meteor.isServer) {
     });
     var labSchema = new SimpleSchema({
       _id: {
-        type: String
+        type: String,
+        regEx: SimpleSchema.RegEx.Id
       },
       data: {
         type: Object,

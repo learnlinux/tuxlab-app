@@ -3,12 +3,12 @@ import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
 
-export const courses = new Mongo.Collection('courses');
+export const labs = new Mongo.Collection('labs');
 
 /**
   AUTHENTICATION
 **/
-courses.allow({
+labs.allow({
   insert: function (userId, doc : any) {
     return Roles.isGlobalAdministrator();
   },
@@ -25,18 +25,35 @@ courses.allow({
 
   if (Meteor.isServer){
     Meteor.startup(function(){
-      var courseSchema = new SimpleSchema({
-        course_name: {
+      var taskSchema = new SimpleSchema({
+        _id: {
           type: String
         },
-        course_number: {
+        name: {
           type: String
         },
-        labs: {
-          type: [String],
-          regEx: SimpleSchema.RegEx.Id
+        md: {
+          type: String
         }
       });
-      (<any>courses).attachSchema(courseSchema);
+      var labSchema = new SimpleSchema({
+        _id: {
+          type: String
+        },
+        course_id: {
+          type: String,
+          regEx: SimpleSchema.RegEx.Id
+        },
+        lab_name: {
+          type: String
+        },
+        file: {
+          type: String
+        },
+        tasks: {
+          type: [taskSchema]
+        }
+      });
+      (<any>labs).attachSchema(labSchema);
     });
   }

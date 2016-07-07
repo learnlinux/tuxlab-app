@@ -32,10 +32,10 @@ describe('Setup Example Database', function(){
   it('should have courses', function(){
 
     var example_course = require('./example_data/example_course.js');
-
     return server.execute(function(example_course){
       Collections.courses.insert(example_course);
     }, [example_course]);
+
   });
 
 
