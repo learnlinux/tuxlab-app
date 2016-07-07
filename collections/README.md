@@ -79,11 +79,13 @@ The following document describes the MongoDB Schema used by the TuxLab app:
     {
       _id: 1,
       name: "Git Clone",
+      updated: 1467905228238, // Epoch of when this task last changed
       md: "##################"
     },
     {
       _id: 2,
       name: "Git Pull",
+      updated: 1467905228238,
       md: "##################"
     }
   ]
