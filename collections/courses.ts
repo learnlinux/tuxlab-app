@@ -8,6 +8,8 @@ import { course_records } from './course_records.ts';
 
 export const courses = new Mongo.Collection('courses');
 
+
+
 /**
   AUTHENTICATION
 **/
@@ -27,37 +29,9 @@ courses.allow({
   SCHEMA
 **/
   declare var SimpleSchema: any;
-
+	declare var _: any;
+  var _ = require('underscore');
   if (Meteor.isServer){
-		Meteor.publish('user-courses', function() {
-			if(this.userId) {
-				let courseRecords = course_records.find({ user_id: this.userId });
-				let courseIds = courseRecords.map(function(cr) {
-					return (<any>cr).course_id;
-				});
-				const query = {
-					'_id': {
-						$in: courseIds
-					}
-				};
-				return courses.find(query);
-			}
-			else {
-				return null;
-			}
-		});
-		Meteor.publish('all-courses', function() {
-			if(this.userId !== "undefined") {
-				const MAX_COURSES = 10;
-				const query = {
-
-				};
-				const options = {
-					limit: MAX_COURSES
-				};
-				return courses.find(query, options);
-			}
-		});
     Meteor.startup(function(){
       var courseSchema = new SimpleSchema({
         course_name: {
@@ -81,19 +55,21 @@ courses.allow({
     Meteor.startup(function(){
 
        // Publish My Courses
-       Meteor.publish('my-courses', function(){
-          this.autorun(function(computation){
+			Meteor.publish('user-courses', function(){
+        this.autorun(function(computation){
 
-            // Get Course IDs
-            var roles = Meteor.users.findOne(this.userId, {fields : {roles : 1}});
-                course_ids = (_.unzip(roles.student)[0]).concat(roles.instructor);
-
-            // Publish Matching Course IDs
-            return courses.find({_id: {$in : course_ids}});
-
-          });
+					// Get Course IDs
+					let roles = (<any>(Meteor.users.findOne(this.userId))).roles;
+					let course_ids = ((_.unzip(roles.student))[0]).concat(roles.instructor);
+					
+					// Publish Matching Course IDs
+					return courses.find({_id: {$in : course_ids}});
+        });
        });
-
+			/*
+			Meteor.publish('all-courses', function(){
+			});
+			*/
        //TODO @sander Publish Course Based on Route
     });
   }
