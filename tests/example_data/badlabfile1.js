@@ -1,14 +1,6 @@
 var tuxlab = require('./tuxlab.js');
 
-tuxlab.setup = function(env){
-  env.init()
-    .then(env.createVm({dockerodeCreateOptions: {name: "jonathan"}}))
-    .then(env.createVm({dockerodeCreateOptions: {name: "michael"}}))
-    .then(env.shell("labVm","mkdir derek"))
-    .then(function(sOut){ console.log("succ: "+sOut); },
-          function(sOut,sErr,sDock){ throw sOut+sErr+sDock; })
-    .then(env.removeVm("michael"));
-}
+tuxlab.setup = 5;
 tuxlab.tasks = function(env){
   var s1 = function(){
     env.start()
@@ -37,5 +29,5 @@ tuxlab.tasks = function(env){
            .nextTask(task3)
            .nextTask(task4);
 }
-//export modified tuxlab
 module.exports = tuxlab;
+//export tuxlab

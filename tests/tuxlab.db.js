@@ -53,17 +53,20 @@ describe('Database Schema', function(){
 
     return server.promise(function(resolve, reject, labfile, course_id){
       var example_lab = {
+        _id : "574467bc11091623418a429d",
         course_id : course_id,
         lab_name: "Getting Started with Git",
         file: labfile,
         tasks: [
           {
             _id: 1,
+	    updated: 1467995862937,
             name: "Git Clone",
             md: "##################"
           },
           {
             _id: 2,
+	    updated: 1467995862937,
             name: "Git Pull",
             md: "##################"
           }
@@ -86,13 +89,13 @@ describe('Database Schema', function(){
   // Validate that Records Exists
   it('should be accepted by database', function(){
     return server.execute(function(course_id, lab_id){
-      var course = Collections.courses.findOne(course_id).fetch();
+      var course = Collections.courses.findOne(course_id);
 
           // Check Lab Injection
           expect(course).to.have.property('labs');
           expect(course.labs).to.include(lab_id);
 
-      var lab = Collections.findOne(lab_id).fetch();
+      var lab = Collections.labs.findOne(lab_id);
 
           // Confirm LabFile verifications were run
 
