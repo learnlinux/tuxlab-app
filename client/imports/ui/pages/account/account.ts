@@ -12,15 +12,15 @@
     import { HTTP_PROVIDERS } from '@angular/http';
     import { RouterLink, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
-    import { InjectUser, RequireUser } from 'angular2-meteor-accounts-ui';
+    import { InjectUser } from 'angular2-meteor-accounts-ui';
 
 // Angular Material Imports
     import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
     import { MeteorComponent } from 'angular2-meteor';
+    import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
 
-// Icon
-    import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
-
+// Toolbar
+    import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
 
 // Icon
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
@@ -29,20 +29,21 @@
 @Component({
     selector: 'tuxlab-account',
     templateUrl: '/client/imports/ui/pages/account/account.html',
-    directives: [ MD_ICON_DIRECTIVES,
-                  MATERIAL_DIRECTIVES ],
+    directives: [ MATERIAL_DIRECTIVES,
+                  MD_TOOLBAR_DIRECTIVES,
+                  MD_ICON_DIRECTIVES ],
     viewProviders: [ MdIconRegistry ],
     encapsulation: ViewEncapsulation.None
-  })
-  
+})
+
 @InjectUser("user")
+// Accounts Class
 export class Account extends MeteorComponent {
-    user: Meteor.User;
-    constructor(mdIconRegistry: MdIconRegistry) {
-        super();   
-        // Create Icon Font
-        mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-        mdIconRegistry.setDefaultFontSetClass('tuxicon');   
-        
-    }
+  user: Meteor.User;
+  constructor(mdIconRegistry: MdIconRegistry) {
+    super();   
+    // Create Icon Font
+    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+    mdIconRegistry.setDefaultFontSetClass('tuxicon');   
+  }
 }    

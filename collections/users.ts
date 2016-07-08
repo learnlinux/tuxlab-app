@@ -1,5 +1,5 @@
-import {Component} from '@angular/core'
-import {Meteor} from 'meteor/meteor';
+import { Component } from '@angular/core'
+import { Meteor } from 'meteor/meteor';
 
 /***
   SCHEMA

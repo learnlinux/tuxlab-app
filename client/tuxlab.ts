@@ -88,6 +88,7 @@ class TuxLab extends MeteorComponent {
     }
     tuxLogout() {
         Meteor.logout();
+        window.location.href = "/";
     }
 }
 

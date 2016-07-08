@@ -45,7 +45,7 @@
 // Export CourseView Class
     export class CourseView extends MeteorComponent {
 			course;
-			courseNumber: String = '15-251'; // TODO: Get from URL
+			courseNumber: String = '15-322'; // TODO: Get from URL
 			courseDescription: String = "Course Description Not Found";
 			courseName: String = "Course Name Not Found";
 

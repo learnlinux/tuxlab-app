@@ -3,8 +3,6 @@
 	max-width:$tuxlab-max-width;
 	margin:0 auto;
 	
-	padding: 20px;
-
 	a {
 		color: black;
 	}
@@ -15,6 +13,7 @@
 	}
 
 	.cards {
+		padding: 10px;
 		@mixin card($colour) {
 			margin: 10px;
 			height: 100%;

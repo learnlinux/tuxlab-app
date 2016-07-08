@@ -76,7 +76,7 @@
             this.labs.push({
               'name': 'Lab ' + (i + 1).toString(),
               'completed': tasksCompleted.toString() + '/' + tasks.length.toString(),
-              'date': lab.data.due_date
+              'date': 'soon'
             });
             totalCompleted += tasksCompleted;
             totalNumTasks += tasks.length;
