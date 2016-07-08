@@ -64,10 +64,9 @@ courses.allow({
           return courses.find({_id: {$in : course_ids}});
         });
       });
-      /*
       Meteor.publish('all-courses', function(){
+				return courses.find();
       });
-      */
       //TODO @sander Publish Course Based on Route
     });
   }

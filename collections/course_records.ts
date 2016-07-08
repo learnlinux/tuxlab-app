@@ -89,19 +89,21 @@ if(Meteor.isServer) {
 	Meteor.startup(function() {
 		// Publish course records
 		Meteor.publish('course-records', function() {
-			if(typeof this.userId !== "undefined") {
-				return course_records.find({
-					user_id: this.userId
-				}, {
-					fields: {
-						'labs.data': 0,
-						'labs.tasks.data': 0
-					}
-				});
-			}
-			else {
-				return null;
-			}
+			this.autorun(function(computation) {
+				if(typeof this.userId !== "undefined") {
+					return course_records.find({
+						user_id: this.userId
+					}, {
+						fields: {
+							'labs.data': 0,
+							'labs.tasks.data': 0
+						}
+					});
+				}
+				else {
+					return null;
+				}
+			});
 		});
 	});
 }
