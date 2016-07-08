@@ -53,23 +53,21 @@ courses.allow({
 **/
   if(Meteor.isServer){
     Meteor.startup(function(){
-
-       // Publish My Courses
-			Meteor.publish('user-courses', function(){
+      // Publish My Courses
+      Meteor.publish('user-courses', function(){
         this.autorun(function(computation){
-
-					// Get Course IDs
-					let roles = (<any>(Meteor.users.findOne(this.userId))).roles;
-					let course_ids = ((_.unzip(roles.student))[0]).concat(roles.instructor);
+          // Get Course IDs
+          let roles = (<any>(Meteor.users.findOne(this.userId))).roles;
+          let course_ids = ((_.unzip(roles.student))[0]).concat(roles.instructor);
 					
-					// Publish Matching Course IDs
-					return courses.find({_id: {$in : course_ids}});
+          // Publish Matching Course IDs
+          return courses.find({_id: {$in : course_ids}});
         });
-       });
-			/*
-			Meteor.publish('all-courses', function(){
-			});
-			*/
-       //TODO @sander Publish Course Based on Route
+      });
+      /*
+      Meteor.publish('all-courses', function(){
+      });
+      */
+      //TODO @sander Publish Course Based on Route
     });
   }
