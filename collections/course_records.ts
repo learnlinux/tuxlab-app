@@ -35,21 +35,6 @@ declare var SimpleSchema: any;
 
 
 if(Meteor.isServer) {
-	Meteor.publish('course-records', function() {
-		if(this.userId !== "undefined") {
-			return course_records.find({
-				user_id: this.userId
-			}, {
-				fields: {
-					'labs.data': 0,
-					'labs.tasks.data': 0
-				}
-			});
-		}
-		else {
-			return null;
-		}
-	});
   Meteor.startup(function() {
     var taskSchema = new SimpleSchema({
       _id: {
@@ -96,3 +81,33 @@ if(Meteor.isServer) {
     (<any>course_records).attachSchema(recordSchema);
   });
 }
+
+/**
+  DATA PUBLICATION
+**/
+if(Meteor.isServer) {
+	Meteor.startup(function() {
+		// Publish course records
+		Meteor.publish('course-records', function() {
+			if(typeof this.userId !== "undefined") {
+				return course_records.find({
+					user_id: this.userId
+				}, {
+					fields: {
+						'labs.data': 0,
+						'labs.tasks.data': 0
+					}
+				});
+			}
+			else {
+				return null;
+			}
+		});
+	});
+}
+
+
+
+
+
+
