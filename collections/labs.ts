@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
 
+declare var validateLab : any;
+import validateLab = require('../server/imports/lab/checkLab');
 export const labs : any = new Mongo.Collection('labs');
 
 /**
@@ -93,10 +95,30 @@ labs.allow({
   if(Meteor.isServer){
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
-        if (typeof fieldNames === "undefined" || fieldNames.includes('tasks') || fieldNames.includes('file')){
+        if (typeof fieldNames === "undefined"){
+		console.log("inserting");
+          if(!(doc.course_id && doc.file && //check for lab fields
+             (Meteor.isServer || Roles.isInstructorFor(doc.course_id,userid))&& //check for instructor authorization
+             validateLab(doc.file))){ //check for labfile errors
+	    return false;
+	  }
+	  
           //TODO @CEM: Validate Lab
           //TODO @CEM: Generate tasks array
         }
+	else if(fieldNames.includes('tasks') && !fieldNames.includes('file')){
+          return false;
+	}
+	else if(fieldNames.includes('file')){
+	  if(!((Meteor.isServer || Roles.isInstructorFor(doc.course_id,userid)) && //check for instructor authorization
+		  validateLab(modifier.$set.file))){  //check for labfile errors
+	    return false;
+	  }
+	  else{
+	      if(modifier) {modifier.$set.updated = Date.now(); }
+	      doc.updated = Date.now();
+	  }
+	}
       }
       labs.before.update(LabValidator);
       labs.before.insert(LabValidator);
