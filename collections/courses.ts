@@ -20,22 +20,49 @@ courses.allow({
   }
 });
 
-/* SCHEMA */
-  declare var SimpleSchema: any;
+/**
+  SCHEMA
+**/
+declare var SimpleSchema: any;
 
-  if (Meteor.isServer){
-    Meteor.startup(function(){
-      var courseSchema = new SimpleSchema({
-        course_name: {
-          type: String
-        },
-        course_number: {
-          type: String
-        },
-        labs: {
-          type: [String]
+if (Meteor.isServer){
+  Meteor.startup(function(){
+    var courseSchema = new SimpleSchema({
+      course_name: {
+        type: String
+      },
+      course_number: {
+        type: String
+      },
+      labs: {
+        type: [String]
+      }
+    });
+    (<any>courses).attachSchema(courseSchema);
+  });
+}
+
+/**
+  DATA PUBLICATION
+**/
+
+if (Meteor.isServer){
+  Meteor.startup(function(){
+
+    // Publish Courses the User is Enrolled In
+    Meteor.publish('courses', function(){
+      this.autorun(function(){
+        if(this.userId !== null){
+          var user = Meteor.users.findOne(this.userId, {fields: {roles: 1}});
+
+          return courses.find({})
+        }
+        else{
+          return [];
         }
       });
-      (<any>courses).attachSchema(courseSchema);
     });
-  }
+
+
+  });
+}

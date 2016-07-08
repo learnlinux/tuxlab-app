@@ -21,5 +21,5 @@ Collections.labs = labs;
 import {course_records} from "../collections/course_records.ts";
 Collections.course_records = course_records;
 
-//import meteor methods
+// Meteor Methods Import
 import "./imports/lab/methods.ts"
