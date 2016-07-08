@@ -36,8 +36,7 @@ declare var SimpleSchema: any;
 
 if(Meteor.isServer) {
 	Meteor.publish('course-records', function() {
-		const user = Meteor.users.findOne(this.userId);
-		if(user) {
+		if(this.userId !== "undefined") {
 			return course_records.find({
 				user_id: this.userId
 			}, {

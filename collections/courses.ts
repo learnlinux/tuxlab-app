@@ -27,9 +27,9 @@ courses.allow({
   declare var SimpleSchema: any;
 
   if (Meteor.isServer){
-		Meteor.publish('courses', function() {
+		Meteor.publish('user-courses', function() {
 			if(this.userId) {
-				let courseRecords = course_records.find({ _id: this.userId });
+				let courseRecords = course_records.find({ user_id: this.userId });
 				let courseIds = courseRecords.map(function(cr) {
 					return (<any>cr).course_id;
 				});
@@ -42,6 +42,18 @@ courses.allow({
 			}
 			else {
 				return null;
+			}
+		});
+		Meteor.publish('all-courses', function() {
+			if(this.userId !== "undefined") {
+				const MAX_COURSES = 10;
+				const query = {
+
+				};
+				const options = {
+					limit: MAX_COURSES
+				};
+				return courses.find(query, options);
 			}
 		});
     Meteor.startup(function(){

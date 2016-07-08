@@ -56,7 +56,7 @@
                         font-weight: 300;
                         margin: 0px;
                         margin-left: 12px;
-                        white-space:nowrap;
+                        white-space: nowrap;
                     }
                     h2 {
                         font-size: 8pt;
@@ -154,17 +154,19 @@
     }
     .sidenav-buttons {
         margin-top: 10px;
-        button {
-            width: 260px;
-            display: block;
-            border-radius: 0;
-            margin: 0;
-            height: 50px;
-            text-align: left;
-            md-icon {
-                vertical-align: top;
-            }
-        }
+				a {
+					width: 260px;
+					display: block;
+					border-radius: 0;
+					margin: 0;
+					height: 50px;
+					text-align: left;
+					color: black;
+					line-height: 50px;
+					md-icon {
+						vertical-align: top;
+					}
+				}
     }
 }
 

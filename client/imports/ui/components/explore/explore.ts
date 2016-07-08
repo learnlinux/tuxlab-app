@@ -50,12 +50,9 @@ export class ExploreView extends MeteorComponent {
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
-		this.getCourses();
-	}
-	getCourses() {
-		this.subscribe('courses', () => {
+		this.subscribe('all-courses', () => {
 			this.courses = courses.find().fetch();
 		}, true);
-	}	
+	}
 }
 
