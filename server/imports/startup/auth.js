@@ -1,6 +1,4 @@
-
-// Confgiure Google Provider
-  ServiceConfiguration.configurations.remove({
+ServiceConfiguration.configurations.remove({
     service: "google"
   });
 
