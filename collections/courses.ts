@@ -23,7 +23,9 @@ courses.allow({
   }
 });
 
-/* SCHEMA */
+/**
+  SCHEMA
+**/
   declare var SimpleSchema: any;
 
   if (Meteor.isServer){
@@ -69,5 +71,29 @@ courses.allow({
         }
       });
       (<any>courses).attachSchema(courseSchema);
+    });
+  }
+
+/**
+  DATA PUBLICATION
+**/
+  if(Meteor.isServer){
+    Meteor.startup(function(){
+
+       // Publish My Courses
+       Meteor.publish('my-courses', function(){
+          this.autorun(function(computation){
+
+            // Get Course IDs
+            var roles = Meteor.users.findOne(this.userId, {fields : {roles : 1}});
+                course_ids = (_.unzip(roles.student)[0]).concat(roles.instructor);
+
+            // Publish Matching Course IDs
+            return courses.find({_id: {$in : course_ids}});
+
+          });
+       });
+
+       //TODO @sander Publish Course Based on Route
     });
   }

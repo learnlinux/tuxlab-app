@@ -1,4 +1,5 @@
-ServiceConfiguration.configurations.remove({
+  // Google Accounts Configuration
+ ServiceConfiguration.configurations.remove({
     service: "google"
   });
 
