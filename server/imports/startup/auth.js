@@ -47,8 +47,8 @@ Accounts.validateNewUser(function(user){
   }
   TuxLog.log('silly', "user logged in successfully");
   user.profile.picture = user.services.google.picture;
-  user.profile.firstName = user.services.google.given_name;
-  user.profile.lastName = user.services.google.family_name;
+  user.profile.first_name = user.services.google.given_name;
+  user.profile.last_name = user.services.google.family_name;
   user.profile.email = user.services.google.email;
   return true;
 });
