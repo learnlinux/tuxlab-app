@@ -3,8 +3,6 @@ import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
 
-declare var validateLab : any;
-var validateLab = require('../server/imports/lab/checkLab');
 export const labs : any = new Mongo.Collection('labs');
 
 /**
@@ -93,16 +91,18 @@ labs.allow({
 
 /* LAB VALIDATOR */
   if(Meteor.isServer){
+    var validateLab : any = require('../server/imports/lab/checkLab');
+
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
         if (typeof fieldNames === "undefined"){
-		console.log("inserting");
+        		console.log("inserting");
           if(!(doc.course_id && doc.file && //check for lab fields
              (Meteor.isServer || Roles.isInstructorFor(doc.course_id,userid))&& //check for instructor authorization
              validateLab(doc.file))){ //check for labfile errors
 	    return false;
 	  }
-	  
+
           //TODO @CEM: Validate Lab
           //TODO @CEM: Generate tasks array
         }
