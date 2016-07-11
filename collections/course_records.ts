@@ -87,26 +87,45 @@ if(Meteor.isServer) {
 **/
 if(Meteor.isServer) {
 	Meteor.startup(function() {
+    
 		// Publish course records
 		Meteor.publish('course-records', function() {
 			this.autorun(function(computation) {
+        
+        // Check existance of userId
 				if(typeof this.userId !== "undefined") {
-					return course_records.find({
-						user_id: this.userId
-					}, {
-						fields: {
-							'labs.data': 0,
-							'labs.tasks.data': 0
-						}
-					});
-				}
-				else {
-					return null;
-				}
-			});
-		});
-	});
-}
+           
+          // Check if userId indeed corresponds to a user in the database
+          let user = Meteor.users.findOne(this.userId);
+          if(typeof user !== "undefined") {
+						
+            // Get instructor taught courses
+            let course_ids = (<any>user).roles.instructor;
+            
+            // Search Query
+            return course_records.find({
+							$or: [
+                {
+                  user_id: this.userId
+                },
+                {
+                  course_id: {
+                    $in: course_ids
+                  }
+                }
+              ]
+						}, {
+							fields: {
+								'labs.data': 0,
+								'labs.tasks.data': 0
+							}
+						}); //return course_records 
+					} // if (user != undefined)
+				} // if (userId != undefined)
+			}); // autorun
+		}); // Meteor.publish
+	}); //Meteor.startup
+} //Meteor.isServer
 
 
 

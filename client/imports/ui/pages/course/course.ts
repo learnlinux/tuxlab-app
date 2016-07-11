@@ -43,36 +43,31 @@
 	})
 
 // Export CourseView Class
-    export class CourseView extends MeteorComponent {
-			course;
-			courseNumber: String = '15-322'; // TODO: Get from URL
-			courseDescription: String = "Course Description Not Found";
-			courseName: String = "Course Name Not Found";
+  export class CourseView extends MeteorComponent {
+    course;
+    courseNumber: String = '15-131'; // TODO: Get from URL
+    courseDescription: String = "Course Description Not Found";
+    courseName: String = "Course Name Not Found";
 
-			constructor(mdIconRegistry: MdIconRegistry) {
-				super();
-        // Create Icon Font
-        mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-        mdIconRegistry.setDefaultFontSetClass('tuxicon');
+    constructor(mdIconRegistry: MdIconRegistry) {
+      super();
+      // Create Icon Font
+      mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+      mdIconRegistry.setDefaultFontSetClass('tuxicon');
+      
+      // Display Course Toolbar
+      document.getElementById('course-toolbar').style.display = "block";
+      
+      // Activate toolbar button
+      document.getElementById('toolbar-course').className += " active-button";
 
-        // Display Course Toolbar
-        document.getElementById('course-toolbar').style.display = "block";
-
-        // Activate toolbar button
-        document.getElementById('toolbar-course').className += " active-button";
-
-            this.setCourse(this.courseNumber);
+      // Subscribe to courses database and set current course
+      this.subscribe('user-courses', this.courseNumber, () => {
+        this.course = courses.findOne({ course_number: this.courseNumber });
+        if (typeof this.course !== "undefined") {
+          this.courseName = this.course.course_name;
+          this.courseDescription = this.course.course_description.content;
         }
-
-        // Method to Subscribe to courses database and set the current course
-        setCourse(courseNumber) {
-          this.subscribe('user-courses', courseNumber, () => {
-						console.log('haha');
-            this.course = courses.findOne({ course_number: courseNumber });
-              if (this.course !== undefined) {
-                this.courseName = this.course.course_name;
-                this.courseDescription = this.course.course_description;
-              }
-          }, true);
-        }
+      }, true);
     }
+  }

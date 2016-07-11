@@ -42,9 +42,13 @@
     "client/imports/ui/pages/static/privacy.ts",
     "client/imports/ui/pages/static/terms.ts",
     "client/tuxlab.ts",
+    "server/imports/lab/checkLab.d.ts",
     "server/imports/lab/methods.ts",
+    "typings/globals/es6-shim/index.d.ts",
     "typings/globals/meteor/index.d.ts",
-    "typings/index.d.ts"
+    "typings/globals/require/index.d.ts",
+    "typings/index.d.ts",
+    "typings/modules/es6-promise/index.d.ts"
   ],
   "atom": {
     "rewriteTsconfig": true
