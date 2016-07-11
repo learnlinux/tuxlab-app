@@ -3,6 +3,7 @@
   	import { Mongo }  from 'meteor/mongo';
   	import 'reflect-metadata';
   	import 'zone.js/dist/zone';
+
 // Angular Imports
   	import { Component, ViewEncapsulation, provide } from '@angular/core';
   	import { bootstrap } from 'angular2-meteor-auto-bootstrap';
@@ -21,14 +22,15 @@
 @Component({
   selector: 'tuxlab-taskview',
   templateUrl: '/client/imports/ui/pages/lab/taskview.html',
-  directives: [ MarkdownView ]
+  directives: [ MarkdownView, Terminal ]
 })
 
 export class TaskView extends MeteorComponent{
 
   constructor() {
     super();
-    Meteor.call('createLab',{courseId: "5",labId: 5},(err,res) => {console.log("fired",err,res)});
+    //TODO This Doesn't Exist
+    //Meteor.call('createLab',{courseId: "5",labId: 5},(err,res) => {console.log("fired",err,res)});
   }
 
 }
