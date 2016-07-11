@@ -2,7 +2,7 @@
 
 // Meteor Imports
     import { Meteor } from 'meteor/meteor';
-    import { Mongo }       from 'meteor/mongo';
+    import { Mongo } from 'meteor/mongo';
     import 'reflect-metadata';
     import 'zone.js/dist/zone';
 

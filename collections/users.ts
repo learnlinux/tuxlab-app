@@ -16,7 +16,8 @@ if (Meteor.isServer){
         type: String
       },
       school: {
-        type: String
+        type: String,
+        optional: true
       },
       email: {
         type: String

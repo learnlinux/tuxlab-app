@@ -53,10 +53,14 @@ courses.allow({
 **/
   if(Meteor.isServer){
     Meteor.startup(function(){
+
       // Publish My Courses
-      Meteor.publish('user-courses', function(){
+      Meteor.publish('user-courses', function() {
         this.autorun(function(computation){
           // Get Course IDs
+					if (typeof this.userId !== "undefined") {
+						let roles = (<any>(Meteor.users.findOne(this.userId))).
+					}
           let roles = (<any>(Meteor.users.findOne(this.userId))).roles;
           let course_ids = ((_.unzip(roles.student))[0]).concat(roles.instructor);
 					
@@ -64,8 +68,12 @@ courses.allow({
           return courses.find({_id: {$in : course_ids}});
         });
       });
+
+			// Publish All Courses
       Meteor.publish('all-courses', function(){
-				return courses.find();
+				this.autorun(function(computation) {
+					return courses.find();
+				});
       });
       //TODO @sander Publish Course Based on Route
     });
