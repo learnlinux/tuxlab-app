@@ -25,18 +25,22 @@ html, body {
 
 // Page Wrap
 tuxlab{
-  min-height: 100%;
-  margin-bottom: -$tuxlab-footer-height;
 
-  &:after{
-    height: $tuxlab-footer-height;
-    content:"";
-    display:block;
-  }
 }
 
 .page-content {
 	overflow-x: hidden;
+
+  .page-content-wrapper{
+    min-height: 100vh;
+    margin-bottom: -$tuxlab-footer-height;
+
+    &:after{
+      height: $tuxlab-footer-height;
+      content:"";
+      display:block;
+    }
+  }
 }
 
 

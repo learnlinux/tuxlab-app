@@ -6,7 +6,7 @@
 import { Component, ElementRef, Input } from '@angular/core';
 
 // Import HTerm
-/// <reference path="hterm_all.ts"/>
+
 declare var io: any;
 declare var lib: any;
 declare var hterm: any;
@@ -14,25 +14,25 @@ declare var window: any;
 
 @Component({
   selector: 'terminal',
-  inputs: ['username','host','domain','path'],
-  template:`
-    <h1>Terminal Placeholder</h1>
-  `
+  inputs: ['username','password','host','domain','path'],
+  template:`<div></div>`
 })
 export class Terminal {
+
 @Input() username: string;
+@Input() password: string;
 @Input() host: string;
 @Input() domain: string;
 @Input() path: string;
 
-  constructor (el : ElementRef){
+  constructor(el : ElementRef){
     var term;
     var buf = '';
 
     // Connection Defaults
     var opts = {
       // SSH Connection
-      username : this.username || 'root',
+      username : this.username || 'tux',
       host: this.host,
       // Socket.io Connection
       domain : this.domain || 'http://localhost' ,
@@ -40,7 +40,7 @@ export class Terminal {
     }
 
     // Create Query Object
-    var query = "username="+opts.username;
+    var query = "username="+opts.username+"&password="+opts.password;
     if (typeof opts.host !== "undefined")
       query = query + "&host=" + opts.host;
 
@@ -81,6 +81,7 @@ export class Terminal {
             hterm.defaultStorage = new lib.Storage.Local();
             term = new hterm.Terminal();
             window.term = term;
+
             term.decorate(el.nativeElement);
 
             term.setCursorPosition(0, 0);
@@ -123,8 +124,5 @@ export class Terminal {
     socket.on('disconnect', function() {
         console.log("Socket.io connection closed");
     });
-
-
-
   }
 }
