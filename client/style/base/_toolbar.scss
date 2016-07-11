@@ -56,7 +56,7 @@
                         font-weight: 300;
                         margin: 0px;
                         margin-left: 12px;
-                        white-space:nowrap;
+                        white-space: nowrap;
                     }
                     h2 {
                         font-size: 8pt;
@@ -74,103 +74,105 @@
 }
 // Sub-toolbar
 #course-toolbar {
-    display: none;
-    md-toolbar {
-        min-height: inherit;
-        background-color: #f0f0f0;
-        .wrapper {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            max-width: $tuxlab-max-width;
-            margin: 0 auto;
-            div {
-                height: 100%;
-            }
-            .course-toolbar-nav {
-                [md-button] {
-                    font-weight: 300;
-                }
-                a {
-                    color: black;
-                    border-radius: 0;
-                    height: 66px;
-                    padding-top: 14px;
-                    line-height: 45px;
-                }
-                a.home-button, a.home-button:visited {
-                    font-weight: bold;
-                    font-size: 20px;
-                    padding-left: 16px;
-                    padding-right: 16px;
-                }
-                a.active-button, a.active-button:visited {
-                    border-bottom: solid 4px #ffd600;
-                }
-                a.active-button:hover {
-                    border-bottom: solid 5px #ffc400;
-                }
-            }
+  display: none;
+  md-toolbar {
+    min-height: inherit;
+    background-color: #f0f0f0;
+    .wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      max-width: $tuxlab-max-width;
+      margin: 0 auto;
+      div {
+        height: 100%;
+      }
+      .course-toolbar-nav {
+        [md-button] {
+          font-weight: 300;
         }
+        a {
+          color: black;
+          border-radius: 0;
+          height: 66px;
+          padding-top: 14px;
+          line-height: 45px;
+        }
+        a.home-button, a.home-button:visited {
+          font-weight: bold;
+          font-size: 20px;
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        a.active-button, a.active-button:visited {
+          border-bottom: solid 4px #ffd600;
+        }
+        a.active-button:hover {
+          border-bottom: solid 5px #ffc400;
+        }
+      }
     }
+  }
 }
 
 // Sidenav
 #sidenav {
-    padding-left: 0;
-    padding-right: 0;
-    height: 100vh;
-    width: 260px;
-    position: fixed;
-    top: 0;
-    right: 0;
-    background-color: white;
-    z-index: 998;
-    padding-top: 0;
-    .sidenav-profile {
-        background-image: $university_picture;
-        background-position: center;
-        height: 150px;
-        background-size: 100%;
-        padding: 15px;
-        color: #fafafa;
-        box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.5);
-        p {
-            text-align: center;
-        }
-        .sidenav-profile-pic {
-            margin-top: 10px;
-            text-align: center;
-            img {
-                height: 56px;
-                width: 56px;
-                border-radius: 50%;
-                border: solid 2px #fafafa;
-            }
-        }
+  padding-left: 0;
+  padding-right: 0;
+  height: 100vh;
+  width: 260px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: white;
+  z-index: 998;
+  padding-top: 0;
+  .sidenav-profile {
+    background-image: $university_picture;
+    background-position: center;
+    height: 150px;
+    background-size: 100%;
+    padding: 15px;
+    color: #fafafa;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.5);
+    p {
+      text-align: center;
     }
-    .sidenav-buttons {
-        margin-top: 10px;
-        button {
-            width: 260px;
-            display: block;
-            border-radius: 0;
-            margin: 0;
-            height: 50px;
-            text-align: left;
-            md-icon {
-                vertical-align: top;
-            }
-        }
+    .sidenav-profile-pic {
+      margin-top: 10px;
+      text-align: center;
+      img {
+        height: 56px;
+        width: 56px;
+        border-radius: 50%;
+        border: solid 2px #fafafa;
+      }
     }
+  }
+  .sidenav-buttons {
+    margin-top: 10px;
+    a {
+      width: 260px;
+      display: block;
+      border-radius: 0;
+      margin: 0;
+      height: 50px;
+      text-align: left;
+      color: black;
+      line-height: 50px;
+      md-icon {
+        vertical-align: top;
+      }
+    }
+  }
 }
 
 md-sidenav-layout {
-    .page-content {
-        padding: 0;
-        background-color: #e5e6e6;
-    }
+  .page-content {
+    padding: 0;
+    background-color: #e5e6e6;
+  }
 }

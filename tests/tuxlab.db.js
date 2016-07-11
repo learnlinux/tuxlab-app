@@ -27,6 +27,7 @@ describe('Database Schema', function(){
       var example_course = {
         course_number: "15-131",
         course_name: "Great Practical Ideas for Computer Scientists",
+				course_description: '',
         instructor_name: "Tom Cortina",
         labs: []
       }

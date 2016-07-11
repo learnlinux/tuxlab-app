@@ -1,8 +1,7 @@
+import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor';
 
-import {Mongo} from 'meteor/mongo';
-import {Meteor} from 'meteor/meteor';
-
-import {Roles} from './users.ts';
+import { Roles } from './users.ts';
 
 export const course_records = new Mongo.Collection('course_records');
 
@@ -33,6 +32,7 @@ course_records.allow({
 
 /* Schema */
 declare var SimpleSchema: any;
+
 
 if(Meteor.isServer) {
   Meteor.startup(function() {
@@ -81,3 +81,35 @@ if(Meteor.isServer) {
     (<any>course_records).attachSchema(recordSchema);
   });
 }
+
+/**
+  DATA PUBLICATION
+**/
+if(Meteor.isServer) {
+	Meteor.startup(function() {
+		// Publish course records
+		Meteor.publish('course-records', function() {
+			this.autorun(function(computation) {
+				if(typeof this.userId !== "undefined") {
+					return course_records.find({
+						user_id: this.userId
+					}, {
+						fields: {
+							'labs.data': 0,
+							'labs.tasks.data': 0
+						}
+					});
+				}
+				else {
+					return null;
+				}
+			});
+		});
+	});
+}
+
+
+
+
+
+

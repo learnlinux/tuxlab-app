@@ -17,5 +17,36 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "files": [
+    "client/imports/lab/methods.ts",
+    "client/imports/ui/components/explore/explore.ts",
+    "client/imports/ui/components/explore/search.ts",
+    "client/imports/ui/components/gradelist/gradelist.ts",
+    "client/imports/ui/components/lablist/lablist.ts",
+    "client/imports/ui/components/loadscreen/loadscreen.ts",
+    "client/imports/ui/components/markdown/markdown.ts",
+    "client/imports/ui/components/markdown/marked.d.ts",
+    "client/imports/ui/components/mdeditor/mdeditor.ts",
+    "client/imports/ui/components/wetty/terminal.ts",
+    "client/imports/ui/pages/account/account.ts",
+    "client/imports/ui/pages/account/login.ts",
+    "client/imports/ui/pages/course/course.ts",
+    "client/imports/ui/pages/course/gradelist.ts",
+    "client/imports/ui/pages/course/lablist.ts",
+    "client/imports/ui/pages/dashboard/dashboard.ts",
+    "client/imports/ui/pages/error/404.ts",
+    "client/imports/ui/pages/explore/explore.ts",
+    "client/imports/ui/pages/instructor/instructor.ts",
+    "client/imports/ui/pages/lab/taskview.ts",
+    "client/imports/ui/pages/static/privacy.ts",
+    "client/imports/ui/pages/static/terms.ts",
+    "client/tuxlab.ts",
+    "server/imports/lab/methods.ts",
+    "typings/globals/meteor/index.d.ts",
+    "typings/index.d.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true
+  }
 }

@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from './users.ts';
 
 declare var validateLab : any;
-import validateLab = require('../server/imports/lab/checkLab');
+var validateLab = require('../server/imports/lab/checkLab');
 export const labs : any = new Mongo.Collection('labs');
 
 /**
@@ -26,6 +26,17 @@ labs.allow({
   declare var SimpleSchema: any;
   declare var Collections: any;
   declare var TuxLog: any;
+
+	if(Meteor.isServer) {
+		Meteor.publish('labs', function() {
+			if(this.userId) {
+				return labs.find({ hidden: false });
+			}
+			else {
+				return null;
+			}
+		});
+	}
 
   if (Meteor.isServer){
     Meteor.startup(function(){
