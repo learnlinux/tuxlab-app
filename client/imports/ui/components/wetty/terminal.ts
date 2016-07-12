@@ -25,7 +25,7 @@ export class Terminal {
 @Input() domain: string;
 @Input() path: string;
 
-  constructor(el : ElementRef){
+  createTerminal(el : ElementRef){
     var term;
     var buf = '';
 
@@ -33,6 +33,7 @@ export class Terminal {
     var opts = {
       // SSH Connection
       username : this.username || 'tux',
+      password: this.password,
       host: this.host,
       // Socket.io Connection
       domain : this.domain || 'http://localhost' ,

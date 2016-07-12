@@ -19,6 +19,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   profile: {
     first_name : "Derek",
     last_name : "Brown",
+    nickname: "Derek",
     school : "School of Computer Science",
     email : "derek@tuxlab.org",
     picture : "https://placekitten.com/g/250/250"
