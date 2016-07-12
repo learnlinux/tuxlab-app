@@ -1,10 +1,10 @@
 /** Test Suite for TuxLab-App
     using Meteor Gagarian (https://github.com/anticoders/gagarin)
 **/
+var tuxlab = require('../server/imports/api/tuxlab.js');
+
 describe('tuxlab.api.task tests',function(){
-  var tuxlab = require('../server/imports/api/tuxlab.js');
-  var task1 = tuxlab.newTask("titr","md",function(){},function(){});
-  console.log(task1);
+  var task1 = tuxlab.newTask("title","md",function(){},function(){});
   it('should have fields initialized',function(){
     expect(task1).to.have.property('next')
     .and.equal(null);
@@ -31,7 +31,6 @@ describe('tuxlab.api.task tests',function(){
 });
 
 describe('more tuxlab.api.task tests',function(){
-  var tuxlab = require('../server/imports/api/tuxlab.js');
   var task1 = tuxlab.newTask("title1","md1",function(){}, function(){});
   var task2 = tuxlab.newTask("title2","md2",function(){}, function(){});
   var task3 = tuxlab.newTask("title3","md3",function(){}, function(){});
@@ -39,6 +38,8 @@ describe('more tuxlab.api.task tests',function(){
   it('should be chained properly',function(){
     var tsk4 = task1.nextTask(task2).nextTask(task3).nextTask(task4);
     expect(tsk4).to.equal(task4);
+
+    // Test next method
     expect(task1).to.have.property('next')
       .and.equal(task2)
     expect(task2).to.have.property('next')
@@ -47,10 +48,13 @@ describe('more tuxlab.api.task tests',function(){
       .and.equal(task4)
     expect(task4).to.have.property('next')
      .and.equal(null);
+
+    // Test isLast Method
     expect(task1.isLast()).to.be.false
     expect(task2.isLast()).to.be.false
     expect(task3.isLast()).to.be.false
     expect(task4.isLast()).to.be.true
+
  /* task1.prnt = null;
     task1.next = null;
     task2.prnt = null;
@@ -61,11 +65,11 @@ describe('more tuxlab.api.task tests',function(){
     task4.next = null;
     expect(tuxlab).to.have.property('taskList')
      .and.equal([task2,task3,task4]);*/
+     
   });
 });
 
 describe('tuxlab.api.init tests',function(){
-  var tuxlab = require('../server/imports/api/tuxlab.js');
   var init = tuxlab.init();
   it('should have a proper parent',function(){
     expect(init).to.have.property('prnt')
@@ -82,9 +86,8 @@ describe('tuxlab.api.init tests',function(){
     expect(tuxlab).to.have.property('taskList')
       .and.equal([init]);*/
   });
-  var tuxlab1 = require('../server/imports/api/tuxlab.js');
-  var init1 = tuxlab1.init();
-  var task1 = tuxlab1.newTask("title","md",function(){},function(){});
+  var init1 = tuxlab.init();
+  var task1 = tuxlab.newTask("title","md",function(){},function(){});
   var tsk1 = init1.nextTask(task1);
   it('should have a working nextTask function', function(){
     expect(init1).to.have.property('next')

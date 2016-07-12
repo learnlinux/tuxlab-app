@@ -4,7 +4,6 @@ var labExec = function(){
   this.env = require('./lab.env.js');
 };
 
-//TODO: move to somewhere else
 labExec.prototype.check = function(str){
   if(!str) { return false; }
     try {
@@ -15,7 +14,7 @@ labExec.prototype.check = function(str){
       return false;
     }
     var tuxOrig = require('./tuxlab.js');
-    return tux.setup &&	
+    return tux.setup &&
            tux.tasks &&
            tux.init &&
            tux.newTask &&
@@ -27,20 +26,56 @@ labExec.prototype.check = function(str){
 
 /* init: pulls labFile and initializes labExec object from it
  */
-labExec.prototype.init = function(user,courseId,labId){
+labExec.prototype.init = function(user,labId,callback){
   var slf = this;
   this.env.setUser(user);
-  var course = Collections.courses.find({_id: courseId});
-  var lab_id = course.labs[labId];
-  var lab = Collections.courses.find({_id: lab_id});
-  slf.tuxlab = _eval(lab.labfile);
-  slf.tuxlab.taskNo = 0;
-  callback(null,slf.parseTasks());
+
+  // Get Metadata from Database
+  slf.lab = Collections.labs.findOne({_id: lab_id}, {fields: {'file' : 0}}).fetch();
+  if(lab.length < 0){
+    callback(new Error("Lab Not Found.", null));
+  }
+  else{
+
+    // Get Course Metadata
+    slf.course = Collections.courses.findOne({_id: lab.course_id}, {fields: {'labs' : 1 }}).fetch();
+
+    // Format LabFile Cache URL
+    var labfile_id = labId + "#" + lab.updated;
+
+    // Check Cache for LabFile Object
+    LabCache.get(labfile_id, function(err, value){
+      if(err){
+        callback("TuxLab Exec Error.", null);
+      }
+      else if(typeof value === "undefined"){
+        // Get LabFile from Database
+        var labfile_data = Collections.labs.findOne({_id: lab_id}, {fields : {'field' : 0}}).fetch();
+        slf.tuxlab = _eval(lab.labfile);
+
+        // Cache LabFile
+        LabCache.set(labfile_id, slf.tuxlab, function(err, success){
+          if(err || !success){
+            TuxLog.log('warn', err);
+          }
+        });
+
+        slf.tuxlab.taskNo = 0;
+        callback(null, lab.tasks);
+      }
+      else{
+        // Get LabFile from Cache
+        slf.tuxlab.taskNo = 0;
+        slf.tuxlab = value;
+        callback(null, lab.tasks);
+      }
+    });
+  }
 }
 
 labExec.prototype.parseTasks = function(){
   var slf = this;
-  return this.tuxlab.taskList.map(function(task,i){ 
+  return this.tuxlab.taskList.map(function(task,i){
     if(i <= slf.tuxlab.taskNo){
       return {title: task.title, markdown: task.markdown};
     }
@@ -61,31 +96,31 @@ labExec.prototype.start = function(callback){
   if(!this.tuxlab.currentTask.next){
     TuxLog.log('labfile_error','labfile tasks not properly chained at start');
     callback("Internal error",null);
-  } 
+  }
   this.tuxlab.currentTask = this.tuxlab.currentTask.next;
   this.currentTask.sFn().then(function(){ callback(null,slf.parseTasks(0)); });
 }
 
-/* next: verifies that task is completed 
+/* next: verifies that task is completed
  * moves on to next task and runs callback(null,parseTasks) if completed
  * runs callback(err,null) -err from verify- if not
  */
 labExec.prototype.next = function(callback){
   var slf = this;
-  if(this.tuxlab.currentTask.isLast()){ 
+  if(this.tuxlab.currentTask.isLast()){
     TuxLog.log("debug","trying to call nextTask on last task");
-    callback("Internall error",null);    
+    callback("Internal error",null);
   }
-  this.tuxlabcurrentTask.vFn().then(function(){ 
+  this.tuxlabcurrentTask.vFn().then(function(){
                            slf.tuxlab.currentTask = slf.tuxlab.currentTask.next;
                            slf.tuxlab.currentTask.sFn()
                              .then(function(){
                                slf.tuxLab.taskNo += 1;
 			       callback(null,slf.parseTasks());})
                          },
-			 function(err){ 
+			 function(err){
 			   callback(err,null);
-			 }); 
+			 });
 }
 
 /* end: verifies that last task is completed
