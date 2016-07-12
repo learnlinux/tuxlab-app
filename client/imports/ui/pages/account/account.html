@@ -2,13 +2,53 @@
   <md-card>
     <md-card-content>
       <div class="account-profile-picture">
-        <img src="{{ user.profile.picture }}">
+        <img src="{{ imgsrc }}">
       </div>
       <div class="account-display-name">
-        <h2>{{ user.profile.name }}</h2>
-        <p>{{ user.profile.school }}</p>
-        <p>{{ user.profile.email }}</p>
+        <h2>{{ name }}</h2>
+        <p>{{ school }}</p>
+        <p>{{ email }}</p>
+        <button md-raised-button (click)="test()">abc</button>
       </div>
     </md-card-content>  
   </md-card>
+  
+  <div class="personal-info">
+    <md-card>
+      <md-card-content>
+        <h2>Personal Info</h2>
+        
+        <div class="account-item" layout="row">
+          <p class="account-label" flex>Nickname</p>
+          <p class="account-info" flex>{{ nickname }}</p>
+          <a (click)="test()">
+            <md-icon fontIcon="tuxicon-cog"></md-icon>
+          </a>
+        </div>
+        
+        <md-divider></md-divider>
+        
+        <div class="account-item" layout="row">
+          <p class="account-label" flex>Email</p>
+          <p class="account-info" flex>{{ email }}</p>
+          <a (click)="test()">
+            <md-icon fontIcon="tuxicon-cog"></md-icon>
+          </a>
+        </div>
+        
+        <md-divider></md-divider>
+        
+        <div class="account-item" layout="row">
+          <p class="account-label" flex>password</p>
+          <p class="account-info" flex>********</p>
+          <a (click)="test()">
+            <md-icon fontIcon="tuxicon-cog"></md-icon>
+          </a>
+        </div>
+        
+        <md-divider></md-divider>
+        
+      </md-card-content>  
+    </md-card>
+  </div>
 </div>

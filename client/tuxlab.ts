@@ -45,12 +45,14 @@
 @Component({
     selector: 'tuxlab',
     templateUrl: '/client/tuxlab.html',
-    directives: [ ROUTER_DIRECTIVES,
-                  MATERIAL_DIRECTIVES,
-                  MD_TOOLBAR_DIRECTIVES,
-                  MD_ICON_DIRECTIVES,
-                  MD_SIDENAV_DIRECTIVES,
-                  RouterLink ],
+    directives: [ 
+      ROUTER_DIRECTIVES,
+      MATERIAL_DIRECTIVES,
+      MD_TOOLBAR_DIRECTIVES,
+      MD_ICON_DIRECTIVES,
+      MD_SIDENAV_DIRECTIVES,
+      RouterLink
+      ],
     viewProviders: [MdIconRegistry],
     encapsulation: ViewEncapsulation.None
 })
@@ -78,18 +80,18 @@
 
 @InjectUser("user")
 class TuxLab extends MeteorComponent {
-    user: Meteor.User;
-		userId = Meteor.userId();
-    constructor(mdIconRegistry: MdIconRegistry) {
-        super();
-        // Create Icon Font
-        mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-        mdIconRegistry.setDefaultFontSetClass('tuxicon');
-    }
-    tuxLogout() {
-        Meteor.logout();
-        window.location.href = "/";
-    }
+  user: Meteor.User;
+  userId = Meteor.userId();
+  constructor(mdIconRegistry: MdIconRegistry) {
+    super();
+    // Create Icon Font
+    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+    mdIconRegistry.setDefaultFontSetClass('tuxicon');
+  }
+  tuxLogout() {
+    Meteor.logout();
+    window.location.href = "/";
+  }
 }
 
 bootstrap(TuxLab, [
