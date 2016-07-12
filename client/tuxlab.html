@@ -6,7 +6,7 @@
                 <div class="sidenav-profile-pic">
                     <img src="{{ user.profile.picture }}">
                 </div>
-                <p>{{ user.profile.name }}</p>
+								<p>{{ user.profile.first_name }} {{ user.profile.last_name }}</p>
                 <p>Carnegie Mellon University</p>
             </div>
             <!--Buttons-->
@@ -54,7 +54,7 @@
                       <div class="tux-toolbar-profile " (click)="right.toggle()" *ngIf="user">
                           <img class="tux-toolbar-profile-pic" src="{{ user.profile.picture }}">
                           <div class="tux-toolbar-info">
-                              <h1> {{ user.profile.name }} </h1>
+                              <h1> {{ user.profile.first_name }} {{ user.profile.last_name }}</h1>
                               <h2> Carnegie Mellon </h2>
                           </div>
                           <div class="tux-toolbar-menu">

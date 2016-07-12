@@ -24,17 +24,8 @@ labs.allow({
   declare var SimpleSchema: any;
   declare var Collections: any;
   declare var TuxLog: any;
-
-	if(Meteor.isServer) {
-		Meteor.publish('labs', function() {
-			if(this.userId) {
-				return labs.find({ hidden: false });
-			}
-			else {
-				return null;
-			}
-		});
-	}
+  declare var _: any;
+  var _ = require('underscore');
 
   if (Meteor.isServer){
     Meteor.startup(function(){
@@ -137,3 +128,43 @@ labs.allow({
       });
     });
   }
+
+/**
+  DATA PUBLICATION
+**/
+if(Meteor.isServer) {
+  Meteor.startup(function() {
+    // Publish labs collection
+    Meteor.publish('labs', function() {
+      this.autorun(function(computation) {
+        
+        // Check if userId exists
+        if(typeof this.userId !== "undefined") {
+          
+          // Check if userId is indeed in the database
+          let user = Meteor.users.findOne(this.userId);
+          if(typeof user !== "undefined") {
+            
+            // Define roles of current user
+            let roles = (<any>(user)).roles;
+            if(typeof roles !== "undefined") {
+              
+              // Get student enrolled courseIds
+              let studentCourses = (_.unzip(roles.student))[0];
+              
+              // Concatenate student enrolled courseIds with Instructor taught courseIds
+              let course_ids = studentCourses.concat(roles.instructor);
+              
+              // Search Query
+              return labs.find({
+                course_id: {
+                  $in: course_ids
+                }
+              });
+            }
+          }
+        }
+      });
+    });
+  });
+}
