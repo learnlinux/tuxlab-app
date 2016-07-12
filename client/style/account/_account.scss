@@ -22,4 +22,35 @@
       position: relative;
     }
   }
+  .personal-info {
+    md-card-content {
+      padding: 30px;
+      h2 {
+        margin-bottom: 30px;
+      }
+      .account-item {
+        line-height: 50px;
+        font-size: 18px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        a {
+          cursor: pointer;
+        }
+        .account-label {
+          font-weight: 500;
+        }
+        .account-info {
+          color: #999999;
+        }
+        md-icon {
+          line-height: 10px;
+          color: #999999;
+          margin-right: 10px;
+        }
+        .tuxicon:before {
+          font-size: 48px;
+        }
+      }
+    }
+  }
 }
