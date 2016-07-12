@@ -23,5 +23,3 @@ Collections.course_records = course_records;
 
 //import meteor methods
 import "./imports/lab/methods.ts"
-
-import "../collections/test.ts";

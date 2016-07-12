@@ -33,16 +33,16 @@ courses.allow({
   var _ = require('underscore');
   if (Meteor.isServer){
     Meteor.startup(function(){
-			var descriptionSchema = new SimpleSchema({
-				content: {
-					type: String,
-					defaultValue: ""
-				},
-				syllabus: {
-					type: String, 
-					defaultValue: ""
-				}
-			});
+      var descriptionSchema = new SimpleSchema({
+        content: {
+          type: String,
+          defaultValue: ""
+        },
+        syllabus: {
+          type: String, 
+          defaultValue: ""
+        }
+      });
       var courseSchema = new SimpleSchema({
         course_name: {
           type: String
@@ -50,12 +50,12 @@ courses.allow({
         course_number: {
           type: String
         },
-				instructor_name: {
-					type: String
-				},
-				course_description: {
-					type: descriptionSchema	
-				},
+        instructor_name: {
+          type: String
+        },
+        course_description: {
+          type: descriptionSchema	
+        },
         labs: {
           type: [String]
         }
@@ -70,36 +70,36 @@ courses.allow({
   if(Meteor.isServer){
     Meteor.startup(function(){
 
-      // Publish My Courses
-      Meteor.publish('user-courses', function() {
-        this.autorun(function(computation){
-          
-          // Check existance of userId
-					if (typeof this.userId !== "undefined") {
-            
-            // Check if userId indeed corresponds to a user in the database
-						let user = Meteor.users.findOne(this.userId);
-						if (typeof user !== "undefined") {
-              let studentCourseIds = (_.unzip((<any>user).roles.student))[0];
-							let course_ids = studentCourseIds.concat((<any>user).roles.instructor);
-							// Publish courses that match
-							return courses.find({ _id: { $in: course_ids } });
-						}
-					}
-				});
-			});
+  // Publish My Courses
+  Meteor.publish('user-courses', function() {
+    this.autorun(function(computation){
 
-			// Publish All Courses
-      Meteor.publish('all-courses', function(){
-				this.autorun(function(computation) {
-					if(typeof this.userId !== "undefined") {
-						let user = (Meteor.users.findOne(this.userId));
-						if(typeof user !== "undefined") {
-							return courses.find();
-						}
-					}
-				});
-      });
+      // Check existance of userId
+      if (typeof this.userId !== "undefined") {
+
+        // Check if userId indeed corresponds to a user in the database
+        let user = Meteor.users.findOne(this.userId);
+        if (typeof user !== "undefined") {
+          let studentCourseIds = (_.unzip((<any>user).roles.student))[0];
+          let course_ids = studentCourseIds.concat((<any>user).roles.instructor);
+          // Publish courses that match
+          return courses.find({ _id: { $in: course_ids } });
+        }
+      }
+    });
+  });
+
+  // Publish All Courses
+  Meteor.publish('all-courses', function(){
+    this.autorun(function(computation) {
+      if(typeof this.userId !== "undefined") {
+        let user = (Meteor.users.findOne(this.userId));
+        if(typeof user !== "undefined") {
+          return courses.find();
+        }
+      }
+    });
+  });
 
       //TODO @sander Publish Course Based on Route
     });
