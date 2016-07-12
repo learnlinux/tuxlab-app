@@ -3,9 +3,8 @@
 **/
 
 // Angular Imports
-import { Component, ElementRef, Input } from '@angular/core';
-
-// Import HTerm
+import { Component, ElementRef, Input, ViewContainerRef } from '@angular/core';
+import { MdProgressCircle, MdSpinner } from '@angular2-material/progress-circle/progress-circle';
 
 declare var io: any;
 declare var lib: any;
@@ -15,9 +14,11 @@ declare var window: any;
 @Component({
   selector: 'terminal',
   inputs: ['username','password','host','domain','path'],
-  template:`<div></div>`
+  directives: [MdProgressCircle, MdSpinner],
+  template: '<div class="loading-menu"><h2>LOADING LAB...</h2><center><md-progress-circular md-mode="indeterminate"></md-progress-circular><md-spinner></md-spinner></center></div>'
 })
 export class Terminal {
+  private _viewContainer : ViewContainerRef;
 
 @Input() username: string;
 @Input() password: string;
@@ -25,7 +26,15 @@ export class Terminal {
 @Input() domain: string;
 @Input() path: string;
 
-  constructor(el : ElementRef){
+  constructor(private viewContainer:ViewContainerRef){
+     this._viewContainer = viewContainer;
+  }
+
+  openTerminal(el : ElementRef){
+    // Clear viewContainer
+    this._viewContainer.clear();
+
+    // Create Term
     var term;
     var buf = '';
 
@@ -33,6 +42,7 @@ export class Terminal {
     var opts = {
       // SSH Connection
       username : this.username || 'tux',
+      password: this.password,
       host: this.host,
       // Socket.io Connection
       domain : this.domain || 'http://localhost' ,
@@ -54,6 +64,7 @@ export class Terminal {
         this.io = null;
     }
 
+    // Bind Terminal Run
     WettyTerm.prototype.run = function() {
         this.io = this.argv_.io.push();
 
@@ -66,6 +77,7 @@ export class Terminal {
         socket.emit('input', str);
     };
 
+    // Terminal Rezie
     WettyTerm.prototype.onTerminalResize = function(col, row) {
         var resizeObj = {
           cols : col,
@@ -76,6 +88,7 @@ export class Terminal {
         socket.emit('resize', resizeObj );
     };
 
+    // Terminal Connection
     socket.on('connect', function() {
         lib.init(function() {
             hterm.defaultStorage = new lib.Storage.Local();

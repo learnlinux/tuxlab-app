@@ -16,6 +16,24 @@
       height: 100vh;
       width: 100%;
 
+      .loading-menu{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        h2{
+          color:#fff;
+          margin-bottom:15px;
+        }
+
+        md-progress-circle,
+        md-spinner {
+          display: block;
+
+        }
+      }
+
       iframe{
         box-sizing: border-box;
         padding:10px;
