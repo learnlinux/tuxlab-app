@@ -26,6 +26,9 @@ Collections.labs = labs;
 import {course_records} from "../collections/course_records.ts";
 Collections.course_records = course_records;
 
+Collections.logs = logs_collection;
+
+//import meteor methods
 // LabFile Cache
 var NodeCache = require('node-cache');
     LabCache = new NodeCache({
