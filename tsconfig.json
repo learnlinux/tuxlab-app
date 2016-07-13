@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "module": "commonjs",
     "target": "es5",
+    "module": "commonjs",
     "isolatedModules": false,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "sourceMap": true
+    "noLib": false,
+    "sourceMap": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
+  "compileOnSave": true,
   "filesGlob": [
     "client/**/*.ts",
     "server/**/*.ts",
@@ -41,6 +44,7 @@
     "client/imports/ui/pages/lab/taskview.ts",
     "client/imports/ui/pages/static/privacy.ts",
     "client/imports/ui/pages/static/terms.ts",
+    "client/routes.ts",
     "client/tuxlab.ts",
     "server/imports/lab/checkLab.d.ts",
     "server/imports/lab/methods.ts",

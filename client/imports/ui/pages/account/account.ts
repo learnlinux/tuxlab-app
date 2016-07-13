@@ -10,7 +10,6 @@
 
     import { APP_BASE_HREF } from '@angular/common';
     import { HTTP_PROVIDERS } from '@angular/http';
-    import { RouterLink, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
     import { InjectUser } from 'angular2-meteor-accounts-ui';
 

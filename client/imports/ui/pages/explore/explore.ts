@@ -1,6 +1,6 @@
 // Meteor Imports
 	import { Meteor } from 'meteor/meteor';
-	import { Mongo }       from 'meteor/mongo';
+	import { Mongo } from 'meteor/mongo';
 	import 'reflect-metadata';
 	import 'zone.js/dist/zone';
 
@@ -30,12 +30,12 @@
 		selector: 'tuxlab-explore',
 		templateUrl: '/client/imports/ui/pages/explore/explore.html',
 		directives: [ MATERIAL_DIRECTIVES,
-					  MD_ICON_DIRECTIVES,
-					  MD_TABS_DIRECTIVES,
-					  MD_INPUT_DIRECTIVES,
-					  MdToolbar,
-					  ExploreView,
-					  SearchView ],
+								  MD_ICON_DIRECTIVES,
+								  MD_TABS_DIRECTIVES,
+								  MD_INPUT_DIRECTIVES,
+								  MdToolbar,
+								  ExploreView,
+								  SearchView ],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})
@@ -60,7 +60,7 @@ export default class Explore extends MeteorComponent {
 			document.getElementById('explore-view').style.display = 'none';
 			document.getElementById('search-view').style.display = 'block';
 			document.getElementById('search-input').blur();
-			document.getElementById('search-string').innerHTML = "Search Results for '" + searchQuery + "'";
+			document.getElementById('search-string').innerHTML = "Search Results for \'" + searchQuery + "\'";
 		}
 		else {
 			document.getElementById('explore-view').style.display = 'block';

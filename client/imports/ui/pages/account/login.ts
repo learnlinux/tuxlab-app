@@ -18,8 +18,6 @@
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
   import { MeteorComponent } from 'angular2-meteor';
 
-  import { ROUTER_PROVIDERS, RouterLink, RouteConfig, Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
-
   // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
@@ -28,13 +26,13 @@
   @Component({
     selector: 'tuxlab-login',
     templateUrl: '/client/imports/ui/pages/account/login.html',
-    directives: [LoginButtons,RouterLink, MD_ICON_DIRECTIVES,ROUTER_DIRECTIVES]
+    directives: [LoginButtons, MD_ICON_DIRECTIVES]
   })
 
 export default class Login extends MeteorComponent {
   user: Meteor.User;
 
-  constructor(private router: Router) {
+  constructor() {
 
     super();
   }
