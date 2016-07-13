@@ -98,10 +98,10 @@ class TuxLab extends MeteorComponent {
 
 bootstrap(TuxLab, [
   ResponsiveState,
-	MATERIAL_PROVIDERS,
-	HTTP_PROVIDERS,
-	MdIconRegistry,
-	ROUTER_PROVIDERS,
-	provide(APP_BASE_HREF, { useValue: '/' }),
+  MATERIAL_PROVIDERS,
+  HTTP_PROVIDERS,
+  MdIconRegistry,
+  ROUTER_PROVIDERS,
+  provide(APP_BASE_HREF, { useValue: '/' }),
   provide(PLATFORM_DIRECTIVES, { useValue: [RESPONSIVE_DIRECTIVES], multi: true })
 ]);
