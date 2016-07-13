@@ -36,7 +36,7 @@
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})
-	
+
 // Export Explore Class 
 export class SearchView extends MeteorComponent {
 
@@ -47,30 +47,29 @@ export class SearchView extends MeteorComponent {
 		totalItems: this.courses.length
 	};
 	pagedCourses: Array<any> = [];
-	
+
 	constructor(mdIconRegistry: MdIconRegistry) {
 		super();
-		
+
 		// Create Icon Font
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
-    
-    // Subscribe Courses Database
-    //this.getCourses();
+
+    		// Subscribe Courses Database
 		this.subscribe('all-courses', () => {
 			this.courses = courses.find().fetch();
 			this.pagination.totalItems = this.courses.length;
 			this.refreshCourses();
 		}, true);
 	}
-	
+
 	// Refresh Courses List
 	refreshCourses() {
 		let start = (this.pagination.currentPage - 1) * this.pagination.itemsPerPage;
 		let end = start + this.pagination.itemsPerPage;
 		this.pagedCourses = this.courses.slice(start, end);
 	}
-	
+
 	// Display the infomation of current state of pagination
 	getCurrentInfo() {
 		// This is the number of the first item on the current page
@@ -88,29 +87,29 @@ export class SearchView extends MeteorComponent {
 		
 		return start.toString() + "-" + end.toString() + " of " + this.pagination.totalItems.toString();
 	}
-	
+
 	// Go to next page function
 	nextPage() {
-		
+
 		// Get the current page
 		let currentPage = this.pagination.currentPage;
-		
+
 		// Get the last possible page
 		let lastPage = Math.ceil(this.pagination.totalItems / this.pagination.itemsPerPage);
-		
+
 		// Check if the current page is the last page
 		if (currentPage !== lastPage) {
 			this.pagination.currentPage ++;
 			this.refreshCourses();
 		}
 	}
-	
+
 	// Go to previous page function
 	prevPage() {	
-		
+
 		// Get the current page
 		let currentPage = this.pagination.currentPage;
-		
+
 		// Check if the current page is the first page
 		if (currentPage !== 1) {
 			this.pagination.currentPage --;
@@ -118,4 +117,3 @@ export class SearchView extends MeteorComponent {
 		}
 	}
 }
-
