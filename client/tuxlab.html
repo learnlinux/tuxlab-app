@@ -37,7 +37,7 @@
       <!-- Main Toolbar -->
       <div class="tux-toolbar">
         <!--Large Screen Width-->
-        <md-toolbar class="large">
+        <md-toolbar class="large" *hideItBootstrap="['xs']">
           <div class="wrapper">
             <!-- Logo -->
             <div class="tux-toolbar-logo">
@@ -70,7 +70,7 @@
       </div>
       </md-toolbar>
       <!--Small Screen Width-->
-      <md-toolbar class="small">
+      <md-toolbar class="small" *showItBootstrap="['xs']">
         <div class="mobile-toolbar-buttons">
           <a href="/"><md-icon fontIcon="tuxicon-home"></md-icon></a>
           <a href="/explore"><md-icon fontIcon="tuxicon-wire"></md-icon></a>

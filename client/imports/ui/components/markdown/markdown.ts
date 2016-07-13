@@ -21,7 +21,9 @@
 
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-
+  
+  import { TaskView } from '../../pages/lab/taskview';
+  
 // Markdown Imports
 /// <reference path="./marked.d.ts" />
   import * as marked from 'marked';
@@ -44,18 +46,21 @@
 
 // Export MarkdownView Class
 export class MarkdownView {
-
   //TODO: Replace with markdown from the database
-  data = "# Markdown\n This is a short **markdown** string, and this is *italic* text. Here is some ***bold and italic*** text.  \n ## Subtitle here";
-  convertedData = this.data;
+  data = (new TaskView).getMarkdown();
+  convertedData: String;
+  labName = "Lab Name Here";
+  labProgress = "3/10";
 
   constructor(mdIconRegistry: MdIconRegistry) {
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
     mdIconRegistry.setDefaultFontSetClass('tuxicon');
-
+    
     // Parse markdown string
     let md = marked.setOptions({});
-    this.convertedData = md.parse(this.data);
+    if(typeof this.data !== "undefined") {
+      this.convertedData = md.parse(this.data);
+    }
   }
 }

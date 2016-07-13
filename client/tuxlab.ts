@@ -7,10 +7,10 @@
     import 'zone.js/dist/zone';
 
 // Angular Imports
-    import { Component, ViewEncapsulation, provide } from '@angular/core';
+    import { Component, ViewEncapsulation, provide, PLATFORM_DIRECTIVES } from '@angular/core';
     import { bootstrap } from 'angular2-meteor-auto-bootstrap';
 
-    import { APP_BASE_HREF } from '@angular/common';
+    import { APP_BASE_HREF, CORE_DIRECTIVES } from '@angular/common';
     import { HTTP_PROVIDERS } from '@angular/http';
     import { RouterLink, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
@@ -23,6 +23,7 @@
 
 // Toolbar
     import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
+    import { ResponsiveState, ResponsiveConfig, RESPONSIVE_DIRECTIVES } from 'responsive-directives-angular2';
 
 // Icon
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
@@ -46,6 +47,7 @@
     selector: 'tuxlab',
     templateUrl: '/client/tuxlab.html',
     directives: [ 
+      CORE_DIRECTIVES,
       ROUTER_DIRECTIVES,
       MATERIAL_DIRECTIVES,
       MD_TOOLBAR_DIRECTIVES,
@@ -96,8 +98,11 @@ class TuxLab extends MeteorComponent {
 
 
 bootstrap(TuxLab, [
-	MATERIAL_PROVIDERS,
-	HTTP_PROVIDERS,
-	MdIconRegistry,
-	ROUTER_PROVIDERS,
-	provide(APP_BASE_HREF, { useValue: '/' })]);
+  ResponsiveState,
+  MATERIAL_PROVIDERS,
+  HTTP_PROVIDERS,
+  MdIconRegistry,
+  ROUTER_PROVIDERS,
+  provide(APP_BASE_HREF, { useValue: '/' }),
+  provide(PLATFORM_DIRECTIVES, { useValue: [RESPONSIVE_DIRECTIVES], multi: true })
+]);

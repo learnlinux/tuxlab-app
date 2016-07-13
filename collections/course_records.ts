@@ -2,6 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
+import { courses } from './courses';
 
 export const course_records = new Mongo.Collection('course_records');
 
@@ -30,7 +31,9 @@ course_records.allow({
   }
 });
 
-/* Schema */
+/**
+  SCHEMA 
+**/
 declare var SimpleSchema: any;
 
 
@@ -72,7 +75,16 @@ if(Meteor.isServer) {
         type: String
       },
       course_id: {
-        type: String
+        type: String,
+        custom: function() {
+          let courseId = this.value;
+          if (courses.findOne({ _id: courseId }) === null) {
+            return "Course ID does not exist";
+          }
+          if (typeof courses.findOne({ _id: courseId }) === "undefined") {
+            return "Course ID does not exist";
+          }
+        }
       },
       labs: {
         type: [labSchema]
@@ -126,8 +138,6 @@ if(Meteor.isServer) {
     }); // Meteor.publish
   }); //Meteor.startup
 } //Meteor.isServer
-
-
 
 
 
