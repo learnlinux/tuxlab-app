@@ -2,6 +2,7 @@
   Winston Logger for TuxLab-app
 */
 var winston = require('winston');
+require('winston-mongodb').MongoDB;
 var nconf = require('nconf');
 
 var log_collection_name = nconf.get('mongo_log_collection');
