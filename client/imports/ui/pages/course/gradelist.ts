@@ -41,7 +41,7 @@
 			mdIconRegistry.setDefaultFontSetClass('tuxicon');
 			
 			// Display Course Toolbar
-			document.getElementById('course-toolbar').style.display = "block";
+			document.getElementById('course-toolbar').className += "block";
 			
 			// Activate toolbar button
 			document.getElementById('toolbar-grades').className += "active-button";

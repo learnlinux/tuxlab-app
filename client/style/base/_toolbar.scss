@@ -52,8 +52,8 @@
       .tux-toolbar-nav {
         white-space:nowrap;
         [md-button] {
-        font-weight: 300;
-      }
+          font-weight: 300;
+        }
       }
       .tux-toolbar-login {
         a, a:visited {
@@ -128,6 +128,9 @@
           line-height: 45px;
           background-color: #f0f0f0;
           margin: 0;
+        }
+        a:hover {
+          background-color: #dfdfdf;
         }
         a.home-button, a.home-button:visited {
           font-weight: bold;
