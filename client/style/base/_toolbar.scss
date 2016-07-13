@@ -1,11 +1,14 @@
 .tux-toolbar {
+  md-toolbar {
+    a {
+      color:black;
+    }
+  }
   md-toolbar.small {
     min-height: inherit;
-    display: none;
     .mobile-toolbar-buttons {
       margin: 0 auto;
       a {
-        color: black;
         display: block;
         float: left;
         height: 64px;
@@ -50,9 +53,6 @@
         white-space:nowrap;
         [md-button] {
         font-weight: 300;
-      }
-      a {
-        color: black;
       }
       }
       .tux-toolbar-login {
@@ -100,7 +100,8 @@
 // Sub-toolbar
 #course-toolbar {
   display: none;
-  md-toolbar {
+  white-space: nowrap;
+  md-toolbar.large {
     min-height: inherit;
     background-color: #f0f0f0;
     .wrapper {
@@ -125,6 +126,8 @@
           height: 66px;
           padding-top: 14px;
           line-height: 45px;
+          background-color: #f0f0f0;
+          margin: 0;
         }
         a.home-button, a.home-button:visited {
           font-weight: bold;
@@ -139,6 +142,14 @@
           border-bottom: solid 5px #ffc400;
         }
       }
+    }
+  }
+  md-toolbar.small {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background-color: #f0f0f0;
+    a {
+      color: black;
     }
   }
 }
@@ -194,7 +205,10 @@
     }
   }
 }
-
+md-sidenav-layout.md-sidenav-opened {
+  position: fixed;
+  width: 100%;
+}
 md-sidenav-layout {
   .page-content {
     padding: 0;

@@ -46,8 +46,10 @@
 export class MarkdownView {
 
   //TODO: Replace with markdown from the database
-  data = "# Markdown\n This is a short **markdown** string, and this is *italic* text. Here is some ***bold and italic*** text.  \n ## Subtitle here";
+  data = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
   convertedData = this.data;
+  labName = "Lab Name Here";
+  labProgress = "3/10";
 
   constructor(mdIconRegistry: MdIconRegistry) {
     // Create Icon Font

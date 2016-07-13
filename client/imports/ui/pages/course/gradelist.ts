@@ -45,7 +45,5 @@
 			
 			// Activate toolbar button
 			document.getElementById('toolbar-grades').className += "active-button";
-			
-			document.getElementById('tux-content').style.marginTop = "20px";
 		}
 	}

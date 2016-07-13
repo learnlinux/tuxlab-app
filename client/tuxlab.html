@@ -16,7 +16,7 @@
           <md-icon fontIcon="tuxicon-speaker"></md-icon>
           Announcements
         </a>
-        <a md-button>
+        <a md-button href="/lab">
           <md-icon fontIcon="tuxicon-console"></md-icon>
           Terminal
         </a>
@@ -50,7 +50,6 @@
               <a md-button href="/"> Dashboard </a>
               <a md-button href="/explore"> Explore </a>
               <a md-button href="/"> Courses </a>
-              <a md-button href="/instructor">*Become Instructor*</a>
             </div>
             <span flex></span>
             <!-- Profile Dropdown -->
@@ -88,7 +87,7 @@
     
     <!-- Course Toolbar -->
     <div id="course-toolbar">
-      <md-toolbar class="md-medium-tall">
+      <md-toolbar class="md-medium-tall large" *hideItBootstrap="['xs']">
         <div class="wrapper">
           <!-- Navigation -->
           <div class="course-toolbar-nav">
@@ -97,6 +96,15 @@
             <a md-button href="/grades" id="toolbar-grades">Grades</a>
           </div>
         </div>
+      </md-toolbar>
+      <md-toolbar class="small" *showItBootstrap="['xs']">
+        <div>
+          <a md-button href="/course" id="toolbar-course">Home</a>
+          <a md-button href="/labs" id="toolbar-labs">Labs</a>
+          <a md-button href="/grades" id="toolbar-grades">Grades</a>
+          <a md-button href="/course">More</a>
+          <a md-button href="/course">More</a>  
+        </div>  
       </md-toolbar>
     </div>
     <!-- Page -->

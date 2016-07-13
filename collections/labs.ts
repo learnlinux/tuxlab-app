@@ -50,7 +50,19 @@ labs.allow({
         },
         course_id: {
           type: String,
-          regEx: SimpleSchema.RegEx.Id
+          regEx: SimpleSchema.RegEx.Id,
+          custom: function() {
+            // Check existance of course
+            let currentCourse = Collections.courses.findOne({ _id: this.value });
+            if(currentCourse === "undefined") {
+              return "Course Id does not exist";
+            }
+            // Check whether user is authorized
+            let instructors = currentCourse.instructor_ids;
+            if(Collections.courses.findOne({ _id: this.value, instructor_ids: this.userId }) === "undefined") {
+              return "User is not an instructor of this course";
+            }
+          }
         },
         lab_name: {
           type: String
