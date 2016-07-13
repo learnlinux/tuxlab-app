@@ -7,14 +7,13 @@ aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 allow-deny@1.0.5
-angular2-compilers@0.6.0
+angular2-compilers@0.5.7
+angular2-html-templates@0.5.3
 anti:gagarin@0.4.12
 autoupdate@1.2.11
 babel-compiler@6.9.0-beta.12
 babel-runtime@0.1.10-beta.12
 barbatus:angular2-runtime@0.5.0
-barbatus:css-compiler@0.3.0
-barbatus:scss-compiler@3.8.1_1
 barbatus:typescript@0.3.3
 barbatus:typescript-compiler@0.6.1
 barbatus:typescript-runtime@0.1.2
@@ -40,6 +39,7 @@ ecmascript-runtime@0.3.12-beta.12
 ejson@1.0.12
 es5-shim@4.6.13-beta.12
 fastclick@1.0.12
+fourseven:scss@3.8.0_1
 geojson-utils@1.0.9
 google@1.1.13
 hot-code-push@1.0.4
@@ -93,7 +93,6 @@ templating-tools@1.0.4
 tracker@1.1.0-beta.12
 ui@1.0.11
 underscore@1.0.9
-urigo:static-html-compiler@0.1.4
 url@1.0.10
 webapp@1.3.10-beta.12
 webapp-hashing@1.0.9

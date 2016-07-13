@@ -26,7 +26,7 @@
     templateUrl: '/client/imports/ui/pages/error/404.html',
   })
 
-export class Err404 extends MeteorComponent {
+export default class Err404 extends MeteorComponent {
   user: Meteor.User;
 
   constructor() {
@@ -34,4 +34,3 @@ export class Err404 extends MeteorComponent {
     super();
   }
 }
-

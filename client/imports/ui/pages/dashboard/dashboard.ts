@@ -23,17 +23,17 @@
 	@Component({
 		selector: 'tuxlab-dashboard',
 		templateUrl: '/client/imports/ui/pages/dashboard/dashboard.html',
-		directives: [ 
-			MATERIAL_DIRECTIVES, 
-			MD_ICON_DIRECTIVES, 
-			MD_SIDENAV_DIRECTIVES 
+		directives: [
+			MATERIAL_DIRECTIVES,
+			MD_ICON_DIRECTIVES,
+			MD_SIDENAV_DIRECTIVES
 		],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export Dashboard Class 
-export class Dashboard extends MeteorComponent {
+// Export Dashboard Class
+export default class Dashboard extends MeteorComponent {
 	courses: Array<any> = [
 		{'id': 1, 'number': '15-131', 'name': 'Great Practical Ideas for Computer Scientists', 'quantity': '12', 'grade': '99'},
 		{'id': 7, 'number': '21-299', 'name': 'Calculus in Twelve Dimensions', 'quantity': '76', 'grade': '100'},
@@ -42,21 +42,20 @@ export class Dashboard extends MeteorComponent {
 		{'id': 11, 'number': '15-000', 'name': 'Emacs Usage', 'quantity': '2', 'grade': '44'},
 		{'id': 12, 'number': '15-997', 'name': 'Bash Commands', 'quantity': '3', 'grade': '85'}
 	];
-	
+
 	constructor(mdIconRegistry: MdIconRegistry) {
 		super();
-		
+
 		// Create Icon Font
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
 	}
-	
+
 	toCourse(courseId) {
 		console.log('Going to course page with course id: ' + courseId);
 		window.location.href = '/course';
 	}
-	
-	
-	
-}
 
+
+
+}

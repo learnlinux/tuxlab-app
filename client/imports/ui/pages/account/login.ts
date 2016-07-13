@@ -31,7 +31,7 @@
     directives: [LoginButtons,RouterLink, MD_ICON_DIRECTIVES,ROUTER_DIRECTIVES]
   })
 
-export class Login extends MeteorComponent {
+export default class Login extends MeteorComponent {
   user: Meteor.User;
 
   constructor(private router: Router) {
@@ -53,4 +53,3 @@ export class Login extends MeteorComponent {
   }
 
 }
-

@@ -28,18 +28,17 @@
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
 
 // UI Imports
-    import { Dashboard } from "./imports/ui/pages/dashboard/dashboard"
-    import { Login } from "./imports/ui/pages/account/login"
-    import { Account } from "./imports/ui/pages/account/account"
-    import { Err404 } from "./imports/ui/pages/error/404"
-    import { TaskView } from "./imports/ui/pages/lab/taskview";
-    import { CourseView } from "./imports/ui/pages/course/course";
-    import { LabView } from "./imports/ui/pages/course/lablist";
-    import { GradeView } from "./imports/ui/pages/course/gradelist";
-    import { Explore } from "./imports/ui/pages/explore/explore";
-    import { Instructor } from "./imports/ui/pages/instructor/instructor";
-    import { Terms } from "./imports/ui/pages/static/terms";
-    import { Privacy } from "./imports/ui/pages/static/privacy";
+    import Dashboard from "./imports/ui/pages/dashboard/dashboard"
+    import Login from "./imports/ui/pages/account/login"
+    import Account from "./imports/ui/pages/account/account"
+    import Err404 from "./imports/ui/pages/error/404"
+    import TaskView from "./imports/ui/pages/lab/taskview";
+    import CourseList from "./imports/ui/pages/course/course";
+    import LabView from "./imports/ui/pages/course/lablist";
+    import GradeView from "./imports/ui/pages/course/gradelist";
+    import Explore from "./imports/ui/pages/explore/explore";
+    import Terms from "./imports/ui/pages/static/terms";
+    import Privacy from "./imports/ui/pages/static/privacy";
 
 // Define TuxLab Component
 @Component({
@@ -60,11 +59,10 @@
     { path: '/', component: Dashboard },
     { path: '/login', component: Login },
     { path: '/lab', component: TaskView },
-    { path: '/course', component: CourseView },
+    { path: '/course', component: CourseList },
     { path: '/labs', component: LabView },
     { path: '/grades', component: GradeView },
     { path: '/explore', component: Explore },
-    { path: '/instructor', component: Instructor },
     { path: '/terms', component: Terms },
     { path: '/privacy', component: Privacy },
 //  { path: '/course/:courseid', as: 'CourseView', component: CourseView },
