@@ -4,24 +4,23 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base             # Packages every Meteor app needs to have
-mobile-experience       # Packages for a great mobile UX
-mongo                   # The database Meteor supports right now
-reactive-var            # Reactive variable for tracker
-tracker                 # Meteor's client-side reactive programming library
+meteor-base@1.0.4             # Packages every Meteor app needs to have
+mobile-experience@1.0.4       # Packages for a great mobile UX
+mongo@1.1.10-beta.12                   # The database Meteor supports right now
+reactive-var@1.0.10            # Reactive variable for tracker
+tracker@1.1.0-beta.12                 # Meteor's client-side reactive programming library
 
-standard-minifier-js    # JS minifier run for production mode
-es5-shim                # ECMAScript 5 compatibility for older browsers.
-ecmascript              # Enable ECMAScript2015+ syntax in app code
+standard-minifier-js@1.1.8-beta.12    # JS minifier run for production mode
+es5-shim@4.6.13-beta.12                # ECMAScript 5 compatibility for older browsers.
+ecmascript@0.5.7-beta.12              # Enable ECMAScript2015+ syntax in app code
 
 angular2-compilers
 barbatus:angular2-runtime
-fourseven:scss
 aldeed:simple-schema
-standard-minifier-css
-accounts-google
-service-configuration
-accounts-base
+standard-minifier-css@1.1.8-beta.12
+accounts-google@1.0.10
+service-configuration@1.0.10
+accounts-base@1.2.9-beta.12
 aldeed:collection2
 anti:gagarin@=0.4.12
 matb33:collection-hooks
