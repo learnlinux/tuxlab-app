@@ -1,0 +1,4 @@
+{
+  "labvm_default_image":"tuxlab_labvm",
+  "labvm_idle_timeout":"14400"
+}

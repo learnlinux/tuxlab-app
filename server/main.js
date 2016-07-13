@@ -11,6 +11,10 @@ import "./imports/startup/index.js";
 /* COLLECTIONS */
 Collections = {};
 
+// Logs
+Collections.logs = logs_collection;
+TuxLog.log('info','TuxLab Started!');
+
 // Users
 import "../collections/users.ts";
 
@@ -26,7 +30,6 @@ Collections.labs = labs;
 import {course_records} from "../collections/course_records.ts";
 Collections.course_records = course_records;
 
-Collections.logs = logs_collection;
 
 //import meteor methods
 // LabFile Cache
