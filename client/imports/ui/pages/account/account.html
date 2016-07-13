@@ -11,4 +11,43 @@
       </div>
     </md-card-content>  
   </md-card>
+  
+  <div class="personal-info">
+    <md-card>
+      <md-card-content>
+        <h2>Personal Info</h2>
+        
+        <div class="account-item" layout="row">
+          <p class="account-label" flex>Nickname</p>
+          <p class="account-info" flex>{{ user.profile.nickname }}</p>
+          <a>
+            <md-icon fontIcon="tuxicon-cog"></md-icon>
+          </a>
+        </div>
+        
+        <md-divider></md-divider>
+        
+        <div class="account-item" layout="row">
+          <p class="account-label" flex>Email</p>
+          <p class="account-info" flex>{{ user.profile.email }}</p>
+          <a>
+            <md-icon fontIcon="tuxicon-cog"></md-icon>
+          </a>
+        </div>
+        
+        <md-divider></md-divider>
+        
+        <div class="account-item" layout="row">
+          <p class="account-label" flex>password</p>
+          <p class="account-info" flex>********</p>
+          <a>
+            <md-icon fontIcon="tuxicon-cog"></md-icon>
+          </a>
+        </div>
+        
+        <md-divider></md-divider>
+        
+      </md-card-content>  
+    </md-card>
+  </div>
 </div>
