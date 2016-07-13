@@ -30,7 +30,9 @@ course_records.allow({
   }
 });
 
-/* Schema */
+/**
+  SCHEMA 
+**/
 declare var SimpleSchema: any;
 
 
@@ -127,6 +129,9 @@ if(Meteor.isServer) {
   }); //Meteor.startup
 } //Meteor.isServer
 
+/**
+  DATA VALIDATION 
+**/
 
 
 
