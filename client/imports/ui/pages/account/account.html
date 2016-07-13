@@ -5,10 +5,9 @@
         <img src="{{ imgsrc }}">
       </div>
       <div class="account-display-name">
-        <h2>{{ name }}</h2>
-        <p>{{ school }}</p>
-        <p>{{ email }}</p>
-        <button md-raised-button (click)="test()">abc</button>
+        <h2>{{ user.profile.name }}</h2>
+        <p>{{ user.profile.school }}</p>
+        <p>{{ user.profile.email }}</p>
       </div>
     </md-card-content>  
   </md-card>
@@ -20,8 +19,8 @@
         
         <div class="account-item" layout="row">
           <p class="account-label" flex>Nickname</p>
-          <p class="account-info" flex>{{ nickname }}</p>
-          <a (click)="test()">
+          <p class="account-info" flex>{{ user.profile.nickname }}</p>
+          <a>
             <md-icon fontIcon="tuxicon-cog"></md-icon>
           </a>
         </div>
@@ -30,8 +29,8 @@
         
         <div class="account-item" layout="row">
           <p class="account-label" flex>Email</p>
-          <p class="account-info" flex>{{ email }}</p>
-          <a (click)="test()">
+          <p class="account-info" flex>{{ user.profile.email }}</p>
+          <a>
             <md-icon fontIcon="tuxicon-cog"></md-icon>
           </a>
         </div>
@@ -41,7 +40,7 @@
         <div class="account-item" layout="row">
           <p class="account-label" flex>password</p>
           <p class="account-info" flex>********</p>
-          <a (click)="test()">
+          <a>
             <md-icon fontIcon="tuxicon-cog"></md-icon>
           </a>
         </div>

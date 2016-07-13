@@ -1,6 +1,7 @@
 .tux-toolbar {
-  .small-toolbar {
+  md-toolbar.small {
     min-height: inherit;
+    display: none;
     .mobile-toolbar-buttons {
       margin: 0 auto;
       a {
@@ -23,8 +24,7 @@
     }
     
   }
-  .large-toolbar {
-    display: none;
+  md-toolbar.large {
     min-height: inherit;
     .wrapper {
       display: flex;

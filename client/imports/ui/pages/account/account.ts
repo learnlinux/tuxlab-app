@@ -45,25 +45,12 @@
 // Accounts Class
 export class Account extends MeteorComponent {
   user: Meteor.User;
-  name: String = "";
-  school: String = "";
-  imgsrc: String = "https://placekitten.com/g/250/250";
-  email: String = "";
-  nickname: String = "";
+
   constructor(mdIconRegistry: MdIconRegistry) {
     super();   
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
     mdIconRegistry.setDefaultFontSetClass('tuxicon');  
     
-  }
-
-  test() {
-    let user = Meteor.user().profile;
-    this.name = user.first_name + " " + user.last_name;
-    this.school = user.school;
-    this.imgsrc = user.picture;
-    this.nickname = "Sander";
-    this.email = user.email;
   }
 }    
