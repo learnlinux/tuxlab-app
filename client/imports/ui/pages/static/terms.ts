@@ -24,10 +24,9 @@
     templateUrl: '/client/imports/ui/pages/static/terms.html',
   })
 
-export class Terms extends MeteorComponent {
+export default class Terms extends MeteorComponent {
   constructor() {
     super();
-	
+
   }
 }
-

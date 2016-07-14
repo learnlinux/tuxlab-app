@@ -1,6 +1,6 @@
 // Meteor Imports
 	import { Meteor } from 'meteor/meteor';
-	import { Mongo }       from 'meteor/mongo';
+	import { Mongo } from 'meteor/mongo';
 	import 'reflect-metadata';
 	import 'zone.js/dist/zone';
 
@@ -22,26 +22,26 @@
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // Courses Imports
-	import { courses } from "../../../../../collections/courses.ts";
+	import { courses } from '../../../../../collections/courses.ts';
 
 // Define ExploreView Component
 	@Component({
 		selector: 'tuxlab-exploreview',
 		templateUrl: '/client/imports/ui/components/explore/explore.html',
-		directives: [ 
-			MATERIAL_DIRECTIVES, 
-			MD_ICON_DIRECTIVES, 
+		directives: [
+			MATERIAL_DIRECTIVES,
+			MD_ICON_DIRECTIVES,
 			MD_TABS_DIRECTIVES,
 			MD_INPUT_DIRECTIVES,
-			MdToolbar 
+			MdToolbar
 		],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})
-	
-// Export ExploreView Class 
+
+// Export ExploreView Class
 export class ExploreView extends MeteorComponent {
-		
+
 	courses: Array<any> = [];
 
 	constructor(mdIconRegistry: MdIconRegistry) {
@@ -55,4 +55,3 @@ export class ExploreView extends MeteorComponent {
 		}, true);
 	}
 }
-
