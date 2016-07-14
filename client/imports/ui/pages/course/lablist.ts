@@ -19,7 +19,7 @@
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // LabList import
-	import { LabList } from "../../components/lablist/lablist";
+	import { LabList } from "../../components/lablist/lablist.ts";
 
 // Define LabsView Component
 	@Component({
@@ -41,11 +41,9 @@
 			mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
 			// Display Course Toolbar
-			document.getElementById('course-toolbar').style.display = "block";
-
+			document.getElementById('course-toolbar').className += "block";
+			
 			// Activate toolbar button
 			document.getElementById('toolbar-labs').className += "active-button";
-
-			document.getElementById('tux-content').style.marginTop = "20px";
 		}
 	}
