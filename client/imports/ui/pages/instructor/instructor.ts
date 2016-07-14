@@ -18,19 +18,19 @@
 
 // Icon
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-	
+
 // Editor Component
 	import { MDEditor } from '../../components/mdeditor/mdeditor';
-	
+
 	import { LoadScreen } from '../../components/loadscreen/loadscreen';
 
 // Define InstructorView Component
 	@Component({
 		selector: 'tuxlab-instructor',
 		templateUrl: '/client/imports/ui/pages/instructor/instructor.html',
-		directives: [ 
-			MATERIAL_DIRECTIVES, 
-			MD_ICON_DIRECTIVES, 
+		directives: [
+			MATERIAL_DIRECTIVES,
+			MD_ICON_DIRECTIVES,
 			MD_SIDENAV_DIRECTIVES,
 			MDEditor,
 			LoadScreen
@@ -39,16 +39,15 @@
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export Instructor Class 
-export class Instructor extends MeteorComponent {
-	
+// Export Instructor Class
+export default class Instructor extends MeteorComponent {
+
 	constructor(mdIconRegistry: MdIconRegistry) {
 		super();
-		
+
 		// Create Icon Font
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
 	}
-	
-}
 
+}

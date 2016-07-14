@@ -1,6 +1,6 @@
 // Meteor Imports
 	import { Meteor } from 'meteor/meteor';
-	import { Mongo }       from 'meteor/mongo';
+	import { Mongo } from 'meteor/mongo';
 	import 'reflect-metadata';
 	import 'zone.js/dist/zone';
 
@@ -20,39 +20,39 @@
 
 // Icon
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-	
+
 // Component View Imports
-	import { ExploreView } from '../../components/explore/explore';
-	import { SearchView } from '../../components/explore/search';
+	import { ExploreView } from '../../components/explore/explore.ts';
+	import { SearchView } from '../../components/explore/search.ts';
 
 // Define Explore Component
 	@Component({
 		selector: 'tuxlab-explore',
 		templateUrl: '/client/imports/ui/pages/explore/explore.html',
-		directives: [ MATERIAL_DIRECTIVES, 
-					  MD_ICON_DIRECTIVES, 
-					  MD_TABS_DIRECTIVES,
-					  MD_INPUT_DIRECTIVES,
-					  MdToolbar,
-					  ExploreView,
-					  SearchView ],
+		directives: [ MATERIAL_DIRECTIVES,
+								  MD_ICON_DIRECTIVES,
+								  MD_TABS_DIRECTIVES,
+								  MD_INPUT_DIRECTIVES,
+								  MdToolbar,
+								  ExploreView,
+								  SearchView ],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})
-	
-// Export Explore Class 
-export class Explore extends MeteorComponent {
-	
+
+// Export Explore Class
+export default class Explore extends MeteorComponent {
+
 	constructor(mdIconRegistry: MdIconRegistry) {
 		super();
 		// Create Icon Font
 		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
-		
+
 		// Set maximum width to full width for search bar
 		document.getElementById('tux-content').style.maxWidth = "100%";
 	}
-	
+
 	// Find Course
 	findCourse() {
 		let searchQuery = (<HTMLInputElement>document.getElementById('search-input')).value;
@@ -60,18 +60,17 @@ export class Explore extends MeteorComponent {
 			document.getElementById('explore-view').style.display = 'none';
 			document.getElementById('search-view').style.display = 'block';
 			document.getElementById('search-input').blur();
-			document.getElementById('search-string').innerHTML = "Search Results for '" + searchQuery + "'";
-		} 
+			document.getElementById('search-string').innerHTML = "Search Results for \'" + searchQuery + "\'";
+		}
 		else {
 			document.getElementById('explore-view').style.display = 'block';
-			document.getElementById('search-view').style.display = 'none';	
+			document.getElementById('search-view').style.display = 'none';
 		}
 	}
-	
+
 	// Search icon button
 	searchFocus() {
 		document.getElementById('search-input').focus();
 	}
-	
-}
 
+}

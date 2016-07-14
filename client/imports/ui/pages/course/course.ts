@@ -43,7 +43,7 @@
 	})
 
 // Export CourseView Class
-  export class CourseView extends MeteorComponent {
+  export default class CourseView extends MeteorComponent {
     course;
     courseNumber: String = '15-131'; // TODO: Get from URL
     courseDescription: String = "Course Description Not Found";
@@ -54,10 +54,9 @@
       // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
-      
+
       // Display Course Toolbar
 			document.getElementById('course-toolbar').className += " block";
-      
       // Activate toolbar button
       document.getElementById('toolbar-course').className += " active-button";
 
