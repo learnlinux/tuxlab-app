@@ -20,6 +20,7 @@
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
     import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
     import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
+    import { ResponsiveState, RESPONSIVE_DIRECTIVES } from 'responsive-directives-angular2';
 
     import { MeteorComponent } from 'angular2-meteor';
 
