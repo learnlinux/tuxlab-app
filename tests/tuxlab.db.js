@@ -27,7 +27,7 @@ describe('Database Schema', function(){
       var example_course = {
         course_number: "15-131",
         course_name: "Great Practical Ideas for Computer Scientists",
-				course_description: {
+        course_description: {
           content: "This is the course description for 15-131.",
           syllabus: 'This is the course syllabus.'
         },
@@ -64,13 +64,13 @@ describe('Database Schema', function(){
         tasks: [
           {
             _id: 1,
-	          updated: 1467995862937,
+            updated: 1467995862937,
             name: "Git Clone",
             md: "##################"
           },
           {
             _id: 2,
-	          updated: 1467995862937,
+            updated: 1467995862937,
             name: "Git Pull",
             md: "##################"
           }

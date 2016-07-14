@@ -18,7 +18,7 @@
 	import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs'
 	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 	import { MdToolbar } from '@angular2-material/toolbar';
-  import { FORM_DIRECTIVES, FORM_PROVIDERS } from '@angular/forms';
+	import { FORM_DIRECTIVES, FORM_PROVIDERS } from '@angular/forms';
 
 // Icon
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
@@ -28,10 +28,10 @@
 	import { SearchView } from '../../components/explore/search.ts';
 
 // Define Explore Component
-	@Component({
-		selector: 'tuxlab-explore',
-		templateUrl: '/client/imports/ui/pages/explore/explore.html',
-		directives: [ 
+  @Component({
+    selector: 'tuxlab-explore',
+    templateUrl: '/client/imports/ui/pages/explore/explore.html',
+    directives: [ 
       MATERIAL_DIRECTIVES,
       MD_ICON_DIRECTIVES,
       MD_TABS_DIRECTIVES,
@@ -39,11 +39,12 @@
       FORM_DIRECTIVES,
       MdToolbar,
       ExploreView,
-      SearchView ],
+      SearchView 
+    ],
     providers: [ FORM_PROVIDERS ],
-		viewProviders: [ MdIconRegistry ],
-		encapsulation: ViewEncapsulation.None
-	})
+    viewProviders: [ MdIconRegistry ],
+    encapsulation: ViewEncapsulation.None
+  })
 
 // Export Explore Class
 export default class Explore extends MeteorComponent {
