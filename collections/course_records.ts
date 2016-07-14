@@ -64,7 +64,7 @@ if(Meteor.isServer) {
         regEx: SimpleSchema.RegEx.Id,
         custom: function() {
           if(typeof labs.findOne({ _id: this.value }) === "undefined") {
-            return "This lab does not exist";
+            labSchema.addInvalidKeys([{name: "lab_id", type: "nonexistantLab"}]);
           }
         }
       },
@@ -81,7 +81,7 @@ if(Meteor.isServer) {
         type: String,
         custom: function() {
           if(typeof Meteor.users.findOne({ _id: this.value }) === "undefined") {
-            return "This userId does not exist";
+            recordSchema.addInvalidKeys([{name: "user_id", type: "nonexistantUser"}]);
           }
         }
       },
@@ -90,7 +90,7 @@ if(Meteor.isServer) {
         custom: function() {
           let courseId = this.value;
           if (typeof courses.findOne({ _id: courseId }) === "undefined") {
-            return "Course ID does not exist";
+            recordSchema.addInvalidKeys([{name: "course_id", type: "nonexistantCourse"}])
           }
         }
       },

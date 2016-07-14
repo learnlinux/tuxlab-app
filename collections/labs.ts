@@ -55,12 +55,12 @@ labs.allow({
             // Check existance of course
             let currentCourse = Collections.courses.findOne({ _id: this.value });
             if(currentCourse === "undefined") {
-              return "Course Id does not exist";
+              labSchema.addInvalidKeys([{name: "course_id", type: "nonexistantCourse"}]);
             }
             // Check whether user is authorized
             let instructors = currentCourse.instructor_ids;
             if(Collections.courses.findOne({ _id: this.value, instructor_ids: this.userId }) === "undefined") {
-              return "User is not an instructor of this course";
+              labSchema.addInvalidKeys([{name: "course_id", type: "unauthorizedUser"}]);
             }
           }
         },

@@ -20,7 +20,7 @@
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 	  
 // course_record database imports
-    import { course_records } from '../../../../../collections/course_records';
+    import { course_records } from '../../../../../collections/course_records.ts';
     
 @InjectUser("user")
 

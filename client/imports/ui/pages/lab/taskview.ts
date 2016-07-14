@@ -12,8 +12,8 @@
 	import { MeteorComponent } from 'angular2-meteor';
 
 // Terminal and Markdown Imports
-  import { Terminal } from "../../components/wetty/terminal";
-  import { MarkdownView } from "../../components/markdown/markdown";
+  import { Terminal } from "../../components/wetty/terminal.ts";
+  import { MarkdownView } from "../../components/markdown/markdown.ts";
 
 // Meteor method imports
 //  import { create_Lab } from "../../../lab/methods.ts"
@@ -26,16 +26,16 @@
 })
 
 export default class TaskView extends MeteorComponent{
-  // TODO: get from database
-  labMarkdown = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
+  
   constructor() {
     super();
     //TODO This Doesn't Exist
     //Meteor.call('createLab',{courseId: "5",labId: 5},(err,res) => {console.log("fired",err,res)});
   }
-  
-  getMarkdown() {
-    return this.labMarkdown;
-  }
+}
 
+export class LabData {
+  // TODO: get from database
+  labMarkdown = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
+  constructor() {}
 }

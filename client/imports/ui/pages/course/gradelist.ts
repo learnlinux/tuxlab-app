@@ -19,7 +19,7 @@
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // Grades import
-	import { GradeList } from "../../components/gradelist/gradelist";
+	import { GradeList } from "../../components/gradelist/gradelist.ts";
 
 // Define GradeView Component
 	@Component({

@@ -19,7 +19,7 @@
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // LabList import
-	import { LabList } from "../../components/lablist/lablist";
+	import { LabList } from "../../components/lablist/lablist.ts";
 
 // Define LabsView Component
 	@Component({

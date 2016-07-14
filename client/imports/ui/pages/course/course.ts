@@ -20,12 +20,12 @@
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // LabList and Grades import
-	import { LabList } from "../../components/lablist/lablist";
-	import { GradeList } from "../../components/gradelist/gradelist";
+	import { LabList } from "../../components/lablist/lablist.ts";
+	import { GradeList } from "../../components/gradelist/gradelist.ts";
 
 // Courses and Course Record Imports
-	import { courses } from "../../../../../collections/courses";
-	import { course_records } from "../../../../../collections/course_records";
+	import { courses } from "../../../../../collections/courses.ts";
+	import { course_records } from "../../../../../collections/course_records.ts";
 
 // Define CourseView Component
 	@Component({

@@ -40,7 +40,7 @@ courses.allow({
           defaultValue: ""
         },
         syllabus: {
-          type: String, 
+          type: String,
           defaultValue: ""
         }
       });
@@ -57,16 +57,16 @@ courses.allow({
             let validInstructors = Meteor.users.find({ _id: { $in: this.value } }).count();
             // Check that all instructors exist
             if(validInstructors !== this.value.length) {
-              return "One or more instructor ids do not exist";
+              courseSchema.addInvalidKeys([{name: "instructor_ids", type: "nonexistantInstructor"}]);
             }
             // Check that the current user is an instructor of this course
             if(typeof Meteor.users.findOne({ _id: this.userId }) === "undefined") {
-              return "Current user is not authorized.";
+              courseSchema.addInvalidKeys([{name: "instructor_ids", type: "unauthorizedUser"}]);
             }
           }
         },
         course_description: {
-          type: descriptionSchema	
+          type: descriptionSchema
         },
         labs: {
           type: [String],
@@ -74,7 +74,7 @@ courses.allow({
             let validLabs = labs.find({ _id: { $in: this.value } });
             // Check that all labs are valid
             if(validLabs.count() !== this.value.length) {
-              return "One or more lab ids do not exist";
+              courseSchema.addInvalidKeys([{name: "labs", type: "nonexistantLabs"}]);
             }
           }
         }
@@ -99,14 +99,14 @@ courses.allow({
             // Check if userId indeed corresponds to a user in the database
             let user = Meteor.users.findOne(this.userId);
             if (typeof user !== "undefined") {
-              
+
               // Get course ids of courses that the student is enroled in
               let studentCourseIds = (_.unzip((<any>user).roles.student))[0];
               if (typeof studentCourseIds !== "undefined") {
-                
+
                 // Concatenate with the courseIds that the instructor is teaching
                 let course_ids = studentCourseIds.concat((<any>user).roles.instructor);
-                
+
                 // Publish matching courses
                 return courses.find({ _id: { $in:course_ids } });
               }
@@ -130,6 +130,3 @@ courses.allow({
       //TODO @sander Publish Course Based on Route
     });
   }
-
-
-
