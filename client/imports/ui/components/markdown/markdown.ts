@@ -22,8 +22,7 @@
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
   
-  import { TaskView } from '../../pages/lab/taskview';
-  
+  import { LabData } from '../../pages/lab/taskview.ts';
 // Markdown Imports
 /// <reference path="./marked.d.ts" />
   import * as marked from 'marked';
@@ -47,7 +46,7 @@
 // Export MarkdownView Class
 export class MarkdownView {
   //TODO: Replace with markdown from the database
-  data = (new TaskView).getMarkdown();
+  data = (new LabData).labMarkdown;
   convertedData: String;
   labName = "Lab Name Here";
   labProgress = "3/10";

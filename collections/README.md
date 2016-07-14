@@ -59,7 +59,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   _id : "574465a21109160b518a4299",
   course_number: "15-131",
   course_name: "Great Practical Ideas for Computer Scientists",
-  instructor_name: "Tom Cortina",
+  instructor_ids: ["948fhp23irjer9823r3rwef", "573de804b17eca6c452d9ff7"],
 	course_description: {
 		content: "This is the course description.",
 		syllabus: "This is the course syllabus"

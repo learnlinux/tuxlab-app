@@ -12,9 +12,9 @@
 
     import { APP_BASE_HREF, CORE_DIRECTIVES } from '@angular/common';
     import { HTTP_PROVIDERS } from '@angular/http';
-
+    import { disableDeprecatedForms, provideForms } from '@angular/forms';    
     import { InjectUser } from 'angular2-meteor-accounts-ui';
-
+    
 // Angular Material Imports
     import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
@@ -64,10 +64,12 @@ class TuxLab extends MeteorComponent {
 
 bootstrap(TuxLab, [
   ResponsiveState,
-	MATERIAL_PROVIDERS,
-	HTTP_PROVIDERS,
-	MdIconRegistry,
-	ROUTE_PROVIDERS,
-	provide(APP_BASE_HREF, { useValue: '/' }),
+  disableDeprecatedForms(),
+  provideForms(),
+  MATERIAL_PROVIDERS,
+  HTTP_PROVIDERS,
+  MdIconRegistry,
+  ROUTE_PROVIDERS,
+  provide(APP_BASE_HREF, { useValue: '/' }),
   provide(PLATFORM_DIRECTIVES, { useValue: [RESPONSIVE_DIRECTIVES], multi: true })
 ]);

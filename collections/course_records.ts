@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
 import { courses } from './courses';
+import { labs } from './labs';
 
 export const course_records = new Mongo.Collection('course_records');
 
@@ -60,7 +61,12 @@ if(Meteor.isServer) {
     var labSchema = new SimpleSchema({
       _id: {
         type: String,
-        regEx: SimpleSchema.RegEx.Id
+        regEx: SimpleSchema.RegEx.Id,
+        custom: function() {
+          if(typeof labs.findOne({ _id: this.value }) === "undefined") {
+            labSchema.addInvalidKeys([{name: "lab_id", type: "nonexistantLab"}]);
+          }
+        }
       },
       data: {
         type: Object,
@@ -72,17 +78,19 @@ if(Meteor.isServer) {
     });
     var recordSchema = new SimpleSchema({
       user_id: {
-        type: String
+        type: String,
+        custom: function() {
+          if(typeof Meteor.users.findOne({ _id: this.value }) === "undefined") {
+            recordSchema.addInvalidKeys([{name: "user_id", type: "nonexistantUser"}]);
+          }
+        }
       },
       course_id: {
         type: String,
         custom: function() {
           let courseId = this.value;
-          if (courses.findOne({ _id: courseId }) === null) {
-            return "Course ID does not exist";
-          }
           if (typeof courses.findOne({ _id: courseId }) === "undefined") {
-            return "Course ID does not exist";
+            recordSchema.addInvalidKeys([{name: "course_id", type: "nonexistantCourse"}])
           }
         }
       },
@@ -103,7 +111,7 @@ if(Meteor.isServer) {
     // Publish course records
     Meteor.publish('course-records', function() {
       this.autorun(function(computation) {
-
+        
         // Check existance of userId
         if(typeof this.userId !== "undefined") {
 
