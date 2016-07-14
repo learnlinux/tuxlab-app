@@ -45,8 +45,10 @@
 export default class Account extends MeteorComponent {
   user: Meteor.User;
 
+
   constructor(mdIconRegistry: MdIconRegistry) {
     super();
+
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
     mdIconRegistry.setDefaultFontSetClass('tuxicon');

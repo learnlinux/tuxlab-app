@@ -49,10 +49,7 @@
     "rxjs": "5.0.0-beta.6",
     "simplemde": "^1.11.2",
     "winston": "2.2.0",
-<<<<<<< HEAD
     "winston-mongodb": "^1.6.0",
-=======
->>>>>>> 942274e6e6c4010030727c43ce592507d6ef86f1
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
