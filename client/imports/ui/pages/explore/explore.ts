@@ -22,8 +22,8 @@
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // Component View Imports
-	import { ExploreView } from '../../components/explore/explore';
-	import { SearchView } from '../../components/explore/search';
+	import { ExploreView } from '../../components/explore/explore.ts';
+	import { SearchView } from '../../components/explore/search.ts';
 
 // Define Explore Component
 	@Component({

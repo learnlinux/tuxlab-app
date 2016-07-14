@@ -35,10 +35,11 @@
     encapsulation: ViewEncapsulation.None
 })
 
-@InjectUser("user")
 // Accounts Class
+@InjectUser('user')
 export default class Account extends MeteorComponent {
   user: Meteor.User;
+
   constructor(mdIconRegistry: MdIconRegistry) {
     super();
     // Create Icon Font

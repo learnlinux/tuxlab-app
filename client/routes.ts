@@ -1,17 +1,17 @@
 import {provideRouter, RouterConfig} from '@angular/router';
 
 // Import pages
-import Dashboard from './imports/ui/pages/dashboard/dashboard'
-import Login from './imports/ui/pages/account/login'
-import Account from './imports/ui/pages/account/account'
-import Err404 from './imports/ui/pages/error/404'
-import TaskView from './imports/ui/pages/lab/taskview';
-import CourseList from './imports/ui/pages/course/course';
-import LabView from './imports/ui/pages/course/lablist';
-import GradeView from './imports/ui/pages/course/gradelist';
-import Explore from './imports/ui/pages/explore/explore';
-import Terms from './imports/ui/pages/static/terms';
-import Privacy from './imports/ui/pages/static/privacy';
+import Dashboard from './imports/ui/pages/dashboard/dashboard.ts'
+import Login from './imports/ui/pages/account/login.ts'
+import Account from './imports/ui/pages/account/account.ts'
+import Err404 from './imports/ui/pages/error/404.ts'
+import TaskView from './imports/ui/pages/lab/taskview.ts';
+import CourseList from './imports/ui/pages/course/course.ts';
+import LabView from './imports/ui/pages/course/lablist.ts';
+import GradeView from './imports/ui/pages/course/gradelist.ts';
+import Explore from './imports/ui/pages/explore/explore.ts';
+import Terms from './imports/ui/pages/static/terms.ts';
+import Privacy from './imports/ui/pages/static/privacy.ts';
 
 // Define Routes
 const routes : RouterConfig = [

@@ -8,10 +8,12 @@
 
 // Angular Imports
     import { Component, ViewEncapsulation, provide } from '@angular/core';
-    import { bootstrap } from 'angular2-meteor-auto-bootstrap';
+    import { bootstrap } from '@angular/platform-browser-dynamic';
 
     import { APP_BASE_HREF } from '@angular/common';
     import { HTTP_PROVIDERS } from '@angular/http';
+
+    import { InjectUser } from 'angular2-meteor-accounts-ui';
 
 // Angular Material Imports
     import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -37,11 +39,15 @@
     viewProviders: [MdIconRegistry]
 })
 
+@InjectUser('user')
 class TuxLab extends MeteorComponent {
     user: Meteor.User;
-		userId = Meteor.userId();
+
     constructor(mdIconRegistry: MdIconRegistry) {
         super();
+
+        console.log(this.user);
+
         // Create Icon Font
         mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
         mdIconRegistry.setDefaultFontSetClass('tuxicon');
