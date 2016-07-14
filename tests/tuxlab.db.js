@@ -27,8 +27,13 @@ describe('Database Schema', function(){
       var example_course = {
         course_number: "15-131",
         course_name: "Great Practical Ideas for Computer Scientists",
-				course_description: '',
-        instructor_name: "Tom Cortina",
+        course_description: {
+          content: "This is the course description for 15-131.",
+          syllabus: 'This is the course syllabus.'
+        },
+        instructor_ids: [], // Add instructor Id here
+        hidden: false,
+        featured: true,
         labs: []
       }
 
@@ -53,20 +58,19 @@ describe('Database Schema', function(){
 
     return server.promise(function(resolve, reject, labfile, course_id){
       var example_lab = {
-        _id : "574467bc11091623418a429d",
         course_id : course_id,
         lab_name: "Getting Started with Git",
         file: labfile,
         tasks: [
           {
             _id: 1,
-	    updated: 1467995862937,
+            updated: 1467995862937,
             name: "Git Clone",
             md: "##################"
           },
           {
             _id: 2,
-	    updated: 1467995862937,
+            updated: 1467995862937,
             name: "Git Pull",
             md: "##################"
           }
@@ -91,13 +95,13 @@ describe('Database Schema', function(){
     return server.execute(function(course_id, lab_id){
       var course = Collections.courses.findOne(course_id);
 
-          // Check Lab Injection
-          expect(course).to.have.property('labs');
-          expect(course.labs).to.include(lab_id);
+      // Check Lab Injection
+      expect(course).to.have.property('labs');
+      expect(course.labs).to.include(lab_id);
 
       var lab = Collections.labs.findOne(lab_id);
 
-          // Confirm LabFile verifications were run
+      // Confirm LabFile verifications were run
 
     }, [course_id, lab_id]);
   });

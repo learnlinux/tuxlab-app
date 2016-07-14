@@ -17,8 +17,7 @@
 	import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
 		
 // Toolbar
-  	import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
-	import "../../../../../node_modules/@angular2-material/toolbar/toolbar.css";
+  import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
 
 // Icon
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';

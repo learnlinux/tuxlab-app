@@ -31,6 +31,7 @@
     "client/imports/ui/components/markdown/markdown.ts",
     "client/imports/ui/components/markdown/marked.d.ts",
     "client/imports/ui/components/mdeditor/mdeditor.ts",
+    "client/imports/ui/components/userlist/userlist.ts",
     "client/imports/ui/components/wetty/terminal.ts",
     "client/imports/ui/pages/account/account.ts",
     "client/imports/ui/pages/account/login.ts",

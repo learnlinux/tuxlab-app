@@ -19,7 +19,7 @@
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // Grades import
-	import { GradeList } from "../../components/gradelist/gradelist";
+	import { GradeList } from "../../components/gradelist/gradelist.ts";
 
 // Define GradeView Component
 	@Component({
@@ -41,11 +41,9 @@
 			mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
 			// Display Course Toolbar
-			document.getElementById('course-toolbar').style.display = "block";
-
+			document.getElementById('course-toolbar').className += "block";
+			
 			// Activate toolbar button
 			document.getElementById('toolbar-grades').className += "active-button";
-
-			document.getElementById('tux-content').style.marginTop = "20px";
 		}
 	}

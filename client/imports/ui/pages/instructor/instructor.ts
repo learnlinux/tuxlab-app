@@ -20,9 +20,9 @@
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // Editor Component
-	import { MDEditor } from '../../components/mdeditor/mdeditor';
+	import { MDEditor } from '../../components/mdeditor/mdeditor.ts';
 
-	import { LoadScreen } from '../../components/loadscreen/loadscreen';
+	import { LoadScreen } from '../../components/loadscreen/loadscreen.ts';
 
 // Define InstructorView Component
 	@Component({
