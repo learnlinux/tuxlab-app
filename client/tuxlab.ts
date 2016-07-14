@@ -7,7 +7,7 @@
     import 'zone.js/dist/zone';
 
 // Angular Imports
-    import { Component, ViewEncapsulation, provide } from '@angular/core';
+    import { Component, ViewEncapsulation, provide, PLATFORM_DIRECTIVES} from '@angular/core';
     import { bootstrap } from '@angular/platform-browser-dynamic';
 
     import { APP_BASE_HREF, CORE_DIRECTIVES } from '@angular/common';
@@ -19,7 +19,9 @@
     import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
     import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
+
     import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
+    import { ResponsiveState, ResponsiveConfig, RESPONSIVE_DIRECTIVES } from 'responsive-directives-angular2';
 
     import { MeteorComponent } from 'angular2-meteor';
 
@@ -60,9 +62,11 @@ class TuxLab extends MeteorComponent {
 }
 
 bootstrap(TuxLab, [
+  ResponsiveState,
 	MATERIAL_PROVIDERS,
 	HTTP_PROVIDERS,
 	MdIconRegistry,
 	ROUTE_PROVIDERS,
-	provide(APP_BASE_HREF, { useValue: '/' })
+	provide(APP_BASE_HREF, { useValue: '/' }),
+  provide(PLATFORM_DIRECTIVES, { useValue: [RESPONSIVE_DIRECTIVES], multi: true })
 ]);
