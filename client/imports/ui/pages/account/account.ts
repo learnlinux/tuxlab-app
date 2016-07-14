@@ -10,7 +10,6 @@
 
     import { APP_BASE_HREF, FORM_DIRECTIVES } from '@angular/common';
     import { HTTP_PROVIDERS } from '@angular/http';
-    import { RouterLink, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig } from '@angular/router-deprecated';
 
     import { InjectUser } from 'angular2-meteor-accounts-ui';
 
@@ -30,27 +29,27 @@
 @Component({
   selector: 'tuxlab-account',
   templateUrl: '/client/imports/ui/pages/account/account.html',
-  directives: [ 
+  directives: [
     MATERIAL_DIRECTIVES,
     MD_TOOLBAR_DIRECTIVES,
     MD_ICON_DIRECTIVES,
     MD_INPUT_DIRECTIVES,
-    FORM_DIRECTIVES 
+    FORM_DIRECTIVES
   ],
   viewProviders: [ MdIconRegistry ],
   encapsulation: ViewEncapsulation.None
 })
 
-@InjectUser("user")
 // Accounts Class
-export class Account extends MeteorComponent {
+@InjectUser('user')
+export default class Account extends MeteorComponent {
   user: Meteor.User;
 
   constructor(mdIconRegistry: MdIconRegistry) {
-    super();   
+    super();
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-    mdIconRegistry.setDefaultFontSetClass('tuxicon');  
-    
+    mdIconRegistry.setDefaultFontSetClass('tuxicon');
+
   }
-}    
+}

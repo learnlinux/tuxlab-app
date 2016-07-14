@@ -24,9 +24,8 @@
     templateUrl: '/client/imports/ui/pages/static/privacy.html',
   })
 
-export class Privacy extends MeteorComponent {
+export default class Privacy extends MeteorComponent {
   constructor() {
     super();
   }
 }
-

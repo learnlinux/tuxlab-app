@@ -10,5 +10,9 @@ logs_collection = new Mongo.Collection(log_collection_name);
 TuxLog = new (winston.Logger)({
   transports: [
      new (winston.transports.Console)(),
+     new (winston.transports.MongoDB)({
+       db: logs_collection.rawDatabase(),
+       collection: log_collection_name
+     })
    ]
 });
