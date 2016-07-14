@@ -68,6 +68,14 @@ courses.allow({
         course_description: {
           type: descriptionSchema
         },
+        hidden: {
+          type: Boolean,
+          defaultValue: true
+        },
+        featured: {
+          type: Boolean,
+          defaultValue: false
+        },
         labs: {
           type: [String],
           custom: function() {
@@ -116,12 +124,15 @@ courses.allow({
       });
 
       // Publish All Courses TODO: add pagination
-      Meteor.publish('all-courses', function(){
+      Meteor.publish('explore-courses', function(){
         this.autorun(function(computation) {
           if(typeof this.userId !== "undefined") {
             let user = (Meteor.users.findOne(this.userId));
             if(typeof user !== "undefined") {
-              return courses.find();
+              return courses.find({
+                hidden: false,
+                featured: true
+              });
             }
           }
         });
