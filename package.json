@@ -45,10 +45,14 @@
     "node-cache": "^3.2.1",
     "node-etcd": "^4.2.1",
     "reflect-metadata": "0.1.2",
+    "responsive-directives-angular2": "^0.3.0",
     "rxjs": "5.0.0-beta.6",
     "simplemde": "^1.11.2",
     "winston": "2.2.0",
+<<<<<<< HEAD
     "winston-mongodb": "^1.6.0",
+=======
+>>>>>>> 942274e6e6c4010030727c43ce592507d6ef86f1
     "zone.js": "^0.6.12"
   },
   "devDependencies": {

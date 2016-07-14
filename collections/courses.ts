@@ -81,9 +81,10 @@ courses.allow({
         let user = Meteor.users.findOne(this.userId);
         if (typeof user !== "undefined") {
           let studentCourseIds = (_.unzip((<any>user).roles.student))[0];
-          let course_ids = studentCourseIds.concat((<any>user).roles.instructor);
-          // Publish courses that match
-          return courses.find({ _id: { $in: course_ids } });
+          if (typeof studentCourseIds !== "undefined") {
+            let course_ids = studentCourseIds.concat((<any>user).roles.instructor);
+            return courses.find({ _id: { $in:course_ids } });
+          }
         }
       }
     });

@@ -10,7 +10,7 @@
     import { Component, ViewEncapsulation, provide } from '@angular/core';
     import { bootstrap } from '@angular/platform-browser-dynamic';
 
-    import { APP_BASE_HREF } from '@angular/common';
+    import { APP_BASE_HREF, CORE_DIRECTIVES } from '@angular/common';
     import { HTTP_PROVIDERS } from '@angular/http';
 
     import { InjectUser } from 'angular2-meteor-accounts-ui';
@@ -20,6 +20,7 @@
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
     import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
     import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
+
     import { MeteorComponent } from 'angular2-meteor';
 
 // Routes
@@ -63,4 +64,5 @@ bootstrap(TuxLab, [
 	HTTP_PROVIDERS,
 	MdIconRegistry,
 	ROUTE_PROVIDERS,
-	provide(APP_BASE_HREF, { useValue: '/' })]);
+	provide(APP_BASE_HREF, { useValue: '/' })
+]);
