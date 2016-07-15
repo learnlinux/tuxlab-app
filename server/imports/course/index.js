@@ -1,2 +1,2 @@
 //
-import './method.ts'
+import './methods.ts'
