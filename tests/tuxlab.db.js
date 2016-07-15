@@ -1,5 +1,5 @@
 /**
-  Tests Meteor DB Authentication Roles and Inserts Example data for Later Use
+  Tests Meteor DB Schema
 **/
 
 /**
@@ -106,16 +106,3 @@ describe('Database Schema', function(){
     }, [course_id, lab_id]);
   });
 });
-
-/**
-  Test Client-Side Insertion
-**/
-describe('Client-Side Insertion', function(){
-
-});
-
-
-
-/**
-  Test Schema Enforcement
-**/
