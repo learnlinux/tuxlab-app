@@ -1,11 +1,13 @@
 declare var Collections : any;
-Meteor.methods([
+declare var TuxLog : any;
 
-  /**prepareLab: prepares a labExec object for the current user
-   * takes the id of the lab and a callback as parameter
-   * callback: (err,parseTasks,labExec)
+Meteor.methods({
+
+  /** prepareLab: prepares a labExec object for the current user
+   *  takes the id of the lab and a callback as parameter
+   *  callback: (err,parseTasks,labExec)
    */
-  'prepareLab': function(labId : number, callback : any){
+  'prepareLab' : function(labId : number, callback : any){
      var session = require('../api/lab.session.js');
      var userid = Meteor.userId();
 
@@ -55,4 +57,4 @@ Meteor.methods([
      * remove all vms and deleterecords after lab is completed for good. -highly optional
      */
   }
-]);
+});

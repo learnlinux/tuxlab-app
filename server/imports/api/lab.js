@@ -38,4 +38,4 @@ lab.prototype.newTask = function(ttl, mdown,sFn, vFn, opt){
 	    }
   return ts;
 }
-module.exports = new lab();
+module.exports = lab;
