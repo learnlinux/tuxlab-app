@@ -20,10 +20,97 @@
 	}
 }
 
-.tuxlab-courseview {
-	margin-bottom: 30px;
-	margin-top: 20px;
-}
 #course-toolbar.block {
 	display: block;
+}
+
+// Sub-toolbar
+#course-toolbar {
+  white-space: nowrap;
+  md-toolbar.large {
+    min-height: inherit;
+    background-color: #f0f0f0;
+    .wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      max-width: $tuxlab-max-width;
+      margin: 0 auto;
+      div {
+        height: 100%;
+      }
+      .course-toolbar-nav {
+        [md-button] {
+          font-weight: 300;
+        }
+        a {
+          color: black;
+          border-radius: 0;
+          height: 66px;
+          padding-top: 14px;
+          line-height: 45px;
+          background-color: #f0f0f0;
+          margin: 0;
+        }
+        a:hover {
+          background-color: #dfdfdf;
+        }
+        a.home-button, a.home-button:visited {
+          font-weight: bold;
+          font-size: 20px;
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        a.active-button, a.active-button:visited {
+          border-bottom: solid 4px #ffd600;
+        }
+        a.active-button:hover {
+          border-bottom: solid 5px #ffc400;
+        }
+      }
+    }
+  }
+  md-toolbar.small {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background-color: #f0f0f0;
+    a {
+      color: black;
+    }
+  }
+}
+
+.tuxlab-gradelist {
+	max-width: $tuxlab-max-width;
+	margin: 0 auto;
+}
+
+.tuxlab-lablist {
+	width: 100%;
+	margin: 0 auto;
+	max-width: $tuxlab-max-width;
+	
+	md-data-table {
+		tr {
+			cursor: pointer;
+		}
+	}
+	md-progress-bar {
+		.md-progress-bar-buffer {
+			background-color: #ffe1bb;
+		}
+		.md-progress-bar-fill::after {
+			background-color: #ffbc00;
+		}
+	}
+}
+
+.course-gradelist {
+	display: none;
+}
+.course-lablist {
+	display: none;
 }

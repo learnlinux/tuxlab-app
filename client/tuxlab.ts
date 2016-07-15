@@ -26,7 +26,7 @@
     import { MeteorComponent } from 'angular2-meteor';
 
 // Routes
-    import { ROUTER_DIRECTIVES, RouterConfig } from '@angular/router';
+    import { ROUTER_DIRECTIVES, RouterConfig, Router } from '@angular/router';
     import { ROUTE_PROVIDERS } from './routes.ts'
 
 // Define TuxLab Component
@@ -45,19 +45,15 @@
 @InjectUser('user')
 class TuxLab extends MeteorComponent {
     user: Meteor.User;
-
-    constructor(mdIconRegistry: MdIconRegistry) {
+    constructor(mdIconRegistry: MdIconRegistry, private router: Router) {
         super();
-
-        console.log(this.user);
-
         // Create Icon Font
         mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
         mdIconRegistry.setDefaultFontSetClass('tuxicon');
     }
     tuxLogout() {
         Meteor.logout();
-        window.location.href = "/";
+        this.router.navigate(['/']);
     }
 }
 
