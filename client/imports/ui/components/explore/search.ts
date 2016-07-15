@@ -56,8 +56,7 @@ export class SearchView extends MeteorComponent {
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
     
     // Subscribe Courses Database
-    //this.getCourses();
-		this.subscribe('all-courses', () => {
+		this.subscribe('explore-courses', () => {
 			this.courses = courses.find().fetch();
 			this.pagination.totalItems = this.courses.length;
 			this.refreshCourses();
