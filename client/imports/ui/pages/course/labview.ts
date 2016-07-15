@@ -15,14 +15,13 @@
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MeteorComponent } from 'angular2-meteor';
-	import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
+	import {OVERLAY_PROVIDERS} from '@angular2-material/core/overlay/overlay';
 
 // Icon
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // LabList and Grades import
 	import { LabList } from "../../components/lablist/lablist.ts";
-	import { GradeList } from "../../components/gradelist/gradelist.ts";
 
 // Courses and Course Record Imports
 	import { courses } from "../../../../../collections/courses.ts";
@@ -30,22 +29,21 @@
 
 // Define CourseView Component
 	@Component({
-		selector: 'tuxlab-courseview',
-		templateUrl: '/client/imports/ui/pages/course/course.html',
+		selector: 'tuxlab-labview',
+		templateUrl: '/client/imports/ui/pages/course/labview.html',
 		directives: [
 			MATERIAL_DIRECTIVES,
 			MD_ICON_DIRECTIVES,
 			ROUTER_DIRECTIVES,
-			LabList,
-			GradeList
+			LabList
 		],
 		viewProviders: [MdIconRegistry],
 		providers: [OVERLAY_PROVIDERS],
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export CourseView Class
-  export default class CourseView extends MeteorComponent {
+// Export LabView Class
+  export class LabView extends MeteorComponent {
     constructor(mdIconRegistry: MdIconRegistry) {
       super();
       // Create Icon Font

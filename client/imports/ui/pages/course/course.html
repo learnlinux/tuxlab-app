@@ -5,100 +5,24 @@
       <div class="wrapper">
         <!-- Navigation -->
         <div class="course-toolbar-nav">
-          <a md-button (click)="home()" class="home-button" id="toolbar-course">Home</a>
-          <a md-button (click)="labs()" id="toolbar-labs">Labs</a>
-          <a md-button (click)="grades()" id="toolbar-grades">Grades</a>
+          <a md-button [routerLink]="['/course']" class="home-button" id="toolbar-course">Home</a>
+          <a md-button [routerLink]="['/course/labs']" id="toolbar-labs">Labs</a>
+          <a md-button [routerLink]="['/course/grades']" id="toolbar-grades">Grades</a>
         </div>
       </div>
     </md-toolbar>
     <md-toolbar class="small" *showItBootstrap="['xs']">
       <div>
-        <a md-button (click)="home()" id="toolbar-course">Home</a>
-        <a md-button (click)="labs()" id="toolbar-labs">Labs</a>
-        <a md-button (click)="grades()" id="toolbar-grades">Grades</a>
-        <a md-button (click)="home()">More</a>
-        <a md-button (click)="home()">More</a>  
+        <a md-button [routerLink]="['/course']" id="toolbar-course">Home</a>
+        <a md-button [routerLink]="['/course/labs']" id="toolbar-labs">Labs</a>
+        <a md-button [routerLink]="['/course/grades']" id="toolbar-grades">Grades</a>
+        <a md-button [routerLink]="['/course']">More</a>
+        <a md-button [routerLink]="['/course']">More</a>  
       </div>
     </md-toolbar>
   </div>
   <!--Course View Content-->
   <div class="course-content" id="course-content">
-    <!--Course Description Card-->
-    <a name="description"></a>
-    <md-card>
-      <md-card-title>
-        <md-card-title-text>
-          <span class="md-headline">{{ courseName }}</span>
-        </md-card-title-text>
-      </md-card-title>
-      <md-card-content>
-        <p [innerHTML]="courseDescription"></p>
-      </md-card-content>
-      <md-card-actions layout="row" layout-align="end center">
-        <a md-button href="https://www.cs.cmu.edu/~15131/f15/">Course Website</a>
-      </md-card-actions>
-    </md-card>
-    <!--Responsive Section for Lectures and Assignments-->
-    <div layout="row" layout-xs="column">
-      <div flex>
-        <!--Grade Card-->
-        <tuxlab-gradelist></tuxlab-gradelist>
-      </div>
-      <div flex>
-        <!--Assignments Card-->
-        <a name="assignments"></a>
-        <md-card>
-          <md-card-title>
-            <md-card-title-text>
-              <span class="md-headline">Announcements</span>
-            </md-card-title-text>
-          </md-card-title>
-          <md-card-content>
-            <md-data-table layout-fill>
-              <thead>
-                <tr>
-                  <th class="md-text-cell">Announcement</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="md-text-cell">Course Begins</td>
-                  <td>Sept. 1st</td>
-                </tr>
-                <tr>
-                  <td class="md-text-cell">Midterm Exam</td>
-                  <td>Oct. 25th</td>
-                </tr>
-                <tr>
-                  <td class="md-text-cell">Final Exam</td>
-                  <td>Dec. 19th</td>
-                </tr>
-              </tbody>
-            </md-data-table>
-          </md-card-content>
-          <md-card-actions layout="row" layout-align="end center">
-            <md-dialog #alert>
-              <md-dialog-title>Nice Try</md-dialog-title>
-              Go home and think about what you did.
-              <md-dialog-actions ok="Fine"></md-dialog-actions>
-            </md-dialog>
-            <button md-button class="right" (click)="alert.show()">
-            Complain
-            </button>
-          </md-card-actions>
-        </md-card>
-      </div>
-    </div>
-    <!--Lab List Card-->
-    <tuxlab-lablist></tuxlab-lablist>
+    <router-outlet></router-outlet>
   </div>
-  
-  <div class="course-gradelist" id="course-grades">
-    <tuxlab-gradelist></tuxlab-gradelist>
-  </div>
-  <div class="course-lablist" id="course-labs">
-    <tuxlab-lablist></tuxlab-lablist>
-  </div>
-  
 </div>

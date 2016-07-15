@@ -1,4 +1,5 @@
 import {provideRouter, RouterConfig} from '@angular/router';
+import { courseRoutes } from './imports/ui/pages/course/course.routes.ts';
 
 // Import pages
 import Dashboard from './imports/ui/pages/dashboard/dashboard.ts'
@@ -13,6 +14,7 @@ import Privacy from './imports/ui/pages/static/privacy.ts';
 
 // Define Routes
 const routes : RouterConfig = [
+  ...courseRoutes,
   { path: '', component: Dashboard },
   { path: 'login', component: Login },
   { path: 'lab', component: TaskView },
@@ -20,11 +22,6 @@ const routes : RouterConfig = [
   { path: 'explore', component: Explore },
   { path: 'terms', component: Terms },
   { path: 'privacy', component: Privacy },
-//  { path: 'course/:courseid', as: 'CourseView', component: CourseView },
-//  { path: 'course/:courseid/users', as: 'UserList', component: UserList },
-//  { path: 'course/:courseid/user/:userid', as: 'UserView', component: UserView },
-//  { path: 'course/:courseid/labs', as: 'LabList', component: LabList },
-//  { path: 'course/:courseid/lab/:labid', as: 'LabView', component: LabView },
   { path: 'account/:userid', component: Account },
   { path: '**', component: Err404 }
 ]
