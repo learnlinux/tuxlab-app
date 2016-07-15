@@ -7,8 +7,6 @@ import Account from './imports/ui/pages/account/account.ts'
 import Err404 from './imports/ui/pages/error/404.ts'
 import TaskView from './imports/ui/pages/lab/taskview.ts';
 import CourseList from './imports/ui/pages/course/course.ts';
-import LabView from './imports/ui/pages/course/lablist.ts';
-import GradeView from './imports/ui/pages/course/gradelist.ts';
 import Explore from './imports/ui/pages/explore/explore.ts';
 import Terms from './imports/ui/pages/static/terms.ts';
 import Privacy from './imports/ui/pages/static/privacy.ts';
@@ -19,8 +17,6 @@ const routes : RouterConfig = [
   { path: 'login', component: Login },
   { path: 'lab', component: TaskView },
   { path: 'course', component: CourseList },
-  { path: 'labs', component: LabView },
-  { path: 'grades', component: GradeView },
   { path: 'explore', component: Explore },
   { path: 'terms', component: Terms },
   { path: 'privacy', component: Privacy },

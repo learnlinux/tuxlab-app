@@ -2,7 +2,7 @@ var async = require ('async');
 var future = require('fibers/future');
 
 Meteor.methods({
-  'search_courses': function(text : String, results_per_page : Number, page_no : Number) {
+  'search_courses': function(text : string, results_per_page : number, page_no : number) {
 
     var courses = Collections.courses;
 
@@ -37,7 +37,7 @@ Meteor.methods({
          "course_results" : function(callback) {callback(null, courses.find(search_object, search_options).fetch());}
        },
        function(err, results) {
-         if(err) result.throw(error);
+         if(err) result.throw(err);
          result.return(results);
      });
 

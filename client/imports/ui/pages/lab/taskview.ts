@@ -25,7 +25,7 @@
   directives: [ MarkdownView, Terminal ]
 })
 
-export default class TaskView extends MeteorComponent{
+export default class TaskView extends MeteorComponent {
   
   constructor() {
     super();

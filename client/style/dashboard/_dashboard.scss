@@ -1,77 +1,85 @@
 .tuxlab-dashboard {
-	width:100%;
-	max-width:$tuxlab-max-width;
-	margin:0 auto;
-	
-	a {
-		color: black;
-	}
+  width:100%;
+  max-width:$tuxlab-max-width;
+  margin:0 auto;
 
-	.content-centralize {
-		margin-left: auto;
-		margin-right: auto;
-	}
+  a {
+    color: black;
+  }
 
-	.cards {
-		padding: 10px;
-		@mixin card($colour) {
-			margin: 10px;
-			height: 100%;
-			background-color: white;
-			.card-title {
-				font-weight: 300;
-				font-size: 30px;
-				padding: 15px;
-				background-color: $colour;
-				color: #fbfbfb;
-			}
-			.card-content {
-				md-content {
-					background-color: white;
-				}
-			}
-			.course-link {
-				cursor: pointer;
-			}
-			.course-link:hover {
-				background-color: #efefef;
-			}
-			.more-button {
-				text-align: right;
-				height: 100%;
-				width: 100%;
-			}
-		}
-		.card-green {
-			@include card(#4caf50);
-		}
-		.card-purple {
-			@include card(#9c27b0);
-		}
-		.card-blue-grey {
-			@include card(#607d8b);
-		}
-		.card-cyan {
-			@include card(#00bcd4);
-		}
-		.card-blue {
-			@include card(#0288d1);
-		}
-		.card-amber {
-			@include card(#ffa000);
-		}
-		.card-yellow {
-			@include card(#ffd600);
-		}
-		.card-red {
-			@include card(#d32f2f);
-		}
-		.card-white {
-			@include card(#ffffff);
-			color: black
-		}
+  .content-centralize {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-	}
+  .cards {
+    padding: 10px;
+    @mixin card($colour) {
+      margin: 10px;
+      height: 100%;
+      background-color: white;
+      .card-title {
+        font-weight: 300;
+        font-size: 30px;
+        padding: 15px;
+        background-color: $colour;
+        color: #fbfbfb;
+      }
+      .card-content {
+        md-content {
+          background-color: white;
+        }
+      }
+      md-content {
+        background-color: white;
+        md-list {
+          a {
+            text-decoration: none;
+            color: black;
+          }
+        }
+      }
+        
+      .course-link {
+        cursor: pointer;
+      }
+      .course-link:hover {
+        background-color: #efefef;
+      }
+      .more-button {
+        text-align: right;
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .card-green {
+      @include card(#4caf50);
+    }
+    .card-purple {
+      @include card(#9c27b0);
+    }
+    .card-blue-grey {
+      @include card(#607d8b);
+    }
+    .card-cyan {
+      @include card(#00bcd4);
+    }
+    .card-blue {
+      @include card(#0288d1);
+    }
+    .card-amber {
+      @include card(#ffa000);
+    }
+    .card-yellow {
+      @include card(#ffd600);
+    }
+    .card-red {
+      @include card(#d32f2f);
+    }
+    .card-white {
+      @include card(#ffffff);
+      color: black
+    }
 
-
+  }
 }

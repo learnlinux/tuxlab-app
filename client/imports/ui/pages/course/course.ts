@@ -10,6 +10,7 @@
 	import { APP_BASE_HREF } from '@angular/common';
 	import { HTTP_PROVIDERS } from '@angular/http';
 	import { InjectUser } from 'angular2-meteor-accounts-ui';
+	import { ROUTER_DIRECTIVES } from '@angular/router';
 
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -34,6 +35,7 @@
 		directives: [
 			MATERIAL_DIRECTIVES,
 			MD_ICON_DIRECTIVES,
+			ROUTER_DIRECTIVES,
 			LabList,
 			GradeList
 		],
@@ -55,11 +57,6 @@
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
-      // Display Course Toolbar
-			document.getElementById('course-toolbar').className += " block";
-      // Activate toolbar button
-      document.getElementById('toolbar-course').className += " active-button";
-
       // Subscribe to courses database and set current course
       this.subscribe('user-courses', this.courseNumber, () => {
         this.course = courses.findOne({ course_number: this.courseNumber });
@@ -68,5 +65,25 @@
           this.courseDescription = this.course.course_description.content;
         }
       }, true);
+			
+			// document.getElementById('course-content').style.display = "block";
+			// document.getElementById('course-grades').style.display = "none";
+			// document.getElementById('course-labs').style.display = "none";
     }
+		home() {
+			document.getElementById('course-content').style.display = "block";
+			document.getElementById('course-grades').style.display = "none";
+			document.getElementById('course-labs').style.display = "none";
+		}
+		labs() {
+			document.getElementById('course-content').style.display = "none";
+			document.getElementById('course-grades').style.display = "none";
+			document.getElementById('course-labs').style.display = "block";
+		}
+		grades() {
+			document.getElementById('course-content').style.display = "none";
+			document.getElementById('course-grades').style.display = "block";
+			document.getElementById('course-labs').style.display = "none";
+		}
+		
   }

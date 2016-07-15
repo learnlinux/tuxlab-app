@@ -16,11 +16,11 @@
           <md-icon fontIcon="tuxicon-speaker"></md-icon>
           Announcements
         </a>
-        <a md-button href="/lab">
+        <a md-button [routerLink]="['/lab']">
           <md-icon fontIcon="tuxicon-console"></md-icon>
           Terminal
         </a>
-        <a md-button [href]="'/account/' + userId">
+        <a md-button [routerLink]="['/account/' + userId]">
           <md-icon fontIcon="tuxicon-cog"></md-icon>
           Settings
         </a>
@@ -41,15 +41,15 @@
           <div class="wrapper">
             <!-- Logo -->
             <div class="tux-toolbar-logo">
-              <a href="/">
+              <a [routerLink]="['/']">
               <img src="/assets/logo/v1.dark.png" />
               </a>
             </div>
             <!-- Navigation -->
             <div class="tux-toolbar-nav">
-              <a md-button href="/"> Dashboard </a>
-              <a md-button href="/explore"> Explore </a>
-              <a md-button href="/"> Courses </a>
+              <a md-button [routerLink]="['/']"> Dashboard </a>
+              <a md-button [routerLink]="['/explore']"> Explore </a>
+              <a md-button [routerLink]="['/']"> Courses </a>
             </div>
             <span flex></span>
             <!-- Profile Dropdown -->
@@ -64,49 +64,27 @@
             </div>
           </div>
           <div *ngIf="!user" class="tux-toolbar-login">
-            <a md-button href="/login">Login</a>
+            <a md-button [routerLink]="['/login']">Login</a>
           </div>
       </div>
       </md-toolbar>
       <!--Small Screen Width-->
       <md-toolbar class="small" *showItBootstrap="['xs']">
         <div class="mobile-toolbar-buttons">
-          <a href="/"><md-icon fontIcon="tuxicon-home"></md-icon></a>
-          <a href="/explore"><md-icon fontIcon="tuxicon-wire"></md-icon></a>
-          <a href="/"><md-icon fontIcon="tuxicon-book"></md-icon></a>
+          <a [routerLink]="['/']"><md-icon fontIcon="tuxicon-home"></md-icon></a>
+          <a [routerLink]="['/explore']"><md-icon fontIcon="tuxicon-wire"></md-icon></a>
+          <a [routerLink]="['/']"><md-icon fontIcon="tuxicon-book"></md-icon></a>
           <a (click)="right.toggle()" *ngIf="user">
             <md-icon fontIcon="tuxicon-person"></md-icon>
           </a>
-          <a href="/login" *ngIf="!user">
+          <a [routerLink]="['/login']" *ngIf="!user">
             <md-icon fontIcon="tuxicon-enter"></md-icon>
           </a>
         </div>  
       </md-toolbar>
       
     </div>
-    
-    <!-- Course Toolbar -->
-    <div id="course-toolbar">
-      <md-toolbar class="md-medium-tall large" *hideItBootstrap="['xs']">
-        <div class="wrapper">
-          <!-- Navigation -->
-          <div class="course-toolbar-nav">
-            <a md-button href="/course" class="home-button" id="toolbar-course">Home</a>
-            <a md-button href="/labs" id="toolbar-labs">Labs</a>
-            <a md-button href="/grades" id="toolbar-grades">Grades</a>
-          </div>
-        </div>
-      </md-toolbar>
-      <md-toolbar class="small" *showItBootstrap="['xs']">
-        <div>
-          <a md-button href="/course" id="toolbar-course">Home</a>
-          <a md-button href="/labs" id="toolbar-labs">Labs</a>
-          <a md-button href="/grades" id="toolbar-grades">Grades</a>
-          <a md-button href="/course">More</a>
-          <a md-button href="/course">More</a>  
-        </div>  
-      </md-toolbar>
-    </div>
+
     <!-- Page -->
     <div class="tux-content" id="tux-content">
       <router-outlet></router-outlet>
@@ -116,8 +94,8 @@
       <div class="wrapper">
         <span flex></span>
         <p>&copy; 2016 Tuxlab</p>
-        <a md-button href="/terms">Terms</a>
-        <a md-button href="/privacy">Privacy</a>
+        <a md-button [routerLink]="['/terms']">Terms</a>
+        <a md-button [routerLink]="['/privacy']">Privacy</a>
       </div>
     </footer>
   </md-content>
