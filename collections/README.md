@@ -62,6 +62,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   instructor_ids: ["948fhp23irjer9823r3rwef", "573de804b17eca6c452d9ff7"],
   hidden: true, // Course is hidden from students.  Default is true.
   disabled: false, // Enrollment for course is unavailable. Default is false.
+  featured: true, // Course is displayed on explore page. Default is false.
 	course_description: {
 		content: "This is the course description.",
 		syllabus: "This is the course syllabus"

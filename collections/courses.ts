@@ -76,6 +76,10 @@ courses.allow({
           type: Boolean,
           defaultValue: false
         },
+        disabled: {
+          type: Boolean,
+          defaultValue: false
+        },
         labs: {
           type: [String],
           custom: function() {

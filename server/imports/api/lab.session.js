@@ -15,8 +15,8 @@ session.prototype.init = function(user,labId,callback){
   this.env.setUser(user);
 
   // Get Metadata from Database
-  var lab = Collections.labs.findOne({_id: lab_id}, {fields: {'file' : 0}}).fetch();
-  if(lab.length < 0){
+  var lab = Collections.labs.findOne({_id: labId}, {fields: {'file' : 0}});
+  if(!lab || lab.length < 0){
     callback(new Error("Lab Not Found.", null));
   }
   else{
@@ -45,31 +45,42 @@ session.prototype.init = function(user,labId,callback){
         });
 
         slf.lab.taskNo = 0;
-        callback(null, lab.tasks);
+	SessionCache.add(userid,labid,slf,function(err){
+	  if(err){
+	    callback(err,null);
+	  }
+	  else{
+	    slf.start(function(error){
+	      if(err){
+	        callback(err,null);
+	      }
+	      else{
+	        slf.env.getPass(callback);
+	      }
+	    });
+	  }
+	});
       }
       else{
         // Get LabFile from Cache
         slf.lab.taskNo = 0;
         slf.lab = value;
-        callback(null, lab.tasks);
+        SessionCache.add(userid,labid,slf,function(err){
+	  if(err){
+	    callback(err,null);
+	  }
+	  else{
+	    slf.env.getPass(callback);
+	  }
+	});
       }
     });
   }
 }
 
-session.prototype.parseTasks = function(){
-  var slf = this;
-  return this.lab.taskList.map(function(task,i){
-    if(i <= slf.lab.taskNo){
-      return {title: task.title, markdown: task.markdown};
-    }
-    return {title: task.title, markdown: null};
-  });
-}
-
 /* start: runs setup and moves task header to first task
- * runs callback(err,res) on err if there is an error,
- * (null,parseTasks) no error
+ * runs callback(err) on err if there is an error,
+ * (null) no error
  */
 session.prototype.start = function(callback){
   var slf = this;
@@ -79,10 +90,10 @@ session.prototype.start = function(callback){
     var tasks = this.lab.tasks(this.env);
   if(!this.lab.currentTask.next){
     TuxLog.log('labfile_error','labfile tasks not properly chained at start');
-    callback("Internal error",null);
+    callback("Internal error");
   }
   this.lab.currentTask = this.lab.currentTask.next;
-  this.currentTask.sFn().then(function(){ callback(null,slf.parseTasks(0)); });
+  this.currentTask.sFn().then(function(){ callback(null); });
 }
 
 /* next: verifies that task is completed
@@ -125,4 +136,4 @@ session.prototype.end = function(callback){
                                      });
 }
 
-module.exports = new session();
+module.exports = session;

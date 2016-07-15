@@ -10,40 +10,44 @@
 	import { APP_BASE_HREF } from '@angular/common';
 	import { HTTP_PROVIDERS } from '@angular/http';
 	import { InjectUser } from 'angular2-meteor-accounts-ui';
+	import { ROUTER_DIRECTIVES } from '@angular/router';
 
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MeteorComponent } from 'angular2-meteor';
+	import {OVERLAY_PROVIDERS} from '@angular2-material/core/overlay/overlay';
 
 // Icon
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
-// LabList import
+// LabList and Grades import
 	import { LabList } from "../../components/lablist/lablist.ts";
 
-// Define LabsView Component
+// Courses and Course Record Imports
+	import { courses } from "../../../../../collections/courses.ts";
+	import { course_records } from "../../../../../collections/course_records.ts";
+
+// Define CourseView Component
 	@Component({
 		selector: 'tuxlab-labview',
-		templateUrl: '/client/imports/ui/pages/course/lablist.html',
-		directives: [MATERIAL_DIRECTIVES,
-					 MD_ICON_DIRECTIVES,
-					 LabList],
+		templateUrl: '/client/imports/ui/pages/course/labview.html',
+		directives: [
+			MATERIAL_DIRECTIVES,
+			MD_ICON_DIRECTIVES,
+			ROUTER_DIRECTIVES,
+			LabList
+		],
 		viewProviders: [MdIconRegistry],
+		providers: [OVERLAY_PROVIDERS],
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export LabsView Class
-	export default class LabView {
-
-		constructor(mdIconRegistry: MdIconRegistry) {
-			// Create Icon Font
-			mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-			mdIconRegistry.setDefaultFontSetClass('tuxicon');
-
-			// Display Course Toolbar
-			document.getElementById('course-toolbar').className += "block";
-			
-			// Activate toolbar button
-			document.getElementById('toolbar-labs').className += "active-button";
-		}
-	}
+// Export LabView Class
+  export class LabView extends MeteorComponent {
+    constructor(mdIconRegistry: MdIconRegistry) {
+      super();
+      // Create Icon Font
+      mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+      mdIconRegistry.setDefaultFontSetClass('tuxicon');
+    }
+  }

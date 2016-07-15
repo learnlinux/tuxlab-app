@@ -1,16 +1,25 @@
 <div class="tuxlab-gradelist">
-	<md-data-table layout-fill>
-		<thead>
-			<tr>
-				<th class="md-text-cell">Exam</th>
-				<th>Grade Percentage</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let grade of grades">
-				<td class="md-text-cell">{{ grade.name }}</td>
-				<td>{{ grade.grade }}</td>
-			</tr>
-		</tbody>
-	</md-data-table>
+  <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Course Grades</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <md-data-table layout-fill>
+        <thead>
+          <tr>
+            <th class="md-text-cell">Exam</th>
+            <th>Grade Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let grade of grades">
+            <td class="md-text-cell">{{ grade.name }}</td>
+            <td>{{ grade.grade }}</td>
+          </tr>
+        </tbody>
+      </md-data-table>
+    </md-card-content>
+  </md-card>
 </div>

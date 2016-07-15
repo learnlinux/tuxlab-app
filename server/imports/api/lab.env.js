@@ -9,12 +9,6 @@ var nconf = require('nconf');
  * intializes docker, etcd connection
  */
 var env = function(){
-  var etcd_address = nconf.get('etcd_node_ip')+':'+nconf.get('etcd_node_port');
-
-  var etcd_auth = {
-	  user: nconf.get('etcd_user'),
-	  password: nconf.get('etcd_pass')
-	}
 
   var docker_settings = {
 	  host: nconf.get('swarm_node_ip'),
@@ -22,7 +16,6 @@ var env = function(){
   }
 
   this.docker = new dockerode(docker_settings);
-  this.etcd = new etcd(etcd_address,etcd_auth);
   this.root_dom = nconf.get("root_domain");
 
 }
@@ -139,50 +132,51 @@ env.prototype.init = function(opts){
 	  else {
 	    var containerId = container.id.substring(0,7);
 	    container.start(strOpts,function(err,data){
-              if(err) {
+
+        if(err) {
 	        TuxLog.log('debug','container start err: '+err);
 	        reject("Internal error");
 	      }
 	      else {
-                var etcd_redrouter = {
-			docker: containerId,
-			port: 22,
-			username: "root",
-			allowed_auth: ["password"]
-			}
+            var etcd_redrouter = {
+        			docker: containerId,
+        			port: 22,
+        			username: "root",
+        			allowed_auth: ["password"]
+			      }
 
-		//etcd directory for helix record
-		var dir = slf.root_dom.split('.');
-		dir.reverse().push(this.usr,'A');
-		slf.helixKey = dir.join('/');
+            		//etcd directory for helix record
+            		var dir = slf.root_dom.split('.');
+            		dir.reverse().push(this.usr,'A');
+            		slf.helixKey = dir.join('/');
 
-		slf.redRouterKey = '/redrouter/ssh::'+slf.usr;
+            		slf.redRouterKey = '/redrouter/ssh::'+slf.usr;
 
-	        //set etcd record for redrouter
-		etcd.set(slf.redRouterKey,etcd_redrouter,function(err,res){
-		  if(err){
-                    TuxLog.log('debug', 'error creating redrotuer etcd record: '+err);
-		    reject("Internal error");
-		  }
+            	        //set etcd record for redrouter
+            		etcd.set(slf.redRouterKey,etcd_redrouter,function(err,res){
+            		  if(err){
+                                TuxLog.log('debug', 'error creating redrotuer etcd record: '+err);
+            		    reject("Internal error");
+            		  }
 
-		  //set etcd record for helixdns
-		  docker.getContainer(containerId).inspect(function(err,container){
-		    if(err){
-		      TuxLog.log('debug', 'docker cannot find the container it just created: '+err);
-		      reject("Internal error");
-		      //TODO: get the actual information that we actually want. Perhaps change this entirely
-		    }
-		    else{
+            		  //set etcd record for helixdns
+            		  docker.getContainer(containerId).inspect(function(err,container){
+            		    if(err){
+            		      TuxLog.log('debug', 'docker cannot find the container it just created: '+err);
+            		      reject("Internal error");
+            		      //TODO: get the actual information that we actually want. Perhaps change this entirely
+            		    }
+            		    else{
 
-		      //set etcd record for helix
-		      etcd.set(slf.helixKey,container.NetworkSettings,function(err,res){
-		        if(err){
-			  TuxLog.log('debug','error creating helix etcd record: '+err);
-		          reject("Internal error");
-		        }
-			else{
-		          slf.vmList.labVm = slf.labVm;
-		          resolve();
+            		      //set etcd record for helix
+            		      etcd.set(slf.helixKey,container.NetworkSettings,function(err,res){
+            		        if(err){
+            			  TuxLog.log('debug','error creating helix etcd record: '+err);
+            		          reject("Internal error");
+            		        }
+            			else{
+            		          slf.vmList.labVm = slf.labVm;
+            		          resolve();
                         }
                       });
                     }
@@ -282,7 +276,7 @@ env.prototype.removeVm = function (vmName,opts) {
   return function(){
     return new Promise(function(resolve,reject){
 
-     //check if container initialized 
+     //check if container initialized
      if(!_.has(this.vmList,vmName)){
         TuxLog.log('labfile_error',"trying to delete non-existing vm");
         reject("Internal error");
@@ -376,7 +370,10 @@ env.prototype.shell = function(vmName,command,opts) {
  */
 env.prototype.getPass = function(vmName,callback){
   this.shell1(vmName, "cat /pass")
-    .then(function(sOut){ callback(sOut); }, function(s1,s2,s3){callback(s1,s2,s3);});
+    .then(function(sOut){ callback(null,sOut); }, function(s1,s2,s3){
+	    if(s1){ callback(s1,s3) }
+	    else{ callback(s2,s3) }
+    });
 }
 env.prototype.getNetwork = function() {}	//Don't know what this does
 env.prototype.getVolume = function() {}		//Don't know what this does

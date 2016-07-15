@@ -11,6 +11,7 @@
 	import { APP_BASE_HREF } from '@angular/common';
 	import { HTTP_PROVIDERS } from '@angular/http';
 	import { InjectUser } from 'angular2-meteor-accounts-ui';
+	import { ROUTER_DIRECTIVES } from '@angular/router';
 
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -26,7 +27,8 @@
 		directives: [
 			MATERIAL_DIRECTIVES,
 			MD_ICON_DIRECTIVES,
-			MD_SIDENAV_DIRECTIVES
+			MD_SIDENAV_DIRECTIVES,
+			ROUTER_DIRECTIVES
 		],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
