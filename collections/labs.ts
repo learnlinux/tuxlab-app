@@ -6,7 +6,6 @@ declare var _ : any;
 var _ = require('underscore');
 
 declare var validateLab : any;
-var validateLab : any = require('../server/imports/lab/checkLab');
 
 export const labs : any = new Mongo.Collection('labs');
 
@@ -99,15 +98,23 @@ labs.allow({
 
 /* LAB VALIDATOR */
   if(Meteor.isServer){
+  var valdateLab : any = require('../server/imports/lab/checkLab.js');
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
         if (typeof fieldNames === "undefined"){
           if(!(doc.course_id && doc.file && //check for lab fields
-             (Roles.isInstructorFor(doc.course_id,userid)) && //check for instructor authorization
-              validateLab(doc.file))
-            ){ //check for labfile errors
-          	    return false;
-          	  }
+             Roles.isInstructorFor(doc.course_id,userid))){//check for instructor authorization
+	    return false;
+	  }
+	  else{
+	    var titleList = validateLab(doc.file);
+	    if(!titleList){ 
+              return false; }
+	    else{
+              return titleList;
+	    }
+	  } 
+
         }
       	else if(fieldNames.includes('tasks') && !fieldNames.includes('file')){
                 return false;
