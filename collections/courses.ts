@@ -111,14 +111,14 @@ courses.allow({
             // Check if userId indeed corresponds to a user in the database
             let user = Meteor.users.findOne(this.userId);
             if (typeof user !== "undefined") {
-
+              
               // Get course ids of courses that the student is enroled in
               let studentCourseIds = (_.unzip((<any>user).roles.student))[0];
               if (typeof studentCourseIds !== "undefined") {
 
                 // Concatenate with the courseIds that the instructor is teaching
                 let course_ids = studentCourseIds.concat((<any>user).roles.instructor);
-
+                
                 // Publish matching courses
                 return courses.find({ _id: { $in:course_ids } });
               }
