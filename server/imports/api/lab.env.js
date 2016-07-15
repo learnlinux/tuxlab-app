@@ -1,7 +1,5 @@
 // Import Dockerode
 var dockerode = require('dockerode');
-
-// Import other libraries
 var async = require('async');
 var underscore = require('underscore');
 var nconf = require('nconf');
@@ -106,7 +104,7 @@ env.prototype.init = function(opts){
   var crtOptsf = {Image: img,CMD: ['/bin/sh'], name: this.labVm}
 
   //change final options according to opts input, if there is any
-  underscore.extend(crtOptsf, crtOpts);
+  _.extend(crtOptsf, crtOpts);
 
   var slf = this;
   return new Promise(function(resolve,reject){
@@ -192,7 +190,6 @@ env.prototype.init = function(opts){
   });
 }
 
-
 /* creates a new container with an image from the options provided,
  * downloads image if it does not yet exist.
  * @param {{},{}} : two options file, dockerodeCreateOptions,dockerodeStartOptions
@@ -221,7 +218,7 @@ env.prototype.createVm = function(opts) {
   var crtOptsf = {Image:img,CMD:['/bin/sh']}
 
   //extend the final options with the supplied options
-  underscore.extend(crtOptsf,crtOpt);
+  _.extend(crtOptsf,crtOpt);
   crtOptsf.name = cName;
   //this.vmList.push({name: crtOpt.name,id:cName});
   //clone this into slf to use in the promise
@@ -279,7 +276,7 @@ env.prototype.removeVm = function (vmName,opts) {
     return new Promise(function(resolve,reject){
 
      //check if container initialized
-     if(!underscore.has(this.vmList,vmName)){
+     if(!_.has(this.vmList,vmName)){
         TuxLog.log('labfile_error',"trying to delete non-existing vm");
         reject("Internal error");
       }
@@ -300,7 +297,7 @@ env.prototype.updateVm = function(vmName, opts) {
   var slf = this;
   return function(){
     return new Promise(function(resolve,reject){
-      if(!underscore.has(slf.vmList,vmName)){
+      if(!_.has(slf.vmList,vmName)){
         TuxLog.log('labfile_error','trying to update non-existing vm');
         reject("Internal error");
       }
@@ -323,7 +320,7 @@ env.prototype.shell = function(vmName,command,opts) {
   var slf = this;
   return function(){
     return new Promise(function(resolve,reject){
-      if(!underscore.has(slf.vmList,vmName)){
+      if(!_.has(slf.vmList,vmName)){
         TuxLog.log('labfile_error','trying to run shell on non-existing vm');
         reject("Internal error");
       }

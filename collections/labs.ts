@@ -3,6 +3,12 @@ import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
 
+declare var validateLab : any;
+declare var _ : any;
+
+
+var _ = require('underscore');
+
 export const labs : any = new Mongo.Collection('labs');
 
 /**
@@ -95,7 +101,6 @@ labs.allow({
 /* LAB VALIDATOR */
   if(Meteor.isServer){
     var validateLab : any = require('../server/imports/lab/checkLab');
-
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
         if (typeof fieldNames === "undefined"){
@@ -137,6 +142,13 @@ labs.allow({
             TuxLog.log('warn', err);
           }
         });
+      });
+      Meteor.publish('user-labs',function(){
+        this.autorun(function(computation){
+          let roles = (<any>(Meteor.users.findOne(this.userId))).roles;
+          let courses = roles.student.map((a) =>{return a[0]});
+          return (courses.map(function(courseId){return {course: courseId, labs: ((Collections.courses.findOne(courseId)).labs)}}));
+	});
       });
     });
   }
