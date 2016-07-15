@@ -1,0 +1,2 @@
+//
+import './method.ts'
