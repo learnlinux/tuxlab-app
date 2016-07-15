@@ -370,7 +370,10 @@ env.prototype.shell = function(vmName,command,opts) {
  */
 env.prototype.getPass = function(vmName,callback){
   this.shell1(vmName, "cat /pass")
-    .then(function(sOut){ callback(null,null,sOut); }, function(s1,s2,s3){callback(s1,s2,s3);});
+    .then(function(sOut){ callback(null,sOut); }, function(s1,s2,s3){
+	    if(s1){ callback(s1,s3) }
+	    else{ callback(s2,s3) }
+    });
 }
 env.prototype.getNetwork = function() {}	//Don't know what this does
 env.prototype.getVolume = function() {}		//Don't know what this does

@@ -45,13 +45,13 @@ session.prototype.init = function(user,labId,callback){
         });
 
         slf.lab.taskNo = 0;
-        callback(null, lab.tasks);
+	slf.env.getPass(callback);
       }
       else{
         // Get LabFile from Cache
         slf.lab.taskNo = 0;
         slf.lab = value;
-        callback(null, lab.tasks);
+        slf.env.getPass(callback);
       }
     });
   }
@@ -125,4 +125,4 @@ session.prototype.end = function(callback){
                                      });
 }
 
-module.exports = new session();
+module.exports = session;

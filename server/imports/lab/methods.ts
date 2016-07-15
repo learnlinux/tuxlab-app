@@ -1,34 +1,18 @@
 declare var Collections : any;
-Meteor.methods([
+var Session = require('../api/lab.session.js');
+Meteor.methods({
 
   /**prepareLab: prepares a labExec object for the current user
    * takes the id of the lab and a callback as parameter
-   * callback: (err,parseTasks,labExec)
+   * callback: (err,pass)
+   * implement loading wheel, md fetch, course record create in callback
    */
-  'prepareLab': function(labId : number, callback : any){
-     var session = require('../api/lab.session.js');
-     var userid = Meteor.userId();
-
-     /** session.init(userId,labId,cb)
-      * cb(err,parsedTasks) cache session in cb, get rid of parsedTasks if unnecessary
-      * implement loading wheel here -in callback
-      * session.env.getPass(cb) callback(pass) is called, call this here and then call the prepareLab callback
-      * what to put in res of callback(err,res)? session obj? true/false? session id?...
-      * get task md -frontend
-      * create course record
-      */
-     session.init(userid,labId,function(err,res){
-       session.env.getPass(function(err,pass){
-         if(err){
-      	   TuxLog.log("debug","error getting pass from labVm container: "+err);
-      	   callback("Internal Service Error",null);
-      	 }
-      	 else{
-           var resp = {'pass': pass}
-      	   callback(null, resp);
-      	 }
-       });
-     });
+  'prepareLab': function(labId : number,callback : any){
+     var session = Session();
+     var uId = Meteor.userId();
+     session.init(uId,labId,callback);
+   
+     return uId;
   },
   'startLab': function(callback : any){
     /** somehow get session,
