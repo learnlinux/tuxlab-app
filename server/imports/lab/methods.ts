@@ -1,7 +1,7 @@
 declare var Collections : any;
+var LabSession = require('../api/lab.session.js');
 declare var TuxLog : any;
-
-var Session = require('../api/lab.session.js');
+declare var SessionCache : any; 
 Meteor.methods({
 
   /**prepareLab: prepares a labExec object for the current user
@@ -9,25 +9,27 @@ Meteor.methods({
    * callback: (err,pass)
    * implement loading wheel, md fetch, course record create in callback
    */
-  'prepareLab': function(labId : number, callback : any){
-     var session = Session();
+  'prepareLab': function(user : string, labId : string,callback : any){
+     var session = LabSession();
      var uId = Meteor.userId();
      session.init(uId,labId,callback);
   },
-  'startLab': function(callback : any){
-    /** somehow get session,
-     * cache/ram/db/parameter
-     * session.start(cb)
-     * call startLab callback(err,res) in session.start cb
-     */
-  },
-  'nextTask': function(callback : any){
+  'nextTask': function(labId : string, callback : any){
     /**session.next(cb)
      * cb(err,res) implement loading wheel here
      * call nextTask callback(err,res) in cb
      * change task markdown -frontend
      * change course records if passed
      */
+    var uId = Meteor.userId();
+    SessionCache.get(uId,labId,function(err,res){
+      if(err || !res){
+        console.log("Internal Service Error");
+      }
+      else{
+      
+      }
+    });
   },
   'endLab': function(callback : any){
     /**session.end(cb)
