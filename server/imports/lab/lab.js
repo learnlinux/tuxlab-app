@@ -1,6 +1,6 @@
-var tuxlab = function(){}
+var lab = function(){}
 
-tuxlab.prototype.init = function(){
+lab.prototype.init = function(){
   var slf = this;
   var ts = {  prnt: slf,
               next: null,
@@ -14,11 +14,11 @@ tuxlab.prototype.init = function(){
   return ts;
 }
 
-tuxlab.prototype.currentTask = null;
-tuxlab.prototype.taskList = [];
-tuxlab.prototype.setup;
-tuxlab.prototype.tasks;
-tuxlab.prototype.newTask = function(ttl, mdown,sFn, vFn, opt){
+lab.prototype.currentTask = null;
+lab.prototype.taskList = [];
+lab.prototype.setup;
+lab.prototype.tasks;
+lab.prototype.newTask = function(ttl, mdown,sFn, vFn, opt){
   var slf = this;
   var ts = {  prnt: slf,
               setupFn: sFn,
@@ -37,4 +37,4 @@ tuxlab.prototype.newTask = function(ttl, mdown,sFn, vFn, opt){
 	    }
   return ts;
 }
-module.exports = new tuxlab();
+module.exports = lab;

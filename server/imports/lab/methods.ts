@@ -1,41 +1,36 @@
 declare var Collections : any;
+declare var TuxLog : any;
+
 Meteor.methods({
-  /**prepareLab: prepares a labExec object for the current user
-   * takes the id of the lab and a callback as parameter
-   * callback: (err,parseTasks,labExec)
+
+  /** prepareLab: prepares a labExec object for the current user
+   *  takes the id of the lab and a callback as parameter
+   *  callback: (err,parseTasks,labExec)
    */
-  'prepareLab': function(labId : number,callback : any){
+  'prepareLab' : function(labId : number, callback : any){
      var session = require('../api/lab.session.js');
-     var uId = Meteor.userId();
-     session.init(uId,labId,function(err,res){
-       session.env.getPass(function(err1,err2,pass){
-         if(err1){
-	   TuxLog.log("debug","error getting pass from labVm container: "+err1);
-	   callback("Internal Service Error",null);
-	 }
-	 else if(err2){
-	   TuxLog.log("debug","error getting pass from labVm container: "+err2);
-	   callback("Internal Service Error",null);
-	 }
-	 else{
-           var resolve = {'pass': pass}
-	   callback(null,resolve);
-	 }
-       });
-     });
-     return uId;
-     /**lab.init(userId,labId,cb)
-      * cb(err,parsedTasks) cache session in cb, get rid of parsedTasks if unnecessary 
+     var userid = Meteor.userId();
+
+     /** session.init(userId,labId,cb)
+      * cb(err,parsedTasks) cache session in cb, get rid of parsedTasks if unnecessary
       * implement loading wheel here -in callback
       * session.env.getPass(cb) callback(pass) is called, call this here and then call the prepareLab callback
       * what to put in res of callback(err,res)? session obj? true/false? session id?...
       * get task md -frontend
       * create course record
       */
-     //lab.init(Meteor.userId(),labId,function(err,parsed){
-      // callback(err,lab.env.getPass,lab);
-     //})
-     //if(lab.env != undefined) console.log("yay")
+     session.init(userid,labId,function(err,res){
+       session.env.getPass(function(err,pass){
+         if(err){
+      	   TuxLog.log("debug","error getting pass from labVm container: "+err);
+      	   callback("Internal Service Error",null);
+      	 }
+      	 else{
+           var resp = {'pass': pass}
+      	   callback(null, resp);
+      	 }
+       });
+     });
   },
   'startLab': function(callback : any){
     /** somehow get session,
@@ -54,7 +49,7 @@ Meteor.methods({
   },
   'endLab': function(callback : any){
     /**session.end(cb)
-     * cb(err,res) 
+     * cb(err,res)
      * call endLab callback(err,res) in cb
      * change course records
      * session.env.deleteRecords deletes etcd records,
@@ -63,4 +58,3 @@ Meteor.methods({
      */
   }
 });
-
