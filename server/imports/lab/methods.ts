@@ -24,14 +24,14 @@ Meteor.methods({
     var uId = Meteor.userId();
     SessionCache.get(uId,labId,function(err,res){
       if(err || !res){
-        console.log("Internal Service Error");
+        callback("Internal Service Error",null);
       }
       else{
-      
+        res.next(callback);     
       }
     });
   },
-  'endLab': function(callback : any){
+  'endLab': function(labId : string, callback : any){
     /**session.end(cb)
      * cb(err,res)
      * call endLab callback(err,res) in cb
@@ -40,5 +40,14 @@ Meteor.methods({
      * session.env.removeVm removes virtual machines.
      * remove all vms and deleterecords after lab is completed for good. -highly optional
      */
+    var uId = Meteor.userId();
+    SessionCache.get(uId,labId,function(err,res){
+      if(err || !res){
+        callback("Internal Service Error",null);
+      }
+      else{
+        res.end(callback);
+      }
+    });
   }
 });

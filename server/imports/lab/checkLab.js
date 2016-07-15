@@ -4,7 +4,7 @@ var tuxOrig = require('./lab.js');
 
 /// <reference path="./checkLab.d.ts" />
 module.exports = function(str){
-  if(!str) { return false; } //check for file import
+  if(!str) { return null; } //check for file import
   var tux = eval(str);
   if(((typeof tux != "undefined") && 
       (typeof tux.setup === 'function') &&  //check for instructor field types
@@ -17,4 +17,5 @@ module.exports = function(str){
   else{
     return tux.titleList;
   }
+  return null;
 }

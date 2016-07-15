@@ -6,7 +6,6 @@ declare var _ : any;
 var _ = require('underscore');
 
 declare var validateLab : any;
-var validateLab : any = require('../server/imports/lab/checkLab');
 
 export const labs : any = new Mongo.Collection('labs');
 
@@ -99,6 +98,7 @@ labs.allow({
 
 /* LAB VALIDATOR */
   if(Meteor.isServer){
+  var valdateLab : any = require('../server/imports/lab/checkLab.js');
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
         if (typeof fieldNames === "undefined"){
