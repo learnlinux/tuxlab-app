@@ -5,8 +5,24 @@ Meteor.methods({
    * callback: (err,parseTasks,labExec)
    */
   'prepareLab': function(labId : number,callback : any){
-     var lab = require('../api/lab.session.js');
+     var session = require('../api/lab.session.js');
      var uId = Meteor.userId();
+     session.init(uId,labId,function(err,res){
+       session.env.getPass(function(err1,err2,pass){
+         if(err1){
+	   TuxLog.log("debug","error getting pass from labVm container: "+err1);
+	   callback("Internal Service Error",null);
+	 }
+	 else if(err2){
+	   TuxLog.log("debug","error getting pass from labVm container: "+err2);
+	   callback("Internal Service Error",null);
+	 }
+	 else{
+           var resolve = {'pass': pass}
+	   callback(null,resolve);
+	 }
+       });
+     });
      return uId;
      /**lab.init(userId,labId,cb)
       * cb(err,parsedTasks) cache session in cb, get rid of parsedTasks if unnecessary 

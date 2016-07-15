@@ -15,8 +15,8 @@ session.prototype.init = function(user,labId,callback){
   this.env.setUser(user);
 
   // Get Metadata from Database
-  var lab = Collections.labs.findOne({_id: lab_id}, {fields: {'file' : 0}}).fetch();
-  if(lab.length < 0){
+  var lab = Collections.labs.findOne({_id: labId}, {fields: {'file' : 0}});
+  if(!lab || lab.length < 0){
     callback(new Error("Lab Not Found.", null));
   }
   else{
