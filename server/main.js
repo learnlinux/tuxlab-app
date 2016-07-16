@@ -31,4 +31,6 @@
   Collections.course_records = course_records;
 
 /* LABS */
-  import './imports/lab/index.js'
+//import Meteor Methods
+import './imports/lab/index.js'
+import './imports/course/index.js'

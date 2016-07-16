@@ -276,7 +276,7 @@ env.prototype.removeVm = function (vmName,opts) {
   return function(){
     return new Promise(function(resolve,reject){
 
-     //check if container initialized 
+     //check if container initialized
      if(!_.has(this.vmList,vmName)){
         TuxLog.log('labfile_error',"trying to delete non-existing vm");
         reject("Internal error");
