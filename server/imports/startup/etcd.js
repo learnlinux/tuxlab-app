@@ -3,7 +3,7 @@
 */
 
 // Get Address
-var etcd_address = nconf.get('etcd_node_ip')+':'+nconf.get('etcd_node_port');
+var etcd_address = 'localhost:2379';
 
 // Get Auth
 var etcd_auth = {
