@@ -6,7 +6,7 @@ declare var _ : any;
 var _ = require('underscore');
 
 declare var validateLab : any;
-var validateLab : any = require('../server/imports/lab/checkLab');
+var validateLab : any = require('../server/imports/lab/checkLab.js');
 
 export const labs : any = new Mongo.Collection('labs');
 

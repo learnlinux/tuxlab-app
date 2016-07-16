@@ -3,7 +3,7 @@ var async = require ('async');
 /**
   Searches Courses based on search terms
 **/
-export function course_search(text : string, results_per_page : number, page_no : number, callback : function) {
+export function course_search(text : string, results_per_page : number, page_no : number, callback : any) {
 
   var courses = Collections.courses;
 
