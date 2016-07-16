@@ -16,7 +16,7 @@
   import { MarkdownView } from "../../components/markdown/markdown.ts";
 
 // Meteor method imports
-//  import { create_Lab } from "../../../lab/methods.ts"
+  import { create_Lab } from "../../../lab/methods.ts"
 
 // Define TaskView Component
 @Component({
