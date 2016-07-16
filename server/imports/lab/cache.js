@@ -25,14 +25,14 @@ var NodeCache = require('node-cache');
   // Create ETCD Cache
   async.series([
     function(callback){
-      etcd.mkdir('/tuxlab', function(err){
-        if(err.errorCode !== 105)
+      etcd.mkdir('tuxlab', function(err){
+        if(err.errorCode !== 105 && err.errorCode !== 102)
           callback(err);
       });
     },
     function(callback){
-      etcd.mkdir('/tuxlab/sessions', function(err){
-        if(err.errorCode !== 105)
+      etcd.mkdir('tuxlab/sessions', function(err){
+        if(err.errorCode !== 105 && err.errorCode !== 102)
           callback(err);
       });
     }
