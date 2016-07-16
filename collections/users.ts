@@ -26,7 +26,7 @@ if (Meteor.isServer){
       },
       school: {
         type: String,
-        defaultValue: nconf.get('domain_school');
+        defaultValue: nconf.get('domain_school')
       },
       email: {
         type: String
