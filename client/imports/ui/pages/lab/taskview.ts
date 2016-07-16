@@ -16,7 +16,7 @@
   import { MarkdownView } from "../../components/markdown/markdown.ts";
 
 // Meteor method imports
-  import { create_Lab } from "../../../lab/methods.ts"
+  import "../../../lab/methods.ts"
 
 // Define TaskView Component
 @Component({
@@ -29,7 +29,6 @@ export default class TaskView extends MeteorComponent {
   labMarkdown = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
   constructor() {
     super();
-    //TODO This Doesn't Exist
-    //Meteor.call('createLab',{courseId: "5",labId: 5},(err,res) => {console.log("fired",err,res)});
+    Meteor.call('createLab',{courseId: "1", labId: 1},(err,res) => {console.log("fired",err,res)});
   }
 }
