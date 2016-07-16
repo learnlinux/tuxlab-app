@@ -2,7 +2,7 @@ var async = require ('async');
 var future = require('fibers/future');
 
 Meteor.methods({
-  'search_courses': function(text : string, results_per_page : Number, page_no : Number) {
+  'search_courses': function(text : string, results_per_page : number, page_no : number) {
 
     var courses = Collections.courses;
 

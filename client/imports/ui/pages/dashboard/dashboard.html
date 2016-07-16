@@ -9,10 +9,12 @@
 			</div>
 			<md-content>
 				<md-list>
-					<md-list-item *ngFor="let course of courses" class="course-link" (click)="toCourse(course.id)">
-						<p>{{ course.name }}</p>
-						<span>{{ course.number }}</span>
-					</md-list-item>
+					<a *ngFor="let course of courses" [routerLink]="['/course/']">
+						<md-list-item class="course-link">
+							<p>{{ course.name }}</p>
+							<span>{{ course.number }}</span>
+						</md-list-item>
+					</a>
 				</md-list>	
 				<div class="more-button">
 					<button md-button>More</button>

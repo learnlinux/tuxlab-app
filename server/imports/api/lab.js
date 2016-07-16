@@ -17,6 +17,7 @@ lab.prototype.init = function(){
 
 lab.prototype.currentTask = null;
 lab.prototype.taskList = [];
+lab.prototype.titleList = [];
 lab.prototype.setup;
 lab.prototype.tasks;
 lab.prototype.newTask = function(ttl, mdown,sFn, vFn, opt){
@@ -25,13 +26,13 @@ lab.prototype.newTask = function(ttl, mdown,sFn, vFn, opt){
               setupFn: sFn,
               verifyFn: vFn,
 	      opts: opt,
-	      markdown: mdown,
 	      title: ttl,
 	      next: null,
 	      completed: false,
 	      nextTask: function(tsk){
 	        this.next = tsk;
 	        this.prnt.taskList.push(tsk);
+		this.prnt.titleList.push(tsk.title);
 	        return tsk;
 	      },
 	      isLast: function(){ return this.next === null; }
