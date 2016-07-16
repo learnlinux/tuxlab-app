@@ -1,22 +1,20 @@
 /*
   Initializes ETCD Connection
 */
+var fs = require('fs');
 
 // Get Address
-var etcd_address = '127.0.0.1:2379';
+var etcd_address = ["localhost:2379"];
 
 // Get Auth
-var etcd_auth;
-if (nconf.get('etcd_user') == null){
-  etcd_auth = {
-    user: nconf.get('etcd_user'),
-    pass: nconf.get('etcd_pass')
+var etcd_options;
+if (nconf.get('etcd_user') !== null){
+  etcd_options = {
+    auth: {
+     user: nconf.get('etcd_user'),
+     pass: nconf.get('etcd_pass')
+   }
   }
-}
-
-// Options
-var etcd_options = {
-    auth: etcd_auth
 }
 
 // Start ETCD
@@ -28,4 +26,5 @@ etcd.mkdir("tuxlab", function(err){
   if(err){
    TuxLog.log("warn", err);
   }
+  console.log(require('util').inspect(err, true,10));
 });

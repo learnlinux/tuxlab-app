@@ -96,7 +96,6 @@ labs.allow({
 
 /* LAB VALIDATOR */
   if(Meteor.isServer){
-    declare var validateLab : any;
     var validateLab : any = require('../server/imports/lab/checkLab.js');
 
     Meteor.startup(function(){
