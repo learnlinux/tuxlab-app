@@ -19,12 +19,4 @@ if (nconf.get('etcd_user') !== null){
 
 // Start ETCD
 var Etcd = require('node-etcd');
-etcd = new Etcd(etcd_address,etcd_options); 
-
-// Create TuxLab Dir
-etcd.mkdir("tuxlab", function(err){
-  if(err){
-   TuxLog.log("warn", err);
-  }
-  console.log(require('util').inspect(err, true,10));
-});
+etcd = new Etcd(etcd_address,etcd_options);
