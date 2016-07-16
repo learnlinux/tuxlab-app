@@ -5,7 +5,6 @@ var session = function(){
   this.env = require('./lab.env.js');
 };
 
-
 session.prototype.env = null;
 session.prototype.lab = null;
 /* init: pulls labFile and initializes session object from it

@@ -1,17 +1,17 @@
 declare var Collections : any;
-
-var LabSession = require('../api/lab.session.js');
 declare var TuxLog : any;
 declare var SessionCache : any;
-Meteor.methods({
 
+var LabSession = require('../api/lab.session.js');
+
+Meteor.methods({
   /**prepareLab: prepares a labExec object for the current user
    * takes the id of the lab and a callback as parameter
    * callback: (err,pass)
    * implement loading wheel, md fetch, course record create in callback
    */
   'prepareLab': function(user : string, labId : string,callback : any){
-     var session = LabSession();
+     var session = new LabSession();
      var uId = Meteor.userId();
      session.init(uId,labId,callback);
   },
