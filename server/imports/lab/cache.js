@@ -49,7 +49,6 @@ var NodeCache = require('node-cache');
     SessionCache._NodeCache.get(userid+'#'+labid, function(err, value){
       if(err){
         TuxLog.log('warn', "SessionCache NodeCache Error.");
-
         callback(err,null);
       }
       else if(value !== undefined){
