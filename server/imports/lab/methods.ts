@@ -11,17 +11,27 @@ Meteor.methods({
    * callback: (err,pass)
    * implement loading wheel, md fetch, course record create in callback
    */
-  'prepareLab': function(user : string, labId : string,callback : any){
+  'prepareLab': function(user : string, labId : string){
      var session = new LabSession();
      var uId = Meteor.userId();
-     var sessionAsync = Meteor.wrapAsync(session.init);
-     try{
-       var result = sessionAsync({user: uId, labId: labId});
-       return result;
+     var sessionAsync = Meteor.wrapAsync(session.init,session);
+     var result;
+     var error;
+     sessionAsync(uId,labId,function(err,res){
+       if(err){
+         result = null;
+         error = err;
+       }  
+       else{
+         result = res;
+         error = null;
+       }
+     });
+     if(error){
+       throw new Meteor.Error("Internal Service Error");
      }
-     catch(e){
-       TuxLog.log("debug",e);
-       return null;
+     else{
+       return result;
      }
   },
   'nextTask': function(labId : string, callback : any){
