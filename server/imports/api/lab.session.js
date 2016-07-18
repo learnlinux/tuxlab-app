@@ -2,7 +2,6 @@
 var _eval = require('eval');
 
 var session = function(){
-  this.env = require('./lab.env.js');
 };
 
 session.prototype.env = null;
@@ -11,8 +10,9 @@ session.prototype.lab = null;
  */
 session.prototype.init = function(user,labId,callback){
   var slf = this;
+  this.env = require('./lab.env.js');
   this.env.setUser(user);
-
+  
   // Get Metadata from Database
   var lab = Collections.labs.findOne({_id: labId}, {fields: {'file' : 0}});
   if(!lab || lab.length < 0){
@@ -64,6 +64,7 @@ session.prototype.init = function(user,labId,callback){
         // Get LabFile from Cache
         slf.lab.taskNo = 0;
         slf.lab = value;
+        
         SessionCache.add(userid,labid,slf,function(err){
 	  if(err){
 	    callback(err,null);

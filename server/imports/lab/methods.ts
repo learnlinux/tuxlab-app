@@ -1,4 +1,5 @@
 declare var Collections : any;
+var LabSession = require('../api/lab.session.js');
 declare var TuxLog : any;
 declare var SessionCache : any;
 
@@ -10,10 +11,28 @@ Meteor.methods({
    * callback: (err,pass)
    * implement loading wheel, md fetch, course record create in callback
    */
-  'prepareLab': function(user : string, labId : string,callback : any){
+  'prepareLab': function(user : string, labId : string){
      var session = new LabSession();
      var uId = Meteor.userId();
-     session.init(uId,labId,callback);
+     var sessionAsync = Meteor.wrapAsync(session.init,session);
+     var result;
+     var error;
+     sessionAsync(uId,labId,function(err,res){
+       if(err){
+         result = null;
+         error = err;
+       }  
+       else{
+         result = res;
+         error = null;
+       }
+     });
+     if(error){
+       throw new Meteor.Error("Internal Service Error");
+     }
+     else{
+       return result;
+     }
   },
   'nextTask': function(labId : string, callback : any){
     /**session.next(cb)
@@ -29,6 +48,7 @@ Meteor.methods({
       }
       else{
         res.next(callback);     
+        res.next(callback);
       }
     });
   },

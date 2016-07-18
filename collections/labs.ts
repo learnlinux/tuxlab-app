@@ -5,6 +5,8 @@ import { Roles } from './users.ts';
 declare var _ : any;
 var _ = require('underscore');
 
+declare var validateLab : any;
+
 export const labs : any = new Mongo.Collection('labs');
 
 /**
@@ -96,7 +98,7 @@ labs.allow({
 
 /* LAB VALIDATOR */
   if(Meteor.isServer){
-    var validateLab : any = require('../server/imports/lab/checkLab.js');
+  var validateLab : any = require('../server/imports/lab/checkLab.js');
 
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
