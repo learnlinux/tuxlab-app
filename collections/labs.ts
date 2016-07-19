@@ -56,15 +56,15 @@ labs.allow({
           type: String,
           regEx: SimpleSchema.RegEx.Id,
           custom: function() {
-            // Check existance of course
             let currentCourse = Collections.courses.findOne({ _id: this.value });
+            let instructors = currentCourse.instructor_ids;
+
+            // Check existence of course
             if(currentCourse === "undefined") {
               labSchema.addInvalidKeys([{name: "course_id", type: "nonexistantCourse"}]);
             }
-            // Check whether user is authorized
-            let instructors = currentCourse.instructor_ids;
-            if(Collections.courses.findOne({ _id: this.value, instructor_ids: this.userId }) === "undefined") {
-              labSchema.addInvalidKeys([{name: "course_id", type: "unauthorizedUser"}]);
+            else{
+              return;
             }
           }
         },
@@ -104,23 +104,23 @@ labs.allow({
         if (typeof fieldNames === "undefined"){
           if(!(doc.course_id && doc.file && //check for lab fields
              Roles.isInstructorFor(doc.course_id,userid))){//check for instructor authorization
-	    return false;
-	  }
-	  else{
-	    var titleList = validateLab(doc.file);
-	    if(!titleList){ 
-              return false; }
-	    else{
-              return titleList;
-	    }
-	  } 
+        	   return false;
+        	}
+        	else{
+      	    var titleList = validateLab(doc.file);
+      	    if(!titleList){
+                    return false; }
+      	    else{
+                    return titleList;
+      	    }
+      	  }
 
         }
       	else if(fieldNames.includes('tasks') && !fieldNames.includes('file')){
                 return false;
       	}
       	else if(fieldNames.includes('file')){
-      	  if(!((Roles.isInstructorFor(doc.course_id,userid)) && //check for instructor authorization
+      	  if(!((Roles.isInstructorFor(doc.course_id, userid)) && //check for instructor authorization
       		  validateLab(modifier.$set.file))){  //check for labfile errors
       	    return false;
       	  }
@@ -145,12 +145,13 @@ labs.allow({
           }
         });
       });
+
       Meteor.publish('user-labs',function(){
         this.autorun(function(computation){
           let roles = (<any>(Meteor.users.findOne(this.userId))).roles;
           let courses = roles.student.map((a) =>{return a[0]});
           return (courses.map(function(courseId){return {course: courseId, labs: ((Collections.courses.findOne(courseId)).labs)}}));
-	});
+	      });
       });
     });
   }
@@ -160,6 +161,7 @@ labs.allow({
 **/
 if(Meteor.isServer) {
   Meteor.startup(function() {
+
     // Publish labs collection
     Meteor.publish('labs', function() {
       this.autorun(function(computation) {

@@ -20,12 +20,11 @@ declare var window: any;
 export class Terminal {
   private _viewContainer : ViewContainerRef;
 
-@Input() username: string;
-@Input() password: string;
-@Input() host: string;
-@Input() domain: string;
-@Input() path: string;
-
+  @Input() username: string;
+  @Input() password: string;
+  @Input() host: string;
+  @Input() domain: string;
+  @Input() path: string = '/wetty/socket.io';
   constructor(private viewContainer:ViewContainerRef){
      this._viewContainer = viewContainer;
   }
@@ -41,12 +40,12 @@ export class Terminal {
     // Connection Defaults
     var opts = {
       // SSH Connection
-      username : this.username || 'tux',
+      username : this.username,
       password: this.password,
       host: this.host,
       // Socket.io Connection
-      domain : this.domain || 'http://localhost' ,
-      path : this.path || '/wetty/socket.io',
+      domain : this.domain,
+      path : this.path
     }
 
     // Create Query Object

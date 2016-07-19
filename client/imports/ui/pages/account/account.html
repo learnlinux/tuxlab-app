@@ -1,53 +1,45 @@
 <div class="tuxlab-account set-max-width">
-  <md-card>
-    <md-card-content>
-      <div class="account-profile-picture">
-        <img src="{{ user.profile.picture }}">
-      </div>
-      <div class="account-display-name">
-        <h2>{{ user.profile.nickname }}</h2>
-        <p>{{ user.profile.school }}</p>
-        <p>{{ user.profile.email }}</p>
-      </div>
-    </md-card-content>  
-  </md-card>
-  
-  <div class="personal-info">
+  <div *ngIf="user">
     <md-card>
       <md-card-content>
-        <h2>Personal Info</h2>
-        
-        <div class="account-item" layout="row">
-          <p class="account-label" flex>Nickname</p>
-          <p class="account-info" flex>{{ user.profile.nickname }}</p>
-          <a>
-            <md-icon fontIcon="tuxicon-cog"></md-icon>
-          </a>
+        <div class="account-profile-picture">
+          <img src="{{ user.profile.picture }}">
         </div>
-        
-        <md-divider></md-divider>
-        
-        <div class="account-item" layout="row">
-          <p class="account-label" flex>Email</p>
-          <p class="account-info" flex>{{ user.profile.email }}</p>
-          <a>
-            <md-icon fontIcon="tuxicon-cog"></md-icon>
-          </a>
+        <div class="account-display-name">
+          <h2>{{ user.profile.nickname }}</h2>
+          <p>{{ user.profile.school }}</p>
+          <p>{{ user.profile.email }}</p>
         </div>
-        
-        <md-divider></md-divider>
-        
-        <div class="account-item" layout="row">
-          <p class="account-label" flex>password</p>
-          <p class="account-info" flex>********</p>
-          <a>
-            <md-icon fontIcon="tuxicon-cog"></md-icon>
-          </a>
-        </div>
-        
-        <md-divider></md-divider>
-        
-      </md-card-content>  
+      </md-card-content>
     </md-card>
+
+    <div class="personal-info">
+      <md-card>
+        <md-card-content>
+          <h2>Personal Info</h2>
+
+          <div class="account-item" layout="row">
+            <p class="account-label" flex>Nickname</p>
+            <p class="account-info" flex>{{ user.profile.nickname }}</p>
+            <a>
+              <md-icon fontIcon="tuxicon-cog"></md-icon>
+            </a>
+          </div>
+
+          <md-divider></md-divider>
+
+          <div class="account-item" layout="row">
+            <p class="account-label" flex>Email</p>
+            <p class="account-info" flex>{{ user.profile.email }}</p>
+            <a>
+              <md-icon fontIcon="tuxicon-cog"></md-icon>
+            </a>
+          </div>
+
+          <md-divider></md-divider>
+
+        </md-card-content>
+      </md-card>
+    </div>
   </div>
 </div>

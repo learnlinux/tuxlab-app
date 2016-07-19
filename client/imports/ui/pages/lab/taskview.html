@@ -1,22 +1,11 @@
 <div class="tuxlab-taskview">
-  <!--Markdown View-->
-  <div class="tuxlab-taskview-step">
-    <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
-    <div class="markdown-check-button">
-      <md-dialog #alert>
-        <md-dialog-title>Just a Second</md-dialog-title>
-        <p>Checking Task...</p>
-        <md-dialog-actions ok="Fine"></md-dialog-actions>
-      </md-dialog>
-      <button md-raised-button (click)="alert.show()">
-        Check
-        <md-icon fontIcon="tuxicon-tick"></md-icon>
-      </button>
-    </div>
-  </div>
-  
-  <!--Terminal View-->
-  <div class="tuxlab-taskview-terminal">
-    <terminal></terminal>
-  </div>
+	<!--Markdown View-->
+	<div class="tuxlab-taskview-step">
+		<tuxlab-markdown>Task markdown loading...</tuxlab-markdown>
+	</div>
+
+	<!--Terminal View-->
+	<div class="tuxlab-taskview-terminal">
+		<terminal [username]='username' [password]='password' [host]='host' domain='domain' ></terminal>
+	</div>
 </div>
