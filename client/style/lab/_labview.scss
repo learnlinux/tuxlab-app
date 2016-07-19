@@ -109,21 +109,26 @@
             margin-top: 18px;
           }
         }
-
-        // Check Button
-        .markdown-check-button {
-          text-align: right;
-          vertical-align: middle;
-          // Button Colour
-          .md-raised {
-            padding-left: 18px;
-            font-weight: bold;
-          }
-          md-icon {
-            vertical-align: top;
-            color: #64dd17;
-          }
-        }
+      }
+      
+    }
+    
+    // Check Button
+    .markdown-check-button {
+      text-align: right;
+      vertical-align: middle;
+      // Button Colour
+      .md-raised {
+        padding-left: 18px;
+        font-weight: bold;
+      }
+      md-icon {
+        vertical-align: top;
+        line-height: 28px;
+        color: #64dd17;
+      }
+      .tuxicon-tick:before {
+        font-size: 36px;
       }
     }
   }

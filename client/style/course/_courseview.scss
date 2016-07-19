@@ -80,6 +80,16 @@
     a {
       color: black;
     }
+    md-icon {
+      position: fixed;
+      top: 80px;
+      right: 10px;
+      line-height: 6px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+    .tuxicon:before {
+      font-size: 48px;
+    }
   }
 }
 

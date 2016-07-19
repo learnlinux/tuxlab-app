@@ -22,47 +22,36 @@
 
 // LabList and Grades import
 	import { LabList } from "../../components/lablist/lablist.ts";
-  import { GradeList } from "../../components/gradelist/gradelist.ts";
 
 // Courses and Course Record Imports
 	import { courses } from "../../../../../collections/courses.ts";
 	import { course_records } from "../../../../../collections/course_records.ts";
 
-// Define CourseView Component
+// Define CourseLabList Component
 	@Component({
-		selector: 'tuxlab-maincourseview',
-		templateUrl: '/client/imports/ui/pages/course/mainview.html',
+		selector: 'tuxlab-course-lablist',
+    template: `
+      <div class="tuxlab-course-lablist">
+        <tuxlab-lablist></tuxlab-lablist>
+      </div>
+    `,
 		directives: [
 			MATERIAL_DIRECTIVES,
 			MD_ICON_DIRECTIVES,
 			ROUTER_DIRECTIVES,
-			LabList,
-      GradeList
+			LabList
 		],
 		viewProviders: [MdIconRegistry],
 		providers: [OVERLAY_PROVIDERS],
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export MainCourseView Class
-  export class MainCourseView extends MeteorComponent {
-    course;
-    courseNumber: String = '15-131'; // TODO: Get from URL
-    courseDescription: String = "Course Description Not Found";
-    courseName: String = "Course Name Not Found";
-
+// Export CourseLabList Class
+  export class CourseLabList extends MeteorComponent {
     constructor(mdIconRegistry: MdIconRegistry) {
       super();
       // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
-      // Subscribe to courses database and set current course
-      this.subscribe('user-courses', this.courseNumber, () => {
-        this.course = courses.findOne({ course_number: this.courseNumber });
-        if (typeof this.course !== "undefined") {
-          this.courseName = this.course.course_name;
-          this.courseDescription = this.course.course_description.content;
-        }
-      }, true);
     }
   }

@@ -53,11 +53,4 @@ export default class Dashboard extends MeteorComponent {
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
 	}
 
-	toCourse(courseId) {
-		console.log('Going to course page with course id: ' + courseId);
-		window.location.href = '/course';
-	}
-
-
-
 }

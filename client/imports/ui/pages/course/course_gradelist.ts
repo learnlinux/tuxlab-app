@@ -27,10 +27,14 @@
 	import { courses } from "../../../../../collections/courses.ts";
 	import { course_records } from "../../../../../collections/course_records.ts";
 
-// Define GradeView Component
+// Define CourseGradeList Component
 	@Component({
-		selector: 'tuxlab-gradeview',
-		templateUrl: '/client/imports/ui/pages/course/gradeview.html',
+		selector: 'tuxlab-course-gradelist',
+    template : `
+      <div class="tuxlab-course-gradelist">
+        <tuxlab-gradelist></tuxlab-gradelist>
+      </div>
+    `,
 		directives: [
 			MATERIAL_DIRECTIVES,
 			MD_ICON_DIRECTIVES,
@@ -42,8 +46,8 @@
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export GradeView Class
-  export class GradeView extends MeteorComponent {
+// Export CourseGradeList Class
+  export class CourseGradeList extends MeteorComponent {
     constructor(mdIconRegistry: MdIconRegistry) {
       super();
       // Create Icon Font
