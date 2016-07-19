@@ -1,50 +1,45 @@
 <div class="tuxlab-searchview">
-	<div class="md-whiteframe-5dp course-search-list">
-		
-		<h2 id="search-string">Search Results</h2>
-		
-		<div class="selector">
-			<button md-button (click)="prevPage()" class="right">
-				<md-icon fontIcon="tuxicon-left"></md-icon>
-				Prev
-			</button>
-			<span [innerHTML]="getCurrentInfo()"></span>
-			<button md-button (click)="nextPage()" class="right">
-				Next
-				<md-icon fontIcon="tuxicon-right"></md-icon>
-			</button>
-		</div>
-		
-		<hr>
-		<md-data-table layout-fill>
-			<thead>
-				<tr>
-					<th class="md-text-cell">Course Number</th>
-					<th class="md-text-cell">Course Name</th>
-					<th>Instructor</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let course of pagedCourses">
-					<td class="md-text-cell">{{ course.course_number }}</td>
-					<td class="md-text-cell">{{ course.course_name }}</td>
-					<td>{{ course.instructor_name }}</td>
-				</tr>
-			</tbody>
-		</md-data-table>
-		<hr>
-		
-		<div class="selector">
-			<button md-button (click)="prevPage()" class="right">
-				<md-icon fontIcon="tuxicon-left"></md-icon>
-				Prev
-			</button>
-			<span [innerHTML]="getCurrentInfo()"></span>
-			<button md-button (click)="nextPage()" class="right">
-				Next
-				<md-icon fontIcon="tuxicon-right"></md-icon>
-			</button>
-		</div>
-		
-	</div>
+  <div class="md-whiteframe-5dp course-search-list">
+    <h2 id="search-string">Search Results for '{{ searchQuery }}'</h2>
+    <div class="selector">
+      <button md-button (click)="prevPage()" class="right">
+        <md-icon fontIcon="tuxicon-left"></md-icon>
+        Prev
+      </button>
+      <span [innerHTML]="getCurrentInfo()"></span>
+      <button md-button (click)="nextPage()" class="right">
+        Next
+        <md-icon fontIcon="tuxicon-right"></md-icon>
+      </button>
+    </div>
+    <hr>
+    <md-data-table layout-fill>
+      <thead>
+        <tr>
+          <th class="md-text-cell">Course Number</th>
+          <th class="md-text-cell">Course Name</th>
+          <th>Instructor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of searchResults">
+          <td class="md-text-cell">{{ course.course_number }}</td>
+          <td class="md-text-cell">{{ course.course_name }}</td>
+          <td>{{ course.instructor_ids }}</td>
+        </tr>
+      </tbody>
+    </md-data-table>
+    <hr>
+    <div class="selector">
+      <button md-button (click)="prevPage()" class="right">
+        <md-icon fontIcon="tuxicon-left"></md-icon>
+        Prev
+      </button>
+      <span [innerHTML]="getCurrentInfo()"></span>
+      <button md-button (click)="nextPage()" class="right">
+        Next
+        <md-icon fontIcon="tuxicon-right"></md-icon>
+      </button>
+    </div>
+  </div>
 </div>
