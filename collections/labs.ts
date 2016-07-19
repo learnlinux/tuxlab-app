@@ -14,13 +14,13 @@ export const labs : any = new Mongo.Collection('labs');
 **/
 labs.allow({
   insert: function (userId, doc : any) {
-    return Roles.isGlobalAdministrator();
+    return Roles.isGlobalAdministrator(userId);
   },
   update: function (userId, doc : any, fields : any) {
-    return Roles.isAdministratorFor(doc._id) || Roles.isInstructorFor(doc._id);
+    return Roles.isAdministratorFor(doc._id, userId) || Roles.isInstructorFor(doc._id, userId);
   },
   remove: function(userId, doc : any) {
-    return Roles.isGlobalAdministrator();
+    return Roles.isGlobalAdministrator(userId);
   }
 });
 

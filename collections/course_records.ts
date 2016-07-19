@@ -13,7 +13,7 @@ export const course_records = new Mongo.Collection('course_records');
 course_records.allow({
   insert: function (userid, doc : any) {
     if (typeof doc.course_id !== "undefined"){
-      return Roles.isInstructorFor(doc.course_id) || Roles.isAdministratorFor(doc.course_id);
+      return Roles.isInstructorFor(doc.course_id, userid) || Roles.isAdministratorFor(doc.course_id, userid);
     }
     else{
       return false;
@@ -21,19 +21,19 @@ course_records.allow({
   },
   update: function (userid, doc : any, fields : any) {
     if( typeof doc.course_id !== "undefined" ){
-      return Roles.isInstructorFor(doc.course_id) || Roles.isAdministratorFor(doc.course_id);
+      return Roles.isInstructorFor(doc.course_id, userid) || Roles.isAdministratorFor(doc.course_id, userid);
     }
     else{
       return false;
     }
   },
   remove: function(userid, doc : any) {
-    return (typeof doc.course_id !== "undefined" && Roles.isAdministratorFor(doc.course_id));
+    return (typeof doc.course_id !== "undefined" && Roles.isAdministratorFor(doc.course_id, userid));
   }
 });
 
 /**
-  SCHEMA 
+  SCHEMA
 **/
 declare var SimpleSchema: any;
 
@@ -111,7 +111,7 @@ if(Meteor.isServer) {
     // Publish course records
     Meteor.publish('course-records', function() {
       this.autorun(function(computation) {
-        
+
         // Check existance of userId
         if(typeof this.userId !== "undefined") {
 
@@ -139,14 +139,10 @@ if(Meteor.isServer) {
                 'labs.data': 0,
                 'labs.tasks.data': 0
               }
-            }); //return course_records 
+            }); //return course_records
           } // if (user != undefined)
         } // if (userId != undefined)
       }); // autorun
     }); // Meteor.publish
   }); //Meteor.startup
 } //Meteor.isServer
-
-
-
-
