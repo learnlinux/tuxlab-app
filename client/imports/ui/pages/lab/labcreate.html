@@ -1,0 +1,26 @@
+<div class="tuxlab-labcreate">
+  <div class="tuxlab-labcreate-upload">
+    <h1> UPLOAD LAB </h1>
+    <div class="form-group">
+      <input name="name" type="text" class="form-control" required [(ngModel)]="lab.name" placeholder="Lab Name" />
+    </div>
+    <div class="form-group">
+      <div fileDrop
+           [ngClass]="{'file-is-over': fileIsOver}"
+           [options]="options"
+           (fileOver)="fileOver($event)"
+           (onFileDrop)="onFileDrop($event)">
+
+        <md-icon fontIcon="tuxicon-upload"></md-icon>
+        <h3> Drop LabFile Here </h3>
+
+      </div>
+    </div>
+    <div class="form-group">
+      <button md-raised-button name="verify" class="verify" (click)="upload()"> Upload <md-icon fontIcon="tuxicon-tick"></md-icon> </button>
+    </div>
+  </div>
+  <div class="tuxlab-labcreate-verify" *ngIf="uploaded">
+    {{ output }}
+  </div>
+</div>

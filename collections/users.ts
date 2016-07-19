@@ -18,11 +18,7 @@ if (Meteor.isServer){
       },
       nickname: {
         type: String,
-        autoValue: function(){
-          if (!this.isSet){
-            this.field('first_name') + " " + this.field('last_name');
-          }
-        }
+        unique: true
       },
       school: {
         type: String,

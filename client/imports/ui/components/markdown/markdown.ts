@@ -21,15 +21,12 @@
 
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-  
+
   import TaskView from '../../pages/lab/taskview.ts';
-  
+
 // Markdown Imports
 /// <reference path="./marked.d.ts" />
   import * as marked from 'marked';
-
-// Define Tasks Collection
-  let Tasks = new Mongo.Collection('Tasks');
 
 // Define Markdown Component
   @Component({
@@ -55,7 +52,7 @@ export class MarkdownView {
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
     mdIconRegistry.setDefaultFontSetClass('tuxicon');
-    
+
     // Parse markdown string
     let md = marked.setOptions({});
     if(typeof this.data !== "undefined") {

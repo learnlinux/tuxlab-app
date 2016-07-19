@@ -1,0 +1,79 @@
+.tuxlab-labcreate{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  .tuxlab-labcreate-upload, .tuxlab-labcreate-verify{
+    height: 100vh;
+
+    box-sizing: border-box;
+    padding:20px;
+
+    background-color:#fff;
+  }
+
+  .tuxlab-labcreate-upload{
+    display: block;
+    max-width:400px;
+
+    input[name=name]{
+      width:100%;
+
+      font-size:24px;
+
+      box-sizing: border-box;
+      padding:5px 10px;
+      border: none;
+    }
+
+    div[fileDrop]{
+      width:50%;
+      margin: 0 auto;
+
+      margin-top:30px;
+
+      background-color:#d3d3d3;
+
+      border:2px dashed #a9a9a9;
+      box-sizing: border-box;
+      padding: 10px;
+
+      text-align:center;
+
+      &:hover, &.uploaded{
+        border-color:#3d85c6;
+      }
+
+      md-icon{
+         width:100px;
+         height:100px;
+
+         &::before{
+           font-size: 100px;
+         }
+      }
+
+      button{
+        margin-top:30px;
+        float: right;
+
+        &::before{
+          color:#27ae60;
+          position:relative;
+          top:-7px;
+          font-size: 24pt;
+          line-height:24px;
+        }
+      }
+
+
+    }
+
+  }
+
+  .tuxlab-labcreate-verify{
+    display: none;
+    background-color: #000;
+    color:#fff;
+  }
+}
