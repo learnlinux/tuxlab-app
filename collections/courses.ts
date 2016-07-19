@@ -9,20 +9,23 @@ import { labs } from './labs';
 
 export const courses = new Mongo.Collection('courses');
 
-
-
 /**
   AUTHENTICATION
 **/
 courses.allow({
   insert: function (userId, doc : any) {
-    return Roles.isGlobalAdministrator();
+    return Roles.isGlobalAdministrator(userId);
   },
   update: function (userId, doc : any, fields : any) {
-    return Roles.isAdministratorFor(doc._id) || Roles.isInstructorFor(doc._id);
+    if(fields.contains('featured')){
+      return Roles.isAdministratorFor(userId);
+    }
+    else{
+      return Roles.isAdministratorFor(doc._id, userId) || Roles.isInstructorFor(doc._id, userId);
+    }
   },
   remove: function(userId, doc : any) {
-    return Roles.isGlobalAdministrator();
+    return Roles.isGlobalAdministrator(userId);
   }
 });
 
