@@ -13,7 +13,7 @@ export const course_records = new Mongo.Collection('course_records');
 course_records.allow({
   insert: function (userid, doc : any) {
     if (typeof doc.course_id !== "undefined"){
-      return Roles.isInstructorFor(doc.course_id, userId) || Roles.isAdministratorFor(doc.course_id, userid);
+      return Roles.isInstructorFor(doc.course_id, userid) || Roles.isAdministratorFor(doc.course_id, userid);
     }
     else{
       return false;
@@ -21,7 +21,7 @@ course_records.allow({
   },
   update: function (userid, doc : any, fields : any) {
     if( typeof doc.course_id !== "undefined" ){
-      return Roles.isInstructorFor(doc.course_id, userId) || Roles.isAdministratorFor(doc.course_id, userid);
+      return Roles.isInstructorFor(doc.course_id, userid) || Roles.isAdministratorFor(doc.course_id, userid);
     }
     else{
       return false;
