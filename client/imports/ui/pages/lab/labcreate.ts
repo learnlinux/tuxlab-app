@@ -15,6 +15,9 @@
 	  import { MeteorComponent } from 'angular2-meteor';
     import { FileDropDirective } from 'angular2-file-drop';
 
+// Global Variables Declaration
+    declare var Collections: any;
+
 // Define LabCreate Component
 @Component({
   selector: 'tuxlab-labcreate',
@@ -25,6 +28,10 @@
 })
 
 export default class LabCreate extends MeteorComponent {
+  public lab : any;
+  public uploaded : any;
+  public output : any;
+
   /* CONSTRUCTOR */
   constructor(){
     super();
@@ -42,10 +49,10 @@ export default class LabCreate extends MeteorComponent {
 
     Collections.labs.insert({
       "course_id": "1",
-      "name": this.name,
+      "name": this.lab.name,
       "disabled": false,
       "hidden": false,
-      "file": file
+      "file": this.lab.file
     }, function(err){
       if(err){
         this.output = this.output + err.toString();
@@ -66,6 +73,6 @@ export default class LabCreate extends MeteorComponent {
   }
 
   public onFileDrop(up: File): void {
-    file = up;
+    this.file = up;
   }
 }
