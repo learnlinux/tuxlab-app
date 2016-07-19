@@ -41,8 +41,9 @@
 export class SearchView extends MeteorComponent {
   @Input() searchQuery;
   @Input() searchResults;
-  currentPage = 1;
-  resultsPerPage = 2;
+  @Input() courseCount;
+  @Input() currentPage;
+  resultsPerPage = 15;
   constructor(mdIconRegistry: MdIconRegistry) {
     super();
     // Create Icon Font
@@ -53,15 +54,17 @@ export class SearchView extends MeteorComponent {
   // Go to next page function
   nextPage() {
     let self = this;
-    this.currentPage++;
-    Meteor.call('search_courses', this.searchQuery, this.resultsPerPage, this.currentPage, function(error, result) {
-      if(error) {
-        console.log(error);
-      }
-      else {
-        self.searchResults = result;
-      }
-    });
+    if (this.currentPage * this.resultsPerPage < this.courseCount) { 
+      this.currentPage++;
+      Meteor.call('search_courses', this.searchQuery, this.resultsPerPage, this.currentPage, function(error, result) {
+        if(error) {
+          console.log(error);
+        }
+        else {
+          self.searchResults = result.course_results;
+        }
+      });
+    }
   }
 
   // Go to previous page function
@@ -74,9 +77,29 @@ export class SearchView extends MeteorComponent {
           console.log(error);
         }
         else {
-          self.searchResults = result;
+          self.searchResults = result.course_results;
         }
       });
     }
   }
+  
+  getCurrentInfo() {
+    var first = ((this.currentPage - 1) * this.resultsPerPage + 1);
+    var last;
+    if((first + this.resultsPerPage - 1) > this.courseCount) {
+      last = this.courseCount;
+    }
+    else {
+      last = first + this.resultsPerPage - 1;
+    }
+    if(first > last) {
+      this.currentPage = 1;
+      first = 1;
+    }
+    if(this.courseCount === 0) {
+      first = 0;
+    }
+    return first + "-" + last + " of " + this.courseCount;
+  }
+  
 }

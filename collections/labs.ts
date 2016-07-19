@@ -98,7 +98,7 @@ labs.allow({
 
 /* LAB VALIDATOR */
   if(Meteor.isServer){
-  var valdateLab : any = require('../server/imports/lab/checkLab.js');
+  var validateLab : any = require('../server/imports/lab/checkLab.js');
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
         if (typeof fieldNames === "undefined"){
@@ -113,7 +113,7 @@ labs.allow({
 	    else{
               return titleList;
 	    }
-	  } 
+	  }
 
         }
       	else if(fieldNames.includes('tasks') && !fieldNames.includes('file')){

@@ -23,9 +23,22 @@ var NodeCache = require('node-cache');
   })
 
   // Create ETCD Cache
-  etcd.mkdir('/tuxlab/sessions', function(err){
+  async.series([
+    function(callback){
+      etcd.mkdir('tuxlab', function(err){
+        if(err && err.errorCode !== 105 && err.errorCode !== 102)
+          callback(err);
+      });
+    },
+    function(callback){
+      etcd.mkdir('tuxlab/sessions', function(err){
+        if(err && err.errorCode !== 105 && err.errorCode !== 102)
+          callback(err);
+      });
+    }
+  ], function(err){
     if(err){
-      TuxLog.log('warn', "Couldn't create sessions dir in ETCD");
+      TuxLog.log('warn', err);
     }
   });
 

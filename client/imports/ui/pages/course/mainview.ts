@@ -56,7 +56,6 @@
       // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
-      
       // Subscribe to courses database and set current course
       this.subscribe('user-courses', this.courseNumber, () => {
         this.course = courses.findOne({ course_number: this.courseNumber });

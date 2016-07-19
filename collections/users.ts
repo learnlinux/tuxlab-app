@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
   SCHEMA
 ***/
 declare var SimpleSchema: any;
-declare var nconf: any
+declare var nconf: any;
 
 if (Meteor.isServer){
   Meteor.startup(function(){
@@ -26,7 +26,6 @@ if (Meteor.isServer){
       },
       school: {
         type: String,
-        optional: true,
         defaultValue: nconf.get('domain_school')
       },
       email: {

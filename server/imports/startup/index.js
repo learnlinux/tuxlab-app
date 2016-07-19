@@ -9,3 +9,6 @@ import './auth.js'
 
 // Start ETCD
 import './etcd.js'
+
+// Start Meteor Methods
+import './methods.js'

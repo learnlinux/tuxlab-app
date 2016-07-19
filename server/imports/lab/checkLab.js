@@ -6,7 +6,7 @@ var tuxOrig = require('./lab.js');
 module.exports = function(str){
   if(!str) { return null; } //check for file import
   var tux = eval(str);
-  if(((typeof tux != "undefined") && 
+  if(((typeof tux != "undefined") &&
       (typeof tux.setup === 'function') &&  //check for instructor field types
       (typeof tux.tasks === 'function') &&
       (typeof tux.tasks() != 'undefined') &&
