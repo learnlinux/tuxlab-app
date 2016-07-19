@@ -1,5 +1,4 @@
 var async = require ('async');
-
 /**
   Searches Courses based on search terms
 **/
@@ -22,18 +21,22 @@ export function course_search(text : string, results_per_page : number, page_no 
 
    var search_options =
      {limit : results_per_page,
-      skip : [results_per_page, page_no],
+      skip : results_per_page * (page_no - 1),
       fields : {
         "course_number" : 1,
         "course_name" : 1,
         "instructor_ids" : 1,
-        "course_description" : 1}
+        "course_description" : 1
+      }
      };
-
    async.parallel(
      {
-       "course_count" : function(callback) {callback(null, courses.find(search_object).count());},
-       "course_results" : function(callback) {callback(null, courses.find(search_object, search_options).fetch());}
+       course_count: function(callback) {
+         callback(null, courses.find(search_object).count());
+       },
+       course_results: function(callback) {
+         callback(null, courses.find(search_object, search_options).fetch());
+       }
      },
      function(err, results) {
        if(err){

@@ -5,7 +5,7 @@
 	import 'zone.js/dist/zone';
 
 // Angular Imports
-	import { Component, ViewEncapsulation, provide } from '@angular/core';
+	import { Component, ViewEncapsulation, provide, Input } from '@angular/core';
 	import { bootstrap } from 'angular2-meteor-auto-bootstrap';
 	import { APP_BASE_HREF } from '@angular/common';
 	import { HTTP_PROVIDERS } from '@angular/http';
@@ -48,35 +48,50 @@
 
 // Export Explore Class
 export default class Explore extends MeteorComponent {
+  searchQuery: string;
+  searchResults: Array<Object>;
+  courseCount: number;
+  resultsPerPage = 15;
+  currentPage = 1;
+  
+  constructor(mdIconRegistry: MdIconRegistry) {
+    super();
+    // Create Icon Font
+    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+    mdIconRegistry.setDefaultFontSetClass('tuxicon');
+  }
 
-	constructor(mdIconRegistry: MdIconRegistry) {
-		super();
-		// Create Icon Font
-		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-		mdIconRegistry.setDefaultFontSetClass('tuxicon');
+  // Find Course
+  findCourse() {
+    let searchQuery = (<HTMLInputElement>document.getElementById('search-input')).value;
+    if (searchQuery !== '') {
+      
+      // Switch view
+      document.getElementById('explore-view').style.display = 'none';
+      document.getElementById('search-view').style.display = 'block';
+      document.getElementById('search-input').blur();
+      
+      this.searchQuery = searchQuery;
+      var self = this;
+      this.currentPage = 1
+      Meteor.call('search_courses', this.searchQuery, this.resultsPerPage, this.currentPage, function(err, res) {
+        if(err) {
+          console.log(err);
+        }
+        else {
+          self.searchResults = res.course_results;
+          self.courseCount = res.course_count;
+        }
+      });
+    }
+    else {
+      document.getElementById('explore-view').style.display = 'block';
+      document.getElementById('search-view').style.display = 'none';
+    }
+  }
 
-		// Set maximum width to full width for search bar
-		document.getElementById('tux-content').style.maxWidth = "100%";
-	}
-
-	// Find Course
-	findCourse() {
-		let searchQuery = (<HTMLInputElement>document.getElementById('search-input')).value;
-		if (searchQuery !== '') {
-			document.getElementById('explore-view').style.display = 'none';
-			document.getElementById('search-view').style.display = 'block';
-			document.getElementById('search-input').blur();
-			document.getElementById('search-string').innerHTML = "Search Results for \'" + searchQuery + "\'";
-		}
-		else {
-			document.getElementById('explore-view').style.display = 'block';
-			document.getElementById('search-view').style.display = 'none';
-		}
-	}
-
-	// Search icon button
-	searchFocus() {
-		document.getElementById('search-input').focus();
-	}
-
+  // Search icon button
+  searchFocus() {
+    document.getElementById('search-input').focus();
+  }
 }

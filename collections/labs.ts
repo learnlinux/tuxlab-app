@@ -99,12 +99,10 @@ labs.allow({
 /* LAB VALIDATOR */
   if(Meteor.isServer){
   var validateLab : any = require('../server/imports/lab/checkLab.js');
-
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
         if (typeof fieldNames === "undefined"){
           if(!(doc.course_id && doc.file && //check for lab fields
-
              Roles.isInstructorFor(doc.course_id,userid))){//check for instructor authorization
 	    return false;
 	  }
