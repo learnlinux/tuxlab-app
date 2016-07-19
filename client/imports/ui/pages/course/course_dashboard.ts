@@ -28,10 +28,10 @@
 	import { courses } from "../../../../../collections/courses.ts";
 	import { course_records } from "../../../../../collections/course_records.ts";
 
-// Define CourseView Component
+// Define CourseDashboard Component
 	@Component({
-		selector: 'tuxlab-maincourseview',
-		templateUrl: '/client/imports/ui/pages/course/mainview.html',
+		selector: 'tuxlab-course-dashboard',
+		templateUrl: '/client/imports/ui/pages/course/course_dashboard.html',
 		directives: [
 			MATERIAL_DIRECTIVES,
 			MD_ICON_DIRECTIVES,
@@ -44,8 +44,8 @@
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export MainCourseView Class
-  export class MainCourseView extends MeteorComponent {
+// Export CourseDashboard Class
+  export class CourseDashboard extends MeteorComponent {
     course;
     courseNumber: String = '15-131'; // TODO: Get from URL
     courseDescription: String = "Course Description Not Found";

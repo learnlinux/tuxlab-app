@@ -16,11 +16,11 @@
           <md-icon fontIcon="tuxicon-speaker"></md-icon>
           Announcements
         </a>
-        <a md-button [routerLink]="['/lab']">
+        <a md-button [routerLink]="['/lab-view']">
           <md-icon fontIcon="tuxicon-console"></md-icon>
           Terminal
         </a>
-        <a md-button [routerLink]="['/account/' + userId]">
+        <a md-button [routerLink]="['/account/' + user._id]">
           <md-icon fontIcon="tuxicon-cog"></md-icon>
           Settings
         </a>
@@ -80,7 +80,7 @@
           <a [routerLink]="['/login']" *ngIf="!user">
             <md-icon fontIcon="tuxicon-enter"></md-icon>
           </a>
-        </div>  
+        </div>
       </md-toolbar>
       
     </div>

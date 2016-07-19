@@ -21,29 +21,33 @@
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // LabList and Grades import
-	import { GradeList } from "../../components/gradelist/gradelist.ts";
+	import { LabList } from "../../components/lablist/lablist.ts";
 
 // Courses and Course Record Imports
 	import { courses } from "../../../../../collections/courses.ts";
 	import { course_records } from "../../../../../collections/course_records.ts";
 
-// Define GradeView Component
+// Define CourseLabList Component
 	@Component({
-		selector: 'tuxlab-gradeview',
-		templateUrl: '/client/imports/ui/pages/course/gradeview.html',
+		selector: 'tuxlab-course-lablist',
+    template: `
+      <div class="tuxlab-course-lablist">
+        <tuxlab-lablist></tuxlab-lablist>
+      </div>
+    `,
 		directives: [
 			MATERIAL_DIRECTIVES,
 			MD_ICON_DIRECTIVES,
 			ROUTER_DIRECTIVES,
-			GradeList
+			LabList
 		],
 		viewProviders: [MdIconRegistry],
 		providers: [OVERLAY_PROVIDERS],
 		encapsulation: ViewEncapsulation.None
 	})
 
-// Export GradeView Class
-  export class GradeView extends MeteorComponent {
+// Export CourseLabList Class
+  export class CourseLabList extends MeteorComponent {
     constructor(mdIconRegistry: MdIconRegistry) {
       super();
       // Create Icon Font

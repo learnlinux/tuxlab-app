@@ -121,6 +121,7 @@
 	
 	<!--Row of cards-->
 	<div layout="column" layout-gt-md="row" class="cards">
+		
 		<div flex class="md-whiteframe-4dp card-yellow">
 			<div class="card-title">
 				<p>My Exams</p>
@@ -140,24 +141,6 @@
 			</div>
 		</div>
 		
-		<div flex class="md-whiteframe-4dp card-purple">
-			<div class="card-title">
-				<p>Bar</p>
-			</div>
-			<div class="card-content">
-				<md-content>
-					<md-list>
-						<md-list-item *ngFor="let course of courses" >
-							<p>{{ course.name }}</p>
-							<span>{{ course.number }}</span>
-						</md-list-item>
-					</md-list>	
-					<div class="more-button">
-						<button md-button>More</button>
-					</div>
-				</md-content>
-			</div>
-		</div>
 	</div>
 		
 </div>
