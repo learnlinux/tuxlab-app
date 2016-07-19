@@ -5,13 +5,14 @@
   	import 'zone.js/dist/zone';
 
 // Angular Imports
-  	import { Component, ViewEncapsulation, provide } from '@angular/core';
+  	import { Component, ViewEncapsulation, provide, Input } from '@angular/core';
   	import { bootstrap } from 'angular2-meteor-auto-bootstrap';
 
 // Angular Material Imports
 	import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
+	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 
 // Terminal and Markdown Imports
   import { Terminal } from "../../components/wetty/terminal.ts";
@@ -31,7 +32,8 @@
     MarkdownView, 
     Terminal,
     MD_ICON_DIRECTIVES,
-    MATERIAL_DIRECTIVES
+    MATERIAL_DIRECTIVES,
+    MD_INPUT_DIRECTIVES
   ],
   viewProviders: [ MdIconRegistry ],
   providers: [ OVERLAY_PROVIDERS, MATERIAL_PROVIDERS ],
@@ -39,13 +41,13 @@
 })
 
 export default class TaskView extends MeteorComponent {
-  labMarkdown = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
+  labMarkdown: string; 
   constructor() {
     super();
-    // Create Icon Font
-
+    let self = this;
     Meteor.call('prepareLab',{courseId: "1", labId: "1"}, function(err,res){
       console.log("fired",err,res);
+      self.labMarkdown = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
     });
   }
 }

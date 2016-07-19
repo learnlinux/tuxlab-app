@@ -15,7 +15,7 @@
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MeteorComponent } from 'angular2-meteor';
-	import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs'
+	import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs';
 	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 	import { MdToolbar } from '@angular2-material/toolbar';
 	import { FORM_DIRECTIVES, FORM_PROVIDERS } from '@angular/forms';
@@ -50,6 +50,9 @@
 export default class Explore extends MeteorComponent {
   searchQuery: string;
   searchResults: Array<Object>;
+  courseCount: number;
+  resultsPerPage = 15;
+  currentPage = 1;
   
   constructor(mdIconRegistry: MdIconRegistry) {
     super();
@@ -62,17 +65,22 @@ export default class Explore extends MeteorComponent {
   findCourse() {
     let searchQuery = (<HTMLInputElement>document.getElementById('search-input')).value;
     if (searchQuery !== '') {
+      
+      // Switch view
       document.getElementById('explore-view').style.display = 'none';
       document.getElementById('search-view').style.display = 'block';
       document.getElementById('search-input').blur();
+      
       this.searchQuery = searchQuery;
-      let self = this;
-      Meteor.call('search_courses', this.searchQuery, 2, 1, function(err, res) {
+      var self = this;
+      this.currentPage = 1
+      Meteor.call('search_courses', this.searchQuery, this.resultsPerPage, this.currentPage, function(err, res) {
         if(err) {
           console.log(err);
         }
         else {
-          self.searchResults = res;
+          self.searchResults = res.course_results;
+          self.courseCount = res.course_count;
         }
       });
     }

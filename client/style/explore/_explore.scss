@@ -105,7 +105,10 @@
 				color: #999999;
 			}
 			md-icon {
-				line-height: 24px;
+				line-height: 16px;
+			}
+			.tuxicon:before {
+				font-size: 36px;
 			}
 		}
 
