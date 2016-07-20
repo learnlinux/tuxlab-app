@@ -6,6 +6,7 @@
 
 // Angular Imports
     import { Component, ViewEncapsulation, provide } from '@angular/core';
+    import { ActivatedRoute } from '@angular/router';
     import { bootstrap } from 'angular2-meteor-auto-bootstrap';
 
     import { APP_BASE_HREF, FORM_DIRECTIVES } from '@angular/common';
@@ -44,9 +45,10 @@
 @InjectUser('user')
 export default class Account extends MeteorComponent {
   user: Meteor.User;
+  userid: number;
+  cur_user: boolean;
 
-
-  constructor(mdIconRegistry: MdIconRegistry) {
+  constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
     super();
 
     console.log(Meteor.user());
@@ -54,6 +56,20 @@ export default class Account extends MeteorComponent {
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
     mdIconRegistry.setDefaultFontSetClass('tuxicon');
-
   }
+
+  getProfile(){
+    if(this.cur_user){
+      return this.user.profile;
+    }
+    else{
+      return Meteor.call('getUserProfile',[this.userid]);
+    }
+  }
+
+  ngOnInit(){
+    this.userid = this.route.snapshot.params['userid'];
+    this.cur_user = (typeof this.userid === "undefined" || this.userid === null);
+  }
+
 }

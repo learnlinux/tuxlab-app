@@ -65,14 +65,11 @@ if (Meteor.isServer){
     USER ROLES
   ***/
   export class Roles {
-
     /*
       Determines if user is logged in
     */
-    static isLoggedIn(){
-      let user : any = Meteor.user();
-
-      return (typeof user !== 'undefined' && <any> user.roles !== 'undefined');
+    static isLoggedIn(user){
+      return (typeof user !== 'undefined' && user !== null && <any> user.roles !== 'undefined');
     }
 
     /*
@@ -81,7 +78,7 @@ if (Meteor.isServer){
     static isStudentFor(courseid : string, userid? : number){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
 
-      if(this.isLoggedIn() && typeof user.roles.student === "array"){
+      if(this.isLoggedIn(user) && typeof user.roles.student === "array"){
         for (var i = 0; i < user.roles.student.length; i++){
           if (user.roles.student[i][0] === courseid) {
             return true;
@@ -99,7 +96,7 @@ if (Meteor.isServer){
     */
     static isInstructorFor(courseid : string, userid? : number){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
-      return (this.isLoggedIn() && typeof user.roles.instructor === "array" && user.roles.instructor.contains(courseid));
+      return (this.isLoggedIn(user) && typeof user.roles.instructor === "array" && user.roles.instructor.contains(courseid));
     }
 
     /*
@@ -107,7 +104,7 @@ if (Meteor.isServer){
     */
     static isAdministratorFor(courseid : string, userid? : number){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
-      return (this.isLoggedIn() && typeof user.roles.administrator === "array" && (user.roles.administrator.contains('global') || user.roles.administrator.contains(courseid)));
+      return (this.isLoggedIn(user) && typeof user.roles.administrator === "array" && (user.roles.administrator.contains('global') || user.roles.administrator.contains(courseid)));
     }
 
     /*
@@ -115,6 +112,20 @@ if (Meteor.isServer){
     */
     static isGlobalAdministrator(userid? : number){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
-      return (this.isLoggedIn() && typeof user.roles.administrator === "array" && user.roles.administrator.contains('global'));
+      return (this.isLoggedIn(user) && typeof user.roles.administrator === "array" && user.roles.administrator.contains('global'));
     }
   };
+
+ /***
+    USER PROFILE PUBLICATION
+ **/
+ Meteor.methods({
+   'getUserProfile': function(uid : string){
+     if(Roles.isGlobalAdministrator(this.userId)){
+        return Meteor.users.findOne(uid).profile;
+     }
+     else{
+        throw new Meteor.Error("Auth", "Must be admin to access user profile.");
+     }
+   }
+ });
