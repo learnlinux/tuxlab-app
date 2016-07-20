@@ -1,163 +1,131 @@
 <div class="tuxlab-dashboard">
-
-	<!--Row of cards-->
-	<div layout="column" layout-xl="row" class="cards">
-		
-		<div flex class="md-whiteframe-4dp card-red">
-			<div class="card-title">
-				<p>My Courses</p>
-			</div>
-			<md-content>
-				<md-list>
-					<a *ngFor="let course of courses" [routerLink]="['/course/']">
-						<md-list-item class="course-link">
-							<p>{{ course.name }}</p>
-							<span>{{ course.number }}</span>
-						</md-list-item>
-					</a>
-				</md-list>	
-				<div class="more-button">
-					<button md-button>More</button>
-				</div>
-			</md-content>
-		</div>
-		
-		<div flex class="md-whiteframe-4dp card-blue">
-			<div class="card-title">
-				<p>Announcements</p>
-			</div>
-			<md-content>
-				<md-list>
-					<md-list-item>
-						<p>Announcement 1 is this announcement.</p>
-					</md-list-item>
-					<md-list-item>
-						<p>Announcement 2 is this announcement.</p>
-					</md-list-item>
-					<md-list-item>
-						<p>Announcement 3 is this announcement.</p>
-					</md-list-item>
-					<md-list-item>
-						<p>Announcement 4 is this announcement.</p>
-					</md-list-item>
-					<md-list-item>
-						<p>Announcement 5 is this announcement.</p>
-					</md-list-item>
-					<md-list-item>
-						<p>Announcement 6 is this announcement.</p>
-					</md-list-item>
-				</md-list>	
-			</md-content>
-			<div class="more-button">
-				<button md-button>More</button>
-			</div>
-		</div>
-		
-		<div flex class="md-whiteframe-4dp card-blue-grey">
-			<div class="card-title">
-				<p>My Assignments</p>
-			</div>
-			<div class="card-content">
-				<md-content>
-					<md-list>
-						<md-list-item *ngFor="let course of courses" >
-							<p>{{ course.name }}</p>
-							<span>{{ course.number }}</span>
-						</md-list-item>
-					</md-list>	
-					<div class="more-button">
-						<button md-button>More</button>
-					</div>
-				</md-content>
-			</div>
-		</div>
-	
-	</div>
-	
-	<!--Row of cards-->
-	<div layout="column" layout-gt-md="row" class="cards">
-		
-		<div flex class="md-whiteframe-4dp card-green">
-			<div class="card-title">
-				<p>My Grades</p>
-			</div>
-			<div class="card-content">
-				<md-content>
-					<md-list>
-						<md-list-item *ngFor="let course of courses" >
-							<p>{{ course.name }}</p>
-							<span>{{ course.grade }}%</span>
-						</md-list-item>
-					</md-list>
-					<div class="more-button">
-						<button md-button>More</button>
-					</div>
-				</md-content>
-			</div>
-		</div>
-		
-		
-		
-		<div flex class="md-whiteframe-4dp card-amber">
-			<div class="card-title">
-				<p>My Labs</p>
-			</div>
-			<div class="card-content">
-				<md-content>
-					<md-list>
-						<md-list-item *ngFor="let course of courses" >
-							<p>{{ course.name }}</p>
-							<span>{{ course.number }}</span>
-						</md-list-item>
-					</md-list>	
-					<div class="more-button">
-						<button md-button>More</button>
-					</div>
-				</md-content>
-			</div>
-		</div>
-		
-	</div>
-	
-	<!--Row of cards-->
-	<div layout="column" layout-gt-md="row" class="cards">
-		<div flex class="md-whiteframe-4dp card-yellow">
-			<div class="card-title">
-				<p>My Exams</p>
-			</div>
-			<div class="card-content">
-				<md-content>
-					<md-list>
-						<md-list-item *ngFor="let course of courses" >
-							<p>{{ course.name }}</p>
-							<span>{{ course.number }}</span>
-						</md-list-item>
-					</md-list>	
-					<div class="more-button">
-						<button md-button>More</button>
-					</div>
-				</md-content>
-			</div>
-		</div>
-		
-		<div flex class="md-whiteframe-4dp card-purple">
-			<div class="card-title">
-				<p>Bar</p>
-			</div>
-			<div class="card-content">
-				<md-content>
-					<md-list>
-						<md-list-item *ngFor="let course of courses" >
-							<p>{{ course.name }}</p>
-							<span>{{ course.number }}</span>
-						</md-list-item>
-					</md-list>	
-					<div class="more-button">
-						<button md-button>More</button>
-					</div>
-				</md-content>
-			</div>
-		</div>
-	</div>
-		
+  <!--Row of cards-->
+  <div layout="column" layout-xl="row" class="cards">
+    <div flex class="md-whiteframe-4dp card-red">
+      <div class="card-title">
+        <p>My Courses</p>
+      </div>
+      <md-content>
+        <md-list>
+          <a *ngFor="let course of courses" [routerLink]="['/course/']">
+          <md-list-item class="course-link">
+            <p>{{ course.course_name }}</p>
+            <span>{{ course.course_number }}</span>
+          </md-list-item>
+          </a>
+        </md-list>
+        <div class="more-button">
+          <button md-button>More</button>
+        </div>
+      </md-content>
+    </div>
+    <div flex class="md-whiteframe-4dp card-blue">
+      <div class="card-title">
+        <p>Announcements</p>
+      </div>
+      <md-content>
+        <md-list>
+          <md-list-item>
+            <p>Announcement 1 is this announcement.</p>
+          </md-list-item>
+          <md-list-item>
+            <p>Announcement 2 is this announcement.</p>
+          </md-list-item>
+          <md-list-item>
+            <p>Announcement 3 is this announcement.</p>
+          </md-list-item>
+          <md-list-item>
+            <p>Announcement 4 is this announcement.</p>
+          </md-list-item>
+          <md-list-item>
+            <p>Announcement 5 is this announcement.</p>
+          </md-list-item>
+          <md-list-item>
+            <p>Announcement 6 is this announcement.</p>
+          </md-list-item>
+        </md-list>
+      </md-content>
+      <div class="more-button">
+        <button md-button>More</button>
+      </div>
+    </div>
+    <div flex class="md-whiteframe-4dp card-blue-grey">
+      <div class="card-title">
+        <p>My Assignments</p>
+      </div>
+      <div class="card-content">
+        <md-content>
+          <md-list>
+            <md-list-item *ngFor="let course of courses" >
+              <p>{{ course.course_name }}</p>
+              <span>{{ course.course_number }}</span>
+            </md-list-item>
+          </md-list>
+          <div class="more-button">
+            <button md-button>More</button>
+          </div>
+        </md-content>
+      </div>
+    </div>
+  </div>
+  <!--Row of cards-->
+  <div layout="column" layout-gt-md="row" class="cards">
+    <div flex class="md-whiteframe-4dp card-green">
+      <div class="card-title">
+        <p>My Grades</p>
+      </div>
+      <div class="card-content">
+        <md-content>
+          <md-list>
+            <md-list-item *ngFor="let grade of grades" >
+              <p>{{ grade.name }}</p>
+              <span>{{ grade.grade }}%</span>
+            </md-list-item>
+          </md-list>
+          <div class="more-button">
+            <button md-button>More</button>
+          </div>
+        </md-content>
+      </div>
+    </div>
+    <div flex class="md-whiteframe-4dp card-amber">
+      <div class="card-title">
+        <p>My Labs</p>
+      </div>
+      <div class="card-content">
+        <md-content>
+          <md-list>
+            <md-list-item *ngFor="let course of courses" >
+              <p>{{ course.course_name }}</p>
+              <span>{{ course.course_number }}</span>
+            </md-list-item>
+          </md-list>
+          <div class="more-button">
+            <button md-button>More</button>
+          </div>
+        </md-content>
+      </div>
+    </div>
+  </div>
+  <!--Row of cards-->
+  <div layout="column" layout-gt-md="row" class="cards">
+    <div flex class="md-whiteframe-4dp card-yellow">
+      <div class="card-title">
+        <p>My Exams</p>
+      </div>
+      <div class="card-content">
+        <md-content>
+          <md-list>
+            <md-list-item *ngFor="let course of courses" >
+              <p>{{ course.course_name }}</p>
+              <span>{{ course.course_number }}</span>
+            </md-list-item>
+          </md-list>
+          <div class="more-button">
+            <button md-button>More</button>
+          </div>
+        </md-content>
+      </div>
+    </div>
+  </div>
 </div>
