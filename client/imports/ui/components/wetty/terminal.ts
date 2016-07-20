@@ -19,6 +19,7 @@ declare var window: any;
 })
 export class Terminal {
   private _viewContainer : ViewContainerRef;
+  private el : ElementRef;
 
   @Input() username: string;
   @Input() password: string;
@@ -32,6 +33,9 @@ export class Terminal {
   }
 
   public openTerminal(){
+    // slf
+    var slf = this;
+
     // Clear viewContainer
     this._viewContainer.clear();
 
@@ -96,7 +100,7 @@ export class Terminal {
             term = new hterm.Terminal();
             window.term = term;
 
-            term.decorate(el.nativeElement);
+            term.decorate(slf.el.nativeElement);
 
             term.setCursorPosition(0, 0);
             term.setCursorVisible(true);
