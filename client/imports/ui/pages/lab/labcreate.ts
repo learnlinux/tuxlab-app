@@ -8,11 +8,11 @@
   	import { Component, Output } from '@angular/core';
   	import { bootstrap } from 'angular2-meteor-auto-bootstrap';
     import { FORM_DIRECTIVES, FORM_PROVIDERS } from '@angular/forms';
-    import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
-
 
 // Angular Material Imports
-	  import { MeteorComponent } from 'angular2-meteor';
+    import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
+    import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
+    import { MeteorComponent } from 'angular2-meteor';
     import { FileDropDirective } from 'angular2-file-drop';
 
 // Global Variables Declaration
@@ -22,8 +22,8 @@
 @Component({
   selector: 'tuxlab-labcreate',
   templateUrl: '/client/imports/ui/pages/lab/labcreate.html',
-  directives: [ FileDropDirective, FORM_DIRECTIVES, MD_ICON_DIRECTIVES],
-  providers: [ FORM_PROVIDERS ],
+  directives: [ FileDropDirective, FORM_DIRECTIVES, MD_ICON_DIRECTIVES, MATERIAL_DIRECTIVES ],
+  providers: [ FORM_PROVIDERS, MATERIAL_PROVIDERS ],
   viewProviders: [ MdIconRegistry ]
 })
 
