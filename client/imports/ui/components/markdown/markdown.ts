@@ -15,7 +15,7 @@
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
   import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
-	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
+  import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 
 // Toolbar
   import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
