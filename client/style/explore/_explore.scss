@@ -105,10 +105,22 @@
 				color: #999999;
 			}
 			md-icon {
-				line-height: 24px;
+				line-height: 16px;
+			}
+			.tuxicon:before {
+				font-size: 36px;
 			}
 		}
 
+	}
+	md-data-table {
+		tbody {
+			td {
+				a {
+					color: black;
+				}
+			}
+		}
 	}
 }
 
@@ -121,5 +133,13 @@
 			padding: 10px;
 			text-indent: 1em;
 		}
+		.course-link {
+			text-align: right;
+			a {
+				color: black;
+				align-self: right;
+			}	
+		}
+		
 	}
 }

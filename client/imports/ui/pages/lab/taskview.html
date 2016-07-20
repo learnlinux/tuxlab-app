@@ -1,8 +1,7 @@
 <div class="tuxlab-taskview">
-
   <!--Markdown View-->
   <div class="tuxlab-taskview-step">
-    <tuxlab-markdown>Task markdown loading...</tuxlab-markdown>
+    <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
     <div class="markdown-check-button">
       <md-dialog #alert>
         <md-dialog-title>Just a Second</md-dialog-title>
@@ -15,7 +14,6 @@
       </button>
     </div>
   </div>
-
   <!--Terminal View-->
   <div class="tuxlab-taskview-terminal">
 		<terminal ></terminal>

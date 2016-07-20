@@ -19,6 +19,7 @@
           <th class="md-text-cell">Course Number</th>
           <th class="md-text-cell">Course Name</th>
           <th>Instructor</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -26,6 +27,9 @@
           <td class="md-text-cell">{{ course.course_number }}</td>
           <td class="md-text-cell">{{ course.course_name }}</td>
           <td>{{ course.instructor_ids }}</td>
+          <td>
+            <a md-button [routerLink]="['/course']">Course Page</a>
+          </td>
         </tr>
       </tbody>
     </md-data-table>

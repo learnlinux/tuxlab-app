@@ -5,13 +5,14 @@
   import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { ViewChild, Component, ViewEncapsulation, provide } from '@angular/core';
+  import { ViewChild, Component, ViewEncapsulation, provide, Input } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
 
 // Angular Material Imports
   import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
+	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 
   import { InjectUser } from 'angular2-meteor-accounts-ui';
 
@@ -33,7 +34,8 @@
     MarkdownView, 
     Terminal,
     MD_ICON_DIRECTIVES,
-    MATERIAL_DIRECTIVES
+    MATERIAL_DIRECTIVES,
+    MD_INPUT_DIRECTIVES
   ],
   viewProviders: [ MdIconRegistry ],
   providers: [ OVERLAY_PROVIDERS, MATERIAL_PROVIDERS ],
@@ -56,7 +58,7 @@ export default class TaskView extends MeteorComponent {
   ngAfterViewInit(){  
     var slf = this;
     Meteor.call('prepareLab',"1","1", function(err,res){
-      slf.labMarkdown = "#Sander \n ##are you sure this will work?";
+      slf.labMarkdown = "# Sander \n ## are you sure this will work?";
       console.log(slf.labMarkdown);
       slf.auth = {
         username: Meteor.user().profile.nickname,

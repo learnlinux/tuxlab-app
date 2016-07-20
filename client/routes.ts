@@ -39,7 +39,6 @@ const routes : RouterConfig = [
   { path: 'lab-view', component: TaskView },
   { path: 'lab-create', component: LabCreate },
   { path: 'course-users', component: UserList },
-  { path: 'course', component: CourseList },
   { path: 'explore', component: Explore },
   { path: '**', component: Err404 }
 ]

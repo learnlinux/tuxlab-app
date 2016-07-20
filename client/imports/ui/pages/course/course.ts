@@ -20,10 +20,6 @@
 // Icon
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
-// LabList and Grades import
-	import { LabList } from "../../components/lablist/lablist.ts";
-	import { GradeList } from "../../components/gradelist/gradelist.ts";
-
 // Courses and Course Record Imports
 	import { courses } from "../../../../../collections/courses.ts";
 	import { course_records } from "../../../../../collections/course_records.ts";
@@ -35,9 +31,7 @@
 		directives: [
 			MATERIAL_DIRECTIVES,
 			MD_ICON_DIRECTIVES,
-			ROUTER_DIRECTIVES,
-			LabList,
-			GradeList
+			ROUTER_DIRECTIVES
 		],
 		viewProviders: [MdIconRegistry],
 		providers: [OVERLAY_PROVIDERS],

@@ -1,32 +1,33 @@
 <div class="tuxlab-exploreview">
-	<!--Tab Groups-->
-	<md-tab-group class="md-whiteframe-5dp" *ngFor="let course of courses">
-		<!--First Tab-->
-		<md-tab>
-			<template md-tab-label>Description</template>
-			<template md-tab-content>
-				<md-content class="md-padding">
-					<h2>{{ course.course_name }}</h2>
-					<p>Course number: {{ course.course_number }}</p>
-					<p>
-						{{ course.course_description.content }}
-					</p>
-					<p>Instructor: {{ course.instructor_name }}</p>
-				</md-content>
-			</template>
-		</md-tab>
-		<!--Second Tab-->
-		<md-tab>
-			<template md-tab-label>Syllabus</template>
-			<template md-tab-content>
-				<md-content class="md-padding">
-					<h2>Syllabus</h2>
-					<p>
-						{{ course.course_description.syllabus }}
-					</p>
-				</md-content>
-			</template>
-		</md-tab>
-	</md-tab-group>
-	
+  <!--Tab Groups-->
+  <md-tab-group class="md-whiteframe-5dp" *ngFor="let course of courses">
+    <!--First Tab-->
+    <md-tab>
+      <template md-tab-label>Description</template>
+      <template md-tab-content>
+        <md-content class="md-padding">
+          <h2>{{ course.course_number }} | {{ course.course_name }}</h2>
+          <p>{{ course.instructor_name }}</p>
+          <p>
+            {{ course.course_description.content }}
+          </p>
+          <div class="course-link">
+            <a md-button [routerLink]="['/course']">Course Page</a>
+          </div>
+        </md-content>
+      </template>
+    </md-tab>
+    <!--Second Tab-->
+    <md-tab>
+      <template md-tab-label>Syllabus</template>
+      <template md-tab-content>
+        <md-content class="md-padding">
+          <h2>Syllabus</h2>
+          <p>
+            {{ course.course_description.syllabus }}
+          </p>
+        </md-content>
+      </template>
+    </md-tab>
+  </md-tab-group>
 </div>
