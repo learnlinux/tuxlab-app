@@ -89,6 +89,12 @@
         }
         .tux-toolbar-menu {
           color: #777;
+          .tuxicon:before {
+            font-size: 36px;
+          }
+          md-icon {
+            line-height: 24px;
+          }
         }
       }
       .tux-toolbar-profile:hover {
@@ -144,8 +150,12 @@
       text-align: left;
       color: black;
       line-height: 50px;
+      .tuxicon:before {
+        font-size: 36px;
+      }
       md-icon {
-        vertical-align: top;
+        line-height: 15px;
+        margin-right: 10px;
       }
     }
   }

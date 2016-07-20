@@ -19,6 +19,11 @@
 
 // Icon
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
+	
+// Collections
+  import { courses } from '../../../../../collections/courses.ts';
+  import { course_records } from '../../../../../collections/course_records.ts';
+	
 
 // Define Dashboard Component
 	@Component({
@@ -36,28 +41,33 @@
 
 // Export Dashboard Class
 export default class Dashboard extends MeteorComponent {
-	courses: Array<any> = [
-		{'id': 1, 'number': '15-131', 'name': 'Great Practical Ideas for Computer Scientists', 'quantity': '12', 'grade': '99'},
-		{'id': 7, 'number': '21-299', 'name': 'Calculus in Twelve Dimensions', 'quantity': '76', 'grade': '100'},
-		{'id': 9, 'number': '15-999', 'name': 'Introduction to Linux', 'quantity': '44', 'grade': '98'},
-		{'id': 10, 'number': '15-998', 'name': 'Vim Usage', 'quantity': '1', 'grade': '99'},
-		{'id': 11, 'number': '15-000', 'name': 'Emacs Usage', 'quantity': '2', 'grade': '44'},
-		{'id': 12, 'number': '15-997', 'name': 'Bash Commands', 'quantity': '3', 'grade': '85'}
-	];
+  courses = [];
+  grades = [];
+  constructor(mdIconRegistry: MdIconRegistry) {
+    super();
 
-	constructor(mdIconRegistry: MdIconRegistry) {
-		super();
+    // Create Icon Font
+    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
+    mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
-		// Create Icon Font
-		mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-		mdIconRegistry.setDefaultFontSetClass('tuxicon');
+		this.subscribe('user-courses', () => {
+			this.courses = courses.find().fetch();
+		}, true);
+    this.subscribe('course-records', () => {
+      let records = course_records.find().fetch();
+      for(let i = 0; i < records.length; i++) {
+        let labs = (<any>records[i]).labs;
+        for(let j = 0; j < labs.length; j++) {
+          let tasks = labs[j].tasks;
+          for(let k = 0; k < tasks.length; k++) {
+            this.grades.push({
+              grade: ((tasks[k].grade[0] * 100.0) / tasks[k].grade[1]).toString(),
+              name: "Lab " + (j + 1).toString() + " Task " + (k + 1).toString()
+            });
+          }
+        }
+      }
+    }, true);
 	}
-
-	toCourse(courseId) {
-		console.log('Going to course page with course id: ' + courseId);
-		window.location.href = '/course';
-	}
-
-
 
 }

@@ -1,5 +1,5 @@
 Meteor.methods({
-  'prepareLab': function(courseId : string ,labId : string){
+  'prepareLab': function(user : string ,labId : string){
     return "here";
   },
   'startLab': function(callback : any){},
