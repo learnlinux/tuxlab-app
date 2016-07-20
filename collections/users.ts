@@ -18,7 +18,8 @@ if (Meteor.isServer){
       },
       nickname: {
         type: String,
-        unique: true
+        unique: true,
+        regEx: /^[a-zA-Z0-9_-]*$/
       },
       school: {
         type: String,
