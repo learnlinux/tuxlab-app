@@ -26,19 +26,19 @@
    import { courses } from '../../../../../collections/courses.ts';
 
 // Define SearchView Component
-	@Component({
-		selector: 'tuxlab-searchview',
-		templateUrl: '/client/imports/ui/components/explore/search.html',
-		directives: [ MATERIAL_DIRECTIVES, 
+  @Component({
+    selector: 'tuxlab-searchview',
+    templateUrl: '/client/imports/ui/components/explore/search.html',
+    directives: [ MATERIAL_DIRECTIVES, 
       MD_ICON_DIRECTIVES, 
       MD_TABS_DIRECTIVES,
       ROUTER_DIRECTIVES,
       MD_INPUT_DIRECTIVES,
       MdToolbar 
     ],
-		viewProviders: [ MdIconRegistry ],
-		encapsulation: ViewEncapsulation.None
-	})
+    viewProviders: [ MdIconRegistry ],
+    encapsulation: ViewEncapsulation.None
+  })
 	
 // Export Explore Class 
 export class SearchView extends MeteorComponent {
