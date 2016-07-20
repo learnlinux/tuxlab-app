@@ -25,11 +25,13 @@ export class Terminal {
   @Input() host: string;
   @Input() domain: string;
   @Input() path: string = '/wetty/socket.io';
-  constructor(private viewContainer:ViewContainerRef){
+
+  constructor(el : ElementRef, private viewContainer:ViewContainerRef){
+    this.el = el;
      this._viewContainer = viewContainer;
   }
 
-  openTerminal(el : ElementRef){
+  public openTerminal(){
     // Clear viewContainer
     this._viewContainer.clear();
 
