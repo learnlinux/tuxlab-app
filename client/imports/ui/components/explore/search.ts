@@ -30,11 +30,12 @@
 		selector: 'tuxlab-searchview',
 		templateUrl: '/client/imports/ui/components/explore/search.html',
 		directives: [ MATERIAL_DIRECTIVES, 
-					  MD_ICON_DIRECTIVES, 
-					  MD_TABS_DIRECTIVES,
-            ROUTER_DIRECTIVES,
-					  MD_INPUT_DIRECTIVES,
-					  MdToolbar ],
+      MD_ICON_DIRECTIVES, 
+      MD_TABS_DIRECTIVES,
+      ROUTER_DIRECTIVES,
+      MD_INPUT_DIRECTIVES,
+      MdToolbar 
+    ],
 		viewProviders: [ MdIconRegistry ],
 		encapsulation: ViewEncapsulation.None
 	})

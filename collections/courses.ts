@@ -55,7 +55,14 @@ courses.allow({
           type: String
         },
         instructor_ids: {
-          type: [String],
+          type: [{
+            name: {
+              type: String
+            },
+            id: {
+              type: String
+            }
+          }],
           custom: function() {
             let validInstructors = Meteor.users.find({ _id: { $in: this.value } });
 
