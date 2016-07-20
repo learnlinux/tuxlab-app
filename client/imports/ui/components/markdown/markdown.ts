@@ -47,7 +47,7 @@
 
 // Export MarkdownView Class
 export class MarkdownView extends MeteorComponent{
-  @Input() mdData;
+  @Input() mdData = "";
   labName = "Lab Name Here";
   labProgress = "3/10";
 
