@@ -146,3 +146,17 @@ if(Meteor.isServer) {
     }); // Meteor.publish
   }); //Meteor.startup
 } //Meteor.isServer
+
+/***
+   USER PROFILE PUBLICATION
+**/
+Meteor.methods({
+  'getUserCourseRecord': function(cid: string, uid : string){
+    if(Roles.isInstructorFor(cid, uid)){
+       return course_records.findOne({user_id : uid, course_id: cid});
+    }
+    else{
+       throw new Meteor.Error("Auth", "Must be admin to access user profile.");
+    }
+  }
+});

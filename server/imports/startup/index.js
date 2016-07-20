@@ -12,3 +12,6 @@ import './etcd.js'
 
 // Start Meteor Methods
 import './methods.js'
+
+// Start Cache
+import './cache.js'

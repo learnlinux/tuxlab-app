@@ -3,12 +3,12 @@
     <md-card>
       <md-card-content>
         <div class="account-profile-picture">
-          <img src="{{ user.profile.picture }}">
+          <img src="{{ getUserProfile().picture }}">
         </div>
         <div class="account-display-name">
-          <h2>{{ user.profile.first_name + " " + user.profile.last_name }}</h2>
-          <p>{{ user.profile.school }}</p>
-          <p>{{ user.profile.email }}</p>
+          <h2>{{ getUserProfile().first_name + " " + getUserProfile().last_name }}</h2>
+          <p>{{ getUserProfile().school }}</p>
+          <p>{{ getUserProfile().email }}</p>
         </div>
       </md-card-content>
     </md-card>
@@ -20,7 +20,7 @@
 
           <div class="account-item" layout="row">
             <p class="account-label" flex>Nickname</p>
-            <p class="account-info" flex>{{ user.profile.nickname }}</p>
+            <p class="account-info" flex>{{ getUserProfile().nickname }}</p>
             <a>
               <md-icon fontIcon="tuxicon-cog"></md-icon>
             </a>
@@ -30,7 +30,7 @@
 
           <div class="account-item" layout="row">
             <p class="account-label" flex>Email</p>
-            <p class="account-info" flex>{{ user.profile.email }}</p>
+            <p class="account-info" flex>{{ getUserProfile().email }}</p>
             <a>
               <md-icon fontIcon="tuxicon-cog"></md-icon>
             </a>

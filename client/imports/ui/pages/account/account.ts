@@ -45,7 +45,7 @@
 @InjectUser('user')
 export default class Account extends MeteorComponent {
   user: Meteor.User;
-  userid: number;
+  userid: string;
   cur_user: boolean;
 
   constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
@@ -56,7 +56,7 @@ export default class Account extends MeteorComponent {
     mdIconRegistry.setDefaultFontSetClass('tuxicon');
   }
 
-  getProfile(){
+  public getUserProfile(){
     if(this.cur_user){
       return this.user.profile;
     }
@@ -67,7 +67,7 @@ export default class Account extends MeteorComponent {
 
   ngOnInit(){
     this.userid = this.route.snapshot.params['userid'];
-    this.cur_user = (typeof this.userid === "undefined" || this.userid === null);
+    this.cur_user = typeof this.userid === "undefined" || this.userid === null || this.userid === Meteor.userId();
   }
 
 }
