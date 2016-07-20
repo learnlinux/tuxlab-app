@@ -21,18 +21,12 @@ export class Terminal {
   private _viewContainer : ViewContainerRef;
   private el : ElementRef;
 
-  @Input() username: string;
-  @Input() password: string;
-  @Input() host: string;
-  @Input() domain: string;
-  @Input() path: string = '/wetty/socket.io';
-
   constructor(el : ElementRef, private viewContainer:ViewContainerRef){
     this.el = el;
      this._viewContainer = viewContainer;
   }
 
-  public openTerminal(){
+  public openTerminal(auth : any){
     // slf
     var slf = this;
 
@@ -46,12 +40,12 @@ export class Terminal {
     // Connection Defaults
     var opts = {
       // SSH Connection
-      username : this.username,
-      password: this.password,
-      host: this.host,
+      username : auth.username,
+      password: auth.password,
+      host: auth.host,
       // Socket.io Connection
-      domain : this.domain,
-      path : this.path
+      domain : auth.domain,
+      path : auth.path || '/wetty/socket.io'
     }
 
     // Create Query Object
