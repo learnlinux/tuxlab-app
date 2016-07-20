@@ -4,7 +4,7 @@
 // Angular Imports
   import { Component } from '@angular/core';
 
-// Define LabView Component
+// Define GradeView Component
   @Component({
     selector: 'tuxlab-gradeview',
     templateUrl: '/client/imports/ui/pages/course/gradeview.html' 

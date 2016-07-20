@@ -64,7 +64,7 @@ export class MarkdownView extends MeteorComponent{
       return md.parse(markdown);
     }
     else {
-      return "<h1>Error</h1>";
+      return "";
     }
   }
 }

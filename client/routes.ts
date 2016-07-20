@@ -33,7 +33,6 @@ const routes : RouterConfig = [
   { path: 'login', component: Login },
   { path: 'lab-view', component: TaskView },
   { path: 'lab-create', component: LabCreate },
-  { path: 'course', component: CourseList },
   { path: 'explore', component: Explore },
   { path: 'terms', component: Terms },
   { path: 'privacy', component: Privacy },
