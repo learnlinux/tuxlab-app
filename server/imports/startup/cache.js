@@ -55,9 +55,10 @@ var NodeCache = require('node-cache');
         callback(null,value);
       }
       else{
-        var data = etcd.get('/tuxlab/sessions/'+userid+'/'+labid, function(err, value){
+        callback(null,null);
+ /*       var data = etcd.get('/tuxlab/sessions/'+userid+'/'+labid, function(err, value){
           //TODO @cemersoz from_data method
-        });
+        });*/
       }
     });
   }
@@ -69,11 +70,17 @@ var NodeCache = require('node-cache');
     session - session object to be stored
     callback(success) - returns boolean if success
   */
-  SessionCache.add = function(userid, labid, session, callback){
+  SessionCache.add = function(userid, labid, session){
     async.series([
       function(cb){
         SessionCache._NodeCache.set(userid+'#'+labid, session, function(err, success){
-          cb(err);
+          if(err){
+            TuxLog.log("warn",err);
+            cb(true);
+          }
+          else{
+            cb(false);
+          }
         });
       },
       function(cb){
@@ -82,13 +89,14 @@ var NodeCache = require('node-cache');
             cb(err);
           }
           else{
-            cb();
+            TuxLog.log("warn","AM I HERE");
+            cb(null);
           }
         });
       },
       function(cb){
         //TODO @cemersoz to_data method
-
+         
         var json = null;
         etcd.set('tuxlab/sessions/'+userid+'/'+labid, json, function(err){
           cb(err);
@@ -97,10 +105,8 @@ var NodeCache = require('node-cache');
     ], function(err){
       if(err){
         TuxLog.log('warn',err);
-        callback(false);
       }
       else{
-        callback(true);
       }
     });
   }

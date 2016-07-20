@@ -13,7 +13,7 @@ session.prototype.init = function(user,labId,callback){
   this.env.setUser(user);
   
   // Get Metadata from Database
-  var lab_data = Collections.labs.findOne({_id: labId}, {fields: {'file' : 0}});
+  var lab_data = Collections.labs.findOne({_id: labId}, {fields: {'labfile' : 0}});
   if(!lab_data || lab_data.length < 0){
     callback(new Error("Lab Not Found.", null));
   }
@@ -44,72 +44,87 @@ session.prototype.init = function(user,labId,callback){
           }
         });
 
-
-	SessionCache.add(user,labId,slf,function(err){
-	  if(err){
-	    callback(err,null);
-	  }
-	  else{
-	    slf.start(function(error){
-	      if(err){
-	        callback(err,null);
-	      }
-	      else{
-                console.log("moving to env.getPass");
-	        slf.env.getPass(callback);
-	      }
-	    });
-	  }
-	});
-
-      }
-      else{
-        // Get LabFile from Cache
-        var Lab = value;
-        Lab.taskNo = 0;
-        slf.lab = Lab;
-        SessionCache.add(user,labId,slf,function(err){
+       
+	slf.start(function(err){
 	  if(err){
 	    callback(err,null);
 	  }
 	  else{
             console.log("moving to env.getPass");
-	    slf.env.getPass(callback);
+	    slf.env.getPass(function(err,res){
+              if(err){
+                callback(err,null);
+              }
+              else{
+                slf.lab.pass = res;
+                callback(null,{taskNo: slf.lab.taskNo,sshPass: res});
+              }
+            });
 	  }
+	});
+      }     
+      else{
+        // Get LabFile from Cache
+        var Lab = value;
+        Lab.taskNo = 0;
+        slf.lab = Lab;
+        slf.start(function(err){
+          if(err){
+            callback(err,null);
+          }
+          else{
+            console.log("moving to env.getPass");
+	    slf.env.getPass(function(err,res){
+              if(err){
+                callback(err,null);
+              }
+              else{
+                //slf.lab.pass = res;
+                callback(null,{taskNo: slf.lab.taskNo,sshPass: res});
+              }
+            });
+          }
 	});
       }
     });
   }
 }
-
 /* start: runs setup and moves task header to first task
  * runs callback(err) on err if there is an error,
  * (null) no error
  */
 session.prototype.start = function(callback){
   var slf = this;
-  console.log(this.lab);
   this.lab.taskNo = 1;
   this.lab.setup(this.env)
-    .then(function(){ slf.lab.tasks(this.env); 
-      console.log("done w setup");
-    },function(err){
-      TuxLog.log("warn","error during labfile_setup: "+err);
-      callback("Internal Service Error")
-    })
+    .then(function(){ 
+       // slf.lab.tasks(this.env);
+        callback(null);
+      },
+      function(err){
+        TuxLog.log("warn","error during labfile_setup: "+err);
+        callback("Internal Service Error")
+      }
+    )
+    
     .then(function(){
-      if(!this.lab.currentTask.next){
-      TuxLog.log('labfile_error','labfile tasks not properly chained at start');
-      callback("Internal Service error");
-      }
-      else{
-        this.lab.currentTask = this.lab.currentTask.next;
-        this.lab.currentTask.sFn().then(function(){ callback(null); });
-      }
-    }, function(){
-      TuxLog.log("warn","error setting up task1");
-      callback("Internal Service Error");
-    });
+        if(!this.lab.currentTask.next){
+          TuxLog.log('warn','labfile tasks not properly chained at start');
+          callback("Internal Service error");
+        }
+        else{
+          this.lab.currentTask = this.lab.currentTask.next;
+          console.log("no"+slf.lab.taskNo);
+          this.lab.currentTask.sFn().then(function(){console.log("no"+slf.lab.taskNo)}).then(function(){ 
+            console.log("no"+slf.lab.taskNo);
+            console.log("start");
+            callback(null); });
+        }
+      }, 
+      function(){
+        TuxLog.log("warn","error setting up task1");
+        callback("Internal Service Error");
+      });
 }
 
 /* next: verifies that task is completed

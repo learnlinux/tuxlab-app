@@ -34,3 +34,4 @@
 //import Meteor Methods
 import './imports/lab/index.js'
 import './imports/course/index.js'
+import './imports/lab/labMethods.ts'
