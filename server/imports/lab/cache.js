@@ -69,7 +69,7 @@ var NodeCache = require('node-cache');
     session - session object to be stored
     callback(success) - returns boolean if success
   */
-  SessionCache.add = function(userid, labid, session, callback){
+  SessionCache.add = function(userid, labid, session){
     async.series([
       function(cb){
         SessionCache._NodeCache.set(userid+'#'+labid, session, function(err, success){
@@ -97,10 +97,8 @@ var NodeCache = require('node-cache');
     ], function(err){
       if(err){
         TuxLog.log('warn',err);
-        callback(null);
       }
       else{
-        callback(err);
       }
     });
   }
