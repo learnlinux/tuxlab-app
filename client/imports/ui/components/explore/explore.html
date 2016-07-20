@@ -12,6 +12,9 @@
 						{{ course.course_description.content }}
 					</p>
 					<p>Instructor: {{ course.instructor_name }}</p>
+					<div class="course-link">
+						<a md-button [routerLink]="['/course']">Course Page</a>
+					</div>
 				</md-content>
 			</template>
 		</md-tab>

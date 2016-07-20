@@ -113,6 +113,15 @@
 		}
 
 	}
+	md-data-table {
+		tbody {
+			td {
+				a {
+					color: black;
+				}
+			}
+		}
+	}
 }
 
 .tuxlab-exploreview {
@@ -124,5 +133,13 @@
 			padding: 10px;
 			text-indent: 1em;
 		}
+		.course-link {
+			text-align: right;
+			a {
+				color: black;
+				align-self: right;
+			}	
+		}
+		
 	}
 }
