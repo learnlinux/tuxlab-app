@@ -15,7 +15,7 @@
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MeteorComponent } from 'angular2-meteor';
-	import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs'
+	import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs';
 	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 	import { MdToolbar } from '@angular2-material/toolbar';
 	import { FORM_DIRECTIVES, FORM_PROVIDERS } from '@angular/forms';

@@ -15,6 +15,7 @@
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
   import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
+	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 
 // Toolbar
   import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
@@ -34,7 +35,9 @@
     templateUrl: '/client/imports/ui/components/markdown/markdown.html',
     directives: [MATERIAL_DIRECTIVES,
                  MD_TOOLBAR_DIRECTIVES,
-                 MD_ICON_DIRECTIVES],
+                 MD_ICON_DIRECTIVES,
+                 MD_INPUT_DIRECTIVES
+                 ],
 
     viewProviders: [ MdIconRegistry ],
     providers: [ OVERLAY_PROVIDERS ],
@@ -42,21 +45,26 @@
   })
 
 // Export MarkdownView Class
-export class MarkdownView {
-  data = (new TaskView).labMarkdown;
-  convertedData: String;
+export class MarkdownView extends MeteorComponent{
+  
+  @Input() mdData;
   labName = "Lab Name Here";
   labProgress = "3/10";
 
   constructor(mdIconRegistry: MdIconRegistry) {
+    super();
     // Create Icon Font
     mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
     mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
-    // Parse markdown string
+  }
+  convert(markdown: string) {
     let md = marked.setOptions({});
-    if(typeof this.data !== "undefined") {
-      this.convertedData = md.parse(this.data);
+    if(typeof markdown !== "undefined") {
+      return md.parse(markdown);
+    }
+    else {
+      return "<h1>Error</h1>";
     }
   }
 }

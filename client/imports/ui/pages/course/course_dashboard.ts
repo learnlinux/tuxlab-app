@@ -21,9 +21,9 @@
   	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // LabList and Grades import
-	import { LabList } from "../../components/lablist/lablist.ts";
-  import { GradeList } from "../../components/gradelist/gradelist.ts";
-
+  import { GradeList } from './gradelist.ts';
+  import { LabList } from './lablist.ts';
+  
 // Courses and Course Record Imports
 	import { courses } from "../../../../../collections/courses.ts";
 	import { course_records } from "../../../../../collections/course_records.ts";
