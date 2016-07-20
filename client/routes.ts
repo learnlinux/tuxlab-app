@@ -37,6 +37,7 @@ const routes : RouterConfig = [
   { path: 'explore', component: Explore },
   { path: 'terms', component: Terms },
   { path: 'privacy', component: Privacy },
+  { path: 'account', component: Account },
   { path: 'account/:userid', component: Account },
   { path: '**', component: Err404 }
 ]

@@ -6,11 +6,11 @@
 
 // Define LabView Component
   @Component({
-    selector: 'tuxlab-labview',
+    selector: 'tuxlab-gradeview',
     templateUrl: '/client/imports/ui/pages/course/gradeview.html' 
   })
 
-// Export LabView Class
+// Export GradeView Class
   export class GradeView extends MeteorComponent {
     constructor() {
       super();

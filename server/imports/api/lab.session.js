@@ -1,6 +1,5 @@
 /// <reference path="./lab.exec.d.ts" />
-var _eval = require('eval');
-
+var lab = require('./lab.js');
 var session = function(){
 };
 
@@ -14,17 +13,16 @@ session.prototype.init = function(user,labId,callback){
   this.env.setUser(user);
   
   // Get Metadata from Database
-  var lab = Collections.labs.findOne({_id: labId}, {fields: {'file' : 0}});
-  if(!lab || lab.length < 0){
+  var lab_data = Collections.labs.findOne({_id: labId}, {fields: {'file' : 0}});
+  if(!lab_data || lab_data.length < 0){
     callback(new Error("Lab Not Found.", null));
   }
   else{
-
     // Get Course Metadata
-    var course = Collections.courses.findOne({_id: lab.course_id}, {fields: {'labs' : 1 }}).fetch();
+    var course = Collections.courses.findOne({_id: lab_data.course_id}, {fields: {'labs' : 1 }});
 
     // Format LabFile Cache URL
-    var labfile_id = labId + "#" + lab.updated;
+    var labfile_id = labId + "#" + lab_data.updated;
 
     // Check Cache for LabFile Object
     LabCache.get(labfile_id, function(err, value){
@@ -33,19 +31,21 @@ session.prototype.init = function(user,labId,callback){
       }
       else if(typeof value === "undefined"){
         // Get LabFile from Database
-        var labfile_data = Collections.labs.findOne({_id: lab_id}, {fields : {'field' : 0}}).fetch();
-        slf.lab = _eval(lab.labfile);
-
+        var labfile_data = Collections.labs.findOne({_id: labId}, {fields : {'field' : 0}});
+        console.log(labfile_data.labfile);
+        var Lab = eval(labfile_data.labfile);
+        Lab.taskNo = 0;
+        slf.lab = Lab;
         // Cache LabFile
         LabCache.set(labfile_id, slf.lab, function(err, success){
           if(err || !success){
             TuxLog.log('warn', err);
+            console.log("error adding to cache");
           }
         });
 
-        slf.lab.taskNo = 0;
 
-	SessionCache.add(userid,labid,slf,function(err){
+	SessionCache.add(user,labId,slf,function(err){
 	  if(err){
 	    callback(err,null);
 	  }
@@ -55,6 +55,7 @@ session.prototype.init = function(user,labId,callback){
 	        callback(err,null);
 	      }
 	      else{
+                console.log("moving to env.getPass");
 	        slf.env.getPass(callback);
 	      }
 	    });
@@ -64,14 +65,15 @@ session.prototype.init = function(user,labId,callback){
       }
       else{
         // Get LabFile from Cache
-        slf.lab.taskNo = 0;
-        slf.lab = value;
-        
-        SessionCache.add(userid,labid,slf,function(err){
+        var Lab = value;
+        Lab.taskNo = 0;
+        slf.lab = Lab;
+        SessionCache.add(user,labId,slf,function(err){
 	  if(err){
 	    callback(err,null);
 	  }
 	  else{
+            console.log("moving to env.getPass");
 	    slf.env.getPass(callback);
 	  }
 	});
@@ -86,16 +88,28 @@ session.prototype.init = function(user,labId,callback){
  */
 session.prototype.start = function(callback){
   var slf = this;
+  console.log(this.lab);
   this.lab.taskNo = 1;
   this.lab.setup(this.env)
-    .then(function(){ slf.lab.tasks(this.env); })
-    var tasks = this.lab.tasks(this.env);
-  if(!this.lab.currentTask.next){
-    TuxLog.log('labfile_error','labfile tasks not properly chained at start');
-    callback("Internal error");
-  }
-  this.lab.currentTask = this.lab.currentTask.next;
-  this.currentTask.sFn().then(function(){ callback(null); });
+    .then(function(){ slf.lab.tasks(this.env); 
+      console.log("done w setup");
+    },function(err){
+      TuxLog.log("warn","error during labfile_setup: "+err);
+      callback("Internal Service Error")
+    })
+    .then(function(){
+      if(!this.lab.currentTask.next){
+      TuxLog.log('labfile_error','labfile tasks not properly chained at start');
+      callback("Internal Service error");
+      }
+      else{
+        this.lab.currentTask = this.lab.currentTask.next;
+        this.lab.currentTask.sFn().then(function(){ callback(null); });
+      }
+    }, function(){
+      TuxLog.log("warn","error setting up task1");
+      callback("Internal Service Error");
+    });
 }
 
 /* next: verifies that task is completed
