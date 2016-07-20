@@ -75,7 +75,7 @@ if (Meteor.isServer){
     /*
       Determines if the user is a student in a particular course
     */
-    static isStudentFor(courseid : string, userid? : number){
+    static isStudentFor(courseid : string, userid? : string){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
 
       if(this.isLoggedIn(user) && typeof user.roles.student === "array"){
@@ -94,7 +94,7 @@ if (Meteor.isServer){
     /*
       Determines if the user is an instructor for a particular course
     */
-    static isInstructorFor(courseid : string, userid? : number){
+    static isInstructorFor(courseid : string, userid? : string){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
       return (this.isLoggedIn(user) && typeof user.roles.instructor === "array" && user.roles.instructor.contains(courseid));
     }
@@ -102,7 +102,7 @@ if (Meteor.isServer){
     /*
       Determines if the user is an administrator for a course
     */
-    static isAdministratorFor(courseid : string, userid? : number){
+    static isAdministratorFor(courseid : string, userid? : string){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
       return (this.isLoggedIn(user) && typeof user.roles.administrator === "array" && (user.roles.administrator.contains('global') || user.roles.administrator.contains(courseid)));
     }
@@ -110,7 +110,7 @@ if (Meteor.isServer){
     /*
       Determines if the user is a global administrator
     */
-    static isGlobalAdministrator(userid? : number){
+    static isGlobalAdministrator(userid? : string){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
       return (this.isLoggedIn(user) && typeof user.roles.administrator === "array" && user.roles.administrator.contains('global'));
     }

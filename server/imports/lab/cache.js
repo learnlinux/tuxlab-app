@@ -82,7 +82,7 @@ var NodeCache = require('node-cache');
             cb(err);
           }
           else{
-            cb();
+            cb(null);
           }
         });
       },
@@ -97,10 +97,10 @@ var NodeCache = require('node-cache');
     ], function(err){
       if(err){
         TuxLog.log('warn',err);
-        callback(false);
+        callback(null);
       }
       else{
-        callback(true);
+        callback(err);
       }
     });
   }

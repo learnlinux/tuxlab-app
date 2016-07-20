@@ -1,6 +1,6 @@
 <div class="tuxlab-searchview">
   <div class="md-whiteframe-5dp course-search-list">
-    <h2 id="search-string">Search Results for '{{ searchQuery }}'</h2>
+    <h2 id="search-string">Students enrolled in {{this.course_name}}</h2>
     <div class="selector">
       <button md-button (click)="prevPage()" class="right">
         <md-icon fontIcon="tuxicon-left"></md-icon>
@@ -19,7 +19,6 @@
           <th class="md-text-cell">Course Number</th>
           <th class="md-text-cell">Course Name</th>
           <th>Instructor</th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -27,9 +26,6 @@
           <td class="md-text-cell">{{ course.course_number }}</td>
           <td class="md-text-cell">{{ course.course_name }}</td>
           <td>{{ course.instructor_ids }}</td>
-          <td>
-            <a md-button [routerLink]="['/course']">Course Page</a>
-          </td>
         </tr>
       </tbody>
     </md-data-table>
