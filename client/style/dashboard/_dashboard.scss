@@ -52,34 +52,14 @@
         width: 100%;
       }
     }
-    .card-green {
-      @include card(#4caf50);
-    }
-    .card-purple {
-      @include card(#9c27b0);
-    }
-    .card-blue-grey {
-      @include card(#607d8b);
-    }
-    .card-cyan {
-      @include card(#00bcd4);
-    }
     .card-blue {
-      @include card(#0288d1);
+      @include card(#3498db);
     }
-    .card-amber {
-      @include card(#ffa000);
-    }
-    .card-yellow {
-      @include card(#ffd600);
+    .card-dark-blue {
+      @include card(#2c3e50);
     }
     .card-red {
-      @include card(#d32f2f);
+      @include card(#e74c3c);
     }
-    .card-white {
-      @include card(#ffffff);
-      color: black
-    }
-
   }
 }

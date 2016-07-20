@@ -15,7 +15,7 @@
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
   import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
-	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
+  import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 
 // Toolbar
   import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
@@ -33,11 +33,12 @@
   @Component({
     selector: 'tuxlab-markdown',
     templateUrl: '/client/imports/ui/components/markdown/markdown.html',
-    directives: [MATERIAL_DIRECTIVES,
-                 MD_TOOLBAR_DIRECTIVES,
-                 MD_ICON_DIRECTIVES,
-                 MD_INPUT_DIRECTIVES
-                 ],
+    directives: [
+      MATERIAL_DIRECTIVES,
+      MD_TOOLBAR_DIRECTIVES,
+      MD_ICON_DIRECTIVES,
+      MD_INPUT_DIRECTIVES
+    ],
 
     viewProviders: [ MdIconRegistry ],
     providers: [ OVERLAY_PROVIDERS ],
@@ -46,8 +47,7 @@
 
 // Export MarkdownView Class
 export class MarkdownView extends MeteorComponent{
-  
-  @Input() mdData;
+  @Input() mdData = "";
   labName = "Lab Name Here";
   labProgress = "3/10";
 
@@ -64,7 +64,7 @@ export class MarkdownView extends MeteorComponent{
       return md.parse(markdown);
     }
     else {
-      return "<h1>Error</h1>";
+      return "";
     }
   }
 }
