@@ -55,18 +55,19 @@ export default class TaskView extends MeteorComponent {
   taskName: string = "Task Name Here";
   labProgress: string = "3 / 10";
   tasks: Array<any>;
+  currentTask: number;
   courseId: string;
   @ViewChild(Terminal) term : Terminal;
 
   constructor() {
     super();
     this.tasks = [
-      { id: 1, name: "Task 1", completed: true },
-      { id: 2, name: "Task 2", completed: true },
-      { id: 3, name: "Task 3", completed: true },
-      { id: 4, name: "Task 4", completed: false },
-      { id: 5, name: "Task 5", completed: true },
-      { id: 6, name: "Task 6", completed: false },
+      { id: 1, name: "Task 1", completed: true, md: "# Task 1" },
+      { id: 2, name: "Task 2", completed: true, md: "# Task 2" },
+      { id: 3, name: "Task 3", completed: true, md: "# Task 3" },
+      { id: 4, name: "Task 4", completed: false, md: "# Task 4" },
+      { id: 5, name: "Task 5", completed: true, md: "# Task 5" },
+      { id: 6, name: "Task 6", completed: false, md: "# Task 6" },
     ];
   }
 
@@ -83,4 +84,10 @@ export default class TaskView extends MeteorComponent {
       console.log("fired",err,res);
     });
   }
+  
+  toTask(task) {
+    this.labMarkdown = task.md;
+    this.currentTask = task.id;
+  }
+  
 }

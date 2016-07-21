@@ -7,9 +7,10 @@
     <md-sidenav-layout>
       <md-sidenav #left [opened]="false" layout-padding>
         <a md-button [routerLink]="['/course' + courseId]">Course Page</a>
-        <a md-button *ngFor="let task of tasks">
+        <a md-button *ngFor="let task of tasks" (click)="toTask(task)">
           {{ task.name }}
           <md-icon fontIcon="tuxicon-tick" *ngIf="task.completed == true"></md-icon>
+          <md-icon fontIcon="tuxicon-progress" *ngIf="task.id == currentTask" class="progress"></md-icon>
         </a>
       </md-sidenav>
       
@@ -55,7 +56,7 @@
   
   <!--Terminal View-->
   <div class="tuxlab-taskview-terminal">
-		<terminal ></terminal>
+		<terminal></terminal>
   </div>
   
 </div>

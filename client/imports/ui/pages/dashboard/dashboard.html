@@ -7,7 +7,7 @@
       </div>
       <md-content>
         <md-list>
-          <a *ngFor="let course of courses" [routerLink]="['/course/']">
+          <a *ngFor="let course of courses" [routerLink]="['/course/' + course._id]">
           <md-list-item class="course-link">
             <p>{{ course.course_name }}</p>
             <span>{{ course.course_number }}</span>
