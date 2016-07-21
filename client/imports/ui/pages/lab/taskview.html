@@ -1,21 +1,62 @@
 <div class="tuxlab-taskview">
+  
   <!--Markdown View-->
   <div class="tuxlab-taskview-step">
-    <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
-    <div class="markdown-check-button">
-      <md-dialog #alert>
-        <md-dialog-title>Just a Second</md-dialog-title>
-        <p>Checking Task...</p>
-        <md-dialog-actions ok="Fine"></md-dialog-actions>
-      </md-dialog>
-      <button md-raised-button (click)="alert.show()">
-        Check
-        <md-icon fontIcon="tuxicon-tick"></md-icon>
-      </button>
-    </div>
+    
+  
+    <md-sidenav-layout>
+      <md-sidenav #left [opened]="false" layout-padding>
+        <a md-button>Task 1</a>
+        <a md-button>Task 2</a>
+        <a md-button>Task 3</a>
+        <a md-button>Task 4</a>
+        <a md-button>Task 5</a>
+      </md-sidenav>
+      
+      <md-content layout-padding>
+        
+        
+        <!-- Title Bar -->
+        <div class="markdown-toolbar">
+          <md-toolbar>
+            <div class="wrapper">
+              <!-- Navigation -->
+              <div class="markdown-toolbar-nav">
+                <button md-button class="markdown-back-link" (click)="left.toggle()">
+                  <md-icon fontIcon="tuxicon-left"></md-icon>
+                </button>
+              </div>
+              <p class="text-center markdown-task-name">{{ taskName }}</p>
+              <div>
+                <p>{{ labProgress }}</p>
+              </div>
+            </div>
+          </md-toolbar>
+        </div>
+    
+        <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
+        <div class="markdown-check-button">
+          <md-dialog #alert>
+            <md-dialog-title>Just a Second</md-dialog-title>
+            <p>Checking Task...</p>
+            <md-dialog-actions ok="Fine"></md-dialog-actions>
+          </md-dialog>
+          <button md-raised-button (click)="alert.show()">
+            Check
+            <md-icon fontIcon="tuxicon-tick"></md-icon>
+          </button>
+        </div>
+    
+          
+      </md-content>
+    </md-sidenav-layout>
+     
   </div>
+  
+  
   <!--Terminal View-->
   <div class="tuxlab-taskview-terminal">
 		<terminal ></terminal>
   </div>
+  
 </div>

@@ -148,15 +148,10 @@ courses.allow({
       // Publish All Courses TODO: add pagination
       Meteor.publish('explore-courses', function(){
         this.autorun(function(computation) {
-          if(typeof this.userId !== "undefined") {
-            let user = (Meteor.users.findOne(this.userId));
-            if(typeof user !== "undefined") {
-              return courses.find({
-                hidden: false,
-                featured: true
-              });
-            }
-          }
+          return courses.find({
+            hidden: false,
+            featured: true
+          });  
         });
       });
 

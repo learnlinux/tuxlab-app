@@ -16,14 +16,13 @@
   import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
   import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
+  import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
 
 // Toolbar
   import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
 
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-
-  import TaskView from '../../pages/lab/taskview.ts';
 
 // Markdown Imports
 /// <reference path="./marked.d.ts" />
@@ -37,7 +36,8 @@
       MATERIAL_DIRECTIVES,
       MD_TOOLBAR_DIRECTIVES,
       MD_ICON_DIRECTIVES,
-      MD_INPUT_DIRECTIVES
+      MD_INPUT_DIRECTIVES,
+      MD_SIDENAV_DIRECTIVES
     ],
 
     viewProviders: [ MdIconRegistry ],
@@ -48,8 +48,6 @@
 // Export MarkdownView Class
 export class MarkdownView extends MeteorComponent{
   @Input() mdData = "";
-  labName = "Lab Name Here";
-  labProgress = "3/10";
 
   constructor(mdIconRegistry: MdIconRegistry) {
     super();

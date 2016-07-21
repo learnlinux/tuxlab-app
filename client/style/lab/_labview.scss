@@ -44,7 +44,67 @@
   **/
   .tuxlab-taskview-step{
     width: 50%;
+    md-sidenav-layout {
+      height: 100vh;
+    }
+    md-content {
+      padding: 0;
+      background-color: #e5e6e6;
+    }
+    md-sidenav {
+      width: 260px;
+      padding: 0;
+      a {
+        color: black;
+        display: block;
+        width: 260px;
+        height: 50px;
+        margin: 0;
+        line-height: 50px;
+      }
+    }
+    md-sidenav-layout.md-sidenav-opened {
+      width: 50%;
+    }
+    
+    // Sub-toolbar
+    .markdown-toolbar{
+      md-toolbar{
+        min-height:inherit;
+        background-color: #f0f0f0;
+        .wrapper{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          align-items: center;
 
+          width:100%;
+          max-width:1260px;
+          margin: 0 auto;
+
+          div{
+            height: 100%;
+          }
+
+          .markdown-task-name {
+            font-size: 24px;
+          }
+
+          .markdown-toolbar-nav{
+            [md-button]{
+              font-weight: 300;
+            }
+            a.markdown-back-link {
+              text-decoration: none;
+              color: black;
+            }
+          }
+        }
+      }
+    }
+    
+    
     .tuxlab-markdown {
       width: 100%;
       margin: 0 auto;
@@ -57,43 +117,6 @@
         text-align: center;
         margin-left: auto;
         margin-right: auto;
-      }
-
-      // Sub-toolbar
-      .markdown-toolbar{
-        md-toolbar{
-          min-height:inherit;
-          background-color: #f0f0f0;
-          .wrapper{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            align-items: center;
-
-            width:100%;
-            max-width:1260px;
-            margin: 0 auto;
-
-            div{
-              height: 100%;
-            }
-
-            .markdown-task-name {
-              font-size: 24px;
-            }
-
-            .markdown-toolbar-nav{
-              [md-button]{
-                font-weight: 300;
-              }
-              a.markdown-back-link {
-                text-decoration: none;
-                color: black;
-              }
-            }
-          }
-        }
       }
 
       //Markdown Content
@@ -110,7 +133,6 @@
           }
         }
       }
-      
     }
     
     // Check Button

@@ -13,7 +13,8 @@
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
-
+  import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
+  import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
 
 // Terminal and Markdown Imports
@@ -35,7 +36,9 @@
     Terminal,
     MD_ICON_DIRECTIVES,
     MATERIAL_DIRECTIVES,
-    MD_INPUT_DIRECTIVES
+    MD_INPUT_DIRECTIVES,
+    MD_SIDENAV_DIRECTIVES,
+    MD_TOOLBAR_DIRECTIVES
   ],
   viewProviders: [ MdIconRegistry ],
   providers: [ OVERLAY_PROVIDERS, MATERIAL_PROVIDERS ],
@@ -46,10 +49,10 @@
 export default class TaskView extends MeteorComponent {
   user: Meteor.User;
   public auth : any;
-
+  labMarkdown: string;
+  taskName: string = "Task Name Here";
+  labProgress: string = "3 / 10";
   @ViewChild(Terminal) term : Terminal;
-  
-  labMarkdown = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
 
   constructor() {
     super();
@@ -58,8 +61,7 @@ export default class TaskView extends MeteorComponent {
   ngAfterViewInit(){  
     var slf = this;
     Meteor.call('prepareLab',"1","1", function(err,res){
-      slf.labMarkdown = "# Sander \n ## are you sure this will work?";
-      console.log(slf.labMarkdown);
+      slf.labMarkdown = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
       slf.auth = {
         username: Meteor.user().profile.nickname,
         password: res.sshInfo.pass,
