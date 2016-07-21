@@ -1,21 +1,61 @@
 <div class="tuxlab-taskview">
+  
   <!--Markdown View-->
   <div class="tuxlab-taskview-step">
-    <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
-    <div class="markdown-check-button">
-      <md-dialog #alert>
-        <md-dialog-title>Just a Second</md-dialog-title>
-        <p>Checking Task...</p>
-        <md-dialog-actions ok="Fine"></md-dialog-actions>
-      </md-dialog>
-      <button md-raised-button (click)="alert.show()">
-        Check
-        <md-icon fontIcon="tuxicon-tick"></md-icon>
-      </button>
-    </div>
+    
+  
+    <md-sidenav-layout>
+      <md-sidenav #left [opened]="false" layout-padding>
+        <a md-button [routerLink]="['/course' + courseId]">Course Page</a>
+        <a md-button *ngFor="let task of tasks">
+          {{ task.name }}
+          <md-icon fontIcon="tuxicon-tick" *ngIf="task.completed == true"></md-icon>
+        </a>
+      </md-sidenav>
+      
+      <md-content layout-padding>
+        
+        
+        <!-- Title Bar -->
+        <div class="markdown-toolbar">
+          <md-toolbar>
+            <div class="wrapper">
+              <!-- Navigation -->
+              <div class="markdown-toolbar-nav">
+                <a class="markdown-back-link" (click)="left.toggle()">
+                  <md-icon fontIcon="tuxicon-lines"></md-icon>
+                </a>
+              </div>
+              <p class="text-center markdown-task-name">{{ taskName }}</p>
+              <div>
+                <p>{{ labProgress }}</p>
+              </div>
+            </div>
+          </md-toolbar>
+        </div>
+    
+        <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
+        <div class="markdown-check-button">
+          <md-dialog #alert>
+            <md-dialog-title>Just a Second</md-dialog-title>
+            <p>Checking Task...</p>
+            <md-dialog-actions ok="Fine"></md-dialog-actions>
+          </md-dialog>
+          <button md-raised-button (click)="alert.show()">
+            Check
+            <md-icon fontIcon="tuxicon-tick"></md-icon>
+          </button>
+        </div>
+    
+          
+      </md-content>
+    </md-sidenav-layout>
+     
   </div>
+  
   <!--Terminal View-->
   <div class="tuxlab-taskview-terminal">
 		<terminal ></terminal>
   </div>
+  
 </div>

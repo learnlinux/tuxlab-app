@@ -28,7 +28,7 @@
           <td class="md-text-cell">{{ course.course_name }}</td>
           <td>{{ course.instructor_ids }}</td>
           <td>
-            <a md-button [routerLink]="['/course']">Course Page</a>
+            <a md-button [routerLink]="['/course/' + course._id]">Enroll</a>
           </td>
         </tr>
       </tbody>
