@@ -11,6 +11,7 @@
 	import { HTTP_PROVIDERS } from '@angular/http';
 	import { InjectUser } from 'angular2-meteor-accounts-ui';
 	import { ROUTER_DIRECTIVES } from '@angular/router';
+	import { ActivatedRoute } from '@angular/router';
 
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -23,6 +24,8 @@
 // Courses and Course Record Imports
 	import { courses } from "../../../../../collections/courses.ts";
 	import { course_records } from "../../../../../collections/course_records.ts";
+
+declare var Collections: any;
 
 // Define CourseView Component
 	@Component({
@@ -40,10 +43,16 @@
 
 // Export CourseView Class
   export default class CourseView extends MeteorComponent {
-    constructor(mdIconRegistry: MdIconRegistry) {
+		courseId: string;
+    constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
       super();
       // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
     }
+		
+		ngOnInit() {
+			this.courseId = this.route.snapshot.params['courseid'];
+		}
+		
   }

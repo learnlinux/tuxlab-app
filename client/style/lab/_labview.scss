@@ -66,6 +66,12 @@
           .tuxicon-tick:before {
             font-size: 36px
           }
+          .tuxicon-progress:before {
+            font-size: 36px;
+          }
+          md-icon.progress {
+            color: #afafaf;
+          }
         } 
       }
     }
