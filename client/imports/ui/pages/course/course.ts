@@ -43,7 +43,7 @@
 
 // Export CourseView Class
   export default class CourseView extends MeteorComponent {
-		courseId: string;
+    courseId: string;
     constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
       super();
       // Create Icon Font
