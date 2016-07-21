@@ -46,22 +46,32 @@
     width: 50%;
     md-sidenav-layout {
       height: 100vh;
+      md-sidenav {
+        width: 260px;
+        padding: 0;
+        a {
+          color: black;
+          display: block;
+          width: 260px;
+          height: 50px;
+          margin: 0;
+          line-height: 50px;
+          text-align: left;
+          padding-left: 15px;
+          padding-right: 15px;
+          md-icon {
+            float: right;
+            color: #64dd17;
+          }
+          .tuxicon-tick:before {
+            font-size: 36px
+          }
+        } 
+      }
     }
     md-content {
       padding: 0;
       background-color: #e5e6e6;
-    }
-    md-sidenav {
-      width: 260px;
-      padding: 0;
-      a {
-        color: black;
-        display: block;
-        width: 260px;
-        height: 50px;
-        margin: 0;
-        line-height: 50px;
-      }
     }
     md-sidenav-layout.md-sidenav-opened {
       width: 50%;

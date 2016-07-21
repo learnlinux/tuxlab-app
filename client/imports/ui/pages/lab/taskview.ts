@@ -52,10 +52,19 @@ export default class TaskView extends MeteorComponent {
   labMarkdown: string;
   taskName: string = "Task Name Here";
   labProgress: string = "3 / 10";
+  tasks: Array<any>;
   @ViewChild(Terminal) term : Terminal;
 
   constructor() {
     super();
+    this.tasks = [
+      { id: 1, name: "Task 1", completed: true },
+      { id: 2, name: "Task 2", completed: true },
+      { id: 3, name: "Task 3", completed: true },
+      { id: 4, name: "Task 4", completed: false },
+      { id: 5, name: "Task 5", completed: true },
+      { id: 6, name: "Task 6", completed: false },
+    ];
   }
 
   ngAfterViewInit(){  
