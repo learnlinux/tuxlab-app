@@ -96,6 +96,13 @@
           div{
             height: 100%;
           }
+          
+          .tuxicon-lines:before {
+            font-size: 48px;
+          }
+          md-icon {
+            line-height: 12px;
+          }
 
           .markdown-task-name {
             font-size: 24px;
@@ -108,6 +115,7 @@
             a.markdown-back-link {
               text-decoration: none;
               color: black;
+              cursor: pointer;
             }
           }
         }

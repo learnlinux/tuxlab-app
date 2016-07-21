@@ -5,7 +5,8 @@
     
   
     <md-sidenav-layout>
-      <md-sidenav #left [opened]="true" layout-padding>
+      <md-sidenav #left [opened]="false" layout-padding>
+        <a md-button [routerLink]="['/course' + courseId]">Course Page</a>
         <a md-button *ngFor="let task of tasks">
           {{ task.name }}
           <md-icon fontIcon="tuxicon-tick" *ngIf="task.completed == true"></md-icon>
@@ -21,9 +22,9 @@
             <div class="wrapper">
               <!-- Navigation -->
               <div class="markdown-toolbar-nav">
-                <button md-button class="markdown-back-link" (click)="left.toggle()">
-                  Tasks
-                </button>
+                <a class="markdown-back-link" (click)="left.toggle()">
+                  <md-icon fontIcon="tuxicon-lines"></md-icon>
+                </a>
               </div>
               <p class="text-center markdown-task-name">{{ taskName }}</p>
               <div>

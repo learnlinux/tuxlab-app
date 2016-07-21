@@ -7,6 +7,7 @@
 // Angular Imports
   import { ViewChild, Component, ViewEncapsulation, provide, Input } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
+  import { ROUTER_DIRECTIVES } from '@angular/router';
 
 // Angular Material Imports
   import { MeteorComponent } from 'angular2-meteor';
@@ -38,7 +39,8 @@
     MATERIAL_DIRECTIVES,
     MD_INPUT_DIRECTIVES,
     MD_SIDENAV_DIRECTIVES,
-    MD_TOOLBAR_DIRECTIVES
+    MD_TOOLBAR_DIRECTIVES,
+    ROUTER_DIRECTIVES
   ],
   viewProviders: [ MdIconRegistry ],
   providers: [ OVERLAY_PROVIDERS, MATERIAL_PROVIDERS ],
@@ -53,6 +55,7 @@ export default class TaskView extends MeteorComponent {
   taskName: string = "Task Name Here";
   labProgress: string = "3 / 10";
   tasks: Array<any>;
+  courseId: string;
   @ViewChild(Terminal) term : Terminal;
 
   constructor() {
