@@ -1,24 +1,6 @@
 <div class="tuxlab-markdown">
-	<!-- Toolbar -->
-	<div class="markdown-toolbar">
-		<md-toolbar>
-			<div class="wrapper">
-				<!-- Navigation -->
-				<div class="markdown-toolbar-nav">
-					<a class="markdown-back-link">
-						<md-icon fontIcon="tuxicon-left"></md-icon>
-					</a>
-				</div>
-				<p class="text-center markdown-task-name">{{ labName }}</p>
-				<div>
-					<p>{{ labProgress }}</p>
-				</div>
-			</div>
-		</md-toolbar>
-	</div>
-
-	<!--Markdown-->
-	<div class="markdown-content">
-		<div id="task-markdown" [innerHTML]="convertedData">Task loading...</div>
-	</div>
+    <!-- Task Markdown -->
+    <div class="markdown-content">
+      <div id="task-markdown" [innerHTML]="convert(mdData)"></div>
+    </div>    
 </div>

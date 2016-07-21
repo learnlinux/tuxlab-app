@@ -37,6 +37,16 @@
         padding:10px;
       }
     }
+    
+  }
+  
+  @media screen and (max-width: 800px) {
+    .tuxlab-taskview-terminal {
+      width: 100%;
+    }
+    .tuxlab-taskview-step {
+      display: none;
+    }
   }
 
   /**
@@ -44,7 +54,91 @@
   **/
   .tuxlab-taskview-step{
     width: 50%;
+    md-sidenav-layout {
+      height: 100vh;
+      md-sidenav {
+        width: 260px;
+        padding: 0;
+        a {
+          color: black;
+          display: block;
+          width: 260px;
+          height: 50px;
+          margin: 0;
+          line-height: 50px;
+          text-align: left;
+          padding-left: 15px;
+          padding-right: 15px;
+          md-icon {
+            float: right;
+            color: #64dd17;
+          }
+          .tuxicon-tick:before {
+            font-size: 36px
+          }
+          .tuxicon-progress:before {
+            font-size: 36px;
+          }
+          md-icon.progress {
+            color: #afafaf;
+          }
+        } 
+      }
+    }
+    md-content {
+      padding: 0;
+      background-color: #e5e6e6;
+    }
+    md-sidenav-layout.md-sidenav-opened {
+      width: 50%;
+    }
+    
+    // Sub-toolbar
+    .markdown-toolbar{
+      md-toolbar{
+        min-height:inherit;
+        background-color: #f0f0f0;
+        .wrapper{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          align-items: center;
 
+          width:100%;
+          max-width:1260px;
+          margin: 0 auto;
+
+          div{
+            height: 100%;
+          }
+          
+          .tuxicon-lines:before {
+            font-size: 48px;
+          }
+          md-icon {
+            line-height: 12px;
+          }
+
+          .markdown-task-name {
+            font-size: 24px;
+          }
+
+          .markdown-toolbar-nav{
+            [md-button]{
+              font-weight: 300;
+            }
+            a.markdown-back-link {
+              text-decoration: none;
+              color: black;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+    
+    
     .tuxlab-markdown {
       width: 100%;
       margin: 0 auto;
@@ -57,43 +151,6 @@
         text-align: center;
         margin-left: auto;
         margin-right: auto;
-      }
-
-      // Sub-toolbar
-      .markdown-toolbar{
-        md-toolbar{
-          min-height:inherit;
-          background-color: #f0f0f0;
-          .wrapper{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            align-items: center;
-
-            width:100%;
-            max-width:1260px;
-            margin: 0 auto;
-
-            div{
-              height: 100%;
-            }
-
-            .markdown-task-name {
-              font-size: 24px;
-            }
-
-            .markdown-toolbar-nav{
-              [md-button]{
-                font-weight: 300;
-              }
-              a.markdown-back-link {
-                text-decoration: none;
-                color: black;
-              }
-            }
-          }
-        }
       }
 
       //Markdown Content
@@ -110,7 +167,6 @@
           }
         }
       }
-      
     }
     
     // Check Button
