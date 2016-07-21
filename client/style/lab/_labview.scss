@@ -37,6 +37,16 @@
         padding:10px;
       }
     }
+    
+  }
+  
+  @media screen and (max-width: 800px) {
+    .tuxlab-taskview-terminal {
+      width: 100%;
+    }
+    .tuxlab-taskview-step {
+      display: none;
+    }
   }
 
   /**
