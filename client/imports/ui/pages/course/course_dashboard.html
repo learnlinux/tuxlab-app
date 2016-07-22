@@ -1,6 +1,5 @@
 <div class="tuxlab-course-dashboard">
   <!--Course Description Card-->
-  <a name="description"></a>
   <md-card>
     <md-card-title>
       <md-card-title-text>
@@ -14,15 +13,17 @@
       <a md-button href="https://www.cs.cmu.edu/~15131/f15/">Course Website</a>
     </md-card-actions>
   </md-card>
-  <!--Responsive Section for Lectures and Assignments-->
+  
+  <!-- Responsive Section for Grades and Assignments -->
   <div layout="row" layout-xs="column">
+    
+    <!-- Grade List -->
     <div flex>
-      <!--Grade Card-->
       <tuxlab-gradelist></tuxlab-gradelist>
     </div>
+    
+    <!-- Announcements -->
     <div flex>
-      <!--Assignments Card-->
-      <a name="assignments"></a>
       <md-card>
         <md-card-title>
           <md-card-title-text>
@@ -55,7 +56,25 @@
         </md-card-content>
       </md-card>
     </div>
+    
   </div>
+  
   <!--Lab List Card-->
   <tuxlab-lablist></tuxlab-lablist>
+  
+  <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Edit Course</span>  
+      </md-card-title-text>
+    </md-card-title>  
+    <md-card-content>
+      <form>
+        <input [(ngModel)]="courseName" name="course-name"/>
+        <br>
+        <textarea [(ngModel)]="courseDescription" name="course-description"></textarea>
+      </form>  
+    </md-card-content>
+  </md-card>
+  
 </div>
