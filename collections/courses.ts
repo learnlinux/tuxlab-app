@@ -185,11 +185,15 @@ courses.allow({
       // Publish All Courses TODO: add pagination
       Meteor.publish('explore-courses', function(){
         this.autorun(function(computation) {
-          return courses.find({
-            "permissions.meta": true,
-            "featured": true
-          }, {
-          }); 
+          if (Roles.isGlobalAdministrator(this.userId)) {
+            return courses.find();
+          }
+          else {
+            return courses.find({
+              "permissions.meta": true,
+              "featured": true
+            });  
+          }
         });
       });
 
