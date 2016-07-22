@@ -2,7 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 
 import { Roles } from './users.ts';
-import { courses } from './courses';
+import { courses, Enroll } from './courses';
 import { labs } from './labs';
 
 export const course_records = new Mongo.Collection('course_records');
@@ -36,7 +36,6 @@ course_records.allow({
   SCHEMA
 **/
 declare var SimpleSchema: any;
-
 
 if(Meteor.isServer) {
   Meteor.startup(function() {
@@ -123,7 +122,7 @@ if(Meteor.isServer) {
             let course_ids = (<any>user).roles.instructor;
 
             // Search Query
-            return course_records.find({
+            return <any>course_records.find({
               $or: [
                 {
                   user_id: this.userId
@@ -142,21 +141,43 @@ if(Meteor.isServer) {
             }); //return course_records
           } // if (user != undefined)
         } // if (userId != undefined)
+        else{
+          return <any>[];
+        }
       }); // autorun
     }); // Meteor.publish
   }); //Meteor.startup
 } //Meteor.isServer
 
+
+
 /***
-   USER PROFILE PUBLICATION
+   METEOR METHODS
 **/
 Meteor.methods({
+
+  // Allows Instructor to retrieve user course record.
   'getUserCourseRecord': function(cid: string, uid : string){
     if(Roles.isInstructorFor(cid, uid)){
        return course_records.findOne({user_id : uid, course_id: cid});
     }
     else{
        throw new Meteor.Error("Auth", "Must be admin to access user profile.");
+    }
+  },
+  // Allows a user to enroll in a course
+  'createUserCourseRecord': function(cid : string, uid : string){
+    if(!Enroll.isEnrollable(cid, uid)){
+      throw new Meteor.Error("unenrollable", "you cannot enroll in this course.");
+    }
+    else{
+      course_records.insert({
+        "user_id" : uid,
+        "course_id" : cid,
+        "labs" : []
+      }, function(err){
+        throw new Meteor.Error("Internal Error", "An error occured in trying to enroll you for this course.");
+      });
     }
   }
 });

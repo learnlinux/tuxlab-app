@@ -1,5 +1,12 @@
-import { RouterConfig } from '@angular/router';
+
+// Angular
+import { RouterConfig, CanActivate } from '@angular/router';
+
+// Course Routing
 import CourseView from './course.ts';
+import { CourseEnroll } from './course.enroll.ts';
+
+// Pages
 import { GradeList } from './gradelist.ts';
 import { LabList } from './lablist.ts';
 import { CourseDashboard } from './course_dashboard.ts';
@@ -8,19 +15,19 @@ import { GradeView } from './gradeview.ts';
 
 export const courseRoutes: RouterConfig = [
   {
-    path: 'course',
+    path: 'course/:courseid',
     component: CourseView,
+    canActivate: [ CourseEnroll ],
     children: [
-      { path: ':courseid', component: CourseDashboard },
-      { path: ':courseid/grades', component: GradeList },
-      { path: ':courseid/labs', component: LabList },
-      { path: ':courseid/labs/lab', component: LabView },
-      { path: ':courseid/grades/grade', component: GradeView }
-  //  { path: '/:courseid', as: 'CourseView', component: CourseView },
-  //  { path: '/:courseid/users', as: 'UserList', component: UserList },
-  //  { path: '/:courseid/user/:userid', as: 'UserView', component: UserView },
-  //  { path: '/:courseid/labs', as: 'LabList', component: LabList },
-  //  { path: '/:courseid/lab/:labid', as: 'LabView', component: LabView },
+      { path: '', component: CourseDashboard },
+      { path: 'grades', component: GradeList },
+      { path: 'labs', component: LabList },
+      { path: 'labs/lab', component: LabView },
+      { path: 'grades/grade', component: GradeView }
+  //  { path: 'users', as: 'UserList', component: UserList },
+  //  { path: 'user/:userid', as: 'UserView', component: UserView },
+  //  { path: 'labs', as: 'LabList', component: LabList },
+  //  { path: 'lab/:labid', as: 'LabView', component: LabView },
     ]
   }
 ];

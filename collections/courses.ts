@@ -37,6 +37,7 @@ courses.allow({
   var _ = require('underscore');
   if (Meteor.isServer){
     Meteor.startup(function(){
+
       var descriptionSchema = new SimpleSchema({
         content: {
           type: String,
@@ -47,6 +48,24 @@ courses.allow({
           defaultValue: ""
         }
       });
+
+      var permissionsSchema = new SimpleSchema({
+        meta: {
+          type: Boolean,
+          defaultValue: true
+        },
+        content: {
+          type: String,
+          allowedValues: ['any', 'students', 'none'],
+          defaultValue: 'auth'
+        },
+        enroll : {
+          type: String,
+          allowedValues: ['any', 'none'],
+          defaultValue: 'none'
+        }
+      });
+
       var courseSchema = new SimpleSchema({
         course_name: {
           type: String
@@ -83,17 +102,12 @@ courses.allow({
           type: descriptionSchema,
           optional: true
         },
-        hidden: {
-          type: Boolean,
-          defaultValue: true
-        },
-        featured: {
+        featured:{
           type: Boolean,
           defaultValue: false
         },
-        disabled: {
-          type: Boolean,
-          defaultValue: false
+        permissions:{
+          type: permissionsSchema,
         },
         labs: {
           type: [String],
@@ -111,6 +125,30 @@ courses.allow({
       });
       (<any>courses).attachSchema(courseSchema);
     });
+  }
+
+/***
+  INTERFACE
+**/
+
+  /** Enrollable **/
+  export class Enroll{
+
+    static isEnrollable(course_id : string, user_id? : string){
+      var course : any = courses.findOne(course_id);
+
+      if (typeof course === "undefined" || course === null){ // Course not Found
+        return false;
+      } else if(course.permissions.enroll === "none"){ // Course disabled
+        return false;
+      } else if (course.permissions.enroll === "any"){ // Course is enrollable
+        return true;
+      } else {
+        return false;
+      }
+
+    }
+
   }
 
 /**
