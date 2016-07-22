@@ -5,19 +5,18 @@
   import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { Component, ViewEncapsulation, provide } from '@angular/core';
+  import { Component, ViewEncapsulation, provide, OnInit } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
   import { APP_BASE_HREF, FORM_DIRECTIVES } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
-  import { ROUTER_DIRECTIVES } from '@angular/router';
+  import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
 // Angular Material Imports
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
   import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
   import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
-
 
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
@@ -26,9 +25,7 @@
   import { GradeList } from './gradelist.ts';
   import { LabList } from './lablist.ts';
 
-// Courses and Course Record Imports
-  import { courses } from "../../../../../collections/courses.ts";
-  import { course_records } from "../../../../../collections/course_records.ts";
+declare var Collections: any;
 
 // Define CourseDashboard Component
   @Component({
@@ -51,22 +48,25 @@
 // Export CourseDashboard Class
   export class CourseDashboard extends MeteorComponent {
     course;
-    courseNumber: String = '15-131'; // TODO: Get from URL
-    courseDescription: String = "Course Description Not Found";
-    courseName: String = "Course Name Not Found";
+    courseId: string;
+    courseDescription: String = "";
+    courseName: String = "";
 
-    constructor(mdIconRegistry: MdIconRegistry) {
+    constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
       super();
       // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
       // Subscribe to courses database and set current course
-      this.subscribe('user-courses', this.courseNumber, () => {
-        this.course = courses.findOne({ course_number: this.courseNumber });
+      this.subscribe('user-courses', this.courseId, () => {
+        this.course = Collections.courses.findOne({ _id: this.courseId });
         if (typeof this.course !== "undefined") {
           this.courseName = this.course.course_name;
           this.courseDescription = this.course.course_description.content;
         }
       }, true);
+    }
+    ngOnInit() {
+      this.courseId = <string>((<any>(this.route.snapshot.params)).courseid);
     }
   }
