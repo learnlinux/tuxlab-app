@@ -108,7 +108,7 @@ export default class TaskView extends MeteorComponent {
   toTask(task) {
     this.labMarkdown = task.md;
     this.currentTask = task.id;
-		this.currentCompleted = task.completed;
+    this.currentCompleted = task.completed;
   }
   
 }
