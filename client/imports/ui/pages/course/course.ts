@@ -48,6 +48,6 @@
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
     }
     ngOnInit() {
-      this.courseId = (<any>(this.route.snapshot.params)).courseid;
+      this.courseId = <string>((<any>(this.route.snapshot.params)).courseid);
     }
   }

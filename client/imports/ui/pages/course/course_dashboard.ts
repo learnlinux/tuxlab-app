@@ -25,9 +25,7 @@
   import { GradeList } from './gradelist.ts';
   import { LabList } from './lablist.ts';
 
-// Courses and Course Record Imports
-  import { courses } from "../../../../../collections/courses.ts";
-  import { course_records } from "../../../../../collections/course_records.ts";
+declare var Collections: any;
 
 // Define CourseDashboard Component
   @Component({
@@ -61,7 +59,7 @@
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
       // Subscribe to courses database and set current course
       this.subscribe('user-courses', this.courseId, () => {
-        this.course = courses.findOne({ _id: this.courseId });
+        this.course = Collections.courses.findOne({ _id: this.courseId });
         if (typeof this.course !== "undefined") {
           this.courseName = this.course.course_name;
           this.courseDescription = this.course.course_description.content;
@@ -69,6 +67,6 @@
       }, true);
     }
     ngOnInit() {
-      this.courseId = (<any>(this.route.snapshot.params)).courseid;
+      this.courseId = <string>((<any>(this.route.snapshot.params)).courseid);
     }
   }
