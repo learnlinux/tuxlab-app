@@ -27,7 +27,7 @@
 
 // Routes
     import { ROUTER_DIRECTIVES, RouterConfig, Router } from '@angular/router';
-    import { ROUTE_PROVIDERS } from './routes.ts'
+    import { ROUTE_PROVIDERS } from './imports/ui/routes/routes.ts'
 
 // Define TuxLab Component
 @Component({

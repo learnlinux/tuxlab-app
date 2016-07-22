@@ -167,7 +167,7 @@ courses.allow({
             let user = Meteor.users.findOne(this.userId);
             if (typeof user !== "undefined") {
 
-              // Get course ids of courses that the student is enroled in
+              // Get course ids of courses that the student is enrolled in
               let studentCourseIds = (_.unzip((<any>user).roles.student))[0];
               if (typeof studentCourseIds !== "undefined") {
 
