@@ -5,6 +5,7 @@
   import 'zone.js/dist/zone';
 
 // Angular Imports
+
   import { Component, ViewEncapsulation, provide, OnInit } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
   import { APP_BASE_HREF } from '@angular/common';
