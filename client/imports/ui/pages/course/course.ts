@@ -5,13 +5,12 @@
   import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { Component, ViewEncapsulation, provide } from '@angular/core';
+  import { Component, ViewEncapsulation, provide, OnInit } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
   import { APP_BASE_HREF } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
-  import { ROUTER_DIRECTIVES } from '@angular/router';
-  import { ActivatedRoute } from '@angular/router';
+  import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
 // Angular Material Imports
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -20,10 +19,6 @@
 
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-
-// Courses and Course Record Imports
-  import { courses } from "../../../../../collections/courses.ts";
-  import { course_records } from "../../../../../collections/course_records.ts";
 
   declare var Collections: any;
 
@@ -52,9 +47,7 @@
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
     }
-
     ngOnInit() {
-      this.courseId = this.route.snapshot.params['courseid'];
+      this.courseId = (<any>(this.route.snapshot.params)).courseid;
     }
-
   }

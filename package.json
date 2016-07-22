@@ -22,7 +22,7 @@
     "@angular2-material/checkbox": "2.0.0-alpha.5-3",
     "@angular2-material/core": "2.0.0-alpha.5-2",
     "@angular2-material/icon": "2.0.0-alpha.5-2",
-    "@angular2-material/input": "2.0.0-alpha.5-3",
+    "@angular2-material/input": "^2.0.0-alpha.5-3",
     "@angular2-material/progress-bar": "2.0.0-alpha.5-3",
     "@angular2-material/progress-circle": "2.0.0-alpha.5-3",
     "@angular2-material/radio": "2.0.0-alpha.5-3",
