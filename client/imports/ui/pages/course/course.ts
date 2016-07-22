@@ -27,7 +27,6 @@
 
   declare var Collections: any;
 
-
 // Define CourseView Component
 	@Component({
 		selector: 'tuxlab-courseview',
@@ -56,7 +55,6 @@
 
     ngOnInit() {
       this.courseId = this.route.snapshot.params['courseid'];
-      console.log(this.user);
     }
 
   }

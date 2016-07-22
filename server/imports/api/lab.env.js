@@ -41,9 +41,7 @@ env.prototype.setUser = function(user){
 }
 
 //returns resolved promise for chaining
-env.prototype.start = function(){
-  return Promise.resolve();
-}
+env.prototype.start = () => {return Promise.resolve()}
 
 /* deleteRecords
  * delete helix and redRouter records for given user
@@ -341,7 +339,6 @@ env.prototype.updateVm = function(vmName, opts) {
 env.prototype.shell = function(vmName,command,opts) {
   var slf = this;
   return function(){
-    console.log("in env.shell");
     return new Promise(function(resolve,reject){
       if(!_.has(slf.vmList,vmName)){
         TuxLog.log('labfile_error','trying to run shell on non-existing vm');
@@ -391,7 +388,6 @@ env.prototype.shell = function(vmName,command,opts) {
  * calls callback(password)
  */
 env.prototype.getPass = function(callback){
-  console.log("hereeee");
   TuxLog.log("warn","here in getPass");
   this.shell("labVm", "cat /pass")()
     .then(function(sOut){ callback(null,sOut); }, function(s1,s2,s3){

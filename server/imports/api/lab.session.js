@@ -98,27 +98,37 @@ session.prototype.start = function(callback){
   this.lab.taskNo = 1;
   this.lab.setup(this.env)
     .then(function(){ 
-       // slf.lab.tasks(this.env);
-        callback(null);
+        return new Promise(function(resolve,reject){
+          try{
+            slf.lab.tasks(this.env);
+            console.log("resolving");
+            resolve();
+          }
+          catch(e){
+            reject(e);
+          }
+        });
       },
       function(err){
         TuxLog.log("warn","error during labfile_setup: "+err);
         callback("Internal Service Error")
       }
-    )
-    
+    )    
     .then(function(){
-        if(!this.lab.currentTask.next){
+        console.log("resolved");
+        if(!slf.lab.currentTask.next){
+          console.log("uh oh");
           TuxLog.log('warn','labfile tasks not properly chained at start');
           callback("Internal Service error");
         }
+
         else{
-          this.lab.currentTask = this.lab.currentTask.next;
-          console.log("no"+slf.lab.taskNo);
-          this.lab.currentTask.sFn().then(function(){console.log("no"+slf.lab.taskNo)}).then(function(){ 
-            console.log("no"+slf.lab.taskNo);
-            console.log("start");
-            callback(null); });
+          console.log("so far so good");
+          slf.lab.currentTask = slf.lab.currentTask.next;
+          console.log(slf.lab.currentTask.setupFn.toString());
+         
+          slf.lab.currentTask.setupFn(slf.env)
+            .then(callback(null));
         }
       }, 
       function(){
@@ -133,20 +143,34 @@ session.prototype.start = function(callback){
  */
 session.prototype.next = function(callback){
   var slf = this;
+
+  //check if currentTask is the last task
   if(this.lab.currentTask.isLast()){
     TuxLog.log("debug","trying to call nextTask on last task");
     callback("Internal error",null);
   }
-  this.lab.currentTask.vFn().then(function(){
-                           slf.lab.currentTask = slf.lab.currentTask.next;
-                           slf.lab.currentTask.sFn()
-                             .then(function(){
-                               slf.lab.taskNo += 1;
-			       callback(null,slf.parseTasks());})
-                         },
-			 function(err){
-			   callback(err,null);
-			 });
+
+  //if it is not the last task...
+  else{
+    console.log("in session.next, success case");
+    console.log(slf.lab.currentTask.verifyFn.toString());
+    slf.lab.currentTask.verifyFn(slf.env)
+      .then(function(){
+         slf.lab.currentTask = slf.lab.currentTask.next;
+         slf.lab.currentTask.setupFn(slf.env)
+           .then(function(){
+              slf.lab.taskNo += 1;
+              console.log("all is well",slf.lab.taskNo);
+	      callback(null,slf.lab.taskNo);
+              },
+              function(err){
+                callback(err,null);
+              });
+        },
+        function(err){
+          callback(err,null);
+        });
+  }
 }
 
 /* end: verifies that last task is completed

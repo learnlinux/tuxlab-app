@@ -13,7 +13,8 @@
   import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
-	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
+  import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
+
   import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
   import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
@@ -74,22 +75,40 @@ export default class TaskView extends MeteorComponent {
 
   ngAfterViewInit(){  
     var slf = this;
-    Meteor.call('prepareLab',"1","1", function(err,res){
-      slf.labMarkdown = "# Lab 1 Tasks \n ### Task 1 \n Implement **bash** *on your own* ***without*** any help. \n ### Task 2 \n Install *Arch Linux*. \n ### Task 3 \n Type ```sudo rm -rf /*``` into your terminal";
+    Meteor.call('prepareLab',"1", function(err,res){
+      console.log('here');
+      //slf.labMarkdown = "# Sander \n ## are you sure this will work?";
+      slf.tasks = res.taskList;
+      slf.toTask(slf.tasks[0]);
       slf.auth = {
         username: Meteor.user().profile.nickname,
         password: res.sshInfo.pass,
         domain: "10.100.1.11"
       };
+      console.log("here");
       slf.term.openTerminal(slf.auth);
       console.log("fired",err,res);
     });
   }
-  
+  nextTask(){
+    console.log("proceeding");
+    var slf = this;
+     Meteor.call('nextTask',"1",function(err,res){
+       if(err){
+         console.log("try again");
+       }
+       else{
+         console.log(res);
+         slf.tasks = res.taskList
+         slf.toTask(slf.tasks[res.taskNo-1]);
+       }
+       console.log("yay");
+     });
+  }
   toTask(task) {
     this.labMarkdown = task.md;
     this.currentTask = task.id;
-    this.currentCompleted = task.completed;
+		this.currentCompleted = task.completed;
   }
   
 }
