@@ -4,6 +4,7 @@ private/settings.*
 ## Meteor
 .meteor/local
 .meteor/meteorite
+.meteor/dev_bundle
 
 ## Typescript
 /typings/

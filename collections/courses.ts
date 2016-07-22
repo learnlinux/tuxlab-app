@@ -37,6 +37,7 @@ courses.allow({
   var _ = require('underscore');
   if (Meteor.isServer){
     Meteor.startup(function(){
+
       var descriptionSchema = new SimpleSchema({
         content: {
           type: String,
@@ -47,6 +48,24 @@ courses.allow({
           defaultValue: ""
         }
       });
+
+      var permissionsSchema = new SimpleSchema({
+        meta: {
+          type: Boolean,
+          defaultValue: true
+        },
+        content: {
+          type: String,
+          allowedValues: ['any', 'auth', 'none'],
+          defaultValue: 'auth'
+        },
+        enroll : {
+          type: String,
+          allowedValues: ['any', 'none'],
+          defaultValue: 'none'
+        }
+      });
+
       var courseSchema = new SimpleSchema({
         course_name: {
           type: String
@@ -64,36 +83,30 @@ courses.allow({
             }
           }],
           custom: function() {
-            let validInstructors = Meteor.users.find({ _id: { $in: this.value } });
-
-            console.log(validInstructors);
+            let instructorIds = this.value.map(function(tuple) {
+              return tuple.id;
+            });
+            let validInstructors = Meteor.users.find({ _id: { $in: instructorIds } });
 
             // Check that all instructors exist
             if(validInstructors.count() !== this.value.length) {
               return("One or more instructors are invalid.");
             }
-
             else{
               return(null);
             }
-
           }
         },
         course_description: {
           type: descriptionSchema,
           optional: true
         },
-        hidden: {
-          type: Boolean,
-          defaultValue: true
-        },
-        featured: {
+        featured:{
           type: Boolean,
           defaultValue: false
         },
-        disabled: {
-          type: Boolean,
-          defaultValue: false
+        permissions:{
+          type: permissionsSchema,
         },
         labs: {
           type: [String],
@@ -111,6 +124,30 @@ courses.allow({
       });
       (<any>courses).attachSchema(courseSchema);
     });
+  }
+
+/***
+  INTERFACE
+**/
+
+  /** Enrollable **/
+  export class Enroll{
+
+    static isEnrollable(course_id : string, user_id? : string){
+      var course : any = courses.findOne(course_id);
+
+      if (typeof course === "undefined" || course === null){ // Course not Found
+        return false;
+      } else if(course.permissions.enroll === "none"){ // Course disabled
+        return false;
+      } else if (course.permissions.enroll === "any"){ // Course is enrollable
+        return true;
+      } else {
+        return false;
+      }
+
+    }
+
   }
 
 /**
@@ -149,9 +186,10 @@ courses.allow({
       Meteor.publish('explore-courses', function(){
         this.autorun(function(computation) {
           return courses.find({
-            hidden: false,
-            featured: true
-          });  
+            "permissions.meta": true,
+            "featured": true
+          }, {
+          }); 
         });
       });
 

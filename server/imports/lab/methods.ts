@@ -18,7 +18,6 @@ Meteor.methods({
    * implement loading wheel, md fetch, course record create in callback
    */
   'prepareLab': function(labId : string){
-    TuxLog.log("warn","here");
     var uId = Meteor.user().profile.nickname;
     var sessionAsync = Meteor.wrapAsync(prepLab);
     try{
@@ -26,8 +25,8 @@ Meteor.methods({
       return res;
     }
     catch(e){
-      TuxLog.log("warn",e);
-      throw new Meteor.Error(e);
+      //all errors are logged in server/imports/lab/labMethods.ts
+      throw new Meteor.Error("Internal Error","Error while preparing lab");
     }
   },
   'nextTask': function(labId : string){
@@ -45,8 +44,8 @@ Meteor.methods({
       return res;
     }
     catch(e){
-      TuxLog.log(e);
-      throw new Meteor.Error("Internal Service Error");
+      //all errors are logged in server/imports/lab/labMethods.ts
+      throw new Meteor.Error("Internal Error","Error while moving to the next task");
     }
   },
   'endLab': function(labId : string){

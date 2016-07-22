@@ -1,32 +1,33 @@
-var tuxlab = require('./tuxlab.js');
+var tuxlab = new lab();
 
 tuxlab.setup = function(env){
-  env.init()
-    .then(env.createVm({dockerodeCreateOptions: {name: "jonathan"}}))
-    .then(env.createVm({dockerodeCreateOptions: {name: "michael"}}))
-    .then(env.shell("labVm","mkdir derek"))
-    .then(function(sOut){ console.log("succ: "+sOut); },
-          function(sOut,sErr,sDock){ throw sOut+sErr+sDock; })
-    .then(env.removeVm("michael"));
+ return env.init();
 }
-tuxlab.tasks = function(env){
-  var s1 = function(){
-    env.start()
-      .then(env.createVm({dockerodeCreateOptions: {name: "derek"}}))
-      .then(env.shell("labVm","cd ~./home/usr/derek"))
-      .then(function(sOut){ console.log("succ: "+sOut); },
-        function(sOut,sErr,sDock){ throw sOut+sErr+sDock; });
+tuxlab.tasks = function(){
+  var s1 = function(env){
+    return env.start();
   }
-  var v1 = function(){
-    env.shell("labVm","pwd")
-      .then(function(sOut){ if(sOut === "/usr/home/derek") return true; else return false; });
+  var v1 = function(env){
+    return env.start();
   }
-  var s2 = function(){}
-  var v2 = function(){}
-  var s3 = function(){}
-  var v3 = function(){}
-  var s4 = function(){}
-  var v4 = function(){}
+  var s2 = function(env){
+    return env.start();
+  }
+  var v2 = function(env){
+    return env.start();
+  }
+  var s3 = function(env){
+    return env.start();
+  }
+  var v3 = function(env){
+    return env.start();
+  }
+  var s4 = function(env){
+    return env.start();
+  }
+  var v4 = function(env){
+    return env.start();
+  }
   /* @task1 this is task 1 
    tomato{}  
    hi();

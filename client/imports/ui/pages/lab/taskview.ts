@@ -22,7 +22,7 @@
 // Terminal and Markdown Imports
   import { Terminal } from "../../components/wetty/terminal.ts";
   import { MarkdownView } from "../../components/markdown/markdown.ts";
-  
+
 // Icons
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
@@ -33,8 +33,8 @@
 @Component({
   selector: 'tuxlab-taskview',
   templateUrl: '/client/imports/ui/pages/lab/taskview.html',
-  directives: [ 
-    MarkdownView, 
+  directives: [
+    MarkdownView,
     Terminal,
     MD_ICON_DIRECTIVES,
     MATERIAL_DIRECTIVES,
@@ -61,6 +61,7 @@ export default class TaskView extends MeteorComponent {
   courseId: string;
   @ViewChild(Terminal) term : Terminal;
 
+
   constructor() {
     super();
     this.tasks = [
@@ -73,7 +74,7 @@ export default class TaskView extends MeteorComponent {
     ];
   }
 
-  ngAfterViewInit(){  
+  ngAfterViewInit(){
     var slf = this;
     Meteor.call('prepareLab',"1", function(err,res){
       console.log('here');
@@ -110,5 +111,5 @@ export default class TaskView extends MeteorComponent {
     this.currentTask = task.id;
     this.currentCompleted = task.completed;
   }
-  
+
 }
