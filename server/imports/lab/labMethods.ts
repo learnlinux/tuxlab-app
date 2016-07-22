@@ -41,6 +41,23 @@ function getSession(user : string, labId : string, callback : any) : void{
     }
   });
 }
+
+function mapTasks(labId : string,taskNo : number, callback) : any {
+  var tasks = Collections.labs.findOne({_id : labId}).tasks;
+    console.log("mapping");
+  var finalTasks = tasks.map(function(task){
+    if(task._id < taskNo){
+      return {id: task._id, name: task.name, md: task.md, completed: true};
+    }
+    else if(task._id == taskNo){
+      return{id: task._id, name: task.name, md: task.md, completed: false};
+    }
+    else{
+      return {id: task._id, name: task.name, md: null, completed:false};
+    }
+  });
+  callback(null,finalTasks);
+}
 export function prepLab(user : string, labId : string, callback : any) : any{
   TuxLog.log("warn","prepLab");
   getSession(user, labId, function(err,res){
@@ -59,16 +76,46 @@ export function prepLab(user : string, labId : string, callback : any) : any{
           'hidden': 0
       }};
       var sshInfo = {host : nconf.get("domain_root"), pass: res.sshPass};
-      var tasks = Collections.labs.findOne({_id: labId}).tasks;
-      var finalTasks = tasks.map(function(task){
-        if(task._id <= res.taskNo){
-          return {title: task.name, md: task.md}; 
+      mapTasks(labId,res.taskNo,function(err,res){
+        if(err){
+          callback(err,null);
         }
         else{
-          return {title: task.name, md: null};
+          console.log("calling back");
+          callback(null,{sshInfo: sshInfo, taskList: res});
         }
       });
-      callback(null,{sshInfo: sshInfo, taskList: finalTasks});
     }
   });
+}
+
+export function next(uId : string,labId : string, callback : any) : void{
+  SessionCache.get(uId, labId, function(err,result){
+    console.log("result.lab.taskNo: "+result.lab.taskNo);
+    if(err){
+      TuxLog.log("warn","Session.get Error" + err);
+      callback(err,null);
+    }
+
+    else if(!result){
+      TuxLog.log("warn","Session.get had no results: "+err);
+    }
+    else{
+      result.next(function(err,res){
+        if(err){
+          callback(err,null);
+        }
+        else{
+          mapTasks(labId,res,function(err,ress){
+            if(err){
+              callback(err,null);
+            }
+            else{
+              callback(null,{taskList: ress, taskNo:res})
+            }
+          });
+        }
+      });
+    }
+  })
 }
