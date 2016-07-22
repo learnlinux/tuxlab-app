@@ -1,18 +1,23 @@
+
+//variable declarations
 declare var Collections : any;
-var LabSession = require('../api/lab.session.js');
 declare var TuxLog : any;
 declare var SessionCache : any;
 declare var nconf : any;
+
+//import session constructor
 var LabSession = require('../api/lab.session.js');
 
-import{ prepLab } from './labMethods.ts';
+//import sync Meteor methods
+import{ prepLab, next } from './labMethods.ts';
+
 Meteor.methods({
   /**prepareLab: prepares a labExec object for the current user
    * takes the id of the lab and a callback as parameter
    * callback: (err,pass)
    * implement loading wheel, md fetch, course record create in callback
    */
-  'prepareLab': function(user : string, labId : string){
+  'prepareLab': function(labId : string){
     TuxLog.log("warn","here");
     var uId = Meteor.user().profile.nickname;
     var sessionAsync = Meteor.wrapAsync(prepLab);
@@ -24,44 +29,6 @@ Meteor.methods({
       TuxLog.log("warn",e);
       throw new Meteor.Error(e);
     }
-    /*
-    var session = new LabSession();
-    var uId = Meteor.user().profile.nickname;
-    
-    //set asynchronous methods 
-    var sessionAsync = Meteor.wrapAsync(session.init,session);
-
-    try{
-      //run session.init get ssh info
-      var sessionRes = sessionAsync(uId,labId);
-      var sshInfo = {host: nconf.get("domain_root"), pass: sessionRes.sshPass}
-        
-      var optsp = {'fields': {
-          'labfile' : 0,
-          'lab_name': 0,
-          'course_id': 0,
-          'updated': 0,
-          'disabled': 0,
-          'hidden': 0            
-      }};
-      console.log(session.lab.taskNo);
-      var tasks = Collections.labs.findOne({_id: labId}).tasks;
-      var finalTasks = tasks.map(function(task){
-        if(task._id <= sessionRes.taskNo){
-          return {title: task.name, md: task.md}; 
-        }
-        else{
-          return {title: task.name, md: null};
-        }
-      });
-      console.log(sessionRes.taskNo);
-      var result = {sshInfo: sshInfo, taskList: finalTasks};
-      return result;
-    }
-    catch(e){
-      TuxLog.log("warn",new Meteor.Error(e));
-      throw new Meteor.Error(e);
-    }*/
   },
   'nextTask': function(labId : string){
     /**session.next(cb)
@@ -70,28 +37,17 @@ Meteor.methods({
      * change task markdown -frontend
      * change course records if passed
      */
-    var uId = Meteor.userId();
-    SessionCache.get(uId,labId,function(err,res){
-      if(err){
-        TuxLog.log("warn",err);
-	throw new Meteor.Error("Internal Service Error");
-      }
-      else if(!res){
-        TuxLog.log("warn",new Meteor.Error("SessionCache.get failed to return a session instance"));
-	throw new Meteor.Error("Internal Service Error");
-      }
-      else{
-          var nextAsync = Meteor.wrapAsync(res.next,res);
-	try{
-	  var result = nextAsync();
-	  return "success"; //TODO: @Derek what to return here?
-	}
-	catch(e){
-	  TuxLog.log("warn",e);
-	  throw new Meteor.Error("Internal Service Error");
-	}
-      }
-    });
+    
+    var uId = Meteor.user().profile.nickname;
+    var nextAsync = Meteor.wrapAsync(next);
+    try{
+      var res = nextAsync(uId,labId);
+      return res;
+    }
+    catch(e){
+      TuxLog.log(e);
+      throw new Meteor.Error("Internal Service Error");
+    }
   },
   'endLab': function(labId : string){
     /**session.end(cb)

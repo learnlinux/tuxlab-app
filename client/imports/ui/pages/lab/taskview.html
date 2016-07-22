@@ -2,7 +2,6 @@
   
   <!--Markdown View-->
   <div class="tuxlab-taskview-step">
-    
   
     <md-sidenav-layout>
       <md-sidenav #left [opened]="false" layout-padding>
@@ -42,7 +41,7 @@
             <p>Checking Task...</p>
             <md-dialog-actions ok="Fine"></md-dialog-actions>
           </md-dialog>
-          <button md-raised-button (click)="alert.show()" *ngIf="!currentCompleted">
+          <button md-raised-button (click)="nextTask()">
             Check
             <md-icon fontIcon="tuxicon-tick"></md-icon>
           </button>
