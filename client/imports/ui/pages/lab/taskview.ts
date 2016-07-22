@@ -56,6 +56,7 @@ export default class TaskView extends MeteorComponent {
   labProgress: string = "3 / 10";
   tasks: Array<any>;
   currentTask: number;
+  currentCompleted: boolean;
   courseId: string;
   @ViewChild(Terminal) term : Terminal;
 
@@ -88,6 +89,7 @@ export default class TaskView extends MeteorComponent {
   toTask(task) {
     this.labMarkdown = task.md;
     this.currentTask = task.id;
+    this.currentCompleted = task.completed;
   }
   
 }

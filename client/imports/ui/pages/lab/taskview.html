@@ -42,7 +42,7 @@
             <p>Checking Task...</p>
             <md-dialog-actions ok="Fine"></md-dialog-actions>
           </md-dialog>
-          <button md-raised-button (click)="alert.show()">
+          <button md-raised-button (click)="alert.show()" *ngIf="!currentCompleted">
             Check
             <md-icon fontIcon="tuxicon-tick"></md-icon>
           </button>
