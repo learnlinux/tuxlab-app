@@ -17,7 +17,7 @@ import { provideRouter, RouterConfig } from '@angular/router';
 
   // Course
   import { courseRoutes } from './course.routes.ts';
-  import { CourseEnroll } from './course.enroll.ts';
+  import { CourseGuardRecord } from './course.guard.record.ts';
 
   // Explore
   import Explore from '../pages/explore/explore.ts';
@@ -43,5 +43,5 @@ const routes : RouterConfig = [
 
 export const ROUTE_PROVIDERS = [
   provideRouter(routes),
-  CourseEnroll
+  CourseGuardRecord
 ];
