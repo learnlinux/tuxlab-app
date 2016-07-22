@@ -5,6 +5,7 @@ import { LabList } from './lablist.ts';
 import { CourseDashboard } from './course_dashboard.ts';
 import { LabView } from './labview.ts';
 import { GradeView } from './gradeview.ts';
+import { UserList } from './userlist.ts';
 
 export const courseRoutes: RouterConfig = [
   {
@@ -15,7 +16,8 @@ export const courseRoutes: RouterConfig = [
       { path: ':courseid/grades', component: GradeList },
       { path: ':courseid/labs', component: LabList },
       { path: ':courseid/labs/lab', component: LabView },
-      { path: ':courseid/grades/grade', component: GradeView }
+      { path: ':courseid/grades/grade', component: GradeView },
+      { path: ':courseid/users', component: UserList }
   //  { path: '/:courseid', as: 'CourseView', component: CourseView },
   //  { path: '/:courseid/users', as: 'UserList', component: UserList },
   //  { path: '/:courseid/user/:userid', as: 'UserView', component: UserView },

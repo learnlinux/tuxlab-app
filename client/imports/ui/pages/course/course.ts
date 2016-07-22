@@ -27,6 +27,7 @@
 
   declare var Collections: any;
 
+
 // Define CourseView Component
 	@Component({
 		selector: 'tuxlab-courseview',
@@ -41,9 +42,11 @@
 		encapsulation: ViewEncapsulation.None
 	})
 
+@InjectUser('user')
 // Export CourseView Class
   export default class CourseView extends MeteorComponent {
     courseId: string;
+    user: Meteor.User;
     constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
       super();
       // Create Icon Font
@@ -53,6 +56,7 @@
 
     ngOnInit() {
       this.courseId = this.route.snapshot.params['courseid'];
+      console.log(this.user);
     }
 
   }

@@ -1,0 +1,28 @@
+<div class="tuxlab-userlist">
+  <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Enrolled Users</span>
+      </md-card-title-text>  
+    </md-card-title>
+    <md-card-content>
+      <md-data-table layout-fill>
+        <thead>
+          <tr>
+            <th class="md-text-cell">Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>  
+          </tr>  
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of students">
+            <td class="md-text-cell">{{ student.nickname }}</td>
+            <td>{{ student.first_name }}</td>
+            <td>{{ student.last_name }}</td>
+          </tr>  
+        </tbody>  
+      </md-data-table>  
+        
+    </md-card-content>  
+  </md-card>
+</div>
