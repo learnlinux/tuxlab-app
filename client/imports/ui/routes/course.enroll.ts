@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { InjectUser } from 'angular2-meteor-accounts-ui';
-import { Roles } from '../../../../../collections/users.ts';
+import { Roles } from '../../../collections/users.ts';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
@@ -20,7 +20,7 @@ export class CourseEnroll implements CanActivate{
     var slf = this;
 
     // Get Params
-    const course_id : string = (<any>state)._root.children[0].value.params.courseid;
+    const course_id : string = (<any>state).parent(route).params.courseid;
     const lab_id : string = (<any>route).params.labid;
 
     var obs : Observable<boolean> = Observable.fromPromise(new Promise<boolean> (function(resolve, reject){

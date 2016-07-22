@@ -2,31 +2,29 @@ import { provideRouter, RouterConfig } from '@angular/router';
 
 /* PAGES */
   // Dashboard
-  import Dashboard from './imports/ui/pages/dashboard/dashboard.ts'
+  import Dashboard from '../pages/dashboard/dashboard.ts'
 
   // Account
-  import Login from './imports/ui/pages/account/login.ts'
-  import Account from './imports/ui/pages/account/account.ts'
+  import Login from '../pages/account/login.ts'
+  import Account from '../pages/account/account.ts'
 
   // Error
-  import Err404 from './imports/ui/pages/error/404.ts'
+  import Err404 from '../pages/error/404.ts'
 
   // Lab
-  import TaskView from './imports/ui/pages/lab/taskview.ts';
-  import LabCreate from './imports/ui/pages/lab/labcreate.ts'
+  import TaskView from '../pages/lab/taskview.ts';
+  import LabCreate from '../pages/lab/labcreate.ts'
 
   // Course
-  import { courseRoutes } from './imports/ui/pages/course/course.routes.ts';
+  import { courseRoutes } from './course.routes.ts';
+  import { CourseEnroll } from './course.enroll.ts';
 
   // Explore
-  import Explore from './imports/ui/pages/explore/explore.ts';
-  import Terms from './imports/ui/pages/static/terms.ts';
+  import Explore from '../pages/explore/explore.ts';
+  import Terms from '../pages/static/terms.ts';
 
   // Static
-  import Privacy from './imports/ui/pages/static/privacy.ts';
-
-  // Auth Guards
-  import { CourseEnroll } from './imports/ui/pages/course/course.enroll.ts';
+  import Privacy from '../pages/static/privacy.ts';
 
 /* ROUTES */
 const routes : RouterConfig = [

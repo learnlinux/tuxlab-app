@@ -103,7 +103,7 @@ labs.allow({
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
         if (typeof fieldNames === "undefined"){
           if(!(doc.course_id && doc.file && //check for lab fields
-             Users.isInstructorFor(doc.course_id,userid))){//check for instructor authorization
+             Roles.isInstructorFor(doc.course_id,userid))){//check for instructor authorization
         	   return false;
         	}
         	else{
