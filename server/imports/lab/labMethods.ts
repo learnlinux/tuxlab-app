@@ -7,28 +7,26 @@ declare var Collections : any;
 function getSession(user : string, labId : string, callback : any) : void{
   SessionCache.get(user,labId,function(err,res){
     if(err){
-      TuxLog.log("warn","SessionCache.get :"+err);
-      callback(new Meteor.Error("Internal Service Error"),null);
+      //error logged in server/imports/startup/cache.js:51
+      callback(new Meteor.Error(err),null);
     }
     else if(!res){
-      TuxLog.log("warn","no res");
       var session = new LabSession();
       session.init(user, labId, function(err,result){
         if(err){
-          TuxLog.log("warn","session init: "+err);
+          //error logged in server/imports/api/lab.session.js .init
           callback(err,null);
         }
         else{
-          SessionCache.add(user,labId,session,function(err){ 
-            TuxLog.log("warn",err);
-            //callback(null,result);
-          });
+          //done sync, not absolutely necessary 
+          //TODO: catch sessioncache.add errors, nothing would work if this doesnt after refresh/logout.
+          SessionCache.add(user,labId,session);
           callback(null,result);
         }
       });
     }
     else{
-      TuxLog.log("warn","res initialized");
+      //TODO: change this to pull from somewhere
       res.env.getPass(function(err,result){
         if(err){
           callback(err,null);
@@ -43,8 +41,11 @@ function getSession(user : string, labId : string, callback : any) : void{
 }
 
 function mapTasks(labId : string,taskNo : number, callback) : any {
+  
+  //Pull tasks of lab from database
   var tasks = Collections.labs.findOne({_id : labId}).tasks;
-    console.log("mapping");
+  
+  //map tasks according to frontend schema
   var finalTasks = tasks.map(function(task){
     if(task._id < taskNo){
       return {id: task._id, name: task.name, md: task.md, completed: true};
@@ -56,17 +57,21 @@ function mapTasks(labId : string,taskNo : number, callback) : any {
       return {id: task._id, name: task.name, md: null, completed:false};
     }
   });
+
+  //callback on mapped tasks
   callback(null,finalTasks);
 }
 export function prepLab(user : string, labId : string, callback : any) : any{
-  TuxLog.log("warn","prepLab");
+  
+  //get Session instance for user/lab	
   getSession(user, labId, function(err,res){
     if(err){
-      TuxLog.log("warn","getSession err: "+err);
-      callback(new Meteor.Error("Internal Service Error"),null);
+      //errors logged in getSession above
+      callback(err,null);
     }
     else{
-
+      
+      //options not to get unnecessary fields from database
       var optsp = {'fields': {
           'labfile' : 0,
           'lab_name': 0,
@@ -75,13 +80,17 @@ export function prepLab(user : string, labId : string, callback : any) : any{
           'disabled': 0,
           'hidden': 0
       }};
+
+      //parse sshInfo from nconf and results
       var sshInfo = {host : nconf.get("domain_root"), pass: res.sshPass};
+
+      //map taskList into frontend schema
       mapTasks(labId,res.taskNo,function(err,res){
         if(err){
+          //cannot have an error
           callback(err,null);
         }
         else{
-          console.log("calling back");
           callback(null,{sshInfo: sshInfo, taskList: res});
         }
       });
@@ -91,23 +100,25 @@ export function prepLab(user : string, labId : string, callback : any) : any{
 
 export function next(uId : string,labId : string, callback : any) : void{
   SessionCache.get(uId, labId, function(err,result){
-    console.log("result.lab.taskNo: "+result.lab.taskNo);
     if(err){
-      TuxLog.log("warn","Session.get Error" + err);
+      //err logged in server/imports/startup/cache.js:51
       callback(err,null);
     }
 
     else if(!result){
-      TuxLog.log("warn","Session.get had no results: "+err);
+      TuxLog.log("warn",new Meteor.Error("Session.get returned no result for session in use"));
+      callback(new Meteor.Error("Session.get returned no result for session in use"))
     }
     else{
       result.next(function(err,res){
         if(err){
+          //err logged in server/imports/api/lab.session.js .next
           callback(err,null);
         }
         else{
           mapTasks(labId,res,function(err,ress){
             if(err){
+              //cannot have an error
               callback(err,null);
             }
             else{

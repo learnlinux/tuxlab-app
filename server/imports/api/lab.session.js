@@ -15,7 +15,8 @@ session.prototype.init = function(user,labId,callback){
   // Get Metadata from Database
   var lab_data = Collections.labs.findOne({_id: labId}, {fields: {'labfile' : 0}});
   if(!lab_data || lab_data.length < 0){
-    callback(new Error("Lab Not Found.", null));
+    TuxLog.log("warn",new Error("Lab not found"));
+    callback(new Error("Lab Not Found."), null);
   }
   else{
     // Get Course Metadata
@@ -27,32 +28,33 @@ session.prototype.init = function(user,labId,callback){
     // Check Cache for LabFile Object
     LabCache.get(labfile_id, function(err, value){
       if(err){
-        callback("TuxLab Exec Error.", null);
+	TuxLog.log("warn",err);
+        callback(err, null);
       }
       else if(typeof value === "undefined"){
         // Get LabFile from Database
         var labfile_data = Collections.labs.findOne({_id: labId}, {fields : {'field' : 0}});
-        console.log(labfile_data.labfile);
         var Lab = eval(labfile_data.labfile);
         Lab.taskNo = 0;
         slf.lab = Lab;
-        // Cache LabFile
+
+        // Cache LabFile -runs sync, not central to anything
         LabCache.set(labfile_id, slf.lab, function(err, success){
           if(err || !success){
-            TuxLog.log('warn', err);
-            console.log("error adding to cache");
+            TuxLog.log("warn", err);
           }
         });
-
        
 	slf.start(function(err){
 	  if(err){
+            //err logged in slf.start
 	    callback(err,null);
 	  }
 	  else{
-            console.log("moving to env.getPass");
 	    slf.env.getPass(function(err,res){
               if(err){
+		//TODO: err log in server/imports/api/lab.env.js:
+		//TODO: separate streams in env.js
                 callback(err,null);
               }
               else{
@@ -73,9 +75,9 @@ session.prototype.init = function(user,labId,callback){
             callback(err,null);
           }
           else{
-            console.log("moving to env.getPass");
 	    slf.env.getPass(function(err,res){
               if(err){
+                //TODO : same as above
                 callback(err,null);
               }
               else{
@@ -101,7 +103,6 @@ session.prototype.start = function(callback){
         return new Promise(function(resolve,reject){
           try{
             slf.lab.tasks(this.env);
-            console.log("resolving");
             resolve();
           }
           catch(e){
@@ -110,30 +111,28 @@ session.prototype.start = function(callback){
         });
       },
       function(err){
-        TuxLog.log("warn","error during labfile_setup: "+err);
-        callback("Internal Service Error")
+        TuxLog.log("warn",err);
+        callback(err)
       }
     )    
     .then(function(){
         console.log("resolved");
         if(!slf.lab.currentTask.next){
-          console.log("uh oh");
-          TuxLog.log('warn','labfile tasks not properly chained at start');
-          callback("Internal Service error");
+          TuxLog.log('warn',new Error('labfile tasks not properly chained at start'));
+          callback(new Error("labfile task chaining error"));
         }
 
         else{
-          console.log("so far so good");
           slf.lab.currentTask = slf.lab.currentTask.next;
-          console.log(slf.lab.currentTask.setupFn.toString());
-         
           slf.lab.currentTask.setupFn(slf.env)
-            .then(callback(null));
+            .then(callback(null),function(err){
+		    TuxLog.log("warn",err);
+		    callback(err)});
         }
       }, 
       function(){
         TuxLog.log("warn","error setting up task1");
-        callback("Internal Service Error");
+        callback("Task1 setup error");
       });
 }
 
@@ -146,28 +145,27 @@ session.prototype.next = function(callback){
 
   //check if currentTask is the last task
   if(this.lab.currentTask.isLast()){
-    TuxLog.log("debug","trying to call nextTask on last task");
-    callback("Internal error",null);
+    TuxLog.log("warn",new Error("trying to call nextTask on last task"));
+    callback(new Error("trying to call next on last task"),null);
   }
 
   //if it is not the last task...
   else{
-    console.log("in session.next, success case");
-    console.log(slf.lab.currentTask.verifyFn.toString());
     slf.lab.currentTask.verifyFn(slf.env)
       .then(function(){
          slf.lab.currentTask = slf.lab.currentTask.next;
          slf.lab.currentTask.setupFn(slf.env)
            .then(function(){
               slf.lab.taskNo += 1;
-              console.log("all is well",slf.lab.taskNo);
 	      callback(null,slf.lab.taskNo);
               },
               function(err){
+                TuxLog.log("warn",err);
                 callback(err,null);
               });
         },
         function(err){
+          TuxLog.log("warn",err);
           callback(err,null);
         });
   }
