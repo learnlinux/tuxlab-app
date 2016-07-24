@@ -56,7 +56,7 @@ courses.allow({
         },
         content: {
           type: String,
-          allowedValues: ['any', 'students', 'none'],
+          allowedValues: ['any', 'auth', 'none'],
           defaultValue: 'auth'
         },
         enroll : {
@@ -83,19 +83,18 @@ courses.allow({
             }
           }],
           custom: function() {
-            let validInstructors = Meteor.users.find({ _id: { $in: this.value } });
-
-            console.log(validInstructors);
+            let instructorIds = this.value.map(function(tuple) {
+              return tuple.id;
+            });
+            let validInstructors = Meteor.users.find({ _id: { $in: instructorIds } });
 
             // Check that all instructors exist
             if(validInstructors.count() !== this.value.length) {
               return("One or more instructors are invalid.");
             }
-
             else{
               return(null);
             }
-
           }
         },
         course_description: {
@@ -186,10 +185,15 @@ courses.allow({
       // Publish All Courses TODO: add pagination
       Meteor.publish('explore-courses', function(){
         this.autorun(function(computation) {
-          return courses.find({
-            hidden: false,
-            featured: true
-          });
+          if (Roles.isGlobalAdministrator(this.userId)) {
+            return courses.find();
+          }
+          else {
+            return courses.find({
+              "permissions.meta": true,
+              "featured": true
+            });  
+          }
         });
       });
 
