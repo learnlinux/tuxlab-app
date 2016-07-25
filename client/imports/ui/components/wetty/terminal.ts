@@ -3,7 +3,7 @@
 **/
 
 // Angular Imports
-import { Component, ElementRef, Input, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { MdProgressCircle, MdSpinner } from '@angular2-material/progress-circle/progress-circle';
 
 declare var io: any;
@@ -15,23 +15,23 @@ declare var window: any;
   selector: 'terminal',
   inputs: ['username','password','host','domain','path'],
   directives: [MdProgressCircle, MdSpinner],
-  template: '<div class="loading-menu"><h2>LOADING LAB...</h2><center><md-progress-circular md-mode="indeterminate"></md-progress-circular><md-spinner></md-spinner></center></div>'
+  templateUrl: '/client/imports/ui/components/wetty/terminal.html',
 })
 export class Terminal {
-  private _viewContainer : ViewContainerRef;
   private el : ElementRef;
+  public loading : boolean;
 
-  constructor(el : ElementRef, private viewContainer:ViewContainerRef){
+  constructor(el : ElementRef){
     this.el = el;
-     this._viewContainer = viewContainer;
+    this.loading = true;
   }
 
   public openTerminal(auth : any){
     // slf
     var slf = this;
 
-    // Clear viewContainer
-    this._viewContainer.clear();
+    // Hide Loading
+    this.loading = false;
 
     // Create Term
     var term;
