@@ -6,6 +6,7 @@
     <md-sidenav-layout>
       <md-sidenav #left [opened]="false" layout-padding>
         <a md-button [routerLink]="['/course' + courseId]">Course Page</a>
+        <a md-button (click)="alert.show()">LabVM Connection</a>
         <a md-button *ngFor="let task of tasks" (click)="toTask(task)">
           {{ task.name }}
           <md-icon fontIcon="tuxicon-tick" *ngIf="task.completed == true"></md-icon>
@@ -14,6 +15,13 @@
       </md-sidenav>
       
       <md-content layout-padding>
+        
+        
+        <md-dialog #alert>
+          <md-dialog-title>LabVM Connection</md-dialog-title>
+          You are currently connected.
+          <md-dialog-actions ok="Got It"></md-dialog-actions>
+        </md-dialog>
         
         
         <!-- Title Bar -->
