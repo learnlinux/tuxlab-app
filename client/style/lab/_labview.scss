@@ -181,10 +181,18 @@
       md-icon {
         vertical-align: top;
         line-height: 28px;
-        color: #64dd17;
       }
       .tuxicon-tick:before {
         font-size: 36px;
+      }
+      .tuxicon-right:before {
+        font-size: 36px;
+      }
+      .tuxicon-right {
+        color: black;
+      }
+      .tuxicon-tick {
+        color: #64dd17;
       }
     }
   }
