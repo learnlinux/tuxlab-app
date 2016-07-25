@@ -1,5 +1,6 @@
 
-var student = function(userId, labId, courseId){
+var student = function(session, userId, labId, courseId){
+  this.session = session;
   this.userId = userId;
   this.labId = labId;
   this.courseId = courseId;
@@ -8,6 +9,12 @@ var student = function(userId, labId, courseId){
 student.prototype.userId = null;
 student.prototype.labId = null;
 student.prototype.courseId = null;
+student.prototype.session = null;
+
+
+student.prototype.feedback = function(taskNo,md){
+  this.session.taskUpdates[taskNo] = md;
+}
 
 student.prototype.setGrade = function(taskNo, grade){
 

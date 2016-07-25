@@ -60,11 +60,14 @@ export default class TaskView extends MeteorComponent {
   currentCompleted: boolean;
   courseId: string;
   nextButton : boolean;
+  taskUpdates : Array<string>
   @ViewChild(Terminal) term : Terminal;
 
 
   constructor() {
     super();
+    this.taskUpdates = [];
+    this.nextButton = false;
     this.tasks = [
       { id: 1, name: "Task 1", completed: true, md: "# Task 1" },
       { id: 2, name: "Task 2", completed: true, md: "# Task 2" },
@@ -88,7 +91,8 @@ export default class TaskView extends MeteorComponent {
         password: res.sshInfo.pass,
         domain: "10.100.1.11"
       };
-      console.log("here");
+      slf.taskUpdates = res.taskUpdates;
+
       slf.term.openTerminal(slf.auth);
       console.log("fired",err,res);
     });
@@ -97,16 +101,18 @@ export default class TaskView extends MeteorComponent {
   //called by the check button, I'm already calling this
   verify(){
     Meteor.call('verifyTask',"1",function(err,res){
+      var slf = this;
       if(err){
         console.log("something went horribly wrong");
       }
       else{
-        if(res){
-	  nextButton = true;
+        if(res.verified){
+	  slf.nextButton = true;
 	}
 	else{
-	  nextButton = false;
+	  slf.nextButton = false;
 	}
+        slf.taskUpdates = res.taskUpdates;
       }
     });
   }
@@ -117,6 +123,7 @@ export default class TaskView extends MeteorComponent {
     var slf = this;
      Meteor.call('nextTask',"1",function(err,res){
        if(err){
+	 slf.nextButton = false;
          console.log("try again");
        }
        else{
@@ -124,8 +131,8 @@ export default class TaskView extends MeteorComponent {
          slf.tasks = res.taskList
          slf.toTask(slf.tasks[res.taskNo-1]);
 	 slf.labProgress = res.taskNo+" / "+slf.tasks.length
+	 slf.taskUpdates = res.taskUpdates
        }
-       console.log("yay");
      });
   }
   toTask(task) {

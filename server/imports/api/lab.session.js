@@ -6,6 +6,8 @@ var session = function(){};
 session.prototype.env = null;
 session.prototype.lab = null;
 session.prototype.student = null;
+session.prototype.taskUpdates = [];
+
 /* init: pulls labFile and initializes session object from it
  */
 session.prototype.init = function(user,userId,labId,callback){
@@ -18,7 +20,7 @@ session.prototype.init = function(user,userId,labId,callback){
   var courseId = lab_data.course_id;
 
   //initialize student object
-  this.student = new student(userId,labId,courseId);
+  this.student = new student(this, userId,labId,courseId);
 
   if(!lab_data || lab_data.length < 0){
     TuxLog.log("warn",new Error("Lab not found"));
@@ -143,9 +145,10 @@ session.prototype.start = function(callback){
 
 
 session.prototype.verify = function(callback){
-  
+  var slf = this;
   slf.lab.currentTask.verifyFn(slf.env,slf.student)
-    .then(callback(true),callback(false));
+    .then(callback({verified: true, taskUpdates: slf.taskUpdates}),callback({verified: false,taskUpdates: slf.taskUpdates}));
+  
 }
 /* next: verifies that task is completed
  * moves on to next task and runs callback(null,parseTasks) if completed
@@ -168,7 +171,7 @@ session.prototype.next = function(callback){
          slf.lab.currentTask.setupFn(slf.env,slf.student)
            .then(function(){
               slf.lab.taskNo += 1;
-	      callback(null,slf.lab.taskNo);
+	      callback(null,{taskNo: slf.lab.taskNo,taskUpdates: slf.taskUpdates});
               },
               function(err){
                 TuxLog.log("warn",err);
