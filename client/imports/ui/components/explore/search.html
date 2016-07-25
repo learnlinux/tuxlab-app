@@ -18,7 +18,7 @@
         <tr>
           <th class="md-text-cell">Course Number</th>
           <th class="md-text-cell">Course Name</th>
-          <th>Instructor</th>
+          <th>Instructor(s)</th>
           <th></th>
         </tr>
       </thead>
@@ -26,7 +26,11 @@
         <tr *ngFor="let course of searchResults">
           <td class="md-text-cell">{{ course.course_number }}</td>
           <td class="md-text-cell">{{ course.course_name }}</td>
-          <td>{{ course.instructor_ids }}</td>
+          <td>
+            <div *ngFor="let instructor of course.instructors">
+              {{ instructor.name }}
+            </div>
+          </td>
           <td>
             <a md-button [routerLink]="['/course/' + course._id]">Enroll</a>
           </td>

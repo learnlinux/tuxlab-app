@@ -7,7 +7,10 @@
       <template md-tab-content>
         <md-content class="md-padding">
           <h2>{{ course.course_number }} | {{ course.course_name }}</h2>
-          <p>{{ course.instructor_name }}</p>
+          <p *ngFor="let instructor of course.instructors" class="instructors">
+            {{ instructor.name }}
+          </p>
+          <br><br>
           <p>
             {{ course.course_description.content }}
           </p>
