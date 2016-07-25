@@ -66,6 +66,14 @@ courses.allow({
         }
       });
 
+      var instructorSchema = new SimpleSchema({
+        name: {
+          type: String
+        },
+        id: {
+          type: String
+        }
+      });
       var courseSchema = new SimpleSchema({
         course_name: {
           type: String
@@ -73,15 +81,8 @@ courses.allow({
         course_number: {
           type: String
         },
-        instructor_ids: {
-          type: [{
-            name: {
-              type: String
-            },
-            id: {
-              type: String
-            }
-          }],
+        instructors: {
+          type: [instructorSchema],
           custom: function() {
             let instructorIds = this.value.map(function(tuple) {
               return tuple.id;

@@ -10,7 +10,7 @@
   import { APP_BASE_HREF, FORM_DIRECTIVES } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
-  import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+  import { ROUTER_DIRECTIVES, ActivatedRoute, Router, RouterState } from '@angular/router';
 
 // Angular Material Imports
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -52,11 +52,8 @@ declare var Collections: any;
     courseDescription: String = "";
     courseName: String = "";
 
-    constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
+    constructor(private route: ActivatedRoute, private router: Router) {
       super();
-      // Create Icon Font
-      mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-      mdIconRegistry.setDefaultFontSetClass('tuxicon');
       // Subscribe to courses database and set current course
       this.subscribe('user-courses', this.courseId, () => {
         this.course = Collections.courses.findOne({ _id: this.courseId });
@@ -67,6 +64,7 @@ declare var Collections: any;
       }, true);
     }
     ngOnInit() {
-      this.courseId = (<any>(this.route.snapshot.params)).courseid;
+      this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
+      console.log(this.courseId);
     }
   }

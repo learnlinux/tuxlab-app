@@ -1,4 +1,7 @@
 var async = require ('async');
+
+declare var Collections : any;
+
 /**
   Searches Courses based on search terms
 **/
@@ -25,7 +28,7 @@ export function course_search(text : string, results_per_page : number, page_no 
       fields : {
         "course_number" : 1,
         "course_name" : 1,
-        "instructor_ids" : 1,
+        "instructors" : 1,
         "course_description" : 1
       }
      };

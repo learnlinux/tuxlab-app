@@ -21,10 +21,10 @@ import { provideRouter, RouterConfig } from '@angular/router';
 
   // Explore
   import Explore from '../pages/explore/explore.ts';
-  import Terms from '../pages/static/terms.ts';
 
   // Static
   import Privacy from '../pages/static/privacy.ts';
+  import Terms from '../pages/static/terms.ts';
 
 /* ROUTES */
 const routes : RouterConfig = [
