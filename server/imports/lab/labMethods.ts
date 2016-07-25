@@ -33,7 +33,7 @@ function getSession(user : string, userId, labId : string, callback : any) : voi
         }
         else{
           console.log(result);
-          callback(null,{taskNo:res.lab.taskNo,sshPass:result});
+          callback(null,{taskNo:res.lab.taskNo,sshPass:result,taskUpdates: res.taskUpdates});
         }
       })
     }
@@ -83,6 +83,8 @@ export function prepLab(user : string,userId: string, labId : string, callback :
 
       //parse sshInfo from nconf and results
       var sshInfo = {host : nconf.get("domain_root"), pass: res.sshPass};
+      var taskUpdates = res.taskUpdates;
+      
       //map taskList into frontend schema
       mapTasks(labId,res.taskNo,function(err,res){
         if(err){
@@ -90,7 +92,7 @@ export function prepLab(user : string,userId: string, labId : string, callback :
           callback(err,null);
         }
         else{
-          callback(null,{sshInfo: sshInfo, taskList: res});
+          callback(null,{sshInfo: sshInfo, taskList: res, taskUpdates: taskUpdates});
         }
       });
     }
@@ -108,14 +110,7 @@ export function verify(uId : string, labId : string, callback : any) : void{
       callback(new Meteor.Error("Session.get returned no result for session in use"),null);
     }
     else{
-      result.verify(function(succ){
-        if(!succ){
-          callback(null,false);
-	}
-	else{
-          callback(null,true);    
-	}
-      })
+      result.verify(callback);
     }
   });
 
@@ -146,7 +141,7 @@ export function next(uId : string,labId : string, callback : any) : void{
               callback(err,null);
             }
             else{ 
-              callback(null,{taskList: ress, taskNo:res});
+              callback(null,{taskList: ress, taskNo:res, taskUpdates:result.taskUpdates});
             }
           });
         }
