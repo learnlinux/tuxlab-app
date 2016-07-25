@@ -112,7 +112,7 @@ if(Meteor.isServer) {
       this.autorun(function(computation) {
 
         // Check existance of userId
-        if(typeof this.userId !== "undefined") {
+        if(typeof this.userId !== "undefined" && this.userId !== null) {
 
           // Check if userId indeed corresponds to a user in the database
           let user = Meteor.users.findOne(this.userId);
