@@ -9,7 +9,7 @@ declare var nconf : any;
 var LabSession = require('../api/lab.session.js');
 
 //import sync Meteor methods
-import{ prepLab, next } from './labMethods.ts';
+import{ prepLab, next, verify } from './labMethods.ts';
 
 Meteor.methods({
   /**prepareLab: prepares a labExec object for the current user
@@ -18,10 +18,11 @@ Meteor.methods({
    * implement loading wheel, md fetch, course record create in callback
    */
   'prepareLab': function(labId : string){
-    var uId = Meteor.user().profile.nickname;
+    var user = Meteor.user().profile.nickname;
+    var uId = Meteor.userId();
     var sessionAsync = Meteor.wrapAsync(prepLab);
     try{
-      var res = sessionAsync(uId,labId);
+      var res = sessionAsync(user,uId,labId);
       return res;
     }
     catch(e){
@@ -29,16 +30,41 @@ Meteor.methods({
       throw new Meteor.Error("Internal Error","Error while preparing lab");
     }
   },
+
+  'verifyTask' : function(labId : string){
+    /**session.verify(cb)
+     */
+
+    //get user nick
+    var uId = Meteor.user().profile.nickname;
+    
+    //wrap sync functions
+    var verifyAsync = Meteor.wrapAsync(verify);
+
+
+    try{
+      var res = verifyAsync(uId,labId); //true if passed, false if not
+      return res;
+    }
+    catch(e){
+      //this is an actual -nonverify- error
+      //all errors are logged in server/imports/lab/labMethods.ts
+      throw new Meteor.Error("Internal Error","Error while verifying task");
+    }
+  },
+
+  //TODO: add verify button disappear on failure.
   'nextTask': function(labId : string){
     /**session.next(cb)
-     * cb(err,res) implement loading wheel here
-     * call nextTask callback(err,res) in cb
-     * change task markdown -frontend
      * change course records if passed
      */
-    
+
+    //get user nick
     var uId = Meteor.user().profile.nickname;
+
+    //wrap sync functions
     var nextAsync = Meteor.wrapAsync(next);
+    
     try{
       var res = nextAsync(uId,labId);
       return res;
@@ -48,6 +74,7 @@ Meteor.methods({
       throw new Meteor.Error("Internal Error","Error while moving to the next task");
     }
   },
+
   'endLab': function(labId : string){
     /**session.end(cb)
      * cb(err,res)

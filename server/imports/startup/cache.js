@@ -89,7 +89,6 @@ var NodeCache = require('node-cache');
             cb(err);
           }
           else{
-            TuxLog.log("warn","AM I HERE");
             cb(null);
           }
         });
@@ -105,8 +104,6 @@ var NodeCache = require('node-cache');
     ], function(err){
       if(err){
         TuxLog.log('warn',err);
-      }
-      else{
       }
     });
   }

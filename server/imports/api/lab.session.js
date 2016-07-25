@@ -1,23 +1,30 @@
 /// <reference path="./lab.exec.d.ts" />
 var lab = require('./lab.js');
-var session = function(){
-};
+var student = require('./lab.student.js');
+var session = function(){};
 
 session.prototype.env = null;
 session.prototype.lab = null;
+session.prototype.student = null;
 /* init: pulls labFile and initializes session object from it
  */
-session.prototype.init = function(user,labId,callback){
+session.prototype.init = function(user,userId,labId,callback){
   var slf = this;
   this.env = require('./lab.env.js');
   this.env.setUser(user);
-  
+
   // Get Metadata from Database
   var lab_data = Collections.labs.findOne({_id: labId}, {fields: {'labfile' : 0}});
+  var courseId = lab_data.course_id;
+
+  //initialize student object
+  this.student = new student(userId,labId,courseId);
+
   if(!lab_data || lab_data.length < 0){
     TuxLog.log("warn",new Error("Lab not found"));
     callback(new Error("Lab Not Found."), null);
   }
+
   else{
     // Get Course Metadata
     var course = Collections.courses.findOne({_id: lab_data.course_id}, {fields: {'labs' : 1 }});
@@ -53,7 +60,6 @@ session.prototype.init = function(user,labId,callback){
 	  else{
 	    slf.env.getPass(function(err,res){
               if(err){
-		//TODO: err log in server/imports/api/lab.env.js:
 		//TODO: separate streams in env.js
                 callback(err,null);
               }
@@ -102,7 +108,7 @@ session.prototype.start = function(callback){
     .then(function(){ 
         return new Promise(function(resolve,reject){
           try{
-            slf.lab.tasks(this.env);
+            slf.lab.tasks();
             resolve();
           }
           catch(e){
@@ -116,7 +122,6 @@ session.prototype.start = function(callback){
       }
     )    
     .then(function(){
-        console.log("resolved");
         if(!slf.lab.currentTask.next){
           TuxLog.log('warn',new Error('labfile tasks not properly chained at start'));
           callback(new Error("labfile task chaining error"));
@@ -124,7 +129,7 @@ session.prototype.start = function(callback){
 
         else{
           slf.lab.currentTask = slf.lab.currentTask.next;
-          slf.lab.currentTask.setupFn(slf.env)
+          slf.lab.currentTask.setupFn(slf.env,slf.student)
             .then(callback(null),function(err){
 		    TuxLog.log("warn",err);
 		    callback(err)});
@@ -136,6 +141,12 @@ session.prototype.start = function(callback){
       });
 }
 
+
+session.prototype.verify = function(callback){
+  
+  slf.lab.currentTask.verifyFn(slf.env,slf.student)
+    .then(callback(true),callback(false));
+}
 /* next: verifies that task is completed
  * moves on to next task and runs callback(null,parseTasks) if completed
  * runs callback(err,null) -err from verify- if not
@@ -151,10 +162,10 @@ session.prototype.next = function(callback){
 
   //if it is not the last task...
   else{
-    slf.lab.currentTask.verifyFn(slf.env)
+    slf.lab.currentTask.verifyFn(slf.env,slf.student)
       .then(function(){
          slf.lab.currentTask = slf.lab.currentTask.next;
-         slf.lab.currentTask.setupFn(slf.env)
+         slf.lab.currentTask.setupFn(slf.env,slf.student)
            .then(function(){
               slf.lab.taskNo += 1;
 	      callback(null,slf.lab.taskNo);
