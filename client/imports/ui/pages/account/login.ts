@@ -35,7 +35,7 @@ export default class Login extends MeteorComponent {
   }
 
   ngOnInit(){
-    this.redirect = decodeURI(this.route.snapshot.params['redirect']);
+    this.redirect = decodeURIComponent(this.route.snapshot.params['redirect']);
   }
 
   login(){
