@@ -59,6 +59,7 @@ export default class TaskView extends MeteorComponent {
   currentTask: number;
   currentCompleted: boolean;
   courseId: string;
+  nextButton : boolean;
   @ViewChild(Terminal) term : Terminal;
 
 
@@ -81,6 +82,7 @@ export default class TaskView extends MeteorComponent {
       //slf.labMarkdown = "# Sander \n ## are you sure this will work?";
       slf.tasks = res.taskList;
       slf.toTask(slf.tasks[0]);
+      slf.labProgress = "0 / "+slf.tasks.length;
       slf.auth = {
         username: Meteor.user().profile.nickname,
         password: res.sshInfo.pass,
@@ -91,6 +93,25 @@ export default class TaskView extends MeteorComponent {
       console.log("fired",err,res);
     });
   }
+
+  //called by the check button, I'm already calling this
+  verify(){
+    Meteor.call('verifyTask',"1",function(err,res){
+      if(err){
+        console.log("something went horribly wrong");
+      }
+      else{
+        if(res){
+	  nextButton = true;
+	}
+	else{
+	  nextButton = false;
+	}
+      }
+    });
+  }
+
+  //TODO: @Sander call this from a new button, only shown when nextButton == true
   nextTask(){
     console.log("proceeding");
     var slf = this;
@@ -102,6 +123,7 @@ export default class TaskView extends MeteorComponent {
          console.log(res);
          slf.tasks = res.taskList
          slf.toTask(slf.tasks[res.taskNo-1]);
+	 slf.labProgress = res.taskNo+" / "+slf.tasks.length
        }
        console.log("yay");
      });
