@@ -12,12 +12,15 @@ import { provideRouter, RouterConfig } from '@angular/router';
   import Err404 from '../pages/error/404.ts'
 
   // Lab
-  import TaskView from '../pages/lab/taskview.ts';
+  import LabView from '../pages/lab/labview.ts';
   import LabCreate from '../pages/lab/labcreate.ts'
 
   // Course
   import { courseRoutes } from './course.routes.ts';
   import { CourseGuardRecord } from './course.guard.record.ts';
+
+  // Course List
+  import CourseList from '../pages/courselist/courselist.ts';
 
   // Explore
   import Explore from '../pages/explore/explore.ts';
@@ -35,9 +38,10 @@ const routes : RouterConfig = [
   { path: 'login', component: Login },
   { path: 'terms', component: Terms },
   { path: 'privacy', component: Privacy },
-  { path: 'lab-view', component: TaskView },
+  { path: 'lab-view', component: LabView },
   { path: 'lab-create', component: LabCreate },
   { path: 'explore', component: Explore },
+  { path: 'courses', component: CourseList },
   { path: '**', component: Err404 }
 ]
 

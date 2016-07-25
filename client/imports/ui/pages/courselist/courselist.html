@@ -1,0 +1,29 @@
+<div class="tuxlab-courselist">
+  <md-card>
+    <md-card-title>
+      <span class="md-headline">Course List</span>
+    </md-card-title>
+    <md-card-content>
+      <md-data-table layout-fill>
+        <thead>
+          <tr>
+            <th class="md-text-cell">Course Number</th>
+            <th class="md-text-cell">Course Name</th>
+            <th>Instructor(s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let course of courses" (click)="toCourse(course)">
+            <td class="md-text-cell">{{ course.course_number }}</td>
+            <td class="md-text-cell">{{ course.course_name }}</td>
+            <td>
+              <div *ngFor="let instructor of course.instructors">
+                {{ instructor.name }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </md-data-table>  
+    </md-card-content>  
+  </md-card>
+</div>

@@ -28,11 +28,11 @@
 
 // Meteor method imports
   import "../../../lab/methods.ts"
-// Define TaskView Component
-
+  
+// Define LabView Component
 @Component({
-  selector: 'tuxlab-taskview',
-  templateUrl: '/client/imports/ui/pages/lab/taskview.html',
+  selector: 'tuxlab-labview',
+  templateUrl: '/client/imports/ui/pages/lab/labview.html',
   directives: [
     MarkdownView,
     Terminal,
@@ -49,7 +49,7 @@
 })
 
 @InjectUser('user')
-export default class TaskView extends MeteorComponent {
+export default class LabView extends MeteorComponent {
   user: Meteor.User;
   public auth : any;
   labMarkdown: string;
@@ -98,7 +98,7 @@ export default class TaskView extends MeteorComponent {
     });
   }
 
-  //called by the check button, I'm already calling this
+  // Called by Check button
   verify(){
     Meteor.call('verifyTask',"1",function(err,res){
       var slf = this;
@@ -107,33 +107,33 @@ export default class TaskView extends MeteorComponent {
       }
       else{
         if(res.verified){
-	  slf.nextButton = true;
-	}
-	else{
-	  slf.nextButton = false;
-	}
+          slf.nextButton = true;
+        }
+        else{
+          slf.nextButton = false;
+        }
         slf.taskUpdates = res.taskUpdates;
       }
     });
   }
 
-  //TODO: @Sander call this from a new button, only shown when nextButton == true
+  // Called by Next button
   nextTask(){
     console.log("proceeding");
     var slf = this;
-     Meteor.call('nextTask',"1",function(err,res){
-       if(err){
-	 slf.nextButton = false;
-         console.log("try again");
-       }
-       else{
-         console.log(res);
-         slf.tasks = res.taskList
-         slf.toTask(slf.tasks[res.taskNo-1]);
-	 slf.labProgress = res.taskNo+" / "+slf.tasks.length
-	 slf.taskUpdates = res.taskUpdates
-       }
-     });
+    Meteor.call('nextTask',"1",function(err,res){
+      if(err){
+      slf.nextButton = false;
+        console.log("try again");
+      }
+      else{
+        console.log(res);
+        slf.tasks = res.taskList
+        slf.toTask(slf.tasks[res.taskNo-1]);
+        slf.labProgress = res.taskNo+" / "+slf.tasks.length;
+        slf.taskUpdates = res.taskUpdates;
+      }
+    });
   }
   toTask(task) {
     this.labMarkdown = task.md;

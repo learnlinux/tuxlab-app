@@ -41,8 +41,8 @@
 
 // Export Dashboard Class
 export default class Dashboard extends MeteorComponent {
-  courses = [];
-  grades = [];
+  courses: Array<Object> = [];
+  grades: Array<Object> = [];
   constructor(mdIconRegistry: MdIconRegistry) {
     super();
 
@@ -51,7 +51,7 @@ export default class Dashboard extends MeteorComponent {
     mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
 		this.subscribe('user-courses', () => {
-			this.courses = courses.find().fetch();
+			this.courses = courses.find({}, { limit: 5 }).fetch();
 		}, true);
     this.subscribe('course-records', () => {
       let records = course_records.find().fetch();

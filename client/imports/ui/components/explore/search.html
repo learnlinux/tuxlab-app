@@ -32,7 +32,13 @@
             </div>
           </td>
           <td>
-            <a md-button [routerLink]="['/course/' + course._id]">Enroll</a>
+            <div *ngFor="let instructor of course.instructors">
+              {{ instructor.name }}
+            </div>
+          </td>
+          <td>
+            <a md-button [routerLink]="['/course/' + course._id]" *ngIf="course.permissions.content == 'auth'" >Enroll</a>
+            <a md-button [routerLink]="['/course/' + course._id]" *ngIf="course.permissions.content == 'any'" >View</a>
           </td>
         </tr>
       </tbody>
