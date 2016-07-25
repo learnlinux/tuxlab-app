@@ -36,9 +36,13 @@
     
         <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
         <div class="markdown-check-button">
-          <button md-raised-button (click)="check()" *ngIf="!currentCompleted">
+          <button md-raised-button (click)="verify()" *ngIf="!currentCompleted">
             Check
             <md-icon fontIcon="tuxicon-tick"></md-icon>
+          </button>
+          <button md-raised-button (click)="nextTask()" *ngIf="nextButton">
+            Next
+            <md-icon fontIcon="tuxicon-right"></md-icon>
           </button>
         </div>
     
