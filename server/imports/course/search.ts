@@ -29,7 +29,8 @@ export function course_search(text : string, results_per_page : number, page_no 
         "course_number" : 1,
         "course_name" : 1,
         "instructors" : 1,
-        "course_description" : 1
+        "course_description" : 1,
+        "permissions" : 1
       }
      };
    async.parallel(

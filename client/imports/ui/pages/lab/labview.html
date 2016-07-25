@@ -5,7 +5,7 @@
   
     <md-sidenav-layout>
       <md-sidenav #left [opened]="false" layout-padding>
-        <a md-button [routerLink]="['/course' + courseId]">Course Page</a>
+        <a md-button [routerLink]="['/course/' + courseId]">Course Page</a>
         <a md-button (click)="alert.show()">LabVM Connection</a>
         <a md-button *ngFor="let task of tasks" (click)="toTask(task)">
           {{ task.name }}
@@ -42,7 +42,7 @@
           </md-toolbar>
         </div>
     
-        <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
+        <tuxlab-markdown [mdData]="labMarkdown" [mdDataUpdate]="updateMarkdown">Task markdown loading...</tuxlab-markdown>
         <div class="markdown-check-button">
           <button md-raised-button (click)="verify()" *ngIf="!currentCompleted">
             Check

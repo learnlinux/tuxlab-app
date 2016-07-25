@@ -5,9 +5,9 @@
   import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { ViewChild, Component, ViewEncapsulation, provide, Input } from '@angular/core';
+  import { ViewChild, Component, ViewEncapsulation, provide, Input, OnInit } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
-  import { ROUTER_DIRECTIVES } from '@angular/router';
+  import { ROUTER_DIRECTIVES, ActivatedRoute, Router } from '@angular/router';
 
 // Angular Material Imports
   import { MeteorComponent } from 'angular2-meteor';
@@ -53,6 +53,7 @@ export default class LabView extends MeteorComponent {
   user: Meteor.User;
   public auth : any;
   labMarkdown: string;
+  updateMarkdown: string;
   taskName: string = "Task Name Here";
   labProgress: string = "3 / 10";
   tasks: Array<any>;
@@ -64,10 +65,12 @@ export default class LabView extends MeteorComponent {
   @ViewChild(Terminal) term : Terminal;
 
 
-  constructor() {
+  constructor(private route: ActivatedRoute, private router: Router) {
     super();
     this.taskUpdates = [];
     this.nextButton = false;
+    
+    // Tests
     this.tasks = [
       { id: 1, name: "Task 1", completed: true, md: "# Task 1" },
       { id: 2, name: "Task 2", completed: true, md: "# Task 2" },
@@ -76,6 +79,17 @@ export default class LabView extends MeteorComponent {
       { id: 5, name: "Task 5", completed: true, md: "# Task 5" },
       { id: 6, name: "Task 6", completed: false, md: "# Task 6" },
     ];
+    this.taskUpdates = [
+      "## Feedback 1",
+      "## Feedback 2",
+      "## Feedback 3",
+      null,
+      "## Feedback 5",
+      null
+    ];
+    this.joinTaskUpdate();
+    
+    document.getElementById('course-content').style.maxWidth = "100%";
   }
 
   ngAfterViewInit(){
@@ -137,8 +151,25 @@ export default class LabView extends MeteorComponent {
   }
   toTask(task) {
     this.labMarkdown = task.md;
+    this.updateMarkdown = task.update;
     this.currentTask = task.id;
     this.currentCompleted = task.completed;
+  }
+  
+  // Check and join tasks and taskupdates
+  joinTaskUpdate() {
+    if(this.tasks.length === this.taskUpdates.length) {
+      for(let i = 0; i < this.tasks.length; i++) {
+        this.tasks[i].update = this.taskUpdates[i];
+      }
+    }
+    else {
+      throw new Error("Tasks to not match task updates");
+    }
+  }
+  
+  ngOnInit() {
+    this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
   }
 
 }

@@ -1,4 +1,5 @@
-<div class="tuxlab-dashboard">
+<!-- User Dashboard -->
+<div class="tuxlab-dashboard" *ngIf="user">
   <!--Row of cards-->
   <div layout="column" layout-xl="row" class="cards">
     <div flex class="md-whiteframe-4dp card-red">
@@ -19,7 +20,7 @@
         </div>
       </md-content>
     </div>
-    
+
     <div flex class="md-whiteframe-4dp card-blue">
       <div class="card-title">
         <p>My Assignments</p>
@@ -38,7 +39,7 @@
         </md-content>
       </div>
     </div>
-    
+
     <div flex class="md-whiteframe-4dp card-dark-blue">
       <div class="card-title">
         <p>My Labs</p>
@@ -57,9 +58,10 @@
         </md-content>
       </div>
     </div>
-    
-    
   </div>
-    
+</div>
 
+<!-- Non-Logged In Dashboard -->
+<div class="tuxlab-dashboard" *ngIf="!user">
+  Welcome to TuxLab Message
 </div>

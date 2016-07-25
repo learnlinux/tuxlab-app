@@ -41,10 +41,10 @@
   }
   
   @media screen and (max-width: 800px) {
-    .tuxlab-taskview-terminal {
+    .tuxlab-labview-terminal {
       width: 100%;
     }
-    .tuxlab-taskview-step {
+    .tuxlab-labview-step {
       display: none;
     }
   }
@@ -144,8 +144,6 @@
       margin: 0 auto;
       max-width: $tuxlab-max-width;
 
-      background-color: #fcfcfc;
-
       // Align text to center
       .text-center {
         text-align: center;
@@ -156,6 +154,7 @@
       //Markdown Content
       .markdown-content {
         padding: 40px;
+        background-color: #fcfcfc;
         #task-markdown {
           code {
             background-color: #dfdfdf;
@@ -166,6 +165,12 @@
             margin-top: 18px;
           }
         }
+      }
+      #feedback-markdown {
+        margin: 25px;
+        background-color: #fcfcfc;
+        border-radius: 5px;
+        padding: 10px;
       }
     }
     
