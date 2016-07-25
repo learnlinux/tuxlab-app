@@ -44,7 +44,12 @@ export class CourseGuardRecord implements CanActivate{
             }
           }
           else{
-            slf.router.navigate(['/login',{ redirect : encodeURIComponent(state.url) }]);
+            var redirect;
+            if (state.url !== null && typeof state.url !== "undefined"){
+              redirect = {redirect : encodeURIComponent(state.url)}
+            }
+
+            slf.router.navigate(['/login', redirect ]);
             resolve(false);
           }
         });
