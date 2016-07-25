@@ -28,31 +28,27 @@ export class CourseGuardRecord implements CanActivate{
     const lab_id : string = (<any>route).params.labid;
 
     var obs : Observable<boolean> = Observable.fromPromise(new Promise<boolean> (function(resolve, reject){
-      Meteor.startup(function(){
 
-        console.log(Meteor.user());
-
-            Meteor.subscribe('course-records', () => {
-              // Enroll Authenticated Users
-              if(!!Meteor.user()){
-                var course_record = Collections.course_records.findOne({user_id: slf.user._id, course_id: course_id});
-                if (typeof course_record !== "undefined" && course_record !== null){
-                  console.log("Course Record was created");
-                  resolve(true);
-                }
-                else{
-                  console.log("Course Record not Created");
-                  Meteor.call('createUserCourseRecord');
-                  resolve(true);
-                }
-              }
-              else{
-                slf.router.navigate(['/login']);
-                return false;
-              }
-            });
-
+        Meteor.subscribe('course-records', () => {
+          // Enroll Authenticated Users
+          if(Meteor.userId()){
+            var course_record = Collections.course_records.findOne({user_id: slf.user._id, course_id: course_id});
+            if (typeof course_record !== "undefined" && course_record !== null){
+              console.log("Course Record was created");
+              resolve(true);
+            }
+            else{
+              console.log("Course Record not Created");
+              Meteor.call('createUserCourseRecord');
+              resolve(true);
+            }
+          }
+          else{
+            slf.router.navigate(['/login',{ redirect : encodeURIComponent(state.url) }]);
+            resolve(false);
+          }
         });
+
       }));
 
     return obs;

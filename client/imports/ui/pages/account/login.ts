@@ -6,7 +6,7 @@
 
 // Angular Imports
   import { Component } from '@angular/core';
-  import { Router } from '@angular/router';
+  import { ActivatedRoute, Router } from '@angular/router';
   import { APP_BASE_HREF } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
 
@@ -26,10 +26,16 @@
   })
 
 export default class Login extends MeteorComponent {
-  user: Meteor.User;
+  private user: Meteor.User;
+  private redirect: string;
 
-  constructor(private router: Router) {
+
+  constructor(private route: ActivatedRoute, private router: Router) {
     super();
+  }
+
+  ngOnInit(){
+    this.redirect = decodeURIComponent(this.route.snapshot.params['redirect']);
   }
 
   login(){
@@ -40,7 +46,12 @@ export default class Login extends MeteorComponent {
 
       // Handle Login Success
       if(!res){
-	      slf.router.navigate(['account',Meteor.user()._id]);
+        if(typeof slf.redirect === "undefined" || slf.redirect === null){
+  	      slf.router.navigate(['account',Meteor.user()._id]);
+        }
+        else{
+          slf.router.navigate([slf.redirect]);
+        }
       }
       else{
         //TODO Login Error
