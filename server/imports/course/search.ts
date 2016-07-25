@@ -1,4 +1,7 @@
 var async = require ('async');
+
+declare var Collections : any;
+
 /**
   Searches Courses based on search terms
 **/
