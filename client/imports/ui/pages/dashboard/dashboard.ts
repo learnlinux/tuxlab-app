@@ -19,30 +19,33 @@
 
 // Icon
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-	
+
 // Collections
   import { courses } from '../../../../../collections/courses.ts';
   import { course_records } from '../../../../../collections/course_records.ts';
-	
+
 
 // Define Dashboard Component
-	@Component({
-		selector: 'tuxlab-dashboard',
-		templateUrl: '/client/imports/ui/pages/dashboard/dashboard.html',
-		directives: [
-			MATERIAL_DIRECTIVES,
-			MD_ICON_DIRECTIVES,
-			MD_SIDENAV_DIRECTIVES,
-			ROUTER_DIRECTIVES
-		],
-		viewProviders: [ MdIconRegistry ],
-		encapsulation: ViewEncapsulation.None
-	})
+@Component({
+	selector: 'tuxlab-dashboard',
+	templateUrl: '/client/imports/ui/pages/dashboard/dashboard.html',
+	directives: [
+		MATERIAL_DIRECTIVES,
+		MD_ICON_DIRECTIVES,
+		MD_SIDENAV_DIRECTIVES,
+		ROUTER_DIRECTIVES
+	],
+	viewProviders: [ MdIconRegistry ],
+	encapsulation: ViewEncapsulation.None
+})
 
 // Export Dashboard Class
+@InjectUser('user')
 export default class Dashboard extends MeteorComponent {
-  courses = [];
-  grades = [];
+	user : Meteor.User;
+  private courses = [];
+  private grades = [];
+
   constructor(mdIconRegistry: MdIconRegistry) {
     super();
 
