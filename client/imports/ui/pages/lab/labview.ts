@@ -56,12 +56,12 @@ export default class LabView extends MeteorComponent {
   updateMarkdown: string;
   taskName: string = "Task Name Here";
   labProgress: string = "3 / 10";
-  tasks: Array<any>;
+  tasks: Array<any> = [];
   currentTask: number;
   currentCompleted: boolean;
   courseId: string;
   nextButton : boolean;
-  taskUpdates : Array<string>
+  taskUpdates : Array<string> = [];
   @ViewChild(Terminal) term : Terminal;
 
 
@@ -69,25 +69,6 @@ export default class LabView extends MeteorComponent {
     super();
     this.taskUpdates = [];
     this.nextButton = false;
-    
-    // Tests
-    this.tasks = [
-      { id: 1, name: "Task 1", completed: true, md: "# Task 1" },
-      { id: 2, name: "Task 2", completed: true, md: "# Task 2" },
-      { id: 3, name: "Task 3", completed: true, md: "# Task 3" },
-      { id: 4, name: "Task 4", completed: false, md: "# Task 4" },
-      { id: 5, name: "Task 5", completed: true, md: "# Task 5" },
-      { id: 6, name: "Task 6", completed: false, md: "# Task 6" },
-    ];
-    this.taskUpdates = [
-      "## Feedback 1",
-      "## Feedback 2",
-      "## Feedback 3",
-      null,
-      "## Feedback 5",
-      null
-    ];
-    this.joinTaskUpdate();
     
     document.getElementById('course-content').style.maxWidth = "100%";
   }

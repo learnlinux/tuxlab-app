@@ -28,7 +28,7 @@ export class GradeList extends MeteorComponent{
     super();
   }
   
-  setGrade() {
+  setGrades() {
     if (this.courseRecord !== undefined) {
       let labs = this.courseRecord.labs;
       let totalEarned = 0;
@@ -61,28 +61,26 @@ export class GradeList extends MeteorComponent{
   }
   
   getCourseRecords(){
-    if(this.cur_user) {
-      // Student
-      this.subscribe('course-records', () => {
-        this.courseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
-        this.setGrade();
-      }, true);
-    }
-    else{
-      this.subscribe('course-records', [this.courseId, this.userId], () => {
-        var localCourseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: this.userId });
-        if (localCourseRecord === null || typeof localCourseRecord === "undefined") {
-          // Admin
-          this.courseRecord = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
-          this.setGrade();
+    this.subscribe('course-records', () => {
+      this.autorun(() => {
+        if(this.cur_user) {
+          // Student 
+          this.courseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
         }
         else {
-          // Instructor
-          this.courseRecord = localCourseRecord;
-          this.setGrade();
+          var localCourseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: this.userId });
+          if(localCourseRecord === null || typeof localCourseRecord === "undefined") {
+            // Admin 
+            this.courseRecord = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
+          }
+          else {
+            // Instructor
+            this.courseRecord = localCourseRecord;
+          }
         }
-      }, true);
-    }
+        this.setGrades();
+      });
+    }, true);
   }
 
   ngOnInit(){

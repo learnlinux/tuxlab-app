@@ -118,9 +118,20 @@
 	}
 }
 
-.course-gradelist {
-	display: none;
-}
-.course-lablist {
-	display: none;
+.tuxlab-course-dashboard {
+  md-card {
+    md-card-title {
+      md-card-title-text {
+        md-icon {
+          color: #666666;
+          float: right;
+          line-height: 0px;
+          cursor: pointer;
+        }
+        .tuxicon-cog:before {
+          font-size: 36px;
+        }
+      }
+    }
+  }
 }

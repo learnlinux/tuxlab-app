@@ -47,29 +47,27 @@
       super(); 
     }
     
-    getCourseRecords(){
-      if(this.cur_user) {
-        // Student
-        this.subscribe('course-records', () => {
-          this.courseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
-          this.setLabs();
-        }, true);
-      }
-      else{
-        this.subscribe('course-records', () => {
-          var localCourseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: this.userId });
-          if (localCourseRecord === null || typeof localCourseRecord === "undefined") {
-            // Admin
-            this.courseRecord = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
-            this.setLabs();
+    getCourseRecords(){     
+      this.subscribe('course-records', () => {
+        this.autorun(() => {
+          if(this.cur_user) {
+            // Student
+            this.courseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
           }
           else {
-            // Instructor
-            this.courseRecord = localCourseRecord;
-            this.setLabs();
+            var localCourseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: this.userId });
+            if(localCourseRecord === null || typeof localCourseRecord === "undefined") {
+              // Admin
+              this.courseRecord = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
+            }
+            else {
+              // Instructor
+              this.courseRecord = localCourseRecord;
+            }
           }
-        }, true);
-      }
+          this.setLabs();
+        });
+      }, true);
     }
     
     setLabs() {

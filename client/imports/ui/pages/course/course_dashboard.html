@@ -3,7 +3,11 @@
   <md-card>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">{{ courseName }}</span>
+        <span class="md-headline">
+          {{ courseName }}
+          <md-icon fontIcon="tuxicon-cog" *ngIf="isInstruct()"></md-icon>
+        </span>
+        
       </md-card-title-text>
     </md-card-title>
     <md-card-content>
@@ -15,13 +19,11 @@
   </md-card>
   
   <!-- Responsive Section for Grades and Assignments -->
-  <div layout="row" layout-xs="column">
-    
+  <div layout="row" layout-xs="column" *ngIf="!isInstruct()">  
     <!-- Grade List -->
     <div flex>
       <tuxlab-gradelist></tuxlab-gradelist>
     </div>
-    
     <!-- Announcements -->
     <div flex>
       <md-card>
@@ -56,9 +58,44 @@
         </md-card-content>
       </md-card>
     </div>
-    
+  </div>
+  
+  <!-- Permissions Section -->
+  <div layout="row" *ngIf="isInstruct()">
+    <div flex>
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Permissions</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          Data
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+          <a md-button>Submit</a>
+        </md-card-actions>
+      </md-card>
+    </div>
+    <div flex>
+      <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Syllabus</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          Data
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+          <a md-button>Submit</a>
+        </md-card-actions>
+      </md-card>
+    </div>
   </div>
   
   <!--Lab List Card-->
-  <tuxlab-lablist></tuxlab-lablist>
+  <div *ngIf="!isInstruct()">
+    <tuxlab-lablist></tuxlab-lablist>
+  </div>
 </div>
