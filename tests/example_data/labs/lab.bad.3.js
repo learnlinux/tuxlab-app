@@ -1,12 +1,10 @@
 var tuxlab = new lab();
 
-tuxlab.init = function(){} 
-
 tuxlab.setup = function(env){
  return env.init();
 }
-tuxlab.tasks = function(){
-  var s1 = function(env){
+tuxlab.tasks = funcn({
+  var s1 = function(ea){
     return env.start();
   }
   var v1 = function(env){
