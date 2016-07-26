@@ -1,21 +1,45 @@
 "use strict";
-var tuxOrig = require('./lab.js');
-
+var lab = require('./lab.js');
+var lab_orig = new lab();
 
 /// <reference path="./checkLab.d.ts" />
-module.exports = function(str){
-  if(!str) { return null; } //check for file import
-  var tux = eval(str);
-  if(((typeof tux != "undefined") &&
-      (typeof tux.setup === 'function') &&  //check for instructor field types
-      (typeof tux.tasks === 'function') &&
-      (typeof tux.tasks() != 'undefined') &&
-      (tux.init.toString() === tuxOrig.init.toString()) &&  //check for unchanged
-      (tux.newTask.toString() === tuxOrig.newTask.toString()))){
-    return null;
-  }
+module.exports = function(labfile){
+
+  if(!labfile) {
+    TuxLog.log("warn", "labfile is null");
+    return false; 
+  } //check for file import
   else{
-    return tux.titleList;
+    try{
+      var  lab_obj = eval(labfile);
+      if(typeof lab_obj == undefined || typeof lab_obj == null){ //check for lab object
+        throw new Error("tux is undefined/null");
+      }
+      
+      else if(typeof lab_obj.setup != 'function'){
+        throw new Error("setup is not a function");
+      }
+
+      else if(typeof lab_obj.tasks != 'function'){
+        throw new Error("tasks is not a function");
+      }
+      
+      else if(lab_obj.init.toString() != lab_orig.init.toString()){
+        throw new Error("lab file changes init function");
+      }
+
+      else if(lab_obj.newTask.toString() != lab_orig.newTask.toString()){
+        throw new Error("lab file changes newTask function");
+      }
+
+      else{
+        return true;
+      }
+    }
+
+    catch(e){
+      TuxLog.log("warn",e);
+      return false;
+    }
   }
-  return null;
 }

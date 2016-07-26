@@ -121,11 +121,11 @@ export default class LabView extends MeteorComponent {
       }
       else{
         if(res.verified){
-          slf.nextButton = true;
-        }
-        else{
-          slf.nextButton = false;
-        }
+	  slf.nextButton = true;
+	}
+	else{
+	  slf.nextButton = false;
+	}
         slf.taskUpdates = res.taskUpdates;
       }
     });
@@ -135,19 +135,19 @@ export default class LabView extends MeteorComponent {
   nextTask(){
     console.log("proceeding");
     var slf = this;
-    Meteor.call('nextTask',"1",function(err,res){
-      if(err){
-      slf.nextButton = false;
-        console.log("try again");
-      }
-      else{
-        console.log(res);
-        slf.tasks = res.taskList
-        slf.toTask(slf.tasks[res.taskNo-1]);
-        slf.labProgress = res.taskNo+" / "+slf.tasks.length;
-        slf.taskUpdates = res.taskUpdates;
-      }
-    });
+      Meteor.call('nextTask',"1",function(err,res){
+        if(err){
+          slf.nextButton = false;
+          console.log("try again");
+        }
+        else{
+          console.log(res);
+          slf.tasks = res.taskList
+          slf.toTask(slf.tasks[res.taskNo-1]);
+          slf.labProgress = res.taskNo+" / "+slf.tasks.length
+          slf.taskUpdates = res.taskUpdates
+        }
+      });
   }
   toTask(task) {
     this.labMarkdown = task.md;
