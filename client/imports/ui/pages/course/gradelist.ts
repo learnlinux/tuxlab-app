@@ -5,7 +5,7 @@
   
 // Angular Imports
   import { Component } from '@angular/core';
-  import { ActivatedRoute } from '@angular/router';
+  import { ActivatedRoute, Router } from '@angular/router';
   
 declare var Collections: any;
 
@@ -24,9 +24,11 @@ export class GradeList extends MeteorComponent{
   grades: Array<any> = [];
   cur_user: boolean;
   
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     super();
-    this.courseRecord = this.getCourseRecords();
+  }
+  
+  setGrade() {
     if (this.courseRecord !== undefined) {
       let labs = this.courseRecord.labs;
       let totalEarned = 0;
@@ -36,50 +38,57 @@ export class GradeList extends MeteorComponent{
         let tasks = lab.tasks;
         for (let j = 0; j < tasks.length; j++) {
           let task = tasks[j];
-          totalEarned += task.grade.earned;
-          totalFull += task.grade.total;
+          totalEarned += task.grade[0];
+          totalFull += task.grade[1];
           this.grades.push({
             'name': 'lab ' + (i + 1).toString() + ' task ' + (j + 1).toString(),
-            'grade': ((task.grade.earned * 100.0) / task.grade.total).toString() + '%'
+            'grade': ((task.grade[0] * 100.0) / task.grade[1]).toString() + '%'
           });
         }
       }
+      let courseAverage;
+      if (totalFull !== 0) {
+        courseAverage = ((totalEarned * 100.0) / totalFull).toString() + "%";
+      }
+      else {
+        courseAverage = "N/A";
+      }
       this.grades.push({
         'name': 'Course Average',
-        'grade': ((totalEarned * 100.0) / totalFull).toString() + '%'
+        'grade': courseAverage
       });
-    }
-
+    }  
   }
-
+  
   getCourseRecords(){
-    var record;
     if(this.cur_user) {
       // Student
-      this.subscribe('course-records', [this.courseId, Meteor.userId()], () => {
-        record = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
+      this.subscribe('course-records', () => {
+        this.courseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
+        this.setGrade();
       }, true);
-      return record;
     }
     else{
-      var record;
       this.subscribe('course-records', [this.courseId, this.userId], () => {
         var localCourseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: this.userId });
         if (localCourseRecord === null || typeof localCourseRecord === "undefined") {
           // Admin
-          record = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
+          this.courseRecord = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
+          this.setGrade();
         }
         else {
           // Instructor
-          record = localCourseRecord;
+          this.courseRecord = localCourseRecord;
+          this.setGrade();
         }
       }, true);
-      return record;
     }
   }
 
   ngOnInit(){
-    this.userId = this.route.snapshot.params['userid'];
+    this.userId = this.router.routerState.parent(this.route).snapshot.params['userid'];
+    this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
     this.cur_user = (typeof this.userId === "undefined" || this.userId === null);
+    this.getCourseRecords();
   }
 }

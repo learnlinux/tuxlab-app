@@ -5,9 +5,9 @@
   import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { ViewChild, Component, ViewEncapsulation, provide, Input } from '@angular/core';
+  import { ViewChild, Component, ViewEncapsulation, provide, Input, OnInit } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
-  import { ROUTER_DIRECTIVES } from '@angular/router';
+  import { ROUTER_DIRECTIVES, ActivatedRoute, Router } from '@angular/router';
 
 // Angular Material Imports
   import { MeteorComponent } from 'angular2-meteor';
@@ -64,7 +64,7 @@ export default class LabView extends MeteorComponent {
   @ViewChild(Terminal) term : Terminal;
 
 
-  constructor() {
+  constructor(private route: ActivatedRoute, private router: Router) {
     super();
     this.taskUpdates = [];
     this.nextButton = false;
@@ -76,6 +76,7 @@ export default class LabView extends MeteorComponent {
       { id: 5, name: "Task 5", completed: true, md: "# Task 5" },
       { id: 6, name: "Task 6", completed: false, md: "# Task 6" },
     ];
+    document.getElementById('course-content').style.maxWidth = "100%";
   }
 
   ngAfterViewInit(){
@@ -139,6 +140,10 @@ export default class LabView extends MeteorComponent {
     this.labMarkdown = task.md;
     this.currentTask = task.id;
     this.currentCompleted = task.completed;
+  }
+  
+  ngOnInit() {
+    this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
   }
 
 }

@@ -5,7 +5,7 @@
   
     <md-sidenav-layout>
       <md-sidenav #left [opened]="false" layout-padding>
-        <a md-button [routerLink]="['/course' + courseId]">Course Page</a>
+        <a md-button [routerLink]="['/course/' + courseId]">Course Page</a>
         <a md-button (click)="alert.show()">LabVM Connection</a>
         <a md-button *ngFor="let task of tasks" (click)="toTask(task)">
           {{ task.name }}
