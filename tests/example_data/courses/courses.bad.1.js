@@ -1,5 +1,6 @@
 /**
-  Example Courses Database for the TuxLab Project
+  Example Bad Courses Database for the TuxLab Project
+  Invalid Instructors
 **/
 
 module.exports = [
@@ -9,12 +10,8 @@ module.exports = [
 	course_number: "15-131",
 	instructors: [
           {
-	    name: "Derek Brown",
-	    id: "1"
-	  },
-	  {
-	    name: "Tom Cortina",
-	    id: "2"
+	    name: "Brown",
+	    id: "7"
 	  }
 	],
   	course_description: {
@@ -42,14 +39,6 @@ module.exports = [
   	course_number: '15-112',
   	course_name: 'Fundamentals of Programming',
 	instructors: [
-	  {
-	    name: "Aaron Mortenson",
-	    id: "3"
-	  },
-	  {
-	    name: "Cem Ersoz",
-	    id: "4"
-	  }
 	],
   	course_description: {
   		content: `
@@ -81,12 +70,8 @@ module.exports = [
 	instructors: [
 	  {
 	    name: "Tom Cortina",
-	    id: "2"
+	    id: "0"
 	  },
-	  {
-	    name: "Sander Shi",
-	    id: "5"
-	  }
 	],
   	course_description: {
   		content: `
@@ -118,7 +103,7 @@ module.exports = [
 	instructors: [
 	  {
 	    name: "Cem Ersoz",
-	    id: "4"
+	    id: "-1"
 	  }
 	],
     	course_description: {
@@ -148,7 +133,7 @@ module.exports = [
 	instructors: [
 	  {
 	    name: "Aaron Mortenson",
-	    id: "3"
+	    id: "30"
 	  }
 	],
   	course_description: {
