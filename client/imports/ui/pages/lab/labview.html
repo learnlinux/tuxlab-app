@@ -42,7 +42,7 @@
           </md-toolbar>
         </div>
     
-        <tuxlab-markdown [mdData]="labMarkdown">Task markdown loading...</tuxlab-markdown>
+        <tuxlab-markdown [mdData]="labMarkdown" [mdDataUpdate]="updateMarkdown">Task markdown loading...</tuxlab-markdown>
         <div class="markdown-check-button">
           <button md-raised-button (click)="verify()" *ngIf="!currentCompleted">
             Check
