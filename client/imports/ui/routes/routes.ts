@@ -19,8 +19,12 @@ import { provideRouter, RouterConfig } from '@angular/router';
   import { courseRoutes } from './course.routes.ts';
   import { CourseGuardRecord } from './course.guard.record.ts';
 
+  // Course List
+  import CourseList from '../pages/courselist/courselist.ts';
+
   // Explore
   import Explore from '../pages/explore/explore.ts';
+  
 
   // Static
   import Privacy from '../pages/static/privacy.ts';
@@ -38,6 +42,7 @@ const routes : RouterConfig = [
   { path: 'lab-view', component: TaskView },
   { path: 'lab-create', component: LabCreate },
   { path: 'explore', component: Explore },
+  { path: 'courses', component: CourseList },
   { path: '**', component: Err404 }
 ]
 

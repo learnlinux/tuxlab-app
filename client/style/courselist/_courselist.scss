@@ -1,0 +1,10 @@
+.tuxlab-courselist {
+  max-width: $tuxlab-max-width;
+  margin: 0 auto;
+  width: 100%;
+  tbody {
+    tr {
+      cursor: pointer;
+    }
+  }
+}
