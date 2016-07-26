@@ -61,28 +61,24 @@ export class GradeList extends MeteorComponent{
   }
   
   getCourseRecords(){
-    if(this.cur_user) {
-      // Student
-      this.subscribe('course-records', () => {
+    this.subscribe('course-records', () => {
+      if(this.cur_user) {
+        // Student
         this.courseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
-        this.setGrade();
-      }, true);
-    }
-    else{
-      this.subscribe('course-records', [this.courseId, this.userId], () => {
+      }
+      else {
         var localCourseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: this.userId });
         if (localCourseRecord === null || typeof localCourseRecord === "undefined") {
           // Admin
           this.courseRecord = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
-          this.setGrade();
         }
         else {
           // Instructor
           this.courseRecord = localCourseRecord;
-          this.setGrade();
         }
-      }, true);
-    }
+      }
+      this.setGrade();
+    }, true);
   }
 
   ngOnInit(){
