@@ -30,20 +30,28 @@ export class CourseGuardRecord implements CanActivate{
     var obs : Observable<boolean> = Observable.fromPromise(new Promise<boolean> (function(resolve, reject){
 
         Meteor.subscribe('course-records', () => {
+
           // Enroll Authenticated Users
           if(Meteor.userId()){
             var course_record = Collections.course_records.findOne({user_id: slf.user._id, course_id: course_id});
             if (typeof course_record !== "undefined" && course_record !== null){
-              console.log("Course Record was created");
               resolve(true);
             }
             else{
-              console.log("Course Record not Created");
-              Meteor.call('createUserCourseRecord');
-              resolve(true);
+              Meteor.call('createUserCourseRecord',[course_id, Meteor.userId()], function(err){
+                if(err){
+                  slf.router.navigate(['error/500']);
+                  resolve(false);
+                }
+                else{
+                  resolve(true);
+                }
+              });
             }
           }
           else{
+
+            // Create Redirect Query Object
             var redirect;
             if (state.url !== null && typeof state.url !== "undefined"){
               redirect = {redirect : encodeURIComponent(state.url)}

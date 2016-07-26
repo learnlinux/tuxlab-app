@@ -9,7 +9,7 @@ import { provideRouter, RouterConfig } from '@angular/router';
   import Account from '../pages/account/account.ts'
 
   // Error
-  import Err404 from '../pages/error/404.ts'
+  import ErrorPage from '../pages/error/error.ts'
 
   // Lab
   import TaskView from '../pages/lab/taskview.ts';
@@ -38,7 +38,8 @@ const routes : RouterConfig = [
   { path: 'lab-view', component: TaskView },
   { path: 'lab-create', component: LabCreate },
   { path: 'explore', component: Explore },
-  { path: '**', component: Err404 }
+  { path: 'error/:code', component: ErrorPage },
+  { path: '**', component: ErrorPage }
 ]
 
 export const ROUTE_PROVIDERS = [
