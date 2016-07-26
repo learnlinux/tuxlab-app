@@ -27,7 +27,7 @@
 
 // Export CourseList Class
   export default class CourseList extends MeteorComponent {
-    courses: Array<Object>;
+    courses: Array<Object> = [];
     constructor(private router: Router) {
       super();
       // Subscribe from user courses

@@ -41,8 +41,8 @@
 
 // Export Dashboard Class
 export default class Dashboard extends MeteorComponent {
-  courses = [];
-  grades = [];
+  courses: Array<Object> = [];
+  grades: Array<Object> = [];
   constructor(mdIconRegistry: MdIconRegistry) {
     super();
 
