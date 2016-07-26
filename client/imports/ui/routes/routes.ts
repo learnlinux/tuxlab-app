@@ -1,6 +1,9 @@
 import { provideRouter, RouterConfig } from '@angular/router';
 
 /* PAGES */
+  // Auth Guard
+  import { GuardAuth } from './guard.auth.ts';
+
   // Dashboard
   import Dashboard from '../pages/dashboard/dashboard.ts'
 
@@ -9,10 +12,9 @@ import { provideRouter, RouterConfig } from '@angular/router';
   import Account from '../pages/account/account.ts'
 
   // Error
-  import Err404 from '../pages/error/404.ts'
+  import ErrorPage from '../pages/error/error.ts'
 
   // Lab
-  import LabView from '../pages/lab/labview.ts';
   import LabCreate from '../pages/lab/labcreate.ts'
 
   // Course
@@ -24,7 +26,6 @@ import { provideRouter, RouterConfig } from '@angular/router';
 
   // Explore
   import Explore from '../pages/explore/explore.ts';
-  
 
   // Static
   import Privacy from '../pages/static/privacy.ts';
@@ -34,19 +35,20 @@ import { provideRouter, RouterConfig } from '@angular/router';
 const routes : RouterConfig = [
   ...courseRoutes,
   { path: '', component: Dashboard },
-  { path: 'account', component: Account },
-  { path: 'account/:userid', component: Account },
+  { path: 'account', canActivate: [ GuardAuth ], component: Account },
+  { path: 'account/:userid', canActivate: [ GuardAuth ], component: Account },
   { path: 'login', component: Login },
   { path: 'terms', component: Terms },
   { path: 'privacy', component: Privacy },
-  { path: 'lab-view', component: LabView },
   { path: 'lab-create', component: LabCreate },
   { path: 'explore', component: Explore },
   { path: 'courses', component: CourseList },
-  { path: '**', component: Err404 }
+  { path: 'error/:code', component: ErrorPage },
+  { path: '**', component: ErrorPage }
 ]
 
 export const ROUTE_PROVIDERS = [
   provideRouter(routes),
+  GuardAuth,
   CourseGuardRecord
 ];
