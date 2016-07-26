@@ -28,11 +28,11 @@
 
 // Meteor method imports
   import "../../../lab/methods.ts"
-// Define TaskView Component
-
+  
+// Define LabView Component
 @Component({
-  selector: 'tuxlab-taskview',
-  templateUrl: '/client/imports/ui/pages/lab/taskview.html',
+  selector: 'tuxlab-labview',
+  templateUrl: '/client/imports/ui/pages/lab/labview.html',
   directives: [
     MarkdownView,
     Terminal,
@@ -49,7 +49,7 @@
 })
 
 @InjectUser('user')
-export default class TaskView extends MeteorComponent {
+export default class LabView extends MeteorComponent {
   user: Meteor.User;
   public auth : any;
   labMarkdown: string;

@@ -15,7 +15,8 @@
             {{ course.course_description.content }}
           </p>
           <div class="course-link">
-            <a md-button [routerLink]="['/course/' + course._id]">Enroll</a>
+            <a md-button [routerLink]="['/course/' + course._id]" *ngIf="course.permissions.content == 'auth'">Enroll</a>
+            <a md-button [routerLink]="['/course/' + course._id]" *ngIf="course.permissions.content == 'any'" >View</a>
           </div>
         </md-content>
       </template>

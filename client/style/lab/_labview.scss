@@ -1,9 +1,9 @@
-.tuxlab-taskview {
+.tuxlab-labview {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 
-  .tuxlab-taskview-terminal{
+  .tuxlab-labview-terminal{
     height: 100vh;
     width: 50%;
 
@@ -52,7 +52,7 @@
   /**
   Markdown
   **/
-  .tuxlab-taskview-step{
+  .tuxlab-labview-step{
     width: 50%;
     md-sidenav-layout {
       height: 100vh;
