@@ -1,6 +1,9 @@
 import { provideRouter, RouterConfig } from '@angular/router';
 
 /* PAGES */
+  // Auth Guard
+  import { GuardAuth } from './guard.auth.ts';
+
   // Dashboard
   import Dashboard from '../pages/dashboard/dashboard.ts'
 
@@ -30,13 +33,11 @@ import { provideRouter, RouterConfig } from '@angular/router';
 const routes : RouterConfig = [
   ...courseRoutes,
   { path: '', component: Dashboard },
-  { path: 'account', component: Account },
-  { path: 'account/:userid', component: Account },
+  { path: 'account', canActivate: [ GuardAuth ], component: Account },
+  { path: 'account/:userid', canActivate: [ GuardAuth ], component: Account },
   { path: 'login', component: Login },
   { path: 'terms', component: Terms },
   { path: 'privacy', component: Privacy },
-  { path: 'lab-view', component: TaskView },
-  { path: 'lab-create', component: LabCreate },
   { path: 'explore', component: Explore },
   { path: 'error/:code', component: ErrorPage },
   { path: '**', component: ErrorPage }
@@ -44,5 +45,6 @@ const routes : RouterConfig = [
 
 export const ROUTE_PROVIDERS = [
   provideRouter(routes),
+  GuardAuth,
   CourseGuardRecord
 ];

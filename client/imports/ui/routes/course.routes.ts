@@ -4,6 +4,7 @@ import { RouterConfig, CanActivate } from '@angular/router';
 
 // Course Routing
 import CourseView from '../pages/course/course.ts';
+import { GuardAuth } from './guard.auth.ts';
 import { CourseGuardRecord } from './course.guard.record.ts';
 
 // Pages
@@ -21,8 +22,8 @@ export const courseRoutes: RouterConfig = [
       { path: '', component: CourseDashboard },
       { path: 'grades', component: GradeList },
       { path: 'labs', component: LabList },
-      { path: 'labs/:labid', canActivate: [ CourseGuardRecord ], component: LabView },
-      { path: 'grades/grade', component: GradeView }
+      { path: 'labs/:labid', canActivate: [ GuardAuth, CourseGuardRecord ], component: LabView },
+      { path: 'grades/:gradeid', canActivate: [ GuardAuth ], component: GradeView }
   //  { path: 'users', as: 'UserList', component: UserList },
   //  { path: 'user/:userid', as: 'UserView', component: UserView },
   //  { path: 'labs', as: 'LabList', component: LabList },
