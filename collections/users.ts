@@ -88,6 +88,10 @@ if (Meteor.isServer){
       },
       roles: {
         type: roleSchema
+      },
+      announcements:{
+        type: [announcementSchema],
+        defaultValue: []
       }
     });
     (<any> Meteor.users).attachSchema(userSchema);
