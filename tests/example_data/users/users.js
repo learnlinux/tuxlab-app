@@ -93,6 +93,24 @@ module.exports = [
       instructor: ["3"],
       student: ["1","2"]
     }
+  },
+  {
+    _id: "10",
+    services:{
+      Google: {},
+      Facebook: {}
+    },
+    profile:{
+      first_name: "Super",
+      last_name: "User",
+      nickname: "Superuser",
+      school: "CMU SCS",
+      email: "super@tuxlab.org",
+      picture: "https://placekitten.com/g/250/250"
+    },
+    roles:{
+      instructor: ["1","2","3","4","5"]
+    }
   }
 
 ]
