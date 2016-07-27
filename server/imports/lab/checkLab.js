@@ -12,7 +12,7 @@ module.exports = function(labfile){
   else{
     try{
       var  lab_obj = eval(labfile);
-      if(typeof lab_obj == undefined || typeof lab_obj == null){ //check for lab object
+      if(typeof lab_obj === "undefined" || typeof lab_obj === "null"){ //check for lab object
         throw new Error("tux is undefined/null");
       }
       
