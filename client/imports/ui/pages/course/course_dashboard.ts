@@ -69,12 +69,4 @@ declare var Collections: any;
     ngOnInit() {
       this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
     }
-    isInstruct() {
-      if (typeof this.courseId !== "undefined") {
-        return Roles.isInstructorFor(this.courseId);
-      }
-      else {
-        return false;
-      }
-    }
   }
