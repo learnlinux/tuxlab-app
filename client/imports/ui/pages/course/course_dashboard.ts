@@ -65,6 +65,5 @@ declare var Collections: any;
     }
     ngOnInit() {
       this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
-      console.log(this.courseId);
     }
   }

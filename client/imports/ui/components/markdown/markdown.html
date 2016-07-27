@@ -2,5 +2,9 @@
     <!-- Task Markdown -->
     <div class="markdown-content">
       <div id="task-markdown" [innerHTML]="convert(mdData)"></div>
-    </div>    
+    </div>
+    <div *ngIf="mdDataUpdate != null" id="feedback-markdown">
+      <p>Task Feedback:</p> 
+      <div [innerHTML]="convert(mdDataUpdate)"></div>
+    </div>
 </div>

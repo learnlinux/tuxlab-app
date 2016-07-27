@@ -48,6 +48,7 @@
 // Export MarkdownView Class
 export class MarkdownView extends MeteorComponent{
   @Input() mdData = "";
+  @Input() mdDataUpdate = "";
 
   constructor(mdIconRegistry: MdIconRegistry) {
     super();
@@ -58,7 +59,7 @@ export class MarkdownView extends MeteorComponent{
   }
   convert(markdown: string) {
     let md = marked.setOptions({});
-    if(typeof markdown !== "undefined") {
+    if(typeof markdown !== "undefined" && markdown !== null) {
       return md.parse(markdown);
     }
     else {
