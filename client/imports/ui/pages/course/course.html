@@ -6,7 +6,7 @@
         <!-- Navigation -->
         <div class="course-toolbar-nav">
           <a md-button [routerLink]="['/course/' + courseId]" class="home-button">{{ courseNumber }} Home</a>
-          <a md-button [routerLink]="['/course/' + courseId + '/labs']" *ngIf="!isInstruct()">Labs</a>
+          <a md-button [routerLink]="['/course/' + courseId + '/labs']" *ngIf="isInstruct()">Labs</a>
           <a md-button [routerLink]="['/course/' + courseId + '/grades']" *ngIf="!isInstruct()">Grades</a>
           <a md-button [routerLink]="['/course/' + courseId]" *ngIf="isInstruct()">Students</a> 
         </div>
@@ -15,7 +15,7 @@
     <md-toolbar class="small" *showItBootstrap="['xs']">
       <div>
         <a md-button [routerLink]="['/course/' + courseId]">{{ courseNumber }} Home</a>
-        <a md-button [routerLink]="['/course/' + courseId + '/labs']" *ngIf="!isInstruct()">Labs</a>
+        <a md-button [routerLink]="['/course/' + courseId + '/labs']" *ngIf="isInstruct()">Labs</a>
         <a md-button [routerLink]="['/course/' + courseId + '/grades']" *ngIf="!isInstruct()">Grades</a>
         <a md-button [routerLink]="['/course/' + courseId]" *ngIf="isInstruct()">Students</a>  
       </div>
