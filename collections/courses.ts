@@ -186,6 +186,7 @@ courses.allow({
       // Publish All Courses TODO: add pagination
       Meteor.publish('explore-courses', function(){
         this.autorun(function(computation) {
+          console.log('aga');
           if (Roles.isGlobalAdministrator(this.userId)) {
             return courses.find();
           }

@@ -24,6 +24,9 @@
 // LabList and Grades import
   import { GradeList } from './gradelist.ts';
   import { LabList } from './lablist.ts';
+  
+// Roles Import
+  import { Roles } from '../../../../../collections/users.ts';
 
 declare var Collections: any;
 
@@ -41,7 +44,7 @@ declare var Collections: any;
       GradeList
     ],
     viewProviders: [MdIconRegistry],
-    providers: [OVERLAY_PROVIDERS],
+    providers: [ OVERLAY_PROVIDERS ],
     encapsulation: ViewEncapsulation.None
   })
 
@@ -49,8 +52,8 @@ declare var Collections: any;
   export class CourseDashboard extends MeteorComponent {
     course;
     courseId: string;
-    courseDescription: String = "";
-    courseName: String = "";
+    courseDescription: string = "";
+    courseName: string = "";
 
     constructor(private route: ActivatedRoute, private router: Router) {
       super();
@@ -65,5 +68,13 @@ declare var Collections: any;
     }
     ngOnInit() {
       this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
+    }
+    isInstruct() {
+      if (typeof this.courseId !== "undefined") {
+        return Roles.isInstructorFor(this.courseId);
+      }
+      else {
+        return false;
+      }
     }
   }
