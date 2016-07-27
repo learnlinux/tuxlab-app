@@ -23,7 +23,7 @@ env.prototype.labVm = '';
 env.prototype.docker = null;
 env.prototype.vmList = {};
 env.prototype.usr = null;
-env.prototype.helixKey = null;
+env.prototype.dnsKey = null;
 env.prototype.redRouterKey = null;
 
 //sets user
@@ -53,13 +53,13 @@ env.deleteRecords = function(user,callback){
       }
     },
     function(cb){
-      if(this.helixKey){
-        etcd.del(this.helixKey,{recursive: true}, function(err, res){
+      if(this.dnsKey){
+        etcd.del(this.dnsKey,{recursive: true}, function(err, res){
 	  cb(err);
         });
       }
       else{
-        cb(new Error('silly', 'No HelixKey to Delete.'));
+        cb(new Error('silly', 'No DNS Key to Delete.'));
       }
     }
   ], function(err, results){
@@ -175,7 +175,9 @@ env.prototype.init = function(opts){
                 //create etcd directory for helix record
                 var dir = slf.root_dom.split('.');
                 dir.reverse().push(slf.usr,'A');
-                slf.helixKey = dir.join('/');
+                slf.dnsKey = dir.join('/');
+                slf.dnsKey = "/skydns/"+slf.dnsKey;
+
                 slf.redRouterKey = '/redrouter/SSH::'+slf.usr;
 
                 //set etcd record for redrouter
@@ -192,13 +194,11 @@ env.prototype.init = function(opts){
                       if(err){
                         TuxLog.log('warn', err);
                         reject(err);
-                        //TODO: get the actual information that we actually want. Perhaps change this entirely
-			//TODO: @Aaron
                       }
                       else{
-                       
+                        var dnsIP = container.Node.IP;
 			//set etcd record for helix
-            	        etcd.set(slf.helixKey,container.NetworkSettings,function(err,res){
+            	        etcd.set(slf.helixKey,{host: dnsIP},function(err,res){
             	          if(err){
             	            TuxLog.log('warn',err);
             	            reject(err);
