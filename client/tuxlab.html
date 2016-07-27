@@ -49,7 +49,7 @@
             <div class="tux-toolbar-nav">
               <a md-button [routerLink]="['/']"> Dashboard </a>
               <a md-button [routerLink]="['/explore']"> Explore </a>
-              <a md-button [routerLink]="['/']"> Courses </a>
+              <a md-button [routerLink]="['/courses']"> Courses </a>
             </div>
             <span flex></span>
             <!-- Profile Dropdown -->
@@ -73,7 +73,7 @@
         <div class="mobile-toolbar-buttons">
           <a [routerLink]="['/']"><md-icon fontIcon="tuxicon-home"></md-icon></a>
           <a [routerLink]="['/explore']"><md-icon fontIcon="tuxicon-wire"></md-icon></a>
-          <a [routerLink]="['/']"><md-icon fontIcon="tuxicon-book"></md-icon></a>
+          <a [routerLink]="['/courses']"><md-icon fontIcon="tuxicon-book"></md-icon></a>
           <a (click)="right.toggle()" *ngIf="user">
             <md-icon fontIcon="tuxicon-person"></md-icon>
           </a>

@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let lab of labs" [routerLink]="['/lab-view']">
+          <tr *ngFor="let lab of labs" [routerLink]="['/course/' + courseId + '/labs/' + lab.id]">
             <td class="md-text-cell">{{ lab.name }}</td>
             <td>{{ lab.completed }}</td>
             <td>{{ lab.date }}</td>

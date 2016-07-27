@@ -11,8 +11,8 @@ import { CourseGuardRecord } from './course.guard.record.ts';
 import { GradeList } from '../pages/course/gradelist.ts';
 import { LabList } from '../pages/course/lablist.ts';
 import { CourseDashboard } from '../pages/course/course_dashboard.ts';
-import { LabView } from '../pages/course/labview.ts';
 import { GradeView } from '../pages/course/gradeview.ts';
+import LabView from '../pages/lab/labview.ts';
 
 export const courseRoutes: RouterConfig = [
   {
