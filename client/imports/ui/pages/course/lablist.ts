@@ -3,7 +3,7 @@
 
 // Angular Imports
   import { Component } from '@angular/core';
-  import { ActivatedRoute, Router } from '@angular/router';
+  import { ROUTER_DIRECTIVES, ActivatedRoute, Router} from '@angular/router';
 
 // Angular Material Imports
   import { MATERIAL_DIRECTIVES, MATERIAL_PROVIDERS } from 'ng2-material';
@@ -25,6 +25,7 @@
     templateUrl: '/client/imports/ui/pages/course/lablist.html',
     directives: [
       MdProgressBar,
+      ROUTER_DIRECTIVES,
       MATERIAL_DIRECTIVES
     ],
     providers: [ MATERIAL_PROVIDERS ]

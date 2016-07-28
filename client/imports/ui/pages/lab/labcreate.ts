@@ -4,6 +4,7 @@
 // Angular Imports
   	import { Component, Output } from '@angular/core';
     import { FORM_DIRECTIVES, FORM_PROVIDERS } from '@angular/forms';
+    import { ROUTER_DIRECTIVES } from '@angular/router';
 
 // Angular Material Imports
     import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -18,6 +19,10 @@
   selector: 'tuxlab-labcreate',
   templateUrl: '/client/imports/ui/pages/lab/labcreate.html',
   directives: [ FileDropDirective,
+<<<<<<< HEAD
+                ROUTER_DIRECTIVES,
+=======
+>>>>>>> 2552d21e3df4aa53fdb6718215740f39acfb00a4
                 FORM_DIRECTIVES,
                 MATERIAL_DIRECTIVES
   ],

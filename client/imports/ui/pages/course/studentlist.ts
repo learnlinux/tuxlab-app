@@ -3,6 +3,7 @@
 
 // Angular Imports
 	import { Component, Input } from '@angular/core';
+	import { ROUTER_DIRECTIVES } from '@angular/router';
 
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -21,6 +22,7 @@
 		selector: 'tuxlab-searchview',
 		templateUrl: '/client/imports/ui/components/explore/search.html',
 		directives: [ MATERIAL_DIRECTIVES,
+									ROUTER_DIRECTIVES,
 					        MD_TABS_DIRECTIVES,
 					        MD_INPUT_DIRECTIVES,
 		]

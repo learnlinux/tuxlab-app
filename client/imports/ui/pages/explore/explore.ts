@@ -4,10 +4,13 @@
 // Angular Imports
 	import { Component, Input } from '@angular/core';
 	import { InjectUser } from 'angular2-meteor-accounts-ui';
+	import { ROUTER_DIRECTIVES } from '@angular/router'
+
 
 // Angular Material Imports
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MeteorComponent } from 'angular2-meteor';
+
 	import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs';
 	import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 	import { MdToolbar } from '@angular2-material/toolbar';
@@ -23,6 +26,7 @@
     templateUrl: '/client/imports/ui/pages/explore/explore.html',
     directives: [
       MATERIAL_DIRECTIVES,
+			ROUTER_DIRECTIVES,
       MD_TABS_DIRECTIVES,
       MD_INPUT_DIRECTIVES,
       FORM_DIRECTIVES,

@@ -4,7 +4,7 @@
 // Angular Imports
   import { Component } from '@angular/core';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
-  import { ActivatedRoute, Router, RouterState } from '@angular/router';
+  import { ROUTER_DIRECTIVES, ActivatedRoute, Router, RouterState } from '@angular/router';
 
 // Angular Material Imports
   import { MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -29,6 +29,7 @@ declare var Collections: any;
     selector: 'tuxlab-course-dashboard',
     templateUrl: '/client/imports/ui/pages/course/course_dashboard.html',
     directives: [
+      ROUTER_DIRECTIVES,
       MATERIAL_DIRECTIVES,
       MD_INPUT_DIRECTIVES,
       LabList,

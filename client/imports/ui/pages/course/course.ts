@@ -38,11 +38,10 @@
     courseId: string;
     courseNumber: string = "";
     user: Meteor.User;
-    constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
+
+    constructor(private route: ActivatedRoute) {
       super();
-      // Create Icon Font
-      mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-      mdIconRegistry.setDefaultFontSetClass('tuxicon');
+
       this.subscribe('user-courses', () => {
         this.autorun(() => {
           this.courseNumber = Collections.courses.findOne({ _id: this.courseId }).course_number;
