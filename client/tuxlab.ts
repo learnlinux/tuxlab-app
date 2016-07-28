@@ -8,23 +8,21 @@
     import './startup.js';
 
 // Angular Imports
+    import { MeteorComponent } from 'angular2-meteor';
     import { Component, ViewEncapsulation, provide, PLATFORM_DIRECTIVES} from '@angular/core';
-    import { bootstrap } from '@angular/platform-browser-dynamic';
-
     import { APP_BASE_HREF, CORE_DIRECTIVES } from '@angular/common';
     import { HTTP_PROVIDERS } from '@angular/http';
-    import { disableDeprecatedForms, provideForms } from '@angular/forms';
+    import { bootstrap } from '@angular/platform-browser-dynamic';
     import { InjectUser } from 'angular2-meteor-accounts-ui';
 
 // Angular Material Imports
     import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
+    import { ResponsiveState, RESPONSIVE_DIRECTIVES } from 'responsive-directives-angular2';
+    import { disableDeprecatedForms, provideForms } from '@angular/forms';
     import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon'
     import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
 
     import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
-    import { ResponsiveState, RESPONSIVE_DIRECTIVES } from 'responsive-directives-angular2';
-
-    import { MeteorComponent } from 'angular2-meteor';
 
 // Routes
     import { ROUTER_DIRECTIVES, RouterConfig, Router } from '@angular/router';
@@ -38,7 +36,7 @@
                   MATERIAL_DIRECTIVES,
                   MD_TOOLBAR_DIRECTIVES,
                   MD_ICON_DIRECTIVES,
-                  MD_SIDENAV_DIRECTIVES,
+                  MD_SIDENAV_DIRECTIVES
                  ],
     viewProviders: [MdIconRegistry]
 })

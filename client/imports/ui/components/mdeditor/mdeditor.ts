@@ -1,11 +1,9 @@
 // Meteor Imports
 	import { Meteor } from 'meteor/meteor';
+	import { MeteorComponent } from 'angular2-meteor';
 
 // Angular Imports
 	import { Component, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-
-// Angular Meteor Imports
-	import { MeteorComponent } from 'angular2-meteor';
 
 // Declare Global Variable
 	var SimpleMDE : any = require('simplemde');
