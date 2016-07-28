@@ -1,12 +1,8 @@
 // Meteor Imports
   import { Meteor } from 'meteor/meteor';
-  import { Mongo }  from 'meteor/mongo';
-  import 'reflect-metadata';
-  import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { ViewChild, Component, ViewEncapsulation, provide, Input, OnInit } from '@angular/core';
-  import { bootstrap } from 'angular2-meteor-auto-bootstrap';
+  import { ViewChild, Component, Input } from '@angular/core';
   import { ROUTER_DIRECTIVES, ActivatedRoute, Router } from '@angular/router';
 
 // Angular Material Imports
@@ -23,12 +19,9 @@
   import { Terminal } from "../../components/wetty/terminal.ts";
   import { MarkdownView } from "../../components/markdown/markdown.ts";
 
-// Icons
-  import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-
 // Meteor method imports
   import "../../../lab/methods.ts"
-  
+
 // Define LabView Component
 @Component({
   selector: 'tuxlab-labview',
@@ -36,16 +29,13 @@
   directives: [
     MarkdownView,
     Terminal,
-    MD_ICON_DIRECTIVES,
     MATERIAL_DIRECTIVES,
     MD_INPUT_DIRECTIVES,
     MD_SIDENAV_DIRECTIVES,
     MD_TOOLBAR_DIRECTIVES,
     ROUTER_DIRECTIVES
   ],
-  viewProviders: [ MdIconRegistry ],
   providers: [ OVERLAY_PROVIDERS, MATERIAL_PROVIDERS ],
-  encapsulation: ViewEncapsulation.None
 })
 
 @InjectUser('user')
@@ -69,10 +59,11 @@ export default class LabView extends MeteorComponent {
     super();
     this.taskUpdates = [];
     this.nextButton = false;
-    
+
     document.getElementById('course-content').style.maxWidth = "100%";
   }
 
+  //TODO @cemersoz cleanup
   ngAfterViewInit(){
     var slf = this;
     Meteor.call('prepareLab',"1", function(err,res){
@@ -136,7 +127,7 @@ export default class LabView extends MeteorComponent {
     this.currentTask = task.id;
     this.currentCompleted = task.completed;
   }
-  
+
   // Check and join tasks and taskupdates
   joinTaskUpdate() {
     if(this.tasks.length === this.taskUpdates.length) {
@@ -148,7 +139,7 @@ export default class LabView extends MeteorComponent {
       throw new Error("Tasks to not match task updates");
     }
   }
-  
+
   ngOnInit() {
     this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
   }

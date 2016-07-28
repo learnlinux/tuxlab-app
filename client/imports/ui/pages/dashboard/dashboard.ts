@@ -1,15 +1,9 @@
 // Meteor Imports
 	import { Meteor } from 'meteor/meteor';
-	import { Mongo }       from 'meteor/mongo';
 	import { MeteorComponent } from 'angular2-meteor';
-	import 'reflect-metadata';
-	import 'zone.js/dist/zone';
 
 // Angular Imports
-	import { Component, ViewEncapsulation, provide } from '@angular/core';
-	import { bootstrap } from 'angular2-meteor-auto-bootstrap';
-	import { APP_BASE_HREF } from '@angular/common';
-	import { HTTP_PROVIDERS } from '@angular/http';
+	import { Component } from '@angular/core';
 	import { InjectUser } from 'angular2-meteor-accounts-ui';
 	import { ROUTER_DIRECTIVES } from '@angular/router';
 
@@ -17,13 +11,9 @@
 	import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
 	import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
 
-// Icon
-	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-
 // Collections
   import { courses } from '../../../../../collections/courses.ts';
   import { course_records } from '../../../../../collections/course_records.ts';
-
 
 // Define Dashboard Component
 @Component({
@@ -31,12 +21,9 @@
 	templateUrl: '/client/imports/ui/pages/dashboard/dashboard.html',
 	directives: [
 		MATERIAL_DIRECTIVES,
-		MD_ICON_DIRECTIVES,
 		MD_SIDENAV_DIRECTIVES,
 		ROUTER_DIRECTIVES
-	],
-	viewProviders: [ MdIconRegistry ],
-	encapsulation: ViewEncapsulation.None
+	]
 })
 
 // Export Dashboard Class
@@ -46,12 +33,8 @@ export default class Dashboard extends MeteorComponent {
   private courses = [];
   private grades = [];
 
-  constructor(mdIconRegistry: MdIconRegistry) {
+  constructor() {
     super();
-
-    // Create Icon Font
-    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-    mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
 		this.subscribe('user-courses', () => {
 			this.courses = courses.find({}, { limit: 5 }).fetch();

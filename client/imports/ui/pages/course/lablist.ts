@@ -1,19 +1,18 @@
 // Meteor Imports
   import { Meteor } from 'meteor/meteor';
-  import { Mongo } from 'meteor/mongo';
 
 // Angular Imports
   import { Component } from '@angular/core';
-  import { ROUTER_DIRECTIVES, ActivatedRoute, Router } from '@angular/router';
-  
+  import { ActivatedRoute, Router } from '@angular/router';
+
 // Angular Material Imports
   import { MATERIAL_DIRECTIVES, MATERIAL_PROVIDERS } from 'ng2-material';
   import { MdProgressBar } from '@angular2-material/progress-bar';
-  
+
 // Angular Meteor Imports
   import { MeteorComponent } from 'angular2-meteor';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
-  
+
 // Declare Collections
   declare var Collections: any;
 
@@ -26,12 +25,11 @@
     templateUrl: '/client/imports/ui/pages/course/lablist.html',
     directives: [
       MdProgressBar,
-      MATERIAL_DIRECTIVES,
-      ROUTER_DIRECTIVES
+      MATERIAL_DIRECTIVES
     ],
     providers: [ MATERIAL_PROVIDERS ]
   })
-  
+
   export class LabList extends MeteorComponent {
     user: Meteor.User;
     courseId: string;
@@ -39,15 +37,15 @@
     labs: Array<Object> = [];
     courseRecord: any;
     cur_user: boolean;
-    
+
     // Progress Bar Value
     public determinateValue: number = 0;
-    
+
     constructor(private route: ActivatedRoute, private router: Router) {
-      super(); 
+      super();
     }
-    
-    getCourseRecords(){     
+
+    getCourseRecords(){
       this.subscribe('course-records', () => {
         this.autorun(() => {
           if(this.cur_user) {
@@ -69,7 +67,7 @@
         });
       }, true);
     }
-    
+
     setLabs() {
       if(typeof this.courseRecord !== "undefined") {
         let labs = this.courseRecord.labs;
@@ -104,5 +102,5 @@
       this.cur_user = (typeof this.userId === "undefined" || this.userId === null);
       this.getCourseRecords();
     }
-    
+
   }
