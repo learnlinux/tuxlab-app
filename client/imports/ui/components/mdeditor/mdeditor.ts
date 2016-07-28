@@ -4,7 +4,7 @@
 // Angular Imports
 	import { Component, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 
-// Angular Material Imports
+// Angular Meteor Imports
 	import { MeteorComponent } from 'angular2-meteor';
 
 // Declare Global Variable
@@ -17,7 +17,7 @@
 	})
 
 // Export Editor Class
-	export class MDEditor extends MeteorComponent {
+	export class MDEditor extends MeteorComponent implements OnChanges {
 		@ViewChild('simplemde') textarea : ElementRef;
 		@Input() mdData: string = "";
 		@Output() mdUpdated = new EventEmitter<string>();

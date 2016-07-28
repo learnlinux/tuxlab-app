@@ -28,6 +28,9 @@
 // Roles Import
   import { Roles } from '../../../../../collections/users.ts';
 
+// Markdown Editor
+  import { MDEditor } from '../../components/mdeditor/mdeditor.ts';
+
 declare var Collections: any;
 
 // Define CourseDashboard Component
@@ -41,6 +44,7 @@ declare var Collections: any;
       FORM_DIRECTIVES,
       MD_INPUT_DIRECTIVES,
       LabList,
+      MDEditor,
       GradeList
     ],
     viewProviders: [MdIconRegistry],
@@ -54,6 +58,7 @@ declare var Collections: any;
     courseId: string;
     courseDescription: string = "";
     courseName: string = "";
+    courseSyllabus: string = "";
 
     constructor(private route: ActivatedRoute, private router: Router) {
       super();
@@ -63,10 +68,31 @@ declare var Collections: any;
         if (typeof this.course !== "undefined") {
           this.courseName = this.course.course_name;
           this.courseDescription = this.course.course_description.content;
+          this.courseSyllabus = this.course.course_description.syllabus;
         }
       }, true);
     }
     ngOnInit() {
       this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
+    }
+    isInstruct() {
+      if (typeof this.courseId !== "undefined") {
+        return Roles.isInstructorFor(this.courseId);
+      }
+      else {
+        return false;
+      }
+    }
+    mdUpdate(md: string) {
+      this.courseSyllabus = md;
+    }
+    updateSyllabus() {
+      Collections.courses.update({ 
+        _id: this.courseId 
+      }, {
+        $set: {
+          "course_description.syllabus": this.courseSyllabus
+        }
+      });
     }
   }

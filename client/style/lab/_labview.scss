@@ -59,13 +59,10 @@
       md-sidenav {
         width: 260px;
         padding: 0;
-        a {
-          color: black;
-          display: block;
+        button {
           width: 260px;
           height: 50px;
           margin: 0;
-          line-height: 50px;
           text-align: left;
           padding-left: 15px;
           padding-right: 15px;
@@ -74,7 +71,7 @@
             color: #64dd17;
           }
           .tuxicon-tick:before {
-            font-size: 36px
+            font-size: 36px;
           }
           .tuxicon-progress:before {
             font-size: 36px;

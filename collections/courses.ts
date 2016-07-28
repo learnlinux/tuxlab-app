@@ -17,7 +17,7 @@ courses.allow({
     return Roles.isGlobalAdministrator(userId);
   },
   update: function (userId, doc : any, fields : any) {
-    if(fields.contains('featured')){
+    if(fields.indexOf('featured') >= 0){
       return Roles.isAdministratorFor(userId);
     }
     else{

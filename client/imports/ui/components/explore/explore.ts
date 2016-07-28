@@ -22,8 +22,8 @@
 // Icon
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
-// Courses Imports
-	import { courses } from '../../../../../collections/courses.ts';
+// Collections
+	declare var Collections: any;
 
 // Define ExploreView Component
 	@Component({
@@ -44,7 +44,7 @@
 // Export ExploreView Class
 export class ExploreView extends MeteorComponent {
 
-	courses: Array<any> = [];
+	exploreCourses: Array<any> = [];
 
 	constructor(mdIconRegistry: MdIconRegistry) {
 		super();
@@ -53,7 +53,7 @@ export class ExploreView extends MeteorComponent {
 		mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
 		this.subscribe('explore-courses', () => {
-			this.courses = courses.find().fetch();
+			this.exploreCourses = Collections.courses.find({ "featured": true }).fetch();
 		}, true);
 	}
 }

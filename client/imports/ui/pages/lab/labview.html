@@ -5,24 +5,22 @@
   
     <md-sidenav-layout>
       <md-sidenav #left [opened]="false" layout-padding>
-        <a md-button [routerLink]="['/course/' + courseId]">Course Page</a>
-        <a md-button (click)="alert.show()">LabVM Connection</a>
-        <a md-button *ngFor="let task of tasks" (click)="toTask(task)">
+        <button md-button [routerLink]="['/course/' + courseId]">Course Page</button>
+        <button md-button (click)="alert.show()">LabVM Connection</button>
+        <button md-button *ngFor="let task of tasks" (click)="toTask(task)" [disabled]="(!task.completed) && (task.id > 1) && !tasks[task.id - 2].completed">
           {{ task.name }}
           <md-icon fontIcon="tuxicon-tick" *ngIf="task.completed == true"></md-icon>
           <md-icon fontIcon="tuxicon-progress" *ngIf="task.id == currentTask" class="progress"></md-icon>
-        </a>
+        </button>
       </md-sidenav>
       
       <md-content layout-padding>
-        
         
         <md-dialog #alert>
           <md-dialog-title>LabVM Connection</md-dialog-title>
           You are currently connected.
           <md-dialog-actions ok="Got It"></md-dialog-actions>
         </md-dialog>
-        
         
         <!-- Title Bar -->
         <div class="markdown-toolbar">
