@@ -4,7 +4,7 @@ tuxlab.setup = function(env){
  return env.init();
 }
 tuxlab.tasks = function(){
-  var s1 = function(env){
+  var s1  = function(env){
     return env.start();
   }
   var v1 = function(env){
@@ -35,7 +35,7 @@ tuxlab.tasks = function(){
    I'm a cheesepuff
    @othervar1
   */
-  var task1 = tuxlab.newTask('TASK1','MD1',s1,v1)
+  var task1 = tuxlab.newTask('TASK1','MD1',s1,v1);
   /*
 @task2
 this is task 2 
@@ -45,7 +45,7 @@ this is task 2
    I'm a cheesepuff
    @anothervar2
   */
-  var task2 = tuxlab.newTask('TASK2','MD2',s2,v2)
+  var task2 = tuxlab.newTask('TASK2','MD2',s2,v2);
   /*@task3 this is task 3
    onion{}  
    later();
@@ -53,7 +53,7 @@ this is task 2
    I'm a cheesepuff
    @othervar3
   */
-  var task3 = tuxlab.newTask('TASK3','MD3',s3,v3)
+  var task3 = tuxlab.newTask('TASK3','MD3',s3,v3);
   /*
    @task4 this is task 4
    turnip{}  
@@ -62,7 +62,7 @@ this is task 2
    I'm a cheesepuff
    @othervar4
   */
-  var task4 = tuxlab.newTask('TASK4','MD4',s4,v4)
+  var task4 = tuxlab.newTask('TASK4','MD4',s4,v4);
   return tuxlab.init()
            .nextTask(task1)
            .nextTask(task2)

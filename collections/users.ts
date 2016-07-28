@@ -9,6 +9,8 @@ declare var nconf: any;
 
 if (Meteor.isServer){
   Meteor.startup(function(){
+
+    // Defines User Profile
     var profileSchema = new SimpleSchema({
       first_name: {
         type: String
@@ -32,6 +34,8 @@ if (Meteor.isServer){
         type: String
       }
     });
+
+    // Defines User Abilities
     var roleSchema = new SimpleSchema({
       administrator: {
         type: [String],
@@ -50,6 +54,29 @@ if (Meteor.isServer){
         defaultValue: []
       }
     });
+
+    // Defines Notifications presented to user
+    var announcementSchema = new SimpleSchema({
+      timeCreated: {
+        type:  Date,
+        autoValue: function(){
+          return Date.now();
+        }
+      },
+      type: {
+        type: String,
+        allowedValues: ['lab','instructor','tuxlab']
+      },
+      message: {
+        type: String
+      },
+      link: {
+        type: String,
+        optional: true
+      }
+    })
+
+    // Overall User Schema
     var userSchema = new SimpleSchema({
       services: {
         type: Object,
@@ -61,6 +88,10 @@ if (Meteor.isServer){
       },
       roles: {
         type: roleSchema
+      },
+      announcements:{
+        type: [announcementSchema],
+        defaultValue: []
       }
     });
     (<any> Meteor.users).attachSchema(userSchema);

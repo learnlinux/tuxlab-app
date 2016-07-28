@@ -51,14 +51,13 @@ labs.allow({
         },
         course_id: {
           type: String,
-          regEx: SimpleSchema.RegEx.Id,
           custom: function() {
             let currentCourse = Collections.courses.findOne({ _id: this.value });
             let instructors = currentCourse.instructor_ids;
 
             // Check existence of course
             if(currentCourse === "undefined") {
-              labSchema.addInvalidKeys([{name: "course_id", type: "nonexistantCourse"}]);
+              labSchema.addInvalidKeys([{name: "course_id", type: "nonexistentCourse"}]);
             }
             else{
               return;
