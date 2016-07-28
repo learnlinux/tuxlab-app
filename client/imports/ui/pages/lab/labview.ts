@@ -52,7 +52,7 @@
 export default class LabView extends MeteorComponent {
   user: Meteor.User;
   public auth : any;
-  labMarkdown: string;
+  labMarkdown: string = "# This is a markdown string \n ## So is this.";
   updateMarkdown: string;
   taskName: string = "Task Name Here";
   labProgress: string = "3 / 10";
@@ -102,11 +102,11 @@ export default class LabView extends MeteorComponent {
       }
       else{
         if(res.verified){
-	  slf.nextButton = true;
-	}
-	else{
-	  slf.nextButton = false;
-	}
+          slf.nextButton = true;
+        }
+        else{
+          slf.nextButton = false;
+        }
         slf.taskUpdates = res.taskUpdates;
       }
     });
