@@ -5,11 +5,12 @@
   import 'zone.js/dist/zone';
 
 // Angular Imports
-  import { Component, ViewEncapsulation, provide, Input } from '@angular/core';
+  import { Component, ViewEncapsulation, provide, Input, OnInit } from '@angular/core';
   import { bootstrap } from 'angular2-meteor-auto-bootstrap';
   import { APP_BASE_HREF } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
+  import { ActivatedRoute, Router } from '@angular/router';
 
 // Angular Material Imports
   import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
@@ -23,6 +24,14 @@
 
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
+  
+// MDEditor
+  import { MDEditor } from '../mdeditor/mdeditor.ts';
+  
+// Roles
+  import { Roles } from '../../../../../collections/users.ts';
+  
+declare var Collections: any;
 
 // Markdown Imports
 /// <reference path="./marked.d.ts" />
@@ -37,7 +46,8 @@
       MD_TOOLBAR_DIRECTIVES,
       MD_ICON_DIRECTIVES,
       MD_INPUT_DIRECTIVES,
-      MD_SIDENAV_DIRECTIVES
+      MD_SIDENAV_DIRECTIVES,
+      MDEditor
     ],
 
     viewProviders: [ MdIconRegistry ],
@@ -49,12 +59,12 @@
 export class MarkdownView extends MeteorComponent{
   @Input() mdData = "";
   @Input() mdDataUpdate = "";
+  courseId: string;
+  labId: string;
+  showMDE: boolean = false;
 
-  constructor(mdIconRegistry: MdIconRegistry) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     super();
-    // Create Icon Font
-    mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
-    mdIconRegistry.setDefaultFontSetClass('tuxicon');
 
   }
   convert(markdown: string) {
@@ -65,5 +75,36 @@ export class MarkdownView extends MeteorComponent{
     else {
       return "";
     }
+  }
+  ngOnInit() {
+    this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
+    this.labId = this.route.snapshot.params['labid'];
+  }
+  isInstruct() {
+    if(typeof this.courseId !== "undefined") {
+      return Roles.isInstructorFor(this.courseId);
+    }
+    else {
+      return false;
+    }
+  }
+  // Toggle to show either markdown editor or task markdown
+  mdeToggle() {
+    this.showMDE = !this.showMDE;
+  }
+  
+  // Update new markdown 
+  updateMarkdown() {
+    Collections.labs.update({ 
+      _id: this.labId 
+    }, { 
+      $set: {
+        // Set current task markdown 
+      } 
+    });
+  }
+  // Output event from MDE 
+  mdUpdated(md: string) {
+    this.mdData = md;
   }
 }

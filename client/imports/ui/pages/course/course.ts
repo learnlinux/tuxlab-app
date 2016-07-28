@@ -19,6 +19,9 @@
 
 // Icon
   import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
+  
+// Roles
+  import { Roles } from '../../../../../collections/users.ts';
 
   declare var Collections: any;
 
@@ -40,14 +43,29 @@
 // Export CourseView Class
   export default class CourseView extends MeteorComponent {
     courseId: string;
+    courseNumber: string = "";
     user: Meteor.User;
     constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
       super();
       // Create Icon Font
       mdIconRegistry.registerFontClassAlias('tux', 'tuxicon');
       mdIconRegistry.setDefaultFontSetClass('tuxicon');
+      this.subscribe('user-courses', () => {
+        this.autorun(() => {
+          this.courseNumber = Collections.courses.findOne({ _id: this.courseId }).course_number;
+        });
+      }, true);
     }
     ngOnInit() {
       this.courseId = (<any>(this.route.snapshot.params)).courseid;
     }
+    isInstruct() {
+      if(typeof this.courseId !== "undefined") {
+        return Roles.isInstructorFor(this.courseId);
+      }
+      else {
+        return false;
+      }
+    }
   }
+

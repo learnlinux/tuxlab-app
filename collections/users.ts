@@ -119,7 +119,7 @@ if (Meteor.isServer){
     static isStudentFor(courseid : string, userid? : string){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
 
-      if(this.isLoggedIn(user) && typeof user.roles.student === "array"){
+      if(this.isLoggedIn(user) && Array.isArray(user.roles.student)){
         for (var i = 0; i < user.roles.student.length; i++){
           if (user.roles.student[i][0] === courseid) {
             return true;
@@ -137,7 +137,7 @@ if (Meteor.isServer){
     */
     static isInstructorFor(courseid : string, userid? : string){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
-      return (this.isLoggedIn(user) && typeof user.roles.instructor === "array" && user.roles.instructor.contains(courseid));
+      return (this.isLoggedIn(user) && (typeof user.roles !== "undefined") && Array.isArray(user.roles.instructor) && (user.roles.instructor.indexOf(courseid) >= 0));
     }
 
     /*
@@ -145,7 +145,7 @@ if (Meteor.isServer){
     */
     static isAdministratorFor(courseid : string, userid? : string){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
-      return (this.isLoggedIn(user) && typeof user.roles.administrator === "array" && (user.roles.administrator.contains('global') || user.roles.administrator.contains(courseid)));
+      return (this.isLoggedIn(user) && (typeof user.roles !== "undefined") && Array.isArray(user.roles.administrator) && ((user.roles.administrator.indexOf('global') >= 0) || (user.roles.administrator.indexOf(courseid) >= 0)));
     }
 
     /*
@@ -153,7 +153,7 @@ if (Meteor.isServer){
     */
     static isGlobalAdministrator(userid? : string){
       let user : any = (typeof userid !== "undefined") ? Meteor.users.findOne(userid) : Meteor.user();
-      return (this.isLoggedIn(user) && typeof user.roles.administrator === "array" && user.roles.administrator.contains('global'));
+      return (this.isLoggedIn(user) && (typeof user.roles !== "undefined") && Array.isArray(user.roles.administrator) && (user.roles.administrator.indexOf('global') >= 0));
     }
   };
 
@@ -170,3 +170,16 @@ if (Meteor.isServer){
      }
    }
  });
+
+if(Meteor.isServer) {
+  Meteor.startup(function() {
+    Meteor.publish('userRoles', function() {
+      this.autorun(function(computation) {
+        return Meteor.users.find(this.userId, { fields: { "roles": 1} });
+      });
+    });
+  });
+}
+if(Meteor.isClient) {
+    Meteor.subscribe('userRoles');
+}

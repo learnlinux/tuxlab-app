@@ -1,7 +1,14 @@
 <div class="tuxlab-markdown">
     <!-- Task Markdown -->
     <div class="markdown-content">
-      <div id="task-markdown" [innerHTML]="convert(mdData)"></div>
+      <a (click)="mdeToggle()" *ngIf="isInstruct()">
+        <md-icon fontIcon="tuxicon-edit"></md-icon>
+      </a>
+      <div id="task-markdown" [innerHTML]="convert(mdData)" *ngIf="!showMDE"></div>
+      <div *ngIf="showMDE" id="task-editor">
+        <tuxlab-mdeditor [mdData]="mdData" (mdUpdated)="mdUpdated($event)"></tuxlab-mdeditor>
+        <button md-raised-button>Save Changes</button>
+      </div>
     </div>
     <div *ngIf="mdDataUpdate != null" id="feedback-markdown">
       <p>Task Feedback:</p> 

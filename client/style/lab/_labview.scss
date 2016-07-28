@@ -153,9 +153,11 @@
 
       //Markdown Content
       .markdown-content {
-        padding: 40px;
+        padding: 20px;
         background-color: #fcfcfc;
+        text-align: right;
         #task-markdown {
+          text-align: left;
           code {
             background-color: #dfdfdf;
             padding: 4px;
@@ -163,6 +165,19 @@
           }
           h1, h2, h3 {
             margin-top: 18px;
+          }
+        }
+        #task-editor {
+          text-align: left;
+        }
+        a {
+          cursor: pointer;
+          md-icon {
+            color: #666666;
+            line-height: 0;
+          }
+          .tuxicon-edit:before {
+            font-size: 36px;
           }
         }
       }
