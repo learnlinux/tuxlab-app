@@ -52,7 +52,7 @@
 export default class LabView extends MeteorComponent {
   user: Meteor.User;
   public auth : any;
-  labMarkdown: string = "# This is a markdown string \n ## So is this.";
+  labMarkdown: string;
   updateMarkdown: string;
   taskName: string = "Task Name Here";
   labProgress: string = "3 / 10";
