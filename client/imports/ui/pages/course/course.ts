@@ -44,7 +44,6 @@
   export default class CourseView extends MeteorComponent {
     courseId: string;
     courseNumber: string = "";
-    isInstructor: boolean = false;
     user: Meteor.User;
     constructor(mdIconRegistry: MdIconRegistry, private route: ActivatedRoute) {
       super();
@@ -59,9 +58,6 @@
     }
     ngOnInit() {
       this.courseId = (<any>(this.route.snapshot.params)).courseid;
-      if(typeof this.courseId !== "undefined") {
-        this.isInstructor = Roles.isInstructorFor(this.courseId);
-      }
     }
     isInstruct() {
       if(typeof this.courseId !== "undefined") {
