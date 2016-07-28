@@ -1,20 +1,11 @@
-// Import Dockerode
-var dockerode = require('dockerode');
 // Import other libraries
-var _ = require('underscore');
-var Etcd = require('node-etcd');
 var nconf = require('nconf');
 
 /* constructor
  * intializes docker, etcd connection
  */
 var env = function(){
-
-  var docker_settings = {
-	  host: nconf.get('swarm_node_ip'),
-	  port: nconf.get('swarm_node_port')
-  }
-  this.docker = new dockerode(docker_settings);
+  this.docker = docker;
   this.root_dom = nconf.get('domain_root');
 }
 

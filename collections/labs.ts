@@ -3,7 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from './users.ts';
 
 declare var _ : any;
+declare var async : any;
 
+declare var get_markdown : any;
 declare var validateLab : any;
 
 export const labs : any = new Mongo.Collection('labs');
@@ -73,14 +75,14 @@ labs.allow({
             return Date.now();
           }
         },
-        hidden:{
-          type: Boolean,
-          defaultValue: true
-        },
-        disabled:{
-          type: Boolean,
-          defaultValue: false
-        },
+	hidden:{
+	  type: Boolean,
+	  defaultValue: true
+	},
+	disabled:{
+	  type: Boolean,
+	  defaultValue: false
+	},
         file: {
           type: String
         },
@@ -95,6 +97,7 @@ labs.allow({
 /* LAB VALIDATOR */
   if(Meteor.isServer){
   var validateLab : any = require('../server/imports/lab/checkLab.js');
+
     Meteor.startup(function(){
       var LabValidator = function(userid, doc, fieldNames?, modifier?, options?){
         if(!doc.course_id){ //check if lab object has a course_id
@@ -116,6 +119,12 @@ labs.allow({
             throw new Meteor.Error("labfile failed the validator");
 	  }
 	  else{
+            var tasks = get_markdown(doc.file);
+	    async.map(tasks,function(task){
+	      task.updated = Date.now();
+	      return task;
+	    });
+	    doc.tasks = tasks;
             doc.updated = Date.now();
 	    return true;
           }
