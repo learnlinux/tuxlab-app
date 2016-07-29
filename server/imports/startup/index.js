@@ -19,3 +19,6 @@ import './methods.js'
 // Start Cache
 import './cache.js'
 
+//Init Docker
+
+import './docker.js'
