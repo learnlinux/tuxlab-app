@@ -27,6 +27,9 @@
 
 declare var Collections: any;
 
+/// <reference path="../../../ui/components/markdown/marked.d.ts" />
+  import * as marked from 'marked';
+
 // Define CourseDashboard Component
   @Component({
     selector: 'tuxlab-course-dashboard',
@@ -76,9 +79,13 @@ declare var Collections: any;
         return false;
       }
     }
+    
+    // Emit function
     mdUpdate(md: string) {
       this.courseSyllabus = md;
     }
+    
+    // Update the database with new syllabus
     updateSyllabus() {
       Collections.courses.update({ 
         _id: this.courseId 
@@ -89,7 +96,20 @@ declare var Collections: any;
       });
       this.toggleEdit();
     }
+    
+    // Hide and show the markdown editor for syllabus
     toggleEdit() {
       this.editSyllabus = !this.editSyllabus;
+    }
+    
+    // Convert to markdown 
+    convert(markdown: string) {
+      let md = marked.setOptions({});
+      if(typeof markdown !== "undefined" && markdown !== null) {
+        return md.parse(markdown);
+      }
+      else {
+        return "";
+      }
     }
   }

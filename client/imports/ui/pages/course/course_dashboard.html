@@ -88,9 +88,7 @@
           <div *ngIf="editSyllabus">
             <tuxlab-mdeditor [mdData]="courseSyllabus" (mdUpdated)="mdUpdate($event)"></tuxlab-mdeditor>
           </div>
-          <div *ngIf="!editSyllabus">
-            {{ courseSyllabus }}
-          </div>
+          <div *ngIf="!editSyllabus" [innerHTML]="convert(courseSyllabus)"></div>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
           <a md-button (click)="updateSyllabus()" *ngIf="editSyllabus">Submit</a>

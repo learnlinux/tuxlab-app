@@ -12,6 +12,9 @@
 
 // Collections
 	declare var Collections: any;
+	
+/// <reference path="../markdown/marked.d.ts" />
+  import * as marked from 'marked';
 
 // Define ExploreView Component
 	@Component({
@@ -36,4 +39,15 @@ export class ExploreView extends MeteorComponent {
 			this.exploreCourses = Collections.courses.find({ "featured": true }).fetch();
 		}, true);
 	}
+  
+  // Convert to markdown
+  convert(markdown: string) {
+    let md = marked.setOptions({});
+    if(typeof markdown !== "undefined" && markdown !== null) {
+      return md.parse(markdown);
+    }
+    else {
+      return "";
+    }
+  }
 }
