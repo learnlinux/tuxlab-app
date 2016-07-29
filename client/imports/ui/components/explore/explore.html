@@ -27,9 +27,7 @@
       <template md-tab-content>
         <md-content class="md-padding">
           <h2>Syllabus</h2>
-          <p>
-            {{ course.course_description.syllabus }}
-          </p>
+          <div [innerHTML]="convert(course.course_description.syllabus)"></div>
         </md-content>
       </template>
     </md-tab>

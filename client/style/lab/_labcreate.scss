@@ -15,15 +15,46 @@
   .tuxlab-labcreate-upload{
     display: block;
     max-width:400px;
+    h1 {
+      font-weight: 400;
+      text-align: center;
+    }
+
+    .upload-button {
+      text-align: center;
+      margin: 15px;
+      button {
+        md-icon {
+          line-height: 15px;
+          &::before {
+            font-size: 36px;
+          }
+        }
+        .tuxicon-close {
+          color: red;
+        }
+        .tuxicon-tick {
+          color: green;
+        }
+      }
+    }
 
     input[name=name]{
       width:100%;
 
-      font-size:24px;
+      font-size:20px;
+      font-weight: 400;
+      font-family: "Open Sans";
+      text-align: center;
 
       box-sizing: border-box;
       padding:5px 10px;
       border: none;
+      border-bottom: solid 2px #afafaf;
+    }
+
+    input[name=name]:focus {
+      outline: none;
     }
 
     div[fileDrop]{

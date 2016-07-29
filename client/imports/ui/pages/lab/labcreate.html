@@ -2,7 +2,7 @@
   <div class="tuxlab-labcreate-upload">
     <h1> UPLOAD LAB </h1>
     <div class="form-group">
-      <input name="name" type="text" class="form-control" required [(ngModel)]="lab.name" placeholder="Lab Name" />
+      <input name="name" type="text" class="form-control" required [(ngModel)]="lab.name" placeholder="Enter Lab Name" />
     </div>
     <div class="form-group">
       <div fileDrop
@@ -16,8 +16,12 @@
 
       </div>
     </div>
-    <div class="form-group">
-      <button md-raised-button name="verify" class="verify" (click)="upload()"> Upload <md-icon fontIcon="tuxicon-tick"></md-icon> </button>
+    <div class="form-group upload-button">
+      <button md-raised-button name="verify" class="verify" (click)="upload()">
+        Upload
+        <md-icon fontIcon="tuxicon-tick" *ngIf="uploaded"></md-icon>
+        <md-icon fontIcon="tuxicon-close" *ngIf="!uploaded"></md-icon>
+      </button>
     </div>
   </div>
   <div class="tuxlab-labcreate-verify" *ngIf="uploaded">

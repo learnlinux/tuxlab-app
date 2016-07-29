@@ -75,14 +75,14 @@ labs.allow({
             return Date.now();
           }
         },
-	hidden:{
-	  type: Boolean,
-	  defaultValue: true
-	},
-	disabled:{
-	  type: Boolean,
-	  defaultValue: false
-	},
+        hidden:{
+          type: Boolean,
+          defaultValue: true
+        },
+        disabled:{
+          type: Boolean,
+          defaultValue: false
+        },
         file: {
           type: String
         },
@@ -186,13 +186,13 @@ if(Meteor.isServer) {
             // Define roles of current user
             let roles = (<any>(user)).roles;
             if(typeof roles !== "undefined") {
-
+              
               // Get student enrolled courseIds
               let studentCourses = (_.unzip(roles.student))[0];
 
               // Concatenate student enrolled courseIds with Instructor taught courseIds
               let course_ids = studentCourses.concat(roles.instructor);
-
+              
               // Search Query
               return labs.find({
                 course_id: {

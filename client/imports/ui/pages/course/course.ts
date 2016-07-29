@@ -14,9 +14,6 @@
   import { MeteorComponent } from 'angular2-meteor';
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
 
-// Icon
-  import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-
 // Roles
   import { Roles } from '../../../../../collections/users.ts';
 
@@ -60,3 +57,4 @@
       }
     }
   }
+

@@ -15,6 +15,7 @@
 
 // Declare Collections
   declare var Collections: any;
+  declare var _: any;
 
 // Inject current user into class
   @InjectUser("user")
@@ -35,42 +36,37 @@
     user: Meteor.User;
     courseId: string;
     userId: string = Meteor.userId();
-    labs: Array<Object> = [];
     courseRecord: any;
-    cur_user: boolean;
+
+    // Test
+    allLabs: Array<Object>;
+    partialLabs: Array<Object>;
 
     // Progress Bar Value
     public determinateValue: number = 0;
 
     constructor(private route: ActivatedRoute, private router: Router) {
       super();
-    }
 
-    getCourseRecords(){
+    getCourseRecords() {
+      // Get from course_records
       this.subscribe('course-records', () => {
         this.autorun(() => {
-          if(this.cur_user) {
-            // Student
-            this.courseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
-          }
-          else {
-            var localCourseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: this.userId });
-            if(localCourseRecord === null || typeof localCourseRecord === "undefined") {
-              // Admin
-              this.courseRecord = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
-            }
-            else {
-              // Instructor
-              this.courseRecord = localCourseRecord;
-            }
-          }
-          this.setLabs();
-        });
-      }, true);
+          var record = Collections.course_records.findOne({ course_id: this.courseId });
+          this.partialLabs = record.labs;
+        }, true);
+      });
+      
+      // Get all labs of this course
+      this.subscribe('labs', () => {
+        this.autorun(() => {
+          this.allLabs = Collections.labs.find({ course_id: this.courseId }).fetch();
+        }, true);
+      });
     }
 
     setLabs() {
-      if(typeof this.courseRecord !== "undefined") {
+      if(typeof this.courseRecord !== "undefined" && this.courseRecord !== null) {
         let labs = this.courseRecord.labs;
         let totalCompleted = 0;
         let totalNumTasks = 0;
@@ -84,24 +80,24 @@
                 tasksCompleted++;
             }
           }
-          this.labs.push({
-            'id': lab._id,
-            'name': 'Lab ' + (i + 1).toString(),
-            'completed': tasksCompleted.toString() + '/' + tasks.length.toString(),
-            'date': 'soon'
-          });
-          totalCompleted += tasksCompleted;
-          totalNumTasks += tasks.length;
         }
-        this.determinateValue = (totalCompleted * 100.0) / totalNumTasks;
       }
+      return finalLabs;
+    }
+
+    compTasks(lab) {
+      let comp = 0;
+      for(let i = 0; i < lab.tasks.length; i++) {
+        if(lab.tasks[i].status === "COMPLETED") {
+          comp++;
+        }
+      }
+      return comp;
     }
 
     ngOnInit(){
       this.userId = this.router.routerState.parent(this.route).snapshot.params['userid'];
       this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
-      this.cur_user = (typeof this.userId === "undefined" || this.userId === null);
-      this.getCourseRecords();
     }
 
   }
