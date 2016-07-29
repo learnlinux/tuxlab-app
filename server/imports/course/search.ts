@@ -15,6 +15,7 @@ export function course_search(text : string, results_per_page : number, page_no 
   var search_object =
     {$and : [
       {"hidden" : false},
+      { "permissions.meta": true },
       {$or : [
         {"course_number" : search_pattern},
         {$where: "this.course_number.replace(/[ .-]/g,'') == '"+text+"'"},
