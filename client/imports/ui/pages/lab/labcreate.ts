@@ -18,13 +18,11 @@
 @Component({
   selector: 'tuxlab-labcreate',
   templateUrl: '/client/imports/ui/pages/lab/labcreate.html',
-  directives: [ FileDropDirective,
-<<<<<<< HEAD
-                ROUTER_DIRECTIVES,
-=======
->>>>>>> 2552d21e3df4aa53fdb6718215740f39acfb00a4
-                FORM_DIRECTIVES,
-                MATERIAL_DIRECTIVES
+  directives: [
+    FileDropDirective,
+    ROUTER_DIRECTIVES,
+    FORM_DIRECTIVES,
+    MATERIAL_DIRECTIVES
   ],
   providers: [
     FORM_PROVIDERS,
