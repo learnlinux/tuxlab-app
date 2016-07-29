@@ -7,7 +7,9 @@
 
 /* STARTUP */
   import "./imports/startup/index.js";
+
   import './imports/startup/cache.js';
+
 /* COLLECTIONS */
   Collections = {};
 

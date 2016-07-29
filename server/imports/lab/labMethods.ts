@@ -32,7 +32,6 @@ function getSession(user : string, userId, labId : string, callback : any) : voi
           callback(err,null);
         }
         else{
-          console.log(result);
           callback(null,{taskNo:res.lab.taskNo,sshPass:result,taskUpdates: res.taskUpdates});
         }
       })
@@ -61,7 +60,7 @@ function mapTasks(labId : string,taskNo : number, callback) : any {
   //callback on mapped tasks
   callback(null,finalTasks);
 }
-export function prepLab(user : string,userId: string, labId : string, callback : any) : any{
+export function prepLab(user : string, userId: string, labId : string, callback : any) : any{
   
   //get Session instance for user/lab	
   getSession(user, userId,labId, function(err,res){
@@ -70,7 +69,7 @@ export function prepLab(user : string,userId: string, labId : string, callback :
       callback(err,null);
     }
     else{
-      
+      TuxLog.log('warn',"got Session");
       //options not to get unnecessary fields from database
       var optsp = {'fields': {
           'labfile' : 0,
