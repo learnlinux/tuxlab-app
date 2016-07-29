@@ -2,20 +2,23 @@
   import { Meteor } from 'meteor/meteor';
   import { Mongo } from 'meteor/mongo';
   import { MeteorComponent } from 'angular2-meteor';
-  
+
 // Angular Imports
   import { Component } from '@angular/core';
-  import { ActivatedRoute, Router } from '@angular/router';
-  
+  import { ROUTER_DIRECTIVES, ActivatedRoute, Router } from '@angular/router';
+
 declare var Collections: any;
 
 // Define Grades Component
 @Component({
   selector: 'tuxlab-gradelist',
-  templateUrl: '/client/imports/ui/pages/course/gradelist.html'
+  templateUrl: '/client/imports/ui/pages/course/gradelist.html',
+  directives: [
+    ROUTER_DIRECTIVES
+  ]
 })
 
-// Export Grades Class 
+// Export Grades Class
 export class GradeList extends MeteorComponent{
   user: Meteor.User;
   userId: string;
@@ -23,11 +26,11 @@ export class GradeList extends MeteorComponent{
   courseRecord: any;
   grades: Array<any> = [];
   cur_user: boolean;
-  
+
   constructor(private route: ActivatedRoute, private router: Router) {
     super();
   }
-  
+
   setGrades() {
     if (this.courseRecord !== undefined) {
       let labs = this.courseRecord.labs;
@@ -57,20 +60,20 @@ export class GradeList extends MeteorComponent{
         'name': 'Course Average',
         'grade': courseAverage
       });
-    }  
+    }
   }
-  
+
   getCourseRecords(){
     this.subscribe('course-records', () => {
       this.autorun(() => {
         if(this.cur_user) {
-          // Student 
+          // Student
           this.courseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: Meteor.userId() });
         }
         else {
           var localCourseRecord = Collections.course_records.findOne({ course_id: this.courseId, user_id: this.userId });
           if(localCourseRecord === null || typeof localCourseRecord === "undefined") {
-            // Admin 
+            // Admin
             this.courseRecord = Meteor.call('getUserCourseRecord', this.courseId, this.userId);
           }
           else {

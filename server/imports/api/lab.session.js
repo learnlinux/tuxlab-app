@@ -1,23 +1,109 @@
 /// <reference path="./lab.exec.d.ts" />
+//require session submodules
 var lab = require('./lab.js');
 var student = require('./lab.student.js');
-var session = function(){};
+var env = require('./lab.env.js');
 
+
+
+//labCache.get wrapper
+
+function getLab(id, callback){
+  var lab_data = Collections.labs.findOne({_id: id});
+
+  if(!lab_data || lab_data.length < 0){
+    TuxLog.log("warn",new Error("Lab not found"));
+    callback(new Error("Lab Not Found."), null);
+  }
+
+  var labcache_id = id + "#" + lab_data.updated;
+  LabCache.get(labcache_id,function(err,value){
+    if(err){
+      TuxLog.log("warn",err);
+      callback(err,null);
+    }
+    else if(!value){
+      TuxLog.log("warn","didn't get from labcache");
+      var file = lab_data.file;
+
+      var Lab = eval(file);
+      LabCache.set(labcache_id,Lab,function(err,res){
+        TuxLog.log("warn","oooh no");
+        if(err){
+	  TuxLog.log("warn",err);
+	}
+      });
+      callback(null,Lab);
+    }
+    else{
+      TuxLog.log("warn","got from cache");
+      callback(null,value);
+    }
+  });
+}
+
+//constructor
+var session = function(){
+};
+
+//define session fields
 session.prototype.env = null;
 session.prototype.lab = null;
 session.prototype.student = null;
+session.prototype.pass = null;
+session.prototype.started = false;
+session.prototype.courseId = null;
+session.prototype.user = null;
+session.prototype.userId = null;
+
 session.prototype.taskUpdates = [];
 
+
+session.prototype.fromJson = function(data, callback){
+  //set session fields
+  this.user = data.user;
+  this.courseId = data.courseId;
+  this.pass = data.pass;
+  this.userId = data.userId;
+
+  this.env = new env();
+  this.env.setUser(data.user);
+  this.taskUpdates = data.taskUpdates;
+
+  this.student = new student(this,data.userId,data.labId,data.courseId);
+
+  getLab(data.labId,function(err,lab){
+    if(err){
+      callback(err,null);
+    }
+    else{
+      this.lab = lab;
+      callback(null,null);
+    }
+  });
+
+}
+session.prototype.changeStarted = function(){
+  this.started = true;
+  console.log(this.started);
+}
 /* init: pulls labFile and initializes session object from it
  */
 session.prototype.init = function(user,userId,labId,callback){
   var slf = this;
-  this.env = require('./lab.env.js');
-  this.env.setUser(user);
+  
+  //set session fields;
+  this.user = user;
+  this.userId = userId;
 
+  this.env = new env();
+  this.env.setUser(user);
   // Get Metadata from Database
   var lab_data = Collections.labs.findOne({_id: labId}, {fields: {'labfile' : 0}});
+  
   var courseId = lab_data.course_id;
+
+  this.courseId = courseId;
 
   //initialize student object
   this.student = new student(this, userId,labId,courseId);
@@ -31,29 +117,12 @@ session.prototype.init = function(user,userId,labId,callback){
     // Get Course Metadata
     var course = Collections.courses.findOne({_id: lab_data.course_id}, {fields: {'labs' : 1 }});
 
-    // Format LabFile Cache URL
-    var labfile_id = labId + "#" + lab_data.updated;
-
-    // Check Cache for LabFile Object
-    LabCache.get(labfile_id, function(err, value){
+    getLab(labId,function(err,lab){
       if(err){
-	TuxLog.log("warn",err);
-        callback(err, null);
+        callback(err,null);
       }
-      else if(typeof value === "undefined"){
-        // Get LabFile from Database
-        var labfile_data = Collections.labs.findOne({_id: labId}, {fields : {'field' : 0}});
-        var Lab = eval(labfile_data.labfile);
-        Lab.taskNo = 0;
-        slf.lab = Lab;
-
-        // Cache LabFile -runs sync, not central to anything
-        LabCache.set(labfile_id, slf.lab, function(err, success){
-          if(err || !success){
-            TuxLog.log("warn", err);
-          }
-        });
-       
+      else if(!slf.started){
+        slf.lab = lab;
 	slf.start(function(err){
 	  if(err){
             //err logged in slf.start
@@ -61,44 +130,34 @@ session.prototype.init = function(user,userId,labId,callback){
 	  }
 	  else{
 	    slf.env.getPass(function(err,res){
-              if(err){
-		//TODO: separate streams in env.js
-                callback(err,null);
-              }
-              else{
-                slf.lab.pass = res;
-                callback(null,{taskNo: slf.lab.taskNo,sshPass: res});
-              }
-            });
+	      //TODO: separate streams in env.js
+	      if(err){
+	        callback(err,null);
+	      }
+	      else{
+                console.log("calling back");
+		callback(null,{taskNo: slf.lab.taskNo,sshPass: res});
+	      }
+	    });
 	  }
 	});
-      }     
+      }
       else{
-        // Get LabFile from Cache
-        var Lab = value;
-        Lab.taskNo = 0;
-        slf.lab = Lab;
-        slf.start(function(err){
+        slf.env.getPass(function(err,res){
+          console.log("already started");
           if(err){
             callback(err,null);
           }
           else{
-	    slf.env.getPass(function(err,res){
-              if(err){
-                //TODO : same as above
-                callback(err,null);
-              }
-              else{
-                //slf.lab.pass = res;
-                callback(null,{taskNo: slf.lab.taskNo,sshPass: res});
-              }
-            });
+            slf.pass = res;
+            callback(null,{taskNo: slf.lab.taskNo,sshPass: res});
           }
-	});
+       });
       }
-    });
+    })
   }
 }
+
 /* start: runs setup and moves task header to first task
  * runs callback(err) on err if there is an error,
  * (null) no error

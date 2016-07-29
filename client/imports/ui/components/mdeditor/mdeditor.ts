@@ -1,11 +1,9 @@
 // Meteor Imports
 	import { Meteor } from 'meteor/meteor';
+	import { MeteorComponent } from 'angular2-meteor';
 
 // Angular Imports
 	import { Component, ElementRef, ViewChild, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-
-// Angular Meteor Imports
-	import { MeteorComponent } from 'angular2-meteor';
 
 // Declare Global Variable
 	var SimpleMDE : any = require('simplemde');
@@ -23,6 +21,7 @@
 		@Output() mdUpdated = new EventEmitter<string>();
 		public mde;
     readMDE: boolean = false;
+
 		constructor(private elementRef:ElementRef) {
 			super();
 		}

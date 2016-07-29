@@ -2,7 +2,7 @@
 
 // Angular Imports
   import { Component, Input } from '@angular/core';
-  import { ActivatedRoute } from '@angular/router'
+  import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router'
   import { MeteorComponent } from 'angular2-meteor';
 
 
@@ -10,6 +10,9 @@
   @Component({
     selector: 'tuxlab-error',
     templateUrl: '/client/imports/ui/pages/error/error.html',
+    directives: [
+      ROUTER_DIRECTIVES
+    ]
   })
 
 export default class ErrorPage extends MeteorComponent {

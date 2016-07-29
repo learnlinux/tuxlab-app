@@ -51,7 +51,7 @@ export default class Login extends MeteorComponent {
 
       // Handle Login Success
       if(!res){
-        if(typeof slf.redirect === "undefined" || slf.redirect === null){
+        if(typeof slf.redirect === "undefined" || slf.redirect === null || slf.redirect === "undefined"){
   	      slf.router.navigate(['account',Meteor.user()._id]);
         }
         else{
