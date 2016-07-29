@@ -1,8 +1,9 @@
 /*
   Creates Session and Lab Caches
 */
-var async = require('async');
 var NodeCache = require('node-cache');
+
+var session = require('../api/lab.session.js');
 
 // Lab Cache
   LabCache = new NodeCache({
@@ -46,6 +47,7 @@ var NodeCache = require('node-cache');
     Gets a session from the local memory cache or ETCD
   */
   SessionCache.get = function(userid, labid, callback){
+    var slf = this;
     SessionCache._NodeCache.get(userid+'#'+labid, function(err, value){
       if(err){
         TuxLog.log('warn', "SessionCache NodeCache Error.");
@@ -56,8 +58,18 @@ var NodeCache = require('node-cache');
       }
       else{
         var data = etcd.get('/tuxlab/sessions/'+userid+'/'+labid, function(err, value){
-          //TODO @cemersoz from_data method
-        });
+        
+	  var session = new session();
+	  session.fillJson(data,function(err,res){
+	    if(err){
+	      callback(err,null);
+	    }
+	    else{
+              slf.add(session);
+	      callback(null,session);
+	    }
+	  });
+	});
       }
     });
   }
@@ -87,10 +99,19 @@ var NodeCache = require('node-cache');
         });
       },
       function(cb){
-        //TODO @cemersoz to_data method
+        
+        //convert session object to JSON for etcd
+        var json = {
+	  taskNo: session.lab.taskNo,
+	  taskUpdates: session.taskUpdates,
+	  pass: session.pass,
+	  user: session.user,
+	  userId: userid,
+	  labId: labid,
+          courseId: session.courseId	
+	};
 
-        var json = null;
-        etcd.set('tuxlab/sessions/'+userid+'/'+labid, json, function(err){
+        etcd.set('tuxlab/sessions/'+userid+'/'+labid, Json.stringify(json), function(err){
           cb(err);
         });
       }
