@@ -19,6 +19,9 @@
 // Component View Imports
 	import { ExploreView } from '../../components/explore/explore.ts';
 	import { SearchView } from '../../components/explore/search.ts';
+  
+// Icons
+  import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
 // Define Explore Component
   @Component({
@@ -30,6 +33,7 @@
       MD_TABS_DIRECTIVES,
       MD_INPUT_DIRECTIVES,
       FORM_DIRECTIVES,
+      MD_ICON_DIRECTIVES,
       MdToolbar,
       ExploreView,
       SearchView

@@ -21,6 +21,9 @@
 
 // Markdown Editor
   import { MDEditor } from '../../components/mdeditor/mdeditor.ts';
+  
+// Icon
+  import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
 declare var Collections: any;
 
@@ -32,6 +35,7 @@ declare var Collections: any;
       ROUTER_DIRECTIVES,
       MATERIAL_DIRECTIVES,
       MD_INPUT_DIRECTIVES,
+      MD_ICON_DIRECTIVES,
       LabList,
       MDEditor,
       GradeList
@@ -46,6 +50,7 @@ declare var Collections: any;
     courseDescription: string = "";
     courseName: string = "";
     courseSyllabus: string = "";
+    editSyllabus: boolean = false;
 
     constructor(private route: ActivatedRoute, private router: Router) {
       super();
@@ -82,5 +87,9 @@ declare var Collections: any;
           "course_description.syllabus": this.courseSyllabus
         }
       });
+      this.toggleEdit();
+    }
+    toggleEdit() {
+      this.editSyllabus = !this.editSyllabus;
     }
   }

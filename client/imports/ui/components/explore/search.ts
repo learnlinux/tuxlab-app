@@ -3,6 +3,7 @@
 
 // Angular Imports
   import { Component, Input } from '@angular/core';
+  import { ROUTER_DIRECTIVES } from '@angular/router';
 
 // Angular Material Imports
   import { MeteorComponent } from 'angular2-meteor';
@@ -10,7 +11,10 @@
   import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs';
 
 // Courses Database Imports
-   import { courses } from '../../../../../collections/courses.ts';
+  import { courses } from '../../../../../collections/courses.ts';
+   
+// Icons
+  import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
 // Define SearchView Component
   @Component({
@@ -18,7 +22,9 @@
     templateUrl: '/client/imports/ui/components/explore/search.html',
     directives: [
       MATERIAL_DIRECTIVES,
-      MD_TABS_DIRECTIVES
+      MD_TABS_DIRECTIVES,
+      MD_ICON_DIRECTIVES,
+      ROUTER_DIRECTIVES
     ]
   })
 

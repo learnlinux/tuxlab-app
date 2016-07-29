@@ -61,7 +61,7 @@
   </div>
   
   <!-- Permissions Section -->
-  <div layout="row" *ngIf="isInstruct()">
+  <div layout="row" *ngIf="isInstruct()" layout-xs="column">
     <div flex>
       <md-card>
         <md-card-title>
@@ -85,10 +85,16 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
-          <tuxlab-mdeditor [mdData]="courseSyllabus" (mdUpdated)="mdUpdate($event)"></tuxlab-mdeditor>
+          <div *ngIf="editSyllabus">
+            <tuxlab-mdeditor [mdData]="courseSyllabus" (mdUpdated)="mdUpdate($event)"></tuxlab-mdeditor>
+          </div>
+          <div *ngIf="!editSyllabus">
+            {{ courseSyllabus }}
+          </div>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
-          <a md-button (click)="updateSyllabus()">Submit</a>
+          <a md-button (click)="updateSyllabus()" *ngIf="editSyllabus">Submit</a>
+          <a md-button *ngIf="!editSyllabus" (click)="toggleEdit()">Edit</a>
         </md-card-actions>
       </md-card>
     </div>

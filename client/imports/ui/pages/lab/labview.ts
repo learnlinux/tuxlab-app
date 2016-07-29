@@ -18,6 +18,9 @@
 // Terminal and Markdown Imports
   import { Terminal } from "../../components/wetty/terminal.ts";
   import { MarkdownView } from "../../components/markdown/markdown.ts";
+  
+// Icons
+  import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
 // Meteor method imports
   import "../../../lab/methods.ts"
@@ -31,6 +34,7 @@
     Terminal,
     MATERIAL_DIRECTIVES,
     MD_INPUT_DIRECTIVES,
+    MD_ICON_DIRECTIVES,
     MD_SIDENAV_DIRECTIVES,
     MD_TOOLBAR_DIRECTIVES,
     ROUTER_DIRECTIVES
