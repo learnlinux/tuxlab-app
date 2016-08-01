@@ -12,7 +12,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "compileOnSave": true,
+  "compileOnSave": false,
   "filesGlob": [
     "client/**/*.ts",
     "server/**/*.ts",
@@ -57,6 +57,7 @@
     "server/imports/course/search.ts",
     "server/imports/lab/checkLab.d.ts",
     "server/imports/lab/labMethods.ts",
+    "server/imports/lab/markdown.ts",
     "server/imports/lab/methods.ts",
     "typings/globals/es6-shim/index.d.ts",
     "typings/globals/meteor/index.d.ts",
