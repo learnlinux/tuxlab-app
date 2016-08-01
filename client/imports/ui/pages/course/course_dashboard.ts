@@ -12,16 +12,19 @@
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
   import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 
+  import { FORM_DIRECTIVES } from '@angular/common';
+  import { MdToolbar } from '@angular2-material/toolbar';
+
 // LabList and Grades import
   import { GradeList } from './gradelist.ts';
   import { LabList } from './lablist.ts';
-  
+
 // Roles Import
   import { Roles } from '../../../../../collections/users.ts';
 
 // Markdown Editor
   import { MDEditor } from '../../components/mdeditor/mdeditor.ts';
-  
+
 // Icon
   import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
@@ -39,6 +42,8 @@ declare var Collections: any;
       MATERIAL_DIRECTIVES,
       MD_INPUT_DIRECTIVES,
       MD_ICON_DIRECTIVES,
+      FORM_DIRECTIVES,
+      MdToolbar,
       LabList,
       MDEditor,
       GradeList
@@ -54,18 +59,27 @@ declare var Collections: any;
     courseName: string = "";
     courseSyllabus: string = "";
     editSyllabus: boolean = false;
+    radioMeta: boolean;
+    radioContent: string;
+    radioEnroll: string;
+    updateMessage: string = "";
 
     constructor(private route: ActivatedRoute, private router: Router) {
       super();
 
       // Subscribe to courses database and set current course
       this.subscribe('user-courses', this.courseId, () => {
-        this.course = Collections.courses.findOne({ _id: this.courseId });
-        if (typeof this.course !== "undefined") {
-          this.courseName = this.course.course_name;
-          this.courseDescription = this.course.course_description.content;
-          this.courseSyllabus = this.course.course_description.syllabus;
-        }
+        this.autorun(() => {
+          this.course = Collections.courses.findOne({ _id: this.courseId });
+          if (typeof this.course !== "undefined") {
+            this.courseName = this.course.course_name;
+            this.courseDescription = this.course.course_description.content;
+            this.courseSyllabus = this.course.course_description.syllabus;
+            this.radioMeta = this.course.permissions.meta;
+            this.radioContent = this.course.permissions.content;
+            this.radioEnroll = this.course.permissions.enroll;
+          }
+        });
       }, true);
     }
     ngOnInit() {
@@ -79,16 +93,16 @@ declare var Collections: any;
         return false;
       }
     }
-    
+
     // Emit function
     mdUpdate(md: string) {
       this.courseSyllabus = md;
     }
-    
+
     // Update the database with new syllabus
     updateSyllabus() {
-      Collections.courses.update({ 
-        _id: this.courseId 
+      Collections.courses.update({
+        _id: this.courseId
       }, {
         $set: {
           "course_description.syllabus": this.courseSyllabus
@@ -96,13 +110,33 @@ declare var Collections: any;
       });
       this.toggleEdit();
     }
-    
+
+    updatePerm() {
+      if(typeof this.radioMeta !== "undefined" && typeof this.radioContent !== "undefind" && typeof this.radioMeta !== "undefined") {
+        Collections.courses.update({
+          _id: this.courseId
+        }, {
+          $set: {
+            permissions: {
+              meta: this.radioMeta,
+              content: this.radioContent,
+              enroll: this.radioEnroll
+            }
+          }
+        });
+        this.updateMessage = "Last updated on " + (new Date()).toLocaleTimeString();
+      }
+      else {
+        this.updateMessage = "Error updating: one or more fields are not selected";
+      }
+    }
+
     // Hide and show the markdown editor for syllabus
     toggleEdit() {
       this.editSyllabus = !this.editSyllabus;
     }
-    
-    // Convert to markdown 
+
+    // Convert to markdown
     convert(markdown: string) {
       let md = marked.setOptions({});
       if(typeof markdown !== "undefined" && markdown !== null) {

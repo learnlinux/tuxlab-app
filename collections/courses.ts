@@ -59,7 +59,7 @@ courses.allow({
           allowedValues: ['any', 'auth', 'none'],
           defaultValue: 'auth'
         },
-        enroll : {
+        enroll: {
           type: String,
           allowedValues: ['any', 'none'],
           defaultValue: 'none'
@@ -77,7 +77,7 @@ courses.allow({
       var courseSchema = new SimpleSchema({
         _id: {
            type: String,
-           
+
         },
         course_name: {
           type: String
@@ -197,7 +197,7 @@ courses.allow({
             return courses.find({
               "permissions.meta": true,
               "featured": true
-            });  
+            });
           }
         });
       });

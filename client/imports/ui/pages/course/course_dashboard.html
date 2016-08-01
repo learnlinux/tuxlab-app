@@ -7,12 +7,12 @@
           {{ courseName }}
           <md-icon fontIcon="tuxicon-cog" *ngIf="isInstruct()"></md-icon>
         </span>
-
       </md-card-title-text>
     </md-card-title>
     <md-card-content>
       <p [innerHTML]="courseDescription"></p>
     </md-card-content>
+
     <md-card-actions layout="row" layout-align="end center">
       <a md-button href="https://www.cs.cmu.edu/~15131/f15/">Course Website</a>
     </md-card-actions>
@@ -70,10 +70,41 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
-          Data
+          <p>Meta: <span>(show course on Explore page)</span></p>
+          <div class="radio-group">
+            selected value: {{ radioMeta }}
+            <br>
+            <input type="radio" name="meta" id="radio-meta1" [value]="true" [(ngModel)]="radioMeta">
+            <label for="radio-meta1"><span></span>True</label>
+            <input type="radio" name="meta" id="radio-meta2" [value]="false" [(ngModel)]="radioMeta">
+            <label for="radio-meta2"><span></span>False</label>
+          </div>
+          <p>Content: <span>(labs available to)</span></p>
+          <div class="radio-group">
+            selected value: {{ radioContent }}
+            <br>
+            <input type="radio" name="content" id="radio-content1" value="any" [(ngModel)]="radioContent">
+            <label for="radio-content1"><span></span>Any</label>
+            <input type="radio" name="content" id="radio-content2" value="auth" [(ngModel)]="radioContent">
+            <label for="radio-content2"><span></span>Auth</label>
+            <input type="radio" name="content" id="radio-content3" value="none" [(ngModel)]="radioContent">
+            <label for="radio-content3"><span></span>None</label>
+          </div>
+
+          <p>Enroll: <span>(who can enroll)</span></p>
+          <div class="radio-group">
+            selected value: {{ radioEnroll }}
+            <br>
+            <input type="radio" name="enroll" id="radio-enroll1" value="any" [(ngModel)]="radioEnroll">
+            <label for="radio-enroll1"><span></span>Any</label>
+            <input type="radio" name="enroll" id="radio-enroll2" value="none" [(ngModel)]="radioEnroll">
+            <label for="radio-enroll2"><span></span>None</label>
+          </div>
+
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
-          <a md-button>Submit</a>
+          <p class="msg">{{ updateMessage }}</p>
+          <a md-button (click)="updatePerm()">Submit</a>
         </md-card-actions>
       </md-card>
     </div>
