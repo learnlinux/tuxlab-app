@@ -30,7 +30,7 @@
 // Export ExploreView Class
 export class ExploreView extends MeteorComponent {
 
-	exploreCourses: Array<any> = [];
+  exploreCourses: Array<any> = [];
 
   constructor() {
     super();
