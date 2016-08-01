@@ -1,6 +1,6 @@
 <div class="tuxlab-exploreview">
   <!--Tab Groups-->
-  <md-tab-group class="md-whiteframe-5dp" *ngFor="let course of courses">
+  <md-tab-group class="md-whiteframe-5dp" *ngFor="let course of exploreCourses">
     <!--First Tab-->
     <md-tab>
       <template md-tab-label>Description</template>
@@ -27,9 +27,7 @@
       <template md-tab-content>
         <md-content class="md-padding">
           <h2>Syllabus</h2>
-          <p>
-            {{ course.course_description.syllabus }}
-          </p>
+          <div [innerHTML]="convert(course.course_description.syllabus)"></div>
         </md-content>
       </template>
     </md-tab>

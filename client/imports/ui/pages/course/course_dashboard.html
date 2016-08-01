@@ -7,7 +7,7 @@
           {{ courseName }}
           <md-icon fontIcon="tuxicon-cog" *ngIf="isInstruct()"></md-icon>
         </span>
-        
+
       </md-card-title-text>
     </md-card-title>
     <md-card-content>
@@ -19,7 +19,7 @@
   </md-card>
 
   <!-- Responsive Section for Grades and Assignments -->
-  <div layout="row" layout-xs="column" *ngIf="!isInstruct()">  
+  <div layout="row" layout-xs="column" *ngIf="!isInstruct()">
     <!-- Grade List -->
     <div flex>
       <tuxlab-gradelist></tuxlab-gradelist>
@@ -59,9 +59,9 @@
       </md-card>
     </div>
   </div>
-  
+
   <!-- Permissions Section -->
-  <div layout="row" *ngIf="isInstruct()">
+  <div layout="row" *ngIf="isInstruct()" layout-xs="column">
     <div flex>
       <md-card>
         <md-card-title>
@@ -85,16 +85,19 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
-          {{courseSyllabus}}
-          <tuxlab-mdeditor [mdData]="courseSyllabus" (mdUpdated)="mdUpdate($event)"></tuxlab-mdeditor>
+          <div *ngIf="editSyllabus">
+            <tuxlab-mdeditor [mdData]="courseSyllabus" (mdUpdated)="mdUpdate($event)"></tuxlab-mdeditor>
+          </div>
+          <div *ngIf="!editSyllabus" [innerHTML]="convert(courseSyllabus)"></div>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
-          <a md-button (click)="updateSyllabus()">Submit</a>
+          <a md-button (click)="updateSyllabus()" *ngIf="editSyllabus">Submit</a>
+          <a md-button *ngIf="!editSyllabus" (click)="toggleEdit()">Edit</a>
         </md-card-actions>
       </md-card>
     </div>
   </div>
-  
+
   <!--Lab List Card-->
   <div>
     <tuxlab-lablist></tuxlab-lablist>

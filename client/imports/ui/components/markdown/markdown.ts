@@ -17,6 +17,9 @@
 // Roles
   import { Roles } from '../../../../../collections/users.ts';
 
+// Icons
+  import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
+
 declare var Collections: any;
 
 // Markdown Imports
@@ -29,15 +32,17 @@ declare var Collections: any;
     templateUrl: '/client/imports/ui/components/markdown/markdown.html',
     directives: [
       MATERIAL_DIRECTIVES,
+      MD_ICON_DIRECTIVES,
       MDEditor
-    ]
+    ],
   })
 
 // Export MarkdownView Class
 export class MarkdownView extends MeteorComponent{
   @Input() mdData = "";
   @Input() mdDataUpdate = "";
-  
+  @Input() taskid: number;
+
   courseId: string;
   labId: string;
   showMDE: boolean = false;
@@ -75,10 +80,11 @@ export class MarkdownView extends MeteorComponent{
   // Update new markdown
   updateMarkdown() {
     Collections.labs.update({
-      _id: this.labId
+      _id: this.labId,
+      "tasks.id": this.taskid
     }, {
       $set: {
-        // Set current task markdown
+        "tasks.$.md": this.mdData
       }
     });
   }

@@ -7,11 +7,11 @@
       <div id="task-markdown" [innerHTML]="convert(mdData)" *ngIf="!showMDE"></div>
       <div *ngIf="showMDE" id="task-editor">
         <tuxlab-mdeditor [mdData]="mdData" (mdUpdated)="mdUpdated($event)"></tuxlab-mdeditor>
-        <button md-raised-button>Save Changes</button>
+        <button md-raised-button (click)="updateMarkdown()">Save Changes</button>
       </div>
     </div>
     <div *ngIf="mdDataUpdate != null" id="feedback-markdown">
-      <p>Task Feedback:</p> 
+      <p>Task Feedback:</p>
       <div [innerHTML]="convert(mdDataUpdate)"></div>
     </div>
 </div>
