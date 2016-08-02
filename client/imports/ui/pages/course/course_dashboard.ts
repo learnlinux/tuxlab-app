@@ -18,13 +18,13 @@
 // LabList and Grades import
   import { GradeList } from './gradelist.ts';
   import { LabList } from './lablist.ts';
-
+  
 // Roles Import
   import { Roles } from '../../../../../collections/users.ts';
 
 // Markdown Editor
   import { MDEditor } from '../../components/mdeditor/mdeditor.ts';
-
+  
 // Icon
   import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
@@ -102,8 +102,8 @@ declare var Collections: any;
 
     // Update the database with new syllabus
     updateSyllabus() {
-      Collections.courses.update({
-        _id: this.courseId
+      Collections.courses.update({ 
+        _id: this.courseId 
       }, {
         $set: {
           "course_description.syllabus": this.courseSyllabus
