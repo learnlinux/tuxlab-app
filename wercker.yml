@@ -1,4 +1,4 @@
-box: centos/7
+box: centos
 dev:
   steps:
     - npm-install
