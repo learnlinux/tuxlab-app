@@ -3,18 +3,27 @@
   <md-card>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">
+        <span class="md-headline" *ngIf="!editMeta">
           {{ courseName }}
-          <md-icon fontIcon="tuxicon-cog" *ngIf="isInstruct()"></md-icon>
+          <md-icon fontIcon="tuxicon-cog" *ngIf="isInstruct()" (click)="toggleMetaEdit()"></md-icon>
+        </span>
+        <span class="md-headline" *ngIf="editMeta">
+          <input type="text" [(ngModel)]="courseName" style="width: 100%">
         </span>
       </md-card-title-text>
     </md-card-title>
     <md-card-content>
-      <p [innerHTML]="courseDescription"></p>
+      <p [innerHTML]="courseDescription" *ngIf="!editMeta"></p>
+      <textarea *ngIf="editMeta" [(ngModel)]="courseDescription" style="width: 100%; max-width: 100%; min-width: 100%; min-height: 200px;"></textarea>
     </md-card-content>
 
     <md-card-actions layout="row" layout-align="end center">
-      <a md-button href="https://www.cs.cmu.edu/~15131/f15/">Course Website</a>
+      <a md-button href="https://www.cs.cmu.edu/~15131/f15/" *ngIf="!editMeta">
+        Course Website
+      </a>
+      <button md-button *ngIf="editMeta" (click)="updateMeta()">
+        Update
+      </button>
     </md-card-actions>
   </md-card>
 
@@ -74,20 +83,20 @@
           <div class="radio-group">
             selected value: {{ radioMeta }}
             <br>
-            <input type="radio" name="meta" id="radio-meta1" [value]="true" [(ngModel)]="radioMeta">
+            <input type="radio" name="meta" id="radio-meta1" [(ngModel)]="radioMeta" [value]="true">
             <label for="radio-meta1"><span></span>True</label>
-            <input type="radio" name="meta" id="radio-meta2" [value]="false" [(ngModel)]="radioMeta">
+            <input type="radio" name="meta" id="radio-meta2" [(ngModel)]="radioMeta" [value]="false">
             <label for="radio-meta2"><span></span>False</label>
           </div>
           <p>Content: <span>(labs available to)</span></p>
           <div class="radio-group">
             selected value: {{ radioContent }}
             <br>
-            <input type="radio" name="content" id="radio-content1" value="any" [(ngModel)]="radioContent">
+            <input type="radio" name="content" id="radio-content1" [(ngModel)]="radioContent" value="any">
             <label for="radio-content1"><span></span>Any</label>
-            <input type="radio" name="content" id="radio-content2" value="auth" [(ngModel)]="radioContent">
+            <input type="radio" name="content" id="radio-content2" [(ngModel)]="radioContent" value="auth">
             <label for="radio-content2"><span></span>Auth</label>
-            <input type="radio" name="content" id="radio-content3" value="none" [(ngModel)]="radioContent">
+            <input type="radio" name="content" id="radio-content3" [(ngModel)]="radioContent" value="none">
             <label for="radio-content3"><span></span>None</label>
           </div>
 
@@ -123,7 +132,7 @@
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
           <a md-button (click)="updateSyllabus()" *ngIf="editSyllabus">Submit</a>
-          <a md-button *ngIf="!editSyllabus" (click)="toggleEdit()">Edit</a>
+          <a md-button *ngIf="!editSyllabus" (click)="toggleSyllabusEdit()">Edit</a>
         </md-card-actions>
       </md-card>
     </div>

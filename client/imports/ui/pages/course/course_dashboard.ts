@@ -59,6 +59,7 @@ declare var Collections: any;
     courseName: string = "";
     courseSyllabus: string = "";
     editSyllabus: boolean = false;
+    editMeta: boolean = false;
     radioMeta: boolean;
     radioContent: string;
     radioEnroll: string;
@@ -108,7 +109,7 @@ declare var Collections: any;
           "course_description.syllabus": this.courseSyllabus
         }
       });
-      this.toggleEdit();
+      this.toggleSyllabusEdit();
     }
 
     updatePerm() {
@@ -131,9 +132,30 @@ declare var Collections: any;
       }
     }
 
+    updateMeta() {
+      if(typeof this.courseDescription !== "undefined") {
+        Collections.courses.update({
+          _id: this.courseId
+        }, {
+          $set: {
+            "course_name": this.courseName,
+            "course_description.content": this.courseDescription
+          }
+        });
+        this.toggleMetaEdit();
+      }
+      else {
+        alert('update fail');
+      }
+    }
+
     // Hide and show the markdown editor for syllabus
-    toggleEdit() {
+    toggleSyllabusEdit() {
       this.editSyllabus = !this.editSyllabus;
+    }
+
+    toggleMetaEdit() {
+      this.editMeta = !this.editMeta;
     }
 
     // Convert to markdown
