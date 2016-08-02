@@ -6,7 +6,7 @@ dev:
         code: meteor run
 build:
   steps:
-   - scrip
+   - script:
         name: install git
         code: sudo yum -y install git
 
