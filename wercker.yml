@@ -23,6 +23,10 @@ build:
        code: meteor npm install
 
    - script:
+       name: typings install
+       code: typings install
+
+   - script:
         name: running gagarin tests
         code: meteor npm test
 
