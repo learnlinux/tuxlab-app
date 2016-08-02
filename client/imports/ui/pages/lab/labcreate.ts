@@ -10,6 +10,7 @@
     import { MATERIAL_PROVIDERS, MATERIAL_DIRECTIVES } from 'ng2-material';
     import { MeteorComponent } from 'angular2-meteor';
     import { FileDropDirective } from 'angular2-file-drop';
+    import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
 // Global Variables Declaration
     declare var Collections: any;
@@ -22,7 +23,8 @@
     FileDropDirective,
     ROUTER_DIRECTIVES,
     FORM_DIRECTIVES,
-    MATERIAL_DIRECTIVES
+    MATERIAL_DIRECTIVES,
+    MD_ICON_DIRECTIVES
   ],
   providers: [
     FORM_PROVIDERS,

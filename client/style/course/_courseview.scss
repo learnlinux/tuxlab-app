@@ -102,7 +102,7 @@
 	width: 100%;
 	margin: 0 auto;
 	max-width: $tuxlab-max-width;
-	
+
 	md-data-table {
 		tr {
 			cursor: pointer;
@@ -131,6 +131,46 @@
         .tuxicon-cog:before {
           font-size: 36px;
         }
+      }
+    }
+    md-card-content {
+      p {
+        span {
+          color: #afafaf;
+        }
+      }
+      .radio-group {
+        margin-left: 20px;
+        padding: 10px;
+        input[type=radio] {
+          display: none;
+        }
+        input[type=radio] + label {
+          color: black;
+          font-size: 14px;
+        }
+        input[type=radio] + label span {
+          display: inline-block;;
+          width: 19px;
+          height: 19px;
+          vertical-align: middle;;
+          cursor: pointer;;
+          border-radius: 50%;
+          -moz-border-radius: 50%;
+          margin: 10px;
+          border: solid 4px #f1c40f;
+        }
+        input[type=radio] + label span {
+          background-color: transparent;
+        }
+        input[type=radio]:checked + label span {
+          background-color: #ffd600;
+        }
+      }
+    }
+    md-card-actions {
+      .msg {
+        color: #999999;
       }
     }
   }

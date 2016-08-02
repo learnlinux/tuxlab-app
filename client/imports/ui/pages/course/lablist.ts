@@ -46,7 +46,8 @@
       super();
     }
 
-    getCourseRecords(){
+    getCourseRecords() {
+      // Get from course_records
       this.subscribe('course-records', () => {
         this.autorun(() => {
           if(this.cur_user) {
@@ -70,7 +71,7 @@
     }
 
     setLabs() {
-      if(typeof this.courseRecord !== "undefined") {
+      if(typeof this.courseRecord !== "undefined" && this.courseRecord !== null) {
         let labs = this.courseRecord.labs;
         let totalCompleted = 0;
         let totalNumTasks = 0;
