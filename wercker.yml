@@ -12,15 +12,15 @@ build:
 
    - script:
        name: install typings
-       code: npm install -g typings
+       code: meteor npm install -g typings
 
    - script:
        name: install npm dependencies
-       code: npm install
+       code: meteor npm install
 
    - script:
         name: running gagarin tests
-        code: npm test
+        code: meteor npm test
 
 deploy:
   steps:
