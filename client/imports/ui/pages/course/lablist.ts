@@ -72,6 +72,7 @@
       this.subscribe('explore-courses', () => {
         this.autorun(() => {
           var labids: Array<string> = Collections.courses.findOne({ _id: this.courseId }).labs;
+          
         });
       }, true);
     }
