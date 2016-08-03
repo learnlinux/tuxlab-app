@@ -16,10 +16,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let lab of labs" [routerLink]="['/course/' + courseId + '/labs/' + lab.id]">
-            <td class="md-text-cell">{{ lab.name }}</td>
+          <tr *ngFor="let lab of getLabs()" [routerLink]="['/course/' + courseId + '/labs/' + lab._id]">
+            <td class="md-text-cell">{{ lab.lab_name }}</td>
             <td>{{ lab.completed }}</td>
-            <td>{{ lab.date }}</td>
+            <td>soon</td>
           </tr>
         </tbody>
       </md-data-table>
