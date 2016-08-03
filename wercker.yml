@@ -1,4 +1,4 @@
-box: exkazuu/wercker-meteor
+box: centos
 dev:
   steps:
     - npm-install
@@ -7,50 +7,31 @@ dev:
 build:
   steps:
    - script:
-        name: update meteor
-        code: |
-           meteor --version
-           meteor update
-           meteor --version
+        name: install git
+        code: sudo yum -y install git
+
    - script:
-       name: update npm
-       code: npm install -g npm
+        name: install meteor
+        code: "curl https://install.meteor.com/ | sh"
 
    - script:
        name: install typings
-       code: npm install -g typings
+       code: sudo meteor npm install -g typings
 
    - script:
        name: install npm dependencies
-       code: npm install
+       code: meteor npm install
+
+   - script:
+       name: typings install
+       code: typings install
 
    - script:
         name: running gagarin tests
-        code: npm test
+        code: meteor npm test
+
 deploy:
   steps:
-   - script:
-        name: update meteor
-        code: |
-           meteor --version
-           meteor update
-           meteor --version
-
-   - script:
-        name: install npm dependencies
-        code: |
-            npm install --production
-
-   - script:
-      name: build tuxlab
-      code: |
-          meteor build /build
-
-   - script:
-      name: apt-update/install file, jq
-      code: |
-          apt-get update -qy && apt-get install -qy file jq
-
    - script:
       name: get git tag
       code: |
