@@ -41,7 +41,9 @@
 
       this.subscribe('user-courses', () => {
         this.autorun(() => {
-          this.courseNumber = Collections.courses.findOne({ _id: this.courseId }).course_number;
+          if(typeof Collections.courses.findOne({ _id: this.courseId }) !== "undefined") {
+            this.courseNumber = Collections.courses.findOne({ _id: this.courseId }).course_number;
+          }  
         });
       }, true);
     }

@@ -175,7 +175,7 @@ if(Meteor.isServer) {
   Meteor.startup(function() {
     Meteor.publish('userRoles', function() {
       this.autorun(function(computation) {
-        return Meteor.users.find(this.userId, { fields: { "roles": 1} });
+        return Meteor.users.find(this.userId, { fields: { "roles": 1 } });
       });
     });
   });

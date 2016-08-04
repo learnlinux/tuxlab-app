@@ -48,8 +48,7 @@
     constructor(private route: ActivatedRoute, private router: Router) {
       super();
 
-    getCourseRecords() {
-      // Get from course_records
+      // Get labs in course_records
       this.subscribe('course-records', () => {
         this.autorun(() => {
           var record = Collections.course_records.findOne({ course_id: this.courseId });
@@ -65,19 +64,21 @@
       });
     }
 
-    setLabs() {
-      if(typeof this.courseRecord !== "undefined" && this.courseRecord !== null) {
-        let labs = this.courseRecord.labs;
-        let totalCompleted = 0;
-        let totalNumTasks = 0;
-        for (let i = 0; i < labs.length; i++) {
-          let lab = labs[i];
-          let tasksCompleted = 0;
-          let tasks = lab.tasks;
-          for (let j = 0; j < tasks.length; j++) {
-            let task = tasks[j];
-            if (task.status === 'COMPLETED') {
-                tasksCompleted++;
+    getLabs() {
+      var finalLabs = []; // Return this, an array of formatted labs
+      if(typeof this.partialLabs !== "undefined" && typeof this.allLabs !== "undefined") {
+        // All labs from course database
+        finalLabs = this.allLabs;
+        // Get Lab Ids and compare with partial labs from course_records
+        var finalLabIds = _.map(finalLabs, function(lb) { return lb._id; });
+        for(let i = 0; i < finalLabIds.length; i++) {
+          let currentLabId = finalLabIds[i];
+          let numTasks = finalLabs[i].tasks.length;
+          // Set default completed in case it is not in course_records
+          finalLabs[i].completed = "0/" + numTasks;
+          for(let j = 0; j < this.partialLabs.length; j++) {
+            if((<any>(this.partialLabs[j]))._id.str === currentLabId.str) {
+              finalLabs[i].completed = this.compTasks(this.partialLabs[j]) + "/" + numTasks;
             }
           }
         }

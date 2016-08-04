@@ -62,13 +62,51 @@
 </div>
 
 <!-- Non-Logged In Dashboard -->
-<div class="tuxlab-dashboard" *ngIf="!user">
-  <md-card>
-    <md-card-title>
-      <h1>Welcome to TuxLab!</h1>  
-    </md-card-title>
-    <md-card-content>
-      
-    </md-card-content>  
-  </md-card>
+<div class="tuxlab-dashboard-nonuser" *ngIf="!user">
+
+  <!-- Section with Login and Background Picture -->
+  <div class="login-section">
+    <div class="login-wrapper">
+      <div class="login-card">
+        <h1>Welcome to TuxLab!</h1>
+        <md-card>
+          <md-card-content>  
+            <tuxlab-login></tuxlab-login>
+          </md-card-content>
+        </md-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div class="about-section">
+    <div class="set-max-width">
+      <h1>About TuxLab</h1>
+      <p>
+        TuxLab is an opensource platform for creating interactive Linux courses.
+        Click on the link below to read more about TuxLab!
+        Come back if you like what you see, go away if you do not.
+        Scroll down to browse some of the available courses on the site!
+      </p>
+      <div class="button-wrapper">
+        <a md-raised-button href="http://www.tuxlab.org">Go To TuxLab.org</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Courses Section -->
+  <div class="courses-section">
+    <div class="set-max-width">
+      <h1>Explore Courses</h1>
+      <p>
+        These are some courses that you will be able to enroll 
+        in once you have registered.
+      </p>
+      <div>
+        <tuxlab-exploreview></tuxlab-exploreview>
+      </div>
+
+    </div>
+  </div>
+
 </div>
