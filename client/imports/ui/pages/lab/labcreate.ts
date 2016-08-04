@@ -46,6 +46,8 @@ export default class LabCreate extends MeteorComponent {
     this.lab.file = "";
     this.uploaded = false;
     this.output = "Compiling...  Errors will display below.";
+
+    document.getElementById('course-content').style.maxWidth = "100%";
   }
 
   /* UPLOAD HANDLER */

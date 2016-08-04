@@ -15,6 +15,12 @@
   import { courses } from '../../../../../collections/courses.ts';
   import { course_records } from '../../../../../collections/course_records.ts';
 
+// Explore 
+  import { ExploreView } from '../../components/explore/explore.ts';
+
+// Login
+  import Login from '../account/login.ts';
+
 // Define Dashboard Component
 @Component({
 	selector: 'tuxlab-dashboard',
@@ -22,7 +28,9 @@
 	directives: [
 		MATERIAL_DIRECTIVES,
 		MD_SIDENAV_DIRECTIVES,
-		ROUTER_DIRECTIVES
+		ROUTER_DIRECTIVES,
+    Login,
+    ExploreView
 	]
 })
 

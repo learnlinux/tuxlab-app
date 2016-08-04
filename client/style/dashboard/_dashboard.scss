@@ -63,3 +63,68 @@
     }
   }
 }
+
+.tuxlab-dashboard-nonuser {
+  .login-section {
+    background-image: $university-splash-image;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
+    height: 55vh;
+    padding-top: 15vh;
+    .login-wrapper {
+      max-width: $tuxlab-max-width;
+      margin: 0 auto;
+      .login-card {
+        width: 500px;
+        margin:0;
+        h1 {
+          color: #e5e5e6;
+          font-family: "Open Sans";
+          font-weight: 300;
+          font-size: 46px;
+          text-align: center;
+        }
+        md-card {
+          margin: 0;
+          background-color: rgba(255, 255, 255, 0.6);
+          md-card-content {
+            margin: 0;
+            padding: 0;
+          }
+        }
+        .tuxlab-login {
+          height: 250px;
+        }
+      }
+    }
+  }
+  .section-text {
+    h1 {
+      color: #444444;
+      font-family: "Open Sans";
+      font-weight: 300;
+      font-size: 46px;
+      padding: 15px;
+    }
+    p {
+      a:link, a:visited {
+        text-decoration: none;
+        color: #444444;
+        font-weight: 600;
+      }
+      a:hover {
+        color: #222222;
+      }
+    }
+  }
+  .about-section {
+    background-color: white;
+    padding: 15px;
+    @extend .section-text;
+  }
+  .courses-section {
+    padding: 15px;
+    @extend .section-text;
+  }
+}
