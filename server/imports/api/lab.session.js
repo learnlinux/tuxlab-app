@@ -23,12 +23,10 @@ function getLab(id, callback){
       callback(err,null);
     }
     else if(!value){
-      TuxLog.log("warn","didn't get from labcache");
       var file = lab_data.file;
 
       var Lab = eval(file);
       LabCache.set(labcache_id,Lab,function(err,res){
-        TuxLog.log("warn","oooh no");
         if(err){
 	  TuxLog.log("warn",err);
 	}
@@ -36,7 +34,6 @@ function getLab(id, callback){
       callback(null,Lab);
     }
     else{
-      TuxLog.log("warn","got from cache");
       callback(null,value);
     }
   });
@@ -121,7 +118,7 @@ session.prototype.init = function(user,userId,labId,callback){
       if(err){
         callback(err,null);
       }
-      else if(!slf.started){
+      else if(!slf.env.system.password){
         slf.lab = lab;
 	slf.start(function(err){
 	  if(err){
@@ -130,29 +127,18 @@ session.prototype.init = function(user,userId,labId,callback){
 	  }
 	  else{
 	    slf.env.getPass(function(err,res){
-	      //TODO: separate streams in env.js
 	      if(err){
 	        callback(err,null);
 	      }
 	      else{
-                console.log("calling back");
-		callback(null,{taskNo: slf.lab.taskNo,sshPass: res});
+		callback(null,{system: slf.env.system,taskNo: slf.lab.taskNo});
 	      }
 	    });
 	  }
 	});
       }
       else{
-        slf.env.getPass(function(err,res){
-          console.log("already started");
-          if(err){
-            callback(err,null);
-          }
-          else{
-            slf.pass = res;
-            callback(null,{taskNo: slf.lab.taskNo,sshPass: res});
-          }
-       });
+        callback(null,{system: slf.env.system, taskNo: slf.lab.taskNo});
       }
     })
   }
@@ -198,7 +184,7 @@ session.prototype.start = function(callback){
       }, 
       function(){
         TuxLog.log("warn","error setting up task1");
-        callback("Task1 setup error");
+        callback(new Error("Task1 setup error"));
       });
 }
 
@@ -238,8 +224,7 @@ session.prototype.next = function(callback){
               });
         },
         function(err){
-          TuxLog.log("warn",err);
-          callback(err,null);
+          callback(null,null);
         });
   }
 }
@@ -251,8 +236,8 @@ session.prototype.next = function(callback){
 session.prototype.end = function(callback){
   var slf = this;
   if(!this.lab.currentTask.isLast()){
-    TuxLog.log("debug","trying to call end on a non-last task");
-    callback("Internal error",null); //TODO: should we allow end on non-last tasks? @Derek
+    TuxLog.log("debug",new Error("trying to call end on a non-last task"));
+    callback(new Error("Internal error"),null); 
   }
   this.lab.currentTask.vFn().then(function(){
                                        callback(null,"done");

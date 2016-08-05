@@ -44,6 +44,9 @@ var Session = require('../api/lab.session.js');
     }
   });
 
+  SessionCache.renew = function(userid,labid){
+    return "renewed";
+  }
   /*
     Gets a session from the local memory cache or ETCD
   */
@@ -61,14 +64,14 @@ var Session = require('../api/lab.session.js');
         try{
           var data = etcd.getSync('/tuxlab/sessions/'+userid+'/'+labid);
           console.log("DATA",data);
-          if(data.body.node.value){
+          if(data && data.body && data.body.node && data.body.node.value){
+            TuxLog.log("warn","Pulling session from etcd");
             var sess = new Session();
             sess.fromJson(data,function(err,res){
               callback(err,sess);
             });
           }
           else{
-            console.log("YAAAAY");
             callback(null,null);
           }
         }
@@ -103,7 +106,7 @@ var Session = require('../api/lab.session.js');
       },
       function(cb){
         //TODO @cemersoz to_data method
-        console.log("about to set");
+
         var json = {
 	  taskNo: session.lab.taskNo,
 	  taskUpdates: session.taskUpdates,
@@ -113,9 +116,18 @@ var Session = require('../api/lab.session.js');
 	  labId: labid,
 	  courseId: session.courseId
 	};
-        etcd.set('tuxlab/sessions/'+userid+'/'+labid, JSON.stringify(json), function(err){
-          TuxLog.log("warn","here");
-          cb(err);
+
+	console.log("setting: "+json);
+
+        etcd.set('tuxlab/sessions/'+session.env.system.node_ip+ '/' + userid + '/' + labid, JSON.stringify(json), function(err){
+          if(err){
+	    TuxLog.log("warn","etcd.set err");
+	    TuxLog.log("warn",err);
+	    cb(err);
+	  }
+	  else{
+	    cb(err);
+	  }
         });
       }
     ], function(err){

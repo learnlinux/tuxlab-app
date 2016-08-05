@@ -79,8 +79,8 @@ export default class LabView extends MeteorComponent {
       slf.labProgress = "0 / "+slf.tasks.length;
       slf.auth = {
         username: Meteor.user().profile.nickname,
-        password: res.sshInfo.pass,
-        domain: "10.100.1.11"
+        password: res.system.password,
+        domain: res.system.node_ip
       };
       slf.taskUpdates = res.taskUpdates;
 

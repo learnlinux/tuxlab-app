@@ -36,6 +36,16 @@ The following document describes the MongoDB Schema used by the TuxLab app:
       message: 'Git Lab is due in 2 Weeks',
       link: 'course/1/lab/12'
     }
+  ],
+  sessions: [
+    {
+      labId: "574467bc11091623418a429d",
+      started: 1469648536858
+    },
+    {
+      labId: "1346m2hjdj9f3kn003nbh93f",
+      started: 1469348565858
+    } 
   ]
 },
 {
@@ -145,9 +155,11 @@ The following document describes the MongoDB Schema used by the TuxLab app:
           grade: {16,100} // TUPLE
           data: {
             // INSTRUCTORS INJECT DATA
-          }
+          },
+          attempted: [1467903228163, 1467905328235, 1467906228438] 
         }
-      ]
+      ],
+      attempted: [1467905208238, 1467905728238]
     }
   ]
 }
