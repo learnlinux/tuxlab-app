@@ -29,7 +29,7 @@
     ngAfterViewInit(){
       var self = this;
       // Instantiate SimpleMDE
-      this.mde = new SimpleMDE({ element: this.elementRef.nativeElement.value });
+      this.mde = new SimpleMDE({ element: this.textarea.nativeElement });
       // Read initial data from task markdown
       this.mde.value(self.mdData);
       // Catch changes

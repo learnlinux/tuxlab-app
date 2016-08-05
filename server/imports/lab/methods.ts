@@ -14,7 +14,7 @@ import{ prepLab, next, verify } from './labMethods.ts';
 
 import{ markdown_editor } from './export_markdown.ts';
 Meteor.methods({
- 
+
    /**prepareLab: prepares a labExec object for the current user
    * takes the id of the lab and a callback as parameter
    * callback: (err,pass)
@@ -24,7 +24,7 @@ Meteor.methods({
  
     TuxLog.log("trace","preparing lab");
 
-    Meteor.user().sessions.push({labId: labId,started: Date.now()});
+    // Meteor.user().sessions.push({labId: labId,started: Date.now()});
 
 //    Collections.users.update({_id: Meteor.userId()},{$set:{sessions: this.user.sessions}});
     //get course Id
@@ -53,7 +53,7 @@ Meteor.methods({
 
     //get user nick
     var uId = Meteor.user().profile.nickname;
-    
+
     //wrap sync functions
     var verifyAsync = Meteor.wrapAsync(verify);
 
@@ -81,7 +81,7 @@ Meteor.methods({
     var courseId = Collections.labs.findOne({_id: labId}).course_id;
     //wrap sync functions
     var nextAsync = Meteor.wrapAsync(next);
-    
+
     try{
       var res = nextAsync(uId,labId,courseId);
       return res;
@@ -105,22 +105,22 @@ Meteor.methods({
     SessionCache.get(uId,labId,function(err,res){
       if(err){
         TuxLog.log("warn",err);
-	throw new Meteor.Error("Internal Service Error");
+        throw new Meteor.Error("Internal Service Error");
       }
       else if(!res){
         TuxLog.log("warn",new Meteor.Error("SessionCache.get failed to return a session instance"));
-	throw new Meteor.Error("Internal Service Error");
+        throw new Meteor.Error("Internal Service Error");
       }
       else{
         var endAsync = Meteor.wrapAsync(res.end,res);
-	try{
-	  var result = endAsync();
-	  return "success" //TODO: @Derek what to return here?
-	}
-	catch(e){
-	  TuxLog.log("warn",e);
-	  throw new Meteor.Error("Internal Service Error");
-	}
+        try{
+          var result = endAsync();
+          return "success" //TODO: @Derek what to return here?
+        }
+        catch(e){
+          TuxLog.log("warn",e);
+          throw new Meteor.Error("Internal Service Error");
+        }
       }
     });
   },

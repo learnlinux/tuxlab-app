@@ -2,21 +2,6 @@
   width:100%;
   max-width:$tuxlab-max-width;
   margin:0 auto;
-
-  md-tab-group {
-    background-color: white;
-    margin: 30px;
-    .md-active.md-tab-label {
-      background-color: #ffd54f;
-    }
-    md-ink-bar {
-      background-color: white;
-    }
-  }
-  .md-tab-header {
-    background-color: #ffc400;
-  }
-
   #search-view {
     display: none;
   }
@@ -142,5 +127,18 @@
     p.instructors {
       float: left;
     }
+  }
+  md-tab-group {
+    background-color: white;
+    margin: 30px;
+    .md-active.md-tab-label {
+      background-color: #ffd54f;
+    }
+    md-ink-bar {
+      background-color: white;
+    }
+  }
+  .md-tab-header {
+    background-color: #ffc400;
   }
 }
