@@ -8,10 +8,14 @@
 // Angular Material Imports
   import { MATERIAL_DIRECTIVES, MATERIAL_PROVIDERS } from 'ng2-material';
   import { MdProgressBar } from '@angular2-material/progress-bar';
+  import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
 
 // Angular Meteor Imports
   import { MeteorComponent } from 'angular2-meteor';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
+
+// Roles
+  import { Roles } from '../../../../../collections/users.ts';
 
 // Declare Collections
   declare var Collections: any;
@@ -29,7 +33,7 @@
       ROUTER_DIRECTIVES,
       MATERIAL_DIRECTIVES
     ],
-    providers: [ MATERIAL_PROVIDERS ]
+    providers: [ MATERIAL_PROVIDERS, OVERLAY_PROVIDERS ]
   })
 
   export class LabList extends MeteorComponent {
@@ -37,6 +41,7 @@
     courseId: string;
     userId: string = Meteor.userId();
     courseRecord: any;
+    exportData: string = "";
 
     // Test
     allLabs: Array<Object>;
@@ -101,4 +106,23 @@
       this.courseId = this.router.routerState.parent(this.route).snapshot.params['courseid'];
     }
 
+    isInstruct() {
+      if(typeof this.courseId !== "undefined") {
+        return Roles.isInstructorFor(this.courseId);
+      }
+      else {
+        return false;
+      }
+    }
+    exportLab(lab_id) {
+      var self = this;
+      Meteor.call('exportLab', lab_id, function(err, res) {
+        if(err) {
+          self.exportData = "Error getting data";
+        }
+        else {
+          self.exportData = res;
+        }
+      });
+    }
   }
