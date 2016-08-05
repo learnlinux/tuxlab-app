@@ -107,14 +107,13 @@
       font-size: 46px;
       padding: 15px;
     }
-    p {
-      a:link, a:visited {
-        text-decoration: none;
-        color: #444444;
-        font-weight: 600;
-      }
-      a:hover {
-        color: #222222;
+    .button-wrapper {
+      margin-top: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+      a {
+        color: white;
+        background-color: #4fafef;
       }
     }
   }
