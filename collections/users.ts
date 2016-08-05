@@ -75,6 +75,18 @@ if (Meteor.isServer){
         optional: true
       }
     })
+    
+    var sessionSchema = new SimpleSchema({
+      labId:{
+        type: String
+      },
+      started:{
+        type: Number,
+	autoValue: function(){
+	  return Date.now();
+	}
+      }
+    });
 
     // Overall User Schema
     var userSchema = new SimpleSchema({
@@ -92,6 +104,9 @@ if (Meteor.isServer){
       announcements:{
         type: [announcementSchema],
         defaultValue: []
+      },
+      sessions:{
+        type: sessionSchema
       }
     });
     (<any> Meteor.users).attachSchema(userSchema);
@@ -175,7 +190,7 @@ if(Meteor.isServer) {
   Meteor.startup(function() {
     Meteor.publish('userRoles', function() {
       this.autorun(function(computation) {
-        return Meteor.users.find(this.userId, { fields: { "roles": 1 } });
+        return Meteor.users.find(this.userId, { fields: { "roles": 1, "sessions": 1} });
       });
     });
   });
