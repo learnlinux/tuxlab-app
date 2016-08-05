@@ -66,7 +66,7 @@ class TuxLab extends MeteorComponent {
     var self = this;
     Meteor.call('getLastLab', function(err, res) {
       if (err) {
-        console.log(err);
+        self.router.navigate(['/']);
       }
       else {
         self.router.navigate(['/course/' + res.courseId + '/labs/' + res.labId]);
