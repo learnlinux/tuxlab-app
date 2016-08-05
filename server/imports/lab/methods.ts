@@ -24,7 +24,7 @@ Meteor.methods({
  
     TuxLog.log("trace","preparing lab");
 
-    Meteor.user().sessions.push({labId: labId,started: Date.now()});
+    // Meteor.user().sessions.push({labId: labId,started: Date.now()});
 
 //    Collections.users.update({_id: Meteor.userId()},{$set:{sessions: this.user.sessions}});
     //get course Id

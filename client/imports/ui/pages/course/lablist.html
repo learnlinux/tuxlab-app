@@ -13,13 +13,24 @@
             <th class="md-text-cell">Lab</th>
             <th>Tasks Completed</th>
             <th>Due Date</th>
+            <th *ngIf="isInstruct()"></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let lab of getLabs()" [routerLink]="['/course/' + courseId + '/labs/' + lab._id]">
-            <td class="md-text-cell">{{ lab.lab_name }}</td>
+          <tr *ngFor="let lab of getLabs()">
+            <td class="md-text-cell" [routerLink]="['/course/' + courseId + '/labs/' + lab._id]">{{ lab.lab_name }}</td>
             <td>{{ lab.completed }}</td>
             <td>soon</td>
+            <td *ngIf="isInstruct()">
+              <button md-button (click)="export.show(); exportLab(lab._id);">Export</button>
+              <md-dialog #export>
+                <md-dialog-title>
+                  Exported Markdown
+                </md-dialog-title>
+                <div>{{ exportData }}</div>
+                <md-dialog-actions ok="Got It"></md-dialog-actions>
+              </md-dialog>
+            </td>
           </tr>
         </tbody>
       </md-data-table>
