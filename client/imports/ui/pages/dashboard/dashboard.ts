@@ -15,7 +15,7 @@
   import { courses } from '../../../../../collections/courses.ts';
   import { course_records } from '../../../../../collections/course_records.ts';
 
-// Explore 
+// Explore
   import { ExploreView } from '../../components/explore/explore.ts';
 
 // Login
@@ -23,30 +23,30 @@
 
 // Define Dashboard Component
 @Component({
-	selector: 'tuxlab-dashboard',
-	templateUrl: '/client/imports/ui/pages/dashboard/dashboard.html',
-	directives: [
-		MATERIAL_DIRECTIVES,
-		MD_SIDENAV_DIRECTIVES,
-		ROUTER_DIRECTIVES,
+  selector: 'tuxlab-dashboard',
+  templateUrl: '/client/imports/ui/pages/dashboard/dashboard.html',
+  directives: [
+    MATERIAL_DIRECTIVES,
+    MD_SIDENAV_DIRECTIVES,
+    ROUTER_DIRECTIVES,
     Login,
     ExploreView
-	]
+  ]
 })
 
 // Export Dashboard Class
 @InjectUser('user')
 export default class Dashboard extends MeteorComponent {
-	user : Meteor.User;
+  user : Meteor.User;
   private courses = [];
   private grades = [];
 
   constructor() {
     super();
 
-		this.subscribe('user-courses', () => {
-			this.courses = courses.find({}, { limit: 5 }).fetch();
-		}, true);
+    this.subscribe('user-courses', () => {
+      this.courses = courses.find({}, { limit: 5 }).fetch();
+    }, true);
     this.subscribe('course-records', () => {
       let records = course_records.find().fetch();
       for(let i = 0; i < records.length; i++) {
