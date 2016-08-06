@@ -34,7 +34,6 @@ courses.allow({
 **/
   declare var SimpleSchema: any;
 	declare var _: any;
-  var _ = require('underscore');
   if (Meteor.isServer){
     Meteor.startup(function(){
 

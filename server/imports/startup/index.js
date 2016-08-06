@@ -1,5 +1,6 @@
 //import async
 async = require('async')
+_ = require('underscore')
 
 // Load Variables
 import './settings.js'

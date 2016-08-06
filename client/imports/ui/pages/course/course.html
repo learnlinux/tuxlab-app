@@ -9,6 +9,7 @@
           <a md-button [routerLink]="['/course/' + courseId + '/labs']">Labs</a>
           <a md-button [routerLink]="['/course/' + courseId + '/grades']" *ngIf="!isInstruct()">Grades</a>
           <a md-button [routerLink]="['/course/' + courseId]" *ngIf="isInstruct()">Students</a> 
+          <a md-button [routerLink]="['/course/' + courseId + '/lab-create']" *ngIf="isInstruct()">Upload</a>
         </div>
       </div>
     </md-toolbar>
@@ -17,7 +18,8 @@
         <a md-button [routerLink]="['/course/' + courseId]">{{ courseNumber }} Home</a>
         <a md-button [routerLink]="['/course/' + courseId + '/labs']">Labs</a>
         <a md-button [routerLink]="['/course/' + courseId + '/grades']" *ngIf="!isInstruct()">Grades</a>
-        <a md-button [routerLink]="['/course/' + courseId]" *ngIf="isInstruct()">Students</a>  
+        <a md-button [routerLink]="['/course/' + courseId]" *ngIf="isInstruct()">Students</a>
+        <a md-button [routerLink]="['/course/' + courseId + '/lab-create']" *ngIf="isInstruct()">Upload</a>  
       </div>
       <md-icon fontIcon="tuxicon-right"></md-icon>
     </md-toolbar>

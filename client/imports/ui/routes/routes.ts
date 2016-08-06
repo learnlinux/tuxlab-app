@@ -14,9 +14,6 @@ import { provideRouter, RouterConfig } from '@angular/router';
   // Error
   import ErrorPage from '../pages/error/error.ts'
 
-  // Lab
-  import LabCreate from '../pages/lab/labcreate.ts'
-
   // Course
   import { courseRoutes } from './course.routes.ts';
   import { CourseGuardRecord } from './course.guard.record.ts';
@@ -40,7 +37,6 @@ const routes : RouterConfig = [
   { path: 'login', component: Login },
   { path: 'terms', component: Terms },
   { path: 'privacy', component: Privacy },
-  { path: 'lab-create', component: LabCreate },
   { path: 'explore', component: Explore },
   { path: 'courses', component: CourseList },
   { path: 'error/:code', component: ErrorPage },
