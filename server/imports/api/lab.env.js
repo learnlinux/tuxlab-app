@@ -35,6 +35,8 @@ env.prototype.system = {
   key: "",
   os_family: "",
   image: "",
+  labVm_id: "",
+  containers: [], 
   ssh_port: null,
   node_ip: null
 }
@@ -97,7 +99,8 @@ env.deleteRecords = function(user,callback){
 			{dockerodeStartOptions: {--your options here--}}
  */
 env.prototype.init = function(system){
-  console.log("env.init");
+
+  TuxLog.log("trace","initalizing the user environment");
   var slf = this;
 
   /* create unique labVm name to avoid collisions
@@ -366,6 +369,7 @@ env.prototype.createVm = function(opts) {
 
                   //add container to slf.vmList to keep track
 	          slf.vmList[crtOpt.name] = cName;
+		  slf.system.containers.push(container.id);
 		  resolve();
                 }
 	      });
@@ -497,7 +501,6 @@ env.prototype.shell = function(vmName,command,opts) {
 	          }
 	        });
 	        stream.on('end',function(){
-                  console.log(dat);
                   resolve(dat,stdErr);
 	        });
 	     }

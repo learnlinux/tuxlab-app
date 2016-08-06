@@ -106,7 +106,8 @@ if (Meteor.isServer){
         defaultValue: []
       },
       sessions:{
-        type: sessionSchema
+        type: [sessionSchema],
+	defaultValue: []
       }
     });
     (<any> Meteor.users).attachSchema(userSchema);

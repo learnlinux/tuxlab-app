@@ -48,7 +48,6 @@ session.prototype.env = null;
 session.prototype.lab = null;
 session.prototype.student = null;
 session.prototype.pass = null;
-session.prototype.started = false;
 session.prototype.courseId = null;
 session.prototype.user = null;
 session.prototype.userId = null;
@@ -79,10 +78,6 @@ session.prototype.fromJson = function(data, callback){
     }
   });
 
-}
-session.prototype.changeStarted = function(){
-  this.started = true;
-  console.log(this.started);
 }
 /* init: pulls labFile and initializes session object from it
  */
