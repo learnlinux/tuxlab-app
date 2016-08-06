@@ -22,7 +22,7 @@ Accounts.onCreateUser(function(options, user){
     'instructor' : [],
     'administrator' : []
   }
-
+  user.sessions = [];
   // Return User
   return user;
 });

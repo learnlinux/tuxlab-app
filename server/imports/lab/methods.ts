@@ -5,7 +5,9 @@ declare var TuxLog : any;
 declare var SessionCache : any;
 declare var nconf : any;
 declare var _ : any;
+declare var async : any;
 
+import{ Roles } from '../../../collections/users.ts';
 //import session constructor
 var LabSession = require('../api/lab.session.js');
 
@@ -21,12 +23,11 @@ Meteor.methods({
    * implement loading wheel, md fetch, course record create in callback
    */
   'prepareLab': function(labId : string){
- 
     TuxLog.log("trace","preparing lab");
 
-    // Meteor.user().sessions.push({labId: labId,started: Date.now()});
+    (<any>Meteor.user()).sessions.push({labId: labId,started: Date.now()});
 
-//    Collections.users.update({_id: Meteor.userId()},{$set:{sessions: this.user.sessions}});
+    Meteor.users.update({_id: Meteor.userId()},{$set:{sessions: this.user.sessions}});
     //get course Id
     var courseId = Collections.labs.findOne({_id: labId}).course_id;
 
@@ -141,7 +142,7 @@ Meteor.methods({
   },
 
   'getLastLab' : function(){
-     var sessions = Collections.users.findOne({_id: Meteor.userId()}).sessions;
+     var sessions = (<any>Meteor.user()).sessions;
      
      var labId = sessions.reduce(function(total,current){
        if(current.started < total){
@@ -153,5 +154,86 @@ Meteor.methods({
      var courseId = Collections.labs.findOne({_id: labId}).course_id;
 
      return {labId: labId, courseId: courseId};
+  },
+  
+  'addInstructor' : function(course_id, instructor_id){
+
+    if(!(Roles.isAdministratorFor(course_id, Meteor.userId()) || Roles.isInstructorFor(course_id,instructor_id))){
+      throw new Meteor.Error("only administrators or instructors can modify instructors");
+    }
+    else{
+      var inst : any = Meteor.users.findOne({_id: instructor_id});
+
+      if(!inst){
+        throw new Meteor.Error("no user found with given id");
+      }
+      else{
+        inst.roles.instructor.push(course_id);
+
+        Meteor.users.update({id: instructor_id},{$set: {roles: inst.roles}});
+
+        var instructor = {
+          name: inst.profile.first_name + " "+ inst.profile.last_name,
+	  id: instructor_id
+        };
+
+        Collections.courses.update({_id: course_id},{$push:{instructors: instructor}});
+      }
+    }
+  },
+
+  'removeInstructor' : function(course_id, instructor_id){
+    
+    if(!(Roles.isAdministratorFor(course_id, Meteor.userId()) || Roles.isInstructorFor(course_id, instructor_id))){
+      throw new Meteor.Error("only administrators or instructors can modify instructors");
+    }
+    else{
+      var inst : any = Meteor.users.findOne({_id: instructor_id});
+
+      if(!inst){
+        throw new Meteor.Error("no user found with given id");
+      }
+      else{
+        Collections.courses.update({_id: course_id},{$pull:{instructors: {id: instructor_id}}});
+
+	inst.roles.instructor.delete(inst.roles.instructor.indexOf(course_id));
+	Meteor.users.update({_id: instructor_id},{$set: {roles: inst.roles}});
+      }
+    }
+  },
+
+  'createCourse' : function(course_name, userId, course_number){
+    if(!Roles.isGlobalAdministrator(Meteor.userId())){
+      throw new Meteor.Error("only administrators can create courses")
+    }
+    else{
+      var user = Meteor.users.findOne({_id: userId});
+      if(!user){
+        throw new Meteor.Error("the instructor id does not match that of a registered user");
+      }
+      else{
+        if(!course_number){
+	  course_number = "";
+	}
+	var course = {
+	  course_number: course_number,
+	  course_name: course_name,
+	}
+        var courseId = Collections.courses.insert(course);
+
+	Meteor.call('addInstructor',courseId, userId);
+      }
+    }  
+  },
+
+  'deleteCourse' : function(course_id){
+    var course = Collections.courses.findOne({_id: course_id});
+    
+    var instructors = course.instructors;
+
+    async.map(instructors,function(instructor){
+      Meteor.call('removeInstructor',course_id,instructor.id);
+    });
+
   }
 });

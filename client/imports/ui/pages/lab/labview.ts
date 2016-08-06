@@ -71,9 +71,7 @@ export default class LabView extends MeteorComponent {
   ngAfterViewInit(){
     var slf = this;
     Meteor.call('prepareLab',"1", function(err,res){
-      console.log('here');
-      console.log("fired",err,res);
-      //slf.labMarkdown = "# Sander \n ## are you sure this will work?";
+      
       slf.tasks = res.taskList;
       slf.toTask(slf.tasks[0]);
       slf.labProgress = "0 / "+slf.tasks.length;
@@ -94,7 +92,6 @@ export default class LabView extends MeteorComponent {
     Meteor.call('verifyTask',"1",function(err,res){
       var slf = this;
       if(err){
-        console.log("something went horribly wrong");
       }
       else{
         if(res.verified){
@@ -110,12 +107,12 @@ export default class LabView extends MeteorComponent {
 
   // Called by Next button
   nextTask(){
-    console.log("proceeding");
     var slf = this;
       Meteor.call('nextTask',"1",function(err,res){
         if(err){
           slf.nextButton = false;
           console.log("try again");
+	  //TODO: @sandershihacker, change this from console.log to alert/something else
         }
         else{
           console.log(res);
