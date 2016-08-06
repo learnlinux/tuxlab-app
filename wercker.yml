@@ -15,17 +15,9 @@ build:
         code: "curl https://install.meteor.com/ | sh"
 
    - script:
-       name: install typings
-       code: sudo meteor npm install -g typings
-
-   - script:
        name: install npm dependencies
        code: meteor npm install
-
-   - script:
-       name: typings install
-       code: typings install
-
+       
    - script:
         name: running gagarin tests
         code: meteor npm test

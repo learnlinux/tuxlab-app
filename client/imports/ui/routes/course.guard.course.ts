@@ -29,16 +29,13 @@ export class CourseGuardRecord implements CanActivate{
     var obs : Observable<boolean> = Observable.fromPromise(new Promise<boolean> (function(resolve, reject){
 
       Meteor.subscribe('courses', function(){
-
-        // Enroll Authenticated Users
-          var course_record = Collections.course_records.findOne({user_id: slf.user._id, course_id: course_id});
+          var course = Collections.course_records.findOne({user_id: slf.user._id, course_id: course_id});
           if (typeof course_record !== "undefined" && course_record !== null){
             resolve(true);
           }
           else{
 
           }
-
       });
     }));
 
