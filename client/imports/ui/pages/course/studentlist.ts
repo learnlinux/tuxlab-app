@@ -15,7 +15,7 @@
 	import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
 
 // Courses Database Imports
-  import { courses } from '../../../../../collections/courses.ts';
+  import { courses } from '../../../../../collections/courses';
 
 // Define UserList Component
 	@Component({

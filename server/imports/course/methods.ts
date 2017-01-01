@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { course_search } from './search.ts'
+import { course_search } from './search'
 
 Meteor.methods({
   'search_courses': function(text: string, results_per_page: number, page_no: number) {

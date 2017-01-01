@@ -3,17 +3,17 @@
 import { RouterConfig, CanActivate } from '@angular/router';
 
 // Course Routing
-import CourseView from '../pages/course/course.ts';
-import { GuardAuth } from './guard.auth.ts';
-import { CourseGuardRecord } from './course.guard.record.ts';
+import CourseView from '../pages/course/course';
+import { GuardAuth } from './guard.auth';
+import { CourseGuardRecord } from './course.guard.record';
 
 // Pages
-import { GradeList } from '../pages/course/gradelist.ts';
-import { LabList } from '../pages/course/lablist.ts';
-import { CourseDashboard } from '../pages/course/course_dashboard.ts';
-import { GradeView } from '../pages/course/gradeview.ts';
-import LabCreate from '../pages/lab/labcreate.ts'
-import LabView from '../pages/lab/labview.ts';
+import { GradeList } from '../pages/course/gradelist';
+import { LabList } from '../pages/course/lablist';
+import { CourseDashboard } from '../pages/course/course_dashboard';
+import { GradeView } from '../pages/course/gradeview';
+import LabCreate from '../pages/lab/labcreate'
+import LabView from '../pages/lab/labview';
 
 export const courseRoutes: RouterConfig = [
   {

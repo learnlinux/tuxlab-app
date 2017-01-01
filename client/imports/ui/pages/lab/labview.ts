@@ -16,14 +16,14 @@
   import { InjectUser } from 'angular2-meteor-accounts-ui';
 
 // Terminal and Markdown Imports
-  import { Terminal } from "../../components/wetty/terminal.ts";
-  import { MarkdownView } from "../../components/markdown/markdown.ts";
-  
+  import { Terminal } from "../../components/wetty/terminal";
+  import { MarkdownView } from "../../components/markdown/markdown";
+
 // Icons
   import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
 // Meteor method imports
-  import "../../../lab/methods.ts"
+  import "../../../lab/methods"
 
 // Define LabView Component
 @Component({
@@ -71,7 +71,7 @@ export default class LabView extends MeteorComponent {
   ngAfterViewInit(){
     var slf = this;
     Meteor.call('prepareLab',"1", function(err,res){
-      
+
       slf.tasks = res.taskList;
       slf.toTask(slf.tasks[0]);
       slf.labProgress = "0 / "+slf.tasks.length;

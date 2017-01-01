@@ -3,7 +3,6 @@
 
 // Angular Imports
   import { Component } from '@angular/core';
-  import { bootstrap } from 'angular2-meteor-auto-bootstrap';
   import { APP_BASE_HREF } from '@angular/common';
   import { HTTP_PROVIDERS } from '@angular/http';
   import { InjectUser } from 'angular2-meteor-accounts-ui';
@@ -15,7 +14,7 @@
   import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
 
 // Roles
-  import { Roles } from '../../../../../collections/users.ts';
+  import { Roles } from '../../../../../collections/users';
 
   declare var Collections: any;
 
@@ -43,7 +42,7 @@
         this.autorun(() => {
           if(typeof Collections.courses.findOne({ _id: this.courseId }) !== "undefined") {
             this.courseNumber = Collections.courses.findOne({ _id: this.courseId }).course_number;
-          }  
+          }
         });
       }, true);
     }
@@ -59,4 +58,3 @@
       }
     }
   }
-

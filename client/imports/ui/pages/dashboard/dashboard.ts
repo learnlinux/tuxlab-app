@@ -12,14 +12,14 @@
 	import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
 
 // Collections
-  import { courses } from '../../../../../collections/courses.ts';
-  import { course_records } from '../../../../../collections/course_records.ts';
+  import { courses } from '../../../../../collections/courses';
+  import { course_records } from '../../../../../collections/course_records';
 
 // Explore
-  import { ExploreView } from '../../components/explore/explore.ts';
+  import { ExploreView } from '../../components/explore/explore';
 
 // Login
-  import Login from '../account/login.ts';
+  import Login from '../account/login';
 
 // Define Dashboard Component
 @Component({

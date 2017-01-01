@@ -16,15 +16,15 @@
   import { MdToolbar } from '@angular2-material/toolbar';
 
 // LabList and Grades import
-  import { GradeList } from './gradelist.ts';
-  import { LabList } from './lablist.ts';
-  
+  import { GradeList } from './gradelist';
+  import { LabList } from './lablist';
+
 // Roles Import
-  import { Roles } from '../../../../../collections/users.ts';
+  import { Roles } from '../../../../../collections/users';
 
 // Markdown Editor
-  import { MDEditor } from '../../components/mdeditor/mdeditor.ts';
-  
+  import { MDEditor } from '../../components/mdeditor/mdeditor';
+
 // Icon
   import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
@@ -105,8 +105,8 @@ declare var Collections: any;
 
     // Update the database with new syllabus
     updateSyllabus() {
-      Collections.courses.update({ 
-        _id: this.courseId 
+      Collections.courses.update({
+        _id: this.courseId
       }, {
         $set: {
           "course_description.syllabus": this.courseSyllabus

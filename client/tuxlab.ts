@@ -25,13 +25,13 @@
 
 // Routes
   import { ROUTER_DIRECTIVES, RouterConfig, Router } from '@angular/router';
-  import { ROUTE_PROVIDERS } from './imports/ui/routes/routes.ts'
+  import { ROUTE_PROVIDERS } from './imports/ui/routes/routes'
 
 // Define TuxLab Component
 @Component({
   selector: 'tuxlab',
   templateUrl: '/client/tuxlab.html',
-  directives: [ 
+  directives: [
     ROUTER_DIRECTIVES,
     MATERIAL_DIRECTIVES,
     MD_TOOLBAR_DIRECTIVES,
@@ -58,7 +58,7 @@ class TuxLab extends MeteorComponent {
     Meteor.logout();
     this.router.navigate(['/']);
   }
-  
+
   toLastLab() {
     var self = this;
     Meteor.call('getLastLab', function(err, res) {

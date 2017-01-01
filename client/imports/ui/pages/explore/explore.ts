@@ -17,8 +17,8 @@
   import { FORM_DIRECTIVES, FORM_PROVIDERS } from '@angular/forms';
 
 // Component View Imports
-  import { ExploreView } from '../../components/explore/explore.ts';
-  import { SearchView } from '../../components/explore/search.ts';
+  import { ExploreView } from '../../components/explore/explore';
+  import { SearchView } from '../../components/explore/search';
 
 // Icons
   import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';

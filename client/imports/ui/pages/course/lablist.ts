@@ -15,7 +15,7 @@
   import { InjectUser } from 'angular2-meteor-accounts-ui';
 
 // Roles
-  import { Roles } from '../../../../../collections/users.ts';
+  import { Roles } from '../../../../../collections/users';
 
 // Declare Collections
   declare var Collections: any;
@@ -60,7 +60,7 @@
           this.partialLabs = record.labs;
         }, true);
       });
-      
+
       // Get all labs of this course
       this.subscribe('labs', () => {
         this.autorun(() => {

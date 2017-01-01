@@ -2,31 +2,31 @@ import { provideRouter, RouterConfig } from '@angular/router';
 
 /* PAGES */
   // Auth Guard
-  import { GuardAuth } from './guard.auth.ts';
+  import { GuardAuth } from './guard.auth';
 
   // Dashboard
-  import Dashboard from '../pages/dashboard/dashboard.ts'
+  import Dashboard from '../pages/dashboard/dashboard'
 
   // Account
-  import Login from '../pages/account/login.ts'
-  import Account from '../pages/account/account.ts'
+  import Login from '../pages/account/login'
+  import Account from '../pages/account/account'
 
   // Error
-  import ErrorPage from '../pages/error/error.ts'
+  import ErrorPage from '../pages/error/error'
 
   // Course
-  import { courseRoutes } from './course.routes.ts';
-  import { CourseGuardRecord } from './course.guard.record.ts';
+  import { courseRoutes } from './course.routes';
+  import { CourseGuardRecord } from './course.guard.record';
 
   // Course List
-  import CourseList from '../pages/courselist/courselist.ts';
+  import CourseList from '../pages/courselist/courselist';
 
   // Explore
-  import Explore from '../pages/explore/explore.ts';
+  import Explore from '../pages/explore/explore';
 
   // Static
-  import Privacy from '../pages/static/privacy.ts';
-  import Terms from '../pages/static/terms.ts';
+  import Privacy from '../pages/static/privacy';
+  import Terms from '../pages/static/terms';
 
 /* ROUTES */
 const routes : RouterConfig = [

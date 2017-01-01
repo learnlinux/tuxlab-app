@@ -11,8 +11,8 @@
   import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs';
 
 // Courses Database Imports
-  import { courses } from '../../../../../collections/courses.ts';
-   
+  import { courses } from '../../../../../collections/courses';
+
 // Icons
   import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
@@ -35,7 +35,7 @@ export class SearchView extends MeteorComponent {
   @Input() courseCount;
   @Input() currentPage;
   resultsPerPage = 15;
-  
+
   constructor() {
     super();
   }

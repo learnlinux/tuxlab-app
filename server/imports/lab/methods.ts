@@ -7,14 +7,14 @@ declare var nconf : any;
 declare var _ : any;
 declare var async : any;
 
-import{ Roles } from '../../../collections/users.ts';
+import{ Roles } from '../../../collections/users';
 //import session constructor
 var LabSession = require('../api/lab.session.js');
 
 //import sync Meteor methods
-import{ prepLab, next, verify } from './labMethods.ts';
+import{ prepLab, next, verify } from './labMethods';
 
-import{ markdown_editor } from './export_markdown.ts';
+import{ markdown_editor } from './export_markdown';
 Meteor.methods({
 
    /**prepareLab: prepares a labExec object for the current user
@@ -78,7 +78,7 @@ Meteor.methods({
 
     //get user nick
     var uId = Meteor.user().profile.nickname;
-    
+
     var courseId = Collections.labs.findOne({_id: labId}).course_id;
     //wrap sync functions
     var nextAsync = Meteor.wrapAsync(next);
@@ -135,15 +135,15 @@ Meteor.methods({
      })
 
      var tasks_object = tasks.reduce(_.extend,{});
-				    
-     var result_lab = markdown_editor(lab,tasks_object);  
+
+     var result_lab = markdown_editor(lab,tasks_object);
 
      return result_lab;
   },
 
   'getLastLab' : function(){
      var sessions = (<any>Meteor.user()).sessions;
-     
+
      var labId = sessions.reduce(function(total,current){
        if(current.started < total){
          return current;
@@ -155,7 +155,7 @@ Meteor.methods({
 
      return {labId: labId, courseId: courseId};
   },
-  
+
   'addInstructor' : function(course_id, instructor_id){
 
     if(!(Roles.isAdministratorFor(course_id, Meteor.userId()) || Roles.isInstructorFor(course_id,instructor_id))){
@@ -183,7 +183,7 @@ Meteor.methods({
   },
 
   'removeInstructor' : function(course_id, instructor_id){
-    
+
     if(!(Roles.isAdministratorFor(course_id, Meteor.userId()) || Roles.isInstructorFor(course_id, instructor_id))){
       throw new Meteor.Error("only administrators or instructors can modify instructors");
     }
@@ -223,12 +223,12 @@ Meteor.methods({
 
 	Meteor.call('addInstructor',courseId, userId);
       }
-    }  
+    }
   },
 
   'deleteCourse' : function(course_id){
     var course = Collections.courses.findOne({_id: course_id});
-    
+
     var instructors = course.instructors;
 
     async.map(instructors,function(instructor){

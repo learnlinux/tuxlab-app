@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
-import { Roles } from './users.ts';
+import { Roles } from './users';
 
 declare var _ : any;
 declare var async : any;
@@ -140,7 +140,7 @@ labs.allow({
 	  return LabValidator(userid,newDoc);
 	}
       }
-     
+
       labs.before.update(updateValidator);
       labs.before.insert(LabValidator);
     });
@@ -186,13 +186,13 @@ if(Meteor.isServer) {
             // Define roles of current user
             let roles = (<any>(user)).roles;
             if(typeof roles !== "undefined") {
-              
+
               // Get student enrolled courseIds
               let studentCourses = (_.unzip(roles.student))[0];
 
               // Concatenate student enrolled courseIds with Instructor taught courseIds
               let course_ids = studentCourses.concat(roles.instructor);
-              
+
               // Search Query
               return labs.find({
                 course_id: {

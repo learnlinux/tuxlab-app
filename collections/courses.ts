@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 
-import { Roles } from './users.ts';
+import { Roles } from './users';
 
 // Course Records Import
 import { course_records } from './course_records';

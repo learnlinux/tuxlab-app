@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { InjectUser } from 'angular2-meteor-accounts-ui';
-import { Roles } from '../../../../collections/users.ts';
+import { Roles } from '../../../../collections/users';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
