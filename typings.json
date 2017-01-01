@@ -1,0 +1,10 @@
+{
+  "name": "TuxLab",
+  "dependencies": {
+    "nconf": "registry:dt/nconf#0.0.0+20161212190028"
+  },
+  "globalDependencies": {
+    "collection2": "https://raw.githubusercontent.com/learnlinux/meteor-typings/master/aldeed%3Acollection2-core.d.ts",
+    "meteor": "https://gist.githubusercontent.com/jacobdr/6010b922d449e4aa1b001862f200e3ef/raw/d2baf474c271ff1c9d77961ae11750cdcbc30abb/meteor.d.ts"
+  }
+}
