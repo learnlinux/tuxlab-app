@@ -26,8 +26,8 @@
     None
   }
 
-  /* INSTRUCTOR */
-  interface Instructor {
+  /* User */
+  interface User {
     _id: string;
     name: string;
   }
@@ -39,7 +39,8 @@
     course_number?: string;
     course_description?: CourseDescription;
     featured: boolean;
-    instructors: Instructor[];
+    instructors: User[];
+    administrators: User[];
     permissions: Permissions;
     labs: string[];
   }

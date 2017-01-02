@@ -42,8 +42,8 @@ const permissionsSchema = new SimpleSchema({
     }
   });
 
-/* Instructions Schema */
-  const instructorSchema = new SimpleSchema({
+/* User Schema */
+  const userSchema = new SimpleSchema({
     name: {
       type: String
     },
@@ -64,21 +64,12 @@ const permissionsSchema = new SimpleSchema({
       type: String
     },
     instructors: {
-      type: [instructorSchema],
-      custom: function() {
-        let instructorIds = this.value.map(function(tuple) {
-          return tuple.id;
-        });
-        let validInstructors = Meteor.users.find({ _id: { $in: instructorIds } });
-
-        // Check that all instructors exist
-        if(validInstructors.count() !== this.value.length) {
-          return("One or more instructors are invalid.");
-        }
-        else{
-          return(null);
-        }
-      }
+      type: [userSchema]
+      //TODO Verify inclusion in user instructor list
+    },
+    administrators: {
+      type: [userSchema]
+      //TODO Verify inclusion in user administrators list
     },
     course_description: {
       type: descriptionSchema,

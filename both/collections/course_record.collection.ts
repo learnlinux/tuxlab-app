@@ -6,10 +6,24 @@
 
   import { CourseRecordSchema } from '../schemas/course_record.schema'
   import { CourseRecord } from '../models/course_record.model'
+  import { Roles } from '../collections/user.collection'
 
 /**
-  CREATE COURSE_RECORD COLLECTION
+  CREATE COURSERECORD COLLECTION
 **/
   export const CourseRecords = new Mongo.Collection<CourseRecord>('course_records');
   CourseRecords.attachSchema(CourseRecordSchema);
-  export const CourseRecordsObsv = new MongoObservable.Collection<CourseRecord>(CourseRecords);
+
+  // Set Editing Permissions
+
+  CourseRecords.allow({
+    insert: Roles.isGlobalAdministrator,
+    update: Roles.isGlobalAdministrator,
+    remove: Roles.isGlobalAdministrator,
+    fields: []
+  });
+
+/**
+  CREATE COURSERECORD OBSERVABLE
+**/
+export const CourseRecordsObsv = new MongoObservable.Collection<CourseRecord>(CourseRecords);

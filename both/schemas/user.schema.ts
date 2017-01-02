@@ -32,22 +32,28 @@ import * as nconf from 'nconf';
 
 /* Role Schema */
   const roleSchema = new SimpleSchema({
+    course_id : {
+      type: String
+    },
+    course_record : {
+      type: String
+    }
+  });
+
+  const rolesSchema = new SimpleSchema({
+    global_admin: {
+      type: Boolean
+    },
     administrator: {
-      type: [String],
+      type: [roleSchema],
       defaultValue: []
     },
     instructor: {
-      type: [String],
+      type: [roleSchema],
       defaultValue: []
     },
     student: {
-
-      // Tuples of (CourseID, CourseRecordID)
-      type: [{
-        type: [String],
-        maxCount: 2,
-        minCount: 2
-      }],
+      type: [roleSchema],
       defaultValue: []
     }
   });
@@ -76,7 +82,7 @@ import * as nconf from 'nconf';
       type: profileSchema
     },
     roles: {
-      type: roleSchema
+      type: rolesSchema
     },
     sessions:{
       type: [sessionSchema],

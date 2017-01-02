@@ -14,9 +14,9 @@ export enum TaskStatus {
 interface TaskRecord {
   _id: string;
   status: TaskStatus;
-  grade: number;
-  data: any;
-  attempted: number;
+  grade: number[];
+  data: any[];
+  attempted: number[];
 }
 
 /* LabRecord Model */

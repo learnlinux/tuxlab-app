@@ -14,7 +14,7 @@ import { Labs } from '../collections/lab.collection';
 import { TaskStatus } from '../models/course_record.model';
 
 /* Task Schema */
-  var taskRecordSchema = new SimpleSchema({
+  const taskRecordSchema : SimpleSchema = new SimpleSchema({
     _id: {
       type: String
     },

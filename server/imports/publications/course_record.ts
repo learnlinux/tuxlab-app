@@ -1,0 +1,3 @@
+/**
+  COURSE_RECORDS PUBLICATION
+**/

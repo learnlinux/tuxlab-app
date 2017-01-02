@@ -13,10 +13,16 @@
   }
 
   /* ROLE MODEL */
+  export interface Role {
+    course_id: string;
+    course_record: string;
+  }
+
   interface Roles {
-    administrator: string[];
-    instructor: string[];
-    student: string[];
+    global_admin : boolean
+    administrator: Role[];
+    instructor: Role[];
+    student: Role[];
   }
 
   /* SESSION MODEL */
