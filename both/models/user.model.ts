@@ -1,64 +1,41 @@
-/***
-  USER SCHEMA
-***/
+/**
+  USER MODEL
+**/
 
-import { SimpleSchema } from 'simpl-schema';
-import * as nconf from 'nconf';
+  /* PROFILE MODEL */
+  interface Profile {
+    first_name: string;
+    last_name: string;
+    nickname: string;
+    school: string;
+    email: string;
+    picture?: string;
+  }
 
-/* Profile Schema */
-  const profileSchema = new SimpleSchema({
-    first_name: {
-      type: String
-    },
-    last_name: {
-      type: String
-    },
-    nickname: {
-      type: String,
-      unique: true,
-      regEx: /^[a-zA-Z0-9_-]*$/
-    },
-    school: {
-      type: String,
-      defaultValue: nconf.get('domain_school')
-    },
-    email: {
-      type: String
-    },
-    picture: {
-      type: String
-    }
-  });
+  /* ROLE MODEL */
+  interface Roles {
+    administrator: string[];
+    instructor: string[];
+    student: string[];
+  }
 
-/* Role Schema */
-  const roleSchema = new SimpleSchema({
-    administrator: {
-      type: [String],
-      defaultValue: []
-    },
-    instructor: {
-      type: [String],
-      defaultValue: []
-    },
-    student: {
-      # Tuples of (CourseID, CourseRecordID)
-      type: [{
-        type: [String],
-        maxCount: 2,
-        minCount: 2
-      }],
-      defaultValue: []
-    }
-  });
+  /* SESSION MODEL */
+  interface Session {
+    lab_id: string;
+    started: number;
+  }
 
-/* Session Schema */
-  const sessionSchema = new SimpleSchema({
+  /* SERVICES MODEL */
+  interface Services {
+    facebook?: any;
+    google?: any;
+  }
 
-  });
-
-/* User Schema */
-  export const UserSchema : SimpleSchema = new SimpleSchema({
-    _id: {
-      type: String
-    }
-  });
+  /* USER MODEL */
+  export interface User {
+    _id: string;
+    services: Services;
+    profile: Profile;
+    roles: Roles;
+    sessions:Session[];
+  }

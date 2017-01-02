@@ -39,11 +39,11 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   ],
   sessions: [
     {
-      labId: "574467bc11091623418a429d",
+      lab_id: "574467bc11091623418a429d",
       started: 1469648536858
     },
     {
-      labId: "1346m2hjdj9f3kn003nbh93f",
+      lab_id: "1346m2hjdj9f3kn003nbh93f",
       started: 1469348565858
     }
   ]
@@ -145,7 +145,7 @@ The following document describes the MongoDB Schema used by the TuxLab app:
   course_id : "574465a21109160b518a4299",
   labs: [
     {
-      _id: "574467bc11091623418a429d",
+      lab_id: "574467bc11091623418a429d",
       data: {
         // INSTRUCTORS INJECT DATA
       },
