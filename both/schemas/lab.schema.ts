@@ -39,7 +39,7 @@ import { Courses } from '../collections/course.collection';
         }
       }
     },
-    lab_name: {
+    name: {
       type: String
     },
     updated: {

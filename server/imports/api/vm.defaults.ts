@@ -4,8 +4,8 @@
  * @author: Derek Brown, Cem Ersoz
  */
 
- import { VMOptions } from './vm';
+ import { VM_Options } from './vm';
 
- export const VMDefaults : VMOptions[] = [
+ export const VM_Defaults : VMOptions[] = [
 
  ]

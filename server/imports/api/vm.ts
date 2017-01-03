@@ -4,32 +4,19 @@
  * @author: Derek Brown, Cem Ersoz
  */
 
-/* Imports */
-  import { ENV } from './env';
+  import { Docker } from 'dockerode/lib/docker';
+  import { Environment } from './environment';
 
-/*
- * VM_Options
- * Defines the options passed into Docker
- */
+  export module VM {
 
+    interface CustomConfig {
+      image: string;
+    }
+    export type Config = string | CustomConfig;
 
-/*
- * VM
- * Provides access to a single lab-vm Docker Container.
- */
-export class VM {
-  /* CLASS VARIABLES */
-    env : ENV; // Link to Parent VM
-
-  /* CREATE LABVM */
-    constructor(options, callback){
+    export class Instance {
 
     }
+  }
 
-  /* DESTROY LABVM */
-    destroy(callback){
-
-
-    }
-
-}
+  //  Docker.CreateContainerOptions

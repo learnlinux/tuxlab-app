@@ -25,12 +25,15 @@
     "angular2-meteor-polyfills": "0.1.1",
     "angular2-meteor-tests-polyfills": "0.0.2",
     "babel-runtime": "^6.18.0",
+    "dockerode": "^2.3.1",
     "meteor-node-stubs": "^0.2.4",
     "meteor-rxjs": "^0.4.7",
     "nconf": "^0.8.4",
     "reflect-metadata": "0.1.9",
     "rxjs": "5.0.2",
+    "safe-eval": "^0.3.0",
     "simpl-schema": "0.0.4",
+    "uglify-js": "^2.7.5",
     "zone.js": "0.7.4"
   }
 }
