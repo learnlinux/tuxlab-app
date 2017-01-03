@@ -34,13 +34,9 @@ import { Courses } from '../collections/course.collection';
     course_id: {
       type: String,
       custom: function() {
-        let currentCourse = Courses.findOne({ _id: this.value });
-
-        // Check Existence of Course
-        if(typeof currentCourse === "undefined") {
-          LabSchema.addInvalidKeys([{name: this.key, type: "nonexistentCourse"}]);
+        if (typeof Courses.findOne({ _id: this.value }) === undefined){
+          return "invalidCourses";
         }
-
       }
     },
     lab_name: {

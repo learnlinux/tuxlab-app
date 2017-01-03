@@ -2,6 +2,9 @@
   USER MODEL
 **/
 
+ // Import Meteor User
+ import { Meteor } from 'meteor/meteor';
+
   /* PROFILE MODEL */
   interface Profile {
     first_name: string;
@@ -31,17 +34,9 @@
     started: number;
   }
 
-  /* SERVICES MODEL */
-  interface Services {
-    facebook?: any;
-    google?: any;
-  }
-
   /* USER MODEL */
-  export interface User {
-    _id: string;
-    services: Services;
+  export interface User extends Meteor.User {
     profile: Profile;
     roles: Roles;
-    sessions:Session[];
+    sessions: Session[];
   }

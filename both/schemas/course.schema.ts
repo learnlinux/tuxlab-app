@@ -8,9 +8,8 @@ import * as nconf from 'nconf';
 
 // Import Models
 import { ContentPermissions, EnrollPermissions } from '../models/course.model'
-
-// Validate Labs
 import { Labs } from '../collections/lab.collection';
+import { Users } from '../collections/user.collection';
 
 /* Description Schema */
   const descriptionSchema = new SimpleSchema({
@@ -48,7 +47,12 @@ const permissionsSchema = new SimpleSchema({
       type: String
     },
     id: {
-      type: String
+      type: String,
+      custom: function(){
+        if (Meteor.isServer && typeof Users.findOne({ _id: this.value }) === undefined){
+          return "invalidUser";
+        }
+      }
     }
   });
 
@@ -65,11 +69,9 @@ const permissionsSchema = new SimpleSchema({
     },
     instructors: {
       type: [userSchema]
-      //TODO Verify inclusion in user instructor list
     },
     administrators: {
       type: [userSchema]
-      //TODO Verify inclusion in user administrators list
     },
     course_description: {
       type: descriptionSchema,
@@ -86,12 +88,8 @@ const permissionsSchema = new SimpleSchema({
       type: [String],
       custom: function() {
         let validLabs = Labs.find({ _id: { $in: this.value } });
-        // Check that all labs are valid
-        if(validLabs.count() !== this.value.length) {
+        if(Meteor.isServer && validLabs.count() !== this.value.length) {
           return("One or more labs were invalid.");
-        }
-        else{
-          return(null);
         }
       }
     }

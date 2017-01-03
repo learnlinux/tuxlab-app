@@ -27,7 +27,7 @@
 
       // Get User by ID
       private static fromID(user_id : string) {
-          return Meteor.users.findOne(user_id);
+          return <User> Meteor.users.findOne(user_id);
       }
 
       // Checked if Logged In
@@ -56,7 +56,6 @@
         return Roles.isLoggedIn(user) &&
                (user.roles.global_admin ||
                (user.roles.administrator.map(function(role){ return role.course_id }).indexOf(course_id) >= 0));
-
       }
 
       // isGlobalAdministrator

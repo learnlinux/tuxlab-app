@@ -15,14 +15,14 @@ interface TaskRecord {
   _id: string;
   status: TaskStatus;
   grade: number[];
-  data: any[];
+  data?: any[];
   attempted: number[];
 }
 
 /* LabRecord Model */
 interface LabRecord {
   lab_id: string;
-  data: any;
+  data?: any;
   attempted: number[];
   tasks: TaskRecord[];
 }

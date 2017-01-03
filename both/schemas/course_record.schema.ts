@@ -7,6 +7,7 @@ import { SimpleSchema } from 'simpl-schema';
 import * as nconf from 'nconf';
 
 // Collections
+import { Users } from '../collections/user.collection';
 import { Courses } from '../collections/course.collection';
 import { Labs } from '../collections/lab.collection';
 
@@ -43,8 +44,8 @@ import { TaskStatus } from '../models/course_record.model';
       type: String,
       regEx: SimpleSchema.RegEx.Id,
       custom: function() {
-        if(typeof Labs.findOne({ _id: this.value }) === "undefined") {
-          labRecordSchema.addInvalidKeys([{name: "lab_id", type: "nonexistantLab"}]);
+        if (Meteor.isServer && typeof Labs.findOne({ _id: this.value }) === undefined){
+          return "invalidLab";
         }
       }
     },
@@ -65,17 +66,16 @@ import { TaskStatus } from '../models/course_record.model';
     user_id: {
       type: String,
       custom: function() {
-        if(typeof Meteor.users.findOne({ _id: this.value }) === "undefined") {
-          CourseRecordSchema.addInvalidKeys([{name: "user_id", type: "nonexistantUser"}]);
+        if (Meteor.isServer && typeof Users.findOne({ _id: this.value }) === undefined){
+          return "invalidUser";
         }
       }
     },
     course_id: {
       type: String,
       custom: function() {
-        let courseId = this.value;
-        if (typeof Courses.findOne({ _id: courseId }) === "undefined") {
-          CourseRecordSchema.addInvalidKeys([{name: "course_id", type: "nonexistantCourse"}])
+        if (Meteor.isServer && typeof Labs.findOne({ _id: this.value }) === undefined){
+          return "invalidLab";
         }
       }
     },

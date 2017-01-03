@@ -15,12 +15,11 @@
   CourseRecords.attachSchema(CourseRecordSchema);
 
   // Set Editing Permissions
-
   CourseRecords.allow({
     insert: Roles.isGlobalAdministrator,
     update: Roles.isGlobalAdministrator,
     remove: Roles.isGlobalAdministrator,
-    fields: []
+    fetch: []
   });
 
 /**

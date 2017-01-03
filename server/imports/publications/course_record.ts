@@ -1,3 +1,0 @@
-/**
-  COURSE_RECORDS PUBLICATION
-**/
