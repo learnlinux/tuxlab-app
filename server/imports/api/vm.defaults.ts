@@ -1,11 +1,11 @@
 /*
  * TuxLab VM Defaults
- * Stores default Docker VM options for provided VMs.
+ * Stores default Docker VM options for provided LabVMs.
  * @author: Derek Brown, Cem Ersoz
  */
 
- import { VM_Options } from './vm';
+ import { VM } from './vm';
 
- export const VM_Defaults : VMOptions[] = [
+ export const Defaults : VM.CustomConfig[] = [
 
  ]

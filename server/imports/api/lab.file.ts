@@ -4,12 +4,13 @@
  * @author: Derek Brown, Cem Ersoz
  */
 
- import { Lab } from '../../../both/models/lab.model';
+ import * as _ from "underscore";
+
  import { ENV } from './env';
  import { VM } from './vm';
 
  /*
-   LAB INTERFACE
+   LABFILE INTERFACE
  */
  export interface SetupObject {
    continue: void;
@@ -23,8 +24,6 @@
  export type VerifyFunction = (env : ENV, res: SetupObject) => void;
 
   interface TaskConstr {
-   name?: string;
-   markdown?: string;
    setup: SetupFunction;
    verify: VerifyFunction;
  }
@@ -38,8 +37,8 @@
     name: string;
     description? : string = "";
     _vm: VM.Config | VM.Config[];
-    _init: SetupFunction;
-    _destroy: SetupFunction;
+    _init?: SetupFunction;
+    _destroy?: SetupFunction;
     _tasks: TaskConstr[] = [];
 
     constructor(options : LabConstr){
@@ -56,8 +55,36 @@
       this._destroy = destroyFn;
     }
 
-    public nextTask(t : Task){
+    public nextTask(t : TaskConstr){
       this._tasks.push(t);
+    }
+ }
+
+ /*
+  VALIDATION FUNCTIONS
+ */
+ function isValidTaskObject (task : any) : boolean {
+    return (typeof task === "Object") &&
+           (typeof task.setup === "function") &&
+           (typeof task.verify === "function");
+ }
+
+ export function isValidLabObject (sandbox : any) : void {
+    if (typeof sandbox === "undefined") {
+      throw new Error("SandboxUndefined");
+    } else if (typeof sandbox.Lab === "undefined"){
+      throw new Error("LabUndefined");
+    } else if (typeof sandbox.Lab.name === "undefined"){
+      throw new Error("LabNameUndefined");
+    } else if (typeof sandbox.Lab._vm === "undefined"){
+      throw new Error("VMUndefined");
+    } else if (typeof sandbox.Lab._tasks === "undefined") {
+      throw new Error("TaskUndefined");
+    } else if (_.every(sandbox.Lab._vm, isValidTaskObject)){
+      throw new Error("InvalidTask");
+    } else {
+      _.every(sandbox.Lab._vm, VM.validateConfig);
+      return;
     }
  }
 
@@ -68,17 +95,4 @@
  */
  export const LabSandbox = {
    Lab: LabFile
- }
-
- /*
-   LABFILE VALIDATOR
- */
- export function isValidLabfile (lab : LabFile){
-     return (lab instanceof LabFile) &&
-     (typeof lab.name !== "undefined") &&
-     (typeof lab.description !== "undefined") &&
-     (typeof lab.vm !== "undefined") &&
-     (typeof lab._init !== "undefined") &&
-     (typeof lab._destroy !== "undefined") &&
-     (typeof lab._tasks !== "undefined");
  }

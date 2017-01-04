@@ -27,3 +27,8 @@
 
     }
   })
+
+  // Destroy function for performing any final tasks
+  Lab.destroy(function(){
+
+  });

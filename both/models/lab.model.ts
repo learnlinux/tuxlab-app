@@ -2,15 +2,8 @@
   LAB MODEL
 **/
 
-  /* TASK MODEL */
-  export interface Task {
-    id: number;
-    name: string;
-    md: string;
-  }
-
   /* LAB MODEL */
-  export interface Lab {
+  export interface LabModel {
     _id?: string;
     name: string;
     course_id: string;
@@ -19,4 +12,11 @@
     disabled?: boolean;
     file: string;
     tasks: Task[];
+  }
+
+  /* TASK MODEL */
+  export interface TaskModel {
+    id: number;
+    name: string;
+    md: string;
   }
