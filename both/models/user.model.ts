@@ -6,7 +6,8 @@
  import { Meteor } from 'meteor/meteor';
 
   /* PROFILE MODEL */
-  interface Profile {
+  export interface Profile {
+    _id: string;
     first_name: string;
     last_name: string;
     nickname: string;

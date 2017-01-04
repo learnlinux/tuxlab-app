@@ -1,72 +1,15 @@
 /*
- * TuxLab Env API
- * Provides an API to the TuxLab LabVMs for use in LabFiles.
+ * TuxLab VM Interface
+ * VM Object Passed to the Instructor inside of the Setup Function.
  * @author: Derek Brown, Cem Ersoz
+ *
+ *  NOTE: Because of convience methods extended in session.ts,
+ *  there can be no namespace conflicts between VM and Session.
  */
 
-  import * as _ from "underscore";
-  import { Docker } from 'dockerode/lib/docker';
+export interface VM {
 
-  import { Defaults } from './vm.defaults';
+  shell;
 
-  export module VM {
 
-/**********************/
-/*  VM CONFIGURATION  */
-/**********************/
-
-    /* CONFIGURATION INTERFACE */
-    export interface CustomConfig {
-
-      // IMAGE DETAILS
-      image: string; // Image Name from DockerHub
-      cmd : string; // Entry Command. Defaults to entry.sh
-
-      // USER DETAILS
-      username : string; // User to login. Defaults to root.
-      password_path : string; // Path to randomly-generated SSH Password.
-
-    }
-    export type Config = string | CustomConfig;
-
-    /* CONFIGURATION VALIDATOR */
-    export function validateConfig (config : Config) : void {
-      if (typeof config === "string"){
-        if (!_.has(Defaults, config)){
-          throw new Error('MissingConfig');
-        } else {
-          return;
-        }
-      } else if (typeof config === "object") {
-        //TODO: Implement nconf setting for Custom Config
-        throw new Error('CustomConfigNotPermitted');
-      } else {
-        throw new Error('InvalidConfig');
-      }
-    }
-
-/**********************/
-/*     VM INSTANCE    */
-/**********************/
-    export class Instance {
-
-      /*
-        CONSTRUCTOR
-        Creates an Instance Object.
-        NOTE: Doesn't create a container (yet).
-      */
-      constructor (config : Config) {
-
-      }
-
-      /*
-        CREATE
-        Creates a Docker Dontainer matching the config.
-      */
-      public create(callback : void) : void {
-
-      }
-
-    }
-
-  }
+}

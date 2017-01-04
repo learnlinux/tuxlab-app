@@ -3,7 +3,7 @@
 **/
 
   /* LAB MODEL */
-  export interface LabModel {
+  export interface Lab {
     _id?: string;
     name: string;
     course_id: string;
@@ -15,7 +15,7 @@
   }
 
   /* TASK MODEL */
-  export interface TaskModel {
+  export interface Task {
     id: number;
     name: string;
     md: string;
