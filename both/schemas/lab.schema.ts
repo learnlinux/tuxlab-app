@@ -2,15 +2,16 @@
   LABS SCHEMA
 ***/
 
-// Simple Schema Creation
 import { SimpleSchema } from 'simpl-schema';
 import * as nconf from 'nconf';
 
-// Validate Labs
 import { Courses } from '../collections/course.collection';
 
-/* Task Schema */
-  const taskSchema = new SimpleSchema({
+/**********************/
+/*    TASK SCHEMA     */
+/**********************/
+
+const taskSchema = new SimpleSchema({
     _id: {
       type: String
     },
@@ -26,7 +27,9 @@ import { Courses } from '../collections/course.collection';
     }
   });
 
-/* Lab Schema */
+/**********************/
+/*     LAB SCHEMA     */
+/**********************/
   export const LabSchema = new SimpleSchema({
     _id: {
       type: String

@@ -18,3 +18,6 @@ This design has a couple of distinct benefits:
 - Lab.file is a stable API for instructors, and it is substantially easier to understand than the un-obfuscated API.
 
 Most importantly though, this design is central to our ability to cache labs.  When a lab is run for the first time, we create a LabInstance, which is cached for all other users running the same lab.  This saves TONS of DB IO and Memory.  It is therefore imperative that each function is purely functional and stateless, otherwise variables would be shared across tasks or users.
+
+# What's Better Than VMs? Containers!
+But most people don't know what a container is- so we call it a virtual machine.
