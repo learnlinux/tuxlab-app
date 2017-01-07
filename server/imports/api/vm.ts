@@ -8,8 +8,5 @@
  */
 
 export interface VM {
-
-  shell;
-
-
+  
 }

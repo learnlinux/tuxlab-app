@@ -9,8 +9,8 @@
  import { Profile } from '../../../both/models/user.model';
  import { VM } from './vm';
 
- abstract class Environment {
-   
+ abstract class Environment implements VM {
+
    // Error Handling interface
    abstract error : (err : string) => void; // Prints Error on Screen
 
