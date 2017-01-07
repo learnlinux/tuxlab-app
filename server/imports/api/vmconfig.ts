@@ -38,6 +38,15 @@
     rhel7 : rhel7
   }
 
+  export function getDefaultConfig(config_name : string){
+    if (_.has(VMConfigDefault, config_name)){
+      return VMConfigDefault[config_name];
+    }
+    else {
+      throw new Error('MissingConfig');
+    }
+  }
+
   /* CONFIGURATION VALIDATOR */
   export function VMValidateConfig (config : VMConfig) : void {
     if (typeof config === "string"){
