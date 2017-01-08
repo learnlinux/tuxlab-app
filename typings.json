@@ -3,6 +3,7 @@
   "dependencies": {
     "dockerode": "registry:npm/dockerode#2.3.1+20161017101347",
     "nconf": "registry:dt/nconf#0.0.0+20161212190028",
+    "node-cache": "registry:dt/node-cache#3.0.0+20160816205622",
     "uglify-js": "registry:dt/uglify-js#2.6.1+20160510010627"
   },
   "globalDependencies": {

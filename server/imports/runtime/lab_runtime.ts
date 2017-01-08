@@ -6,9 +6,9 @@
 
  import * as _ from "underscore";
  import * as vm from 'vm';
- import * as nconf from 'nconf';
  import { UglifyJS } from 'uglify-js';
 
+ import { TuxConfig } from '../services/config.service';
  import { Lab as LabModel, Task as TaskModel } from '../../../both/models/lab.model';
  import { Lab, isValidLabObject } from '../api/lab'
 
@@ -49,7 +49,7 @@
         try{
           this._code = new vm.Script(lab.file, {
               displayErrors: true,
-              timeout: 5000 //TODO: Make nconf variable
+              timeout: TuxConfig.get('labruntime_init_timeout')
           });
         } catch (e){
           //TODO: Handle LabInstance Errors

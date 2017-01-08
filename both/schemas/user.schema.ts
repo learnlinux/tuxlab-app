@@ -3,7 +3,6 @@
 ***/
 
 import { SimpleSchema } from 'simpl-schema';
-import * as nconf from 'nconf';
 
 /* Profile Schema */
   const profileSchema = new SimpleSchema({
@@ -19,8 +18,7 @@ import * as nconf from 'nconf';
       regEx: /^[a-zA-Z0-9_-]*$/
     },
     school: {
-      type: String,
-      defaultValue: nconf.get('domain_school')
+      type: String
     },
     email: {
       type: String

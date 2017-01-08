@@ -17,10 +17,9 @@
   "filesGlob" : [
     "both/**/*.ts",
     "client/**/*.ts",
-    "server/**/*.ts"
-  ],
-  "files": [
+    "server/**/*.ts",
     "typings/index.d.ts"
+
   ],
   "compileOnSave": false,
   "angularCompilerOptions": {
