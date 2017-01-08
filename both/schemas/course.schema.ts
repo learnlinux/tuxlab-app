@@ -3,8 +3,8 @@
 ***/
 
 // Simple Schema Creation
+import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'simpl-schema';
-import * as nconf from 'nconf';
 
 // Import Models
 import { ContentPermissions, EnrollPermissions } from '../models/course.model'

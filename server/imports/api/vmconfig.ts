@@ -48,15 +48,15 @@
   }
 
   /* CONFIGURATION VALIDATOR */
-  export function VMValidateConfig (config : VMConfig) : void {
+  export function VMValidateConfig (config : VMConfig) : boolean {
     if (typeof config === "string"){
       if (! _.has(VMConfigDefault, config)){
         throw new Error('MissingConfig');
       } else {
-        return;
+        return true;
       }
     } else if (typeof config === "object") {
-      //TODO: Implement nconf setting for Custom Config
+      //TODO: Implement Security for Custom Config
       throw new Error('CustomConfigNotPermitted');
     } else {
       throw new Error('InvalidConfig');

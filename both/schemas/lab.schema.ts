@@ -3,7 +3,6 @@
 ***/
 
 import { SimpleSchema } from 'simpl-schema';
-import * as nconf from 'nconf';
 
 import { Courses } from '../collections/course.collection';
 

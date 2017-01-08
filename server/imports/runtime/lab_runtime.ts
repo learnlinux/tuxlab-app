@@ -6,6 +6,7 @@
 
  import * as _ from "underscore";
  import * as vm from 'vm';
+ import * as nconf from 'nconf';
  import { UglifyJS } from 'uglify-js';
 
  import { Lab as LabModel, Task as TaskModel } from '../../../both/models/lab.model';

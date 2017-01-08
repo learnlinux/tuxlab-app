@@ -3,8 +3,8 @@
 ***/
 
 // Simple Schema Creation
+import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'simpl-schema';
-import * as nconf from 'nconf';
 
 // Collections
 import { Users } from '../collections/user.collection';
