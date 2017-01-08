@@ -6,7 +6,7 @@
   import { Mongo } from 'meteor/mongo'
   import { MongoObservable } from 'meteor-rxjs';
 
-  import { LabSchema } from '../schemas/lab.schema'
+  import { LabSchema } from '../models/lab.schema'
   import { Lab } from '../models/lab.model'
   import { Roles } from '../collections/user.collection'
 

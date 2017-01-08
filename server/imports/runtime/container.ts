@@ -4,6 +4,9 @@
  * @author: Derek Brown, Cem Ersoz
  */
 
-export class Container {
 
-}
+ import { VMConfig } from '../api/vmconfig'
+
+ export class Container {
+
+ }
