@@ -2,14 +2,23 @@
   LAB MODEL
 **/
 
+  /*
+    LAB STATUS
+  */
+  export enum LabStatus{
+    hidden, //
+    secret, //
+    private, //
+    public //
+  }
+
   /* LAB MODEL */
   export interface Lab {
     _id?: string;
     name: string;
     course_id: string;
-    updated?: number;
-    hidden?: boolean;
-    disabled?: boolean;
+    updated: number;
+    status: LabStatus
     file: string;
     tasks: Task[];
   }

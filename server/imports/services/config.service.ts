@@ -1,5 +1,5 @@
 /*
- * settings
+ * config.service.ts
  * Imports configuration variables from the /private folder,
  * and saves them in an nconf object for use by other parts
  * of the application.
@@ -20,7 +20,7 @@
     "login"
   ]
 
-  class TuxNCONF extends nconf.Provider {
+  class TuxConfig extends nconf.Provider {
     constructor(){
       super([]);
 
@@ -37,4 +37,4 @@
     }
   }
 
-  export const TuxConfig = new TuxNCONF();
+  export const ConfigService = new TuxConfig();

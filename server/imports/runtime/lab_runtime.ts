@@ -8,11 +8,12 @@
  import * as vm from 'vm';
  import { UglifyJS } from 'uglify-js';
 
- import { TuxConfig } from '../services/config.service';
- import { Lab as LabModel, Task as TaskModel } from '../../../both/models/lab.model';
+ import { ConfigService } from '../services/config.service';
+ import { Lab as LabModel, Task as TaskModel, LabStatus } from '../../../both/models/lab.model';
  import { Lab, isValidLabObject } from '../api/lab'
 
  /**
+  LabSandbox
   Exports Modules for use by Instructors in Labfile
  **/
  export const LabSandbox = {
@@ -20,13 +21,13 @@
  }
 
  /**
-  Constructor Options for LabRuntime
+  labFileImportOpts
+  Sets options for creating a labfile
  **/
- interface LabRuntimeConstr{
-   name?: string;
+ interface labFileImportOpts{
+   name: string;
    course_id: string;
    file: string;
-   tasks: TaskModel[];
  }
 
  export class LabRuntime implements LabModel {
@@ -35,74 +36,89 @@
     name: string;
     course_id: string;
     file: string;
+    updated: number;
     tasks: TaskModel[];
+    status: LabStatus;
 
     // Runtime Elements
+    private _ready : Promise<LabRuntime>;
     private _sandbox = _.clone(LabSandbox);
     private _context = vm.createContext(this._sandbox);
     private _code;
 
-    constructor(lab : LabRuntimeConstr){
-
-      // Compile Lab
-      if (typeof lab.file === "string" && lab.file !== ""){
-        try{
-          this._code = new vm.Script(lab.file, {
-              displayErrors: true,
-              timeout: TuxConfig.get('labruntime_init_timeout')
-          });
-        } catch (e){
-          //TODO: Handle LabInstance Errors
+    constructor(lab : LabModel){
+      this._ready = new Promise((resolve, reject) => {
+        // Compile Lab
+        if (typeof lab.file === "string" && lab.file !== ""){
+          try{
+            this._code = new vm.Script(lab.file, {
+                displayErrors: true,
+                timeout: ConfigService.get('labruntime_init_timeout')
+            });
+          } catch (e){
+            //TODO: Handle LabInstance Errors
+          }
         }
-      }
 
-      // Execute Lab
-      if (typeof this._code !== 'undefined'){
-        try{
-          this._code.runInContext(this._context);
+        // Execute Lab
+        if (typeof this._code !== 'undefined'){
+          try{
+            this._code.runInContext(this._context);
+          } catch (e) {
+            //TODO: Handle LabInstance Errors
+          }
+        }
+
+        // Validate LabSandbox
+        try {
+          isValidLabObject(this._sandbox);
         } catch (e) {
           //TODO: Handle LabInstance Errors
         }
-      }
 
-      // Validate LabSandbox
-      try {
-        isValidLabObject(this._sandbox);
-      } catch (e) {
-        //TODO: Handle LabInstance Errors
-      }
-
+        // Set Parameters
+        Object.assign(this, lab);
+        resolve(this);
+      });
     }
 
-    public static labfileImport(labFile : string, courseID : string) : LabRuntime {
+    public ready() : Promise<LabRuntime> {
+      return this._ready;
+    }
 
-      // Regex for Markdown in Comments
-      const comment_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
-      const title_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
+    public static fileImport(opts : labFileImportOpts) : Promise<LabRuntime> {
+      return new Promise<LabRuntime>((resolve, reject) => {
+        // Regex for Markdown in Comments
+        const comment_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
+        const title_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
 
-      let comments = labFile.match(comment_filter);
-      let tasks = comments.map(function(comment, index, arr) {
-        let markdown = title_filter.exec(comment);
-        return {
-          id: (index + 1),
-          name: markdown[2],
-          md: markdown[4]
+        let comments = opts.file.match(comment_filter);
+        let tasks = comments.map(function(comment, index, arr) {
+          let markdown = title_filter.exec(comment);
+          return {
+            id: (index + 1),
+            name: markdown[2],
+            md: markdown[4]
+          }
+        });
+
+        // Uglify JS to minimize Storage
+        let code = "";
+        try {
+          let code = (UglifyJS.minify(opts.file, {fromString: true})).code;
+        } catch (e){
+          reject("uglifyError");
         }
-      });
 
-      // Uglify JS to minimize Storage
-      let code = "";
-      try {
-        let code = (UglifyJS.minify(labFile, {fromString: true})).code;
-      } catch (e){
-        throw new Error("uglifyError");
-      }
-
-      // Create LabInstance
-      return new LabRuntime({
-        course_id: courseID,
-        file: code,
-        tasks: tasks
+        // Create LabRuntime
+        return new LabRuntime({
+          name: opts.name,
+          course_id: opts.course_id,
+          updated: Date.now(),
+          status: LabStatus.hidden,
+          file: opts.file,
+          tasks: tasks
+        }).ready();
       });
     }
  }
