@@ -6,7 +6,7 @@
 /*
    SessionCache
 */
-  class SessionObjCache extends TuxCache {
+  class SessionObjCache extends Cache {
      protected _TTL : number;
 
      constructor(TTL : number){

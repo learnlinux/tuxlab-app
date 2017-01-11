@@ -16,6 +16,7 @@
   import { LabRuntime } from './lab_runtime';
 
   export class Session {
+    private _ready : Promise<Session>;
 
     // Container
     private _container : Container;
@@ -39,7 +40,7 @@
     }
 
     public ready() : Promise<Session> {
-
+      return this._ready;
     }
 
     public destroy() : void {

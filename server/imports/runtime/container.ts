@@ -5,11 +5,6 @@
  */
 
  import * as fs from 'fs';
- import { Readable } from 'stream';
-
- import * as Docker from '~dockerode/lib/docker';
- import * as DContainer from '~dockerode/lib/container';
- import * as DExec from '~dockerode/lib/exec';
 
  import { ConfigService } from '../services/config.service';
  import { VMConfig, VMConfigCustom, VMResolveConfig } from '../api/vmconfig';
@@ -17,6 +12,10 @@
 /*
   Create Dockerode Instance
 */
+ import { Readable } from 'stream';
+ import * as Docker from '~dockerode/lib/docker';
+ import * as DContainer from '~dockerode/lib/container';
+ import * as DExec from '~dockerode/lib/exec';
  const docker = new Docker({
    protocol: 'https',
    host: ConfigService.get('swarm_node_ip'),
@@ -25,6 +24,12 @@
    cert: fs.readFileSync(ConfigService.get('ssl_cert')),
    key: fs.readFileSync(ConfigService.get('ssl_key'))
  });
+
+/*
+  Create ETCD Instance
+*/
+import { Etcd } from 'node-etcd';
+new Etcd();
 
 /*
   Container Class
