@@ -4,16 +4,53 @@
  * @author: Derek Brown, Cem Ersoz
  */
 
+  import { Task } from '../../../both/models/lab.model';
+  interface Instruction {
+    id: number;
+    name: string;
+    md: string;
+    log: string;
+  }
+
+  import { Container } from './container';
   import { LabRuntime } from './lab_runtime';
 
   export class Session {
+
+    // Container
+    private _container : Container;
+
     // Lab Runtime
-    _lab : LabRuntime;
-    _current_task = 0;
+    private _lab : LabRuntime;
+    public current_task = 0;
+    public instructions : Instruction[];
 
-    // Current Markdown and Messsages
+    constructor (lab : LabRuntime){
 
-    // Create Lab from lab_id
-    constructor (){
+      // Copy LabRuntime Data
+      this._lab = lab;
+      this.instructions = _.map(this._lab.tasks, function(task){
+        let instruction = <Instruction>_.clone(task);
+            instruction.log = "";
+        return instruction;
+      });
+
+      // Create Container
+    }
+
+    public ready() : Promise<Session> {
+
+    }
+
+    public destroy() : void {
+
+    }
+
+    public renew(){
+
+    }
+
+    public nextTask() {
+
     }
   }

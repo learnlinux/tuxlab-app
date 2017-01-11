@@ -1,6 +1,6 @@
 
 
-  import { TuxCache } from './cache.service';
+  import { Cache } from './cache.service';
   import { ConfigService } from './config.service';
 
 /*

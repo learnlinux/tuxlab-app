@@ -24,7 +24,8 @@
   labFileImportOpts
   Sets options for creating a labfile
  **/
- interface labFileImportOpts{
+ export interface LabFileImportOpts{
+   _id?: string;
    name: string;
    course_id: string;
    file: string;
@@ -33,12 +34,13 @@
  export class LabRuntime implements LabModel {
 
     // Lab Model Elements
+    _id : string = "";
     name: string;
     course_id: string;
-    file: string;
     updated: number;
-    tasks: TaskModel[];
     status: LabStatus;
+    file: string;
+    tasks: TaskModel[];
 
     // Runtime Elements
     private _ready : Promise<LabRuntime>;
@@ -82,11 +84,7 @@
       });
     }
 
-    public ready() : Promise<LabRuntime> {
-      return this._ready;
-    }
-
-    public static fileImport(opts : labFileImportOpts) : Promise<LabRuntime> {
+    public static fileImport(opts : LabFileImportOpts) : Promise<LabRuntime> {
       return new Promise<LabRuntime>((resolve, reject) => {
         // Regex for Markdown in Comments
         const comment_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
@@ -110,7 +108,7 @@
           reject("uglifyError");
         }
 
-        // Create LabRuntime
+        // Create LabRun
         return new LabRuntime({
           name: opts.name,
           course_id: opts.course_id,
@@ -120,5 +118,13 @@
           tasks: tasks
         }).ready();
       });
+    }
+
+    public toLabObject() : LabModel {
+      return _.pick(this, ['_id', 'name', 'course_id', 'updated', 'status', 'file', 'tasks']);
+    }
+
+    public ready() : Promise<LabRuntime> {
+      return this._ready;
     }
  }

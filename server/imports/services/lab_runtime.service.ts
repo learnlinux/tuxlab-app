@@ -1,8 +1,12 @@
-
+/*
+ * TuxLab Lab Runtime Service
+ * @author: Derek Brown, Cem Ersoz
+ */
 
 import { Lab } from '../../../both/models/lab.model';
 import { Labs } from '../../../both/collections/lab.collection';
-import { LabRuntime } from '../runtime/lab_runtime';
+
+import { LabRuntime, LabFileImportOpts } from '../runtime/lab_runtime';
 
 import { Cache } from './cache.service';
 import { ConfigService } from './config.service';
@@ -16,6 +20,18 @@ import { ConfigService } from './config.service';
     constructor(TTL : number){
       super();
       this._TTL = TTL;
+    }
+
+    public importLabRuntime(opts : LabFileImportOpts) : Promise<LabRuntime> {
+      return LabRuntime.fileImport(opts).then(function(runtime : LabRuntime){
+
+        // Add to Cache
+        this._cache.set(opts._id, runtime, this._TTL, function(err){
+          //TODO log error
+        });
+
+        return runtime;
+      });
     }
 
     public getLabRuntime(lab_id : string) : Promise<LabRuntime> {
@@ -38,7 +54,7 @@ import { ConfigService } from './config.service';
 
           // Store LabRuntime in Cache
           this._cache.set(lab_id, runtime, this._TTL, function(err){
-            //TODO log err
+            //TODO log error
           });
 
           // Return Runtime
