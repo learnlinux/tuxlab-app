@@ -9,4 +9,10 @@
 
 export interface VM {
 
+  /*
+    shell
+    executes a shell command, returning an array of
+    stdout, sterr.
+  */
+  shell: (command : string) => Promise<[String,String]>;
 }

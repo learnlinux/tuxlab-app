@@ -8,8 +8,8 @@ import { Labs } from '../../../both/collections/lab.collection';
 
 import { LabRuntime, LabFileImportOpts } from '../runtime/lab_runtime';
 
-import { Cache } from './cache.service';
-import { ConfigService } from './config.service';
+import { Cache } from './cache';
+import { ConfigService } from './config';
 
 /*
    LabRuntimeCache

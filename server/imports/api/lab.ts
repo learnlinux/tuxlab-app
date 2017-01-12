@@ -28,9 +28,9 @@
     export class Lab {
       name : string;
       description? : string;
-      _vm : VMConfig[];
-      _init : InitFunction = function(env){ env.success(); }
-      _destroy : InitFunction = function(env){ env.success(); }
+      public _vm : VMConfig[];
+      _init : InitFunction = (env) => { env.success(); }
+      _destroy : InitFunction = (env) => { env.success(); }
       _tasks : Task[] = [];
 
       constructor (opts : LabConstr){
@@ -70,7 +70,7 @@
               (typeof task.verify === "function");
     }
 
-    export function isValidLabObject (sandbox : any) : void {
+    export function isValidLabObject (sandbox : any) : sandbox is { Lab : typeof Lab } {
        if (typeof sandbox === "undefined") {
          throw new Error("SandboxUndefined");
        } else if (typeof sandbox.Lab === "undefined"){
@@ -85,6 +85,6 @@
          throw new Error("InvalidTask");
        } else {
          _.every(sandbox.Lab._vm, VMValidateConfig);
-         return;
+         return true;
        }
     }

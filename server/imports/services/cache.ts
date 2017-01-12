@@ -1,5 +1,5 @@
 /*
- * lab_runtime.service.ts
+ * lab_runtime.ts
  * service which provides access to cached lab_runtimes.
  */
 
@@ -21,8 +21,8 @@
     }
 
     public exists(key : string) : Promise<boolean>{
-      return new Promise(function(resolve, reject){
-        this._cache.getTtl(key, function(err, success){
+      return new Promise((resolve, reject) => {
+        this._cache.getTtl(key, (err, success) => {
           if (!err && success){
             resolve(true);
           } else if (!err && !success){

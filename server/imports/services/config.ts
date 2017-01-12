@@ -1,5 +1,5 @@
 /*
- * config.service.ts
+ * config.ts
  * Imports configuration variables from the /private folder,
  * and saves them in an nconf object for use by other parts
  * of the application.

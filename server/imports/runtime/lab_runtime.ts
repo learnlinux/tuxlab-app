@@ -8,7 +8,9 @@
  import * as vm from 'vm';
  import * as UglifyJS from 'uglify-js';
 
- import { ConfigService } from '../services/config.service';
+ import { ConfigService } from '../services/config';
+
+ import { VMConfig, VMResolveConfig, VMConfigCustom } from '../api/vmconfig';
  import { Lab as LabModel, Task as TaskModel, LabStatus } from '../../../both/models/lab.model';
  import { Lab, isValidLabObject } from '../api/lab'
 
@@ -16,8 +18,10 @@
   LabSandbox
   Exports Modules for use by Instructors in Labfile
  **/
+ //TODO test injecting into TuxLab Object
  export const LabSandbox = {
-   Lab: Lab
+   TuxLab: Lab,
+   Lab: {}
  }
 
  /**
@@ -91,7 +95,7 @@
         const title_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
 
         let comments = opts.file.match(comment_filter);
-        let tasks = comments.map(function(comment, index, arr) {
+        let tasks = comments.map((comment, index, arr) => {
           let markdown = title_filter.exec(comment);
           return {
             id: (index + 1),
@@ -120,11 +124,20 @@
       });
     }
 
+    public ready() : Promise<LabRuntime> {
+      return this._ready;
+    }
+
     public toLabObject() : LabModel {
       return _.pick(this, ['_id', 'name', 'course_id', 'updated', 'status', 'file', 'tasks']);
     }
 
-    public ready() : Promise<LabRuntime> {
-      return this._ready;
+    public getVMConfig() : Promise<VMConfigCustom[]> {
+      return this.ready().then(() => {
+        if (this._sandbox.Lab instanceof Lab){
+          return _.map(this._sandbox.Lab._vm, VMResolveConfig);
+        }
+      });
     }
+
  }

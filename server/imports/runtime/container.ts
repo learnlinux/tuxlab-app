@@ -6,7 +6,8 @@
 
  import * as fs from 'fs';
 
- import { ConfigService } from '../services/config.service';
+ import { ConfigService } from '../services/config';
+ import { VM } from '../api/vm';
  import { VMConfig, VMConfigCustom, VMResolveConfig } from '../api/vmconfig';
 
 /*
@@ -26,15 +27,9 @@
  });
 
 /*
-  Create ETCD Instance
-*/
-import { Etcd } from 'node-etcd';
-new Etcd();
-
-/*
   Container Class
 */
- export class Container {
+ export class Container implements VM {
     private _ready : Promise<Container>;
 
     // Container Objects
@@ -72,42 +67,56 @@ new Etcd();
             resolve(container);
           }
         });
-      }).then((container : DContainer) => {
-         container.start((err, data) => {
-           if (err) {
-             throw err;
-           } else {
-             return container;
-           }
-         });
-      }).then(() => {
-         docker.getContainer(_this.container_id).inspect((err, data) => {
-           if (err){
-             throw err;
-           } else {
-             _this.node_ip = data.Node.IP;
-           }
-         })
-      }).then(() => {
-         return _this.getPass();
-      }).then((password : string) => {
-         _this.container_pass = password;
-         return _this;
+
+        // Dockerode Start Container
+        }).then((container : DContainer) => {
+           container.start((err, data) => {
+             if (err) {
+               throw err;
+             } else {
+               return container;
+             }
+           });
+
+        // Dockerode Get IP Address;
+        }).then(() => {
+           docker.getContainer(_this.container_id).inspect((err, data) => {
+             if (err){
+               throw err;
+             } else {
+               _this.node_ip = data.Node.IP;
+             }
+           })
+        }).then(() => {
+           return _this.getPass();
+        }).then((password : string) => {
+           _this.container_pass = password;
+           return _this;
       });
     }
 
-    public destroy() : Promise<{}> {
-      var _this = this;
+    public ready() : Promise<{}> {
+      return this._ready;
+    }
 
-      return new Promise((resolve, reject) => {
-        docker.getContainer(_this.container_id).remove((err, data) => {
-          if (err){
-            reject(err);
-          } else {
-            resolve();
-          }
+    public destroy() : Promise<{}> {
+      return this.ready().then(() => {
+        return new Promise((resolve, reject) => {
+          docker.getContainer(this.container_id).remove((err, data) => {
+            if (err){
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
         });
       });
+    }
+
+    public getVMInterface() : VM {
+      return {
+        shell : this.shell
+      };
     }
 
     public shell_stream(command) : Promise<Readable> {
@@ -124,13 +133,15 @@ new Etcd();
         stdin: true
       }
 
-      return new Promise((resolve, reject) => {
-        docker.getContainer(_this.container_id).exec(exec_options, (err, exec) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(exec);
-          }
+      return this.ready().then(() => {
+        return new Promise(function(resolve, reject){
+          docker.getContainer(_this.container_id).exec(exec_options, (err, exec) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(exec);
+            }
+          });
         });
       }).then((exec : DExec) => {
         return new Promise((resolve, reject) => {
@@ -188,4 +199,5 @@ new Etcd();
         }
       });
     }
+
  }

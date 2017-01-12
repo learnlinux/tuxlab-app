@@ -12,14 +12,14 @@
  abstract class Environment implements VM {
 
    // Error Handling interface
-   abstract error : (err : string) => void; // Prints Error on Screen
+   error : (err : string) => void; // Prints Error on Screen
 
    // Lab Data Interface
-   abstract setLabData : (data : any) => void;
-   abstract getLabData : any;
+   setLabData : (data : any) => void;
+   getLabData : () => void;
 
    // User Interface
-   abstract getUserProfile() : Profile;
+   getUserProfile : () => Profile;
    getUserID() : string {
      return this.getUserProfile()._id;
    }
@@ -38,8 +38,6 @@
 
    // Command Interface for VM
    public vm : VM[];
-
-   //TODO Convenience Methods for Default VM
    private getDefaultVM(){
      if (_.isArray(this.vm) && this.vm.length > 0){
        return this.vm[0];
@@ -47,46 +45,76 @@
        throw new Error("NoVMs");
      }
    }
+
+   // Convenience Methods for Accessing the Default VM
+   shell(command : string) : Promise<[String,String]> {
+     return this.getDefaultVM().shell(command);
+   }
+
+   // Constructor from Object
+   constructor(obj){
+     _.extend(this, _.pick(obj, ['error', 'setLabData', 'getLabData', 'getUserProfile', 'vm']));
+   }
  }
 
  /* CLASSES FOR OBJECTS PASSED TO INIT AND DESTROY */
- export abstract class InitObject extends Environment {
+ export class InitObject extends Environment {
 
    // Setup Progress Interface
-   abstract success() : void; // Continuation Function: Task Ready
-   abstract faulure() : void; // Continuation Function: Failed to Setup task.
+    success : () => void; // Continuation Function: Task Ready
+    failure : () => void; // Continuation Function: Failed to Setup task.
 
+    // Constructor from Object
+    constructor(obj){
+      super(obj);
+      _.extend(this, _.pick(obj, ['succcess', 'failure']));
+    }
  }
 
  /* CLASSES FOR OBJECTS PASSED TO SETUP AND VERIFY FUNCTIONS */
  abstract class TaskObject extends Environment {
 
    // Task Data Interface
-   abstract setTaskData() : (data : string) => void;
-   abstract getTaskData() : string;
+   setTaskData : (data : string) => void;
+   getTaskData : () => string;
 
    // Markdown Interface
-   abstract setMarkdown() : (md : string) => void; // Updates the Instructions themselves
-   abstract setStatus() : (md : string) => void; // Updates only the "status area" of the instructions
+   setMarkdown : (md : string) => void; // Updates the Instructions themselves
+   setLog : (md : string) => void; // Updates only the "status area" of the instructions
 
+   // Constructor from Object
+   constructor(obj){
+     super(obj);
+     _.extend(this, _.pick(obj, ['setTaskData', 'getTaskData', 'setMarkdown', 'setStatus']));
+   }
  }
 
- export abstract class SetupObject extends TaskObject {
+ export class SetupObject extends TaskObject {
 
    // Setup Progress Interface
-   abstract success() : void; // Continuation Function: Task Ready
-   abstract faulure() : void; // Continuation Function: Failed to Setup task.
+   success : () => void; // Continuation Function: Task Ready
+   failure : () => void; // Continuation Function: Failed to Setup task.
 
+   // Constructor from Object
+   constructor(obj){
+     super(obj);
+     _.extend(this, _.pick(obj, ['succcess', 'failure']));
+   }
  }
 
- export abstract class VerifyObject extends TaskObject {
+ export class VerifyObject extends TaskObject {
 
    // Lab Progress Interface
-   abstract completed() : void; // Continuation Function: Goes to next Task
-   abstract failed() : void; // Continuation Function: Marks lab a failure and exits.
-   abstract retry() : void; // Continuation Function: Prompts user to retry;
+   completed : () => void; // Continuation Function: Goes to next Task
+   failed : () => void; // Continuation Function: Marks lab a failure and exits.
+   retry : () => void; // Continuation Function: Prompts user to retry;
 
    // Lab Grade Interface
-   abstract setGrade() : (n : number, d : number) => void; // n : numerator, d: denom
+   setGrade : (n : number, d : number) => void; // n : numerator, d: denom
 
+   // Constructor from Object
+   constructor(obj){
+     super(obj);
+     _.extend(this, _.pick(obj, ['completed', 'failed', 'retry', 'setGrade']));
+   }
  }
