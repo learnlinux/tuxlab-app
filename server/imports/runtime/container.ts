@@ -6,9 +6,11 @@
 
  import * as fs from 'fs';
 
- import { ConfigService } from '../services/config';
  import { VM } from '../api/vm';
  import { VMConfig, VMConfigCustom, VMResolveConfig } from '../api/vmconfig';
+
+ import { ConfigService } from '../services/config';
+ import { ContainerCacheObj } from '../services/session';
 
 /*
   Create Dockerode Instance
@@ -40,58 +42,68 @@
     public container_pass : string;
     public node_ip : string;
 
-    constructor(cfg : VMConfig){
-      var _this = this;
+    constructor(cfg : VMConfig, id? : string){
 
-      this._ready = new Promise((resolve, reject) => {
+      this.config = VMResolveConfig(cfg);
 
-        // Get Config from VMConfig
-        _this.config = VMResolveConfig(cfg);
-        const dockerconfig = {
-          'Image': _this.config.image,
-          'Cmd': _this.config.cmd,
-          'AttachStdin': false,
-          'AttachStdout': false,
-          'AttachStderr': false,
-          'Tty': true,
-          'OpenStdin': false,
-          'StdinOnce': false
-        };
+      let prepare_containers : Promise<any>;
+      // Create Container
+      if (typeof id === "undefined") {
+        prepare_containers = new Promise((resolve, reject) => {
 
-        // Dockerode Create Container
-        docker.createContainer(dockerconfig, (err, container) => {
-          if (err) {
-            reject(err);
-          } else {
-            _this.container_id = container.id;
-            resolve(container);
-          }
+          // Get Config from VMConfig
+          const dockerconfig = {
+            'Image': this.config.image,
+            'Cmd': this.config.cmd,
+            'AttachStdin': false,
+            'AttachStdout': false,
+            'AttachStderr': false,
+            'Tty': true,
+            'OpenStdin': false,
+            'StdinOnce': false
+          };
+
+          // Dockerode Create Container
+          docker.createContainer(dockerconfig, (err, container) => {
+            if (err) {
+              reject(err);
+            } else {
+              this.container_id = container.id;
+              resolve(container);
+            }
+          });
+
+          // Dockerode Start Container
+          }).then((container : DContainer) => {
+             container.start((err, data) => {
+               if (err) {
+                 throw err;
+               } else {
+                 return;
+               }
+             });
         });
+      } else if (typeof id === "string"){
+        prepare_containers = new Promise((resolve, reject) => {
+            this.container_id = id;
+            resolve();
+        });
+      }
 
-        // Dockerode Start Container
-        }).then((container : DContainer) => {
-           container.start((err, data) => {
-             if (err) {
-               throw err;
-             } else {
-               return container;
-             }
-           });
-
-        // Dockerode Get IP Address;
-        }).then(() => {
-           docker.getContainer(_this.container_id).inspect((err, data) => {
+      this._ready = prepare_containers
+         .then(() => {
+           docker.getContainer(this.container_id).inspect((err, data : any) => {
              if (err){
                throw err;
              } else {
-               _this.node_ip = data.Node.IP;
+               this.node_ip = data.Node.IP;
              }
            })
         }).then(() => {
-           return _this.getPass();
+           return this.getPass();
         }).then((password : string) => {
-           _this.container_pass = password;
-           return _this;
+           this.container_pass = password;
+           return this;
       });
     }
 
@@ -116,6 +128,13 @@
     public getVMInterface() : VM {
       return {
         shell : this.shell
+      };
+    }
+
+    public getContainerCacheObj() : ContainerCacheObj {
+      return {
+        id: this.container_id,
+        config: this.config
       };
     }
 

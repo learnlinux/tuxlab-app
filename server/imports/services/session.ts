@@ -1,3 +1,7 @@
+/*
+ * TuxLab Session Service
+ * @author: Derek Brown, Cem Ersoz
+ */
 
   /* GLOBAL IMPORTS */
   import * as fs from 'fs';
@@ -25,8 +29,15 @@
   import { Container } from '../runtime/container';
   import { Session } from '../runtime/session';
 
+  export interface ContainerCacheObj {
+    id: string;
+    config: VMConfigCustom;
+  }
   interface SessionCacheObj {
-
+    user_id: string;
+    lab_id: string;
+    current_task: number;
+    vm: ContainerCacheObj[]
   }
 
 /*
@@ -45,7 +56,7 @@
       return user_id;
     }
 
-    public createSession (user_id : string, lab : LabRuntime) : Promise<Session> {
+    public createSession(user_id : string, lab : LabRuntime) : Promise<Session> {
        // Create Session_ID
        let session_id = this.getSessionID(user_id); // A user may have at most one active session;
 
@@ -61,7 +72,7 @@
 
        // Create Session
        .then((containers : Container[]) => {
-          return new Session(session_id, user_id, lab, containers );
+          return new Session(session_id, user_id, lab, containers);
        })
 
        // Initialize Containers
@@ -96,44 +107,65 @@
        });
      }
 
-    public getSession(user_id : string) : Promise<Session> {
+    public getSession(user_id : string) : Promise<Session | undefined> {
       // Create Session_ID
       let session_id = user_id; // A user may have at most one active session;
 
       return new Promise((resolve, reject) => {
 
         // Check Cache
-        this._cache.get(this.getKeySession(this.getSessionID(user_id)), (err, val) => {
+        this._cache.get(this.getSessionID(user_id), (err, val) => {
            if (err) {
              reject(err);
            } else if (typeof val !== "undefined") {
-             return val;
+             resolve(val);
            } else {
 
-             // Check ETCD
-             etcd.get(this.getKeySession(this.getSessionID(user_id)), (err, val) => {
-               if (err) {
-                 reject(err);
-               } else if (typeof val === "undefined") {
+           // Check ETCD
+             // List Swarm Nodes
+             let nodes : string[] =
+                _.map(etcd.getSync("/tuxlab/sessions", {}).node.nodes, (node : any) => {
+                    return node.key;
+                });
 
-               } else {
-
-               }
+             // Check for Session ID
+             let node : string = _.find(nodes, (host) => {
+                typeof etcd.getSync("/tuxlab/sessions/"+host+"/"+this.getSessionID(user_id),{}) !== undefined;
              });
-           }
-        })
+
+             // Session Doesn't Exist
+             if (typeof node !== "undefined"){
+               resolve(undefined);
+
+             // Create Session Object from ETCD Record
+             } else {
+
+               // Get ETCD Record
+               let record : SessionCacheObj = etcd.getSync("tuxlab/sessions/" + node + this.getSessionID(user_id), {});
+
+               // Create Container Objects
+               let containers = _.map(record.vm, (containerObj) => {
+                  return new Container(containerObj.config, containerObj.id);
+               });
+
+               // Get LabRuntime Object
+               let runtime = LabRuntimeService.getLabRuntime(record.lab_id).then((runtime) => {
+                  resolve(new Session(this.getSessionID(user_id), user_id, runtime, containers));
+               });
+             }
+          }
+        });
       });
     }
-
 
   /************************
    *      ETCD OBJECT     *
    ************************/
-    private getKeyProxy(session : Session) : string{
+    private etcd_getKeyProxy(session : Session) : string{
       return '/redrouter/SSH::'+session.getUserObj()._id;
     }
 
-    private getKeyDNS(session : Session) : string {
+    private etcd_getKeyDNS(session : Session) : string {
       return '/skydns/' + ConfigService.get('ssh_dns_root')
                                        .split('.')
                                        .reverse()
@@ -141,8 +173,8 @@
                                        .join('/');
     }
 
-    private getKeySession(session_id : string) : string {
-      return '/tuxlab/sessions/' + session_id;
+    private etcd_getKeySession (session : Session) : string {
+      return '/tuxlab/sessions/' + session.getDefaultContainer().node_ip + '/' + session.session_id;
     }
 
     private etcd_create_proxy (session : Session) : Promise<{}> {
@@ -154,7 +186,7 @@
           allowed_auth: ["password"]
         };
 
-        etcd.set(this.getKeyProxy(session), record, {
+        etcd.set(this.etcd_getKeyProxy(session), record, {
           prevExist: false // Verify that this creation is unique
         }, (err, res) => {
           if (err) {
@@ -172,7 +204,7 @@
           host: session.getDefaultContainer().node_ip
         };
 
-        etcd.set(this.getKeyDNS(session), record, {
+        etcd.set(this.etcd_getKeyDNS(session), record, {
           prevExist: false // Verify that this creation is unique
         }, (err, res) => {
           if (err) {
@@ -186,13 +218,14 @@
 
     private etcd_create_session (session : Session) : Promise<{}> {
       return new Promise((resolve, reject) => {
-        let record = {
+        let record : SessionCacheObj = {
             user_id: session.getUserObj()._id,
             lab_id: session.lab_id,
-            current_task: 0
+            current_task: 0,
+            vm: session.getContainerCacheObj()
         };
 
-        etcd.set(this.getKeySession(session.session_id), record, {}, (err, res) => {
+        etcd.set(this.etcd_getKeySession(session.session_id), record, {}, (err, res) => {
           if (err) {
             reject(err);
           } else {
@@ -204,7 +237,7 @@
 
     private etcd_delete_proxy(session : Session) : Promise<{}> {
       return new Promise((resolve, reject) => {
-        etcd.del(this.getKeyProxy(session), (err) => {
+        etcd.del(this.etcd_getKeyProxy(session), (err) => {
           if(err){
             reject(err);
           } else {
@@ -216,7 +249,7 @@
 
     private etcd_delete_dns(session : Session) : Promise<{}> {
       return new Promise((resolve, reject) => {
-        etcd.del(this.getKeyDNS(session), (err, res) => {
+        etcd.del(this.etcd_getKeyDNS(session), (err, res) => {
           if(err){
             reject(err);
           } else {
@@ -228,7 +261,7 @@
 
     private etcd_delete_session(session : Session) : Promise<{}> {
       return new Promise((resolve, reject) => {
-        etcd.del(this.getKeySession(session.session_id), (err, res) => {
+        etcd.del(this.etcd_getKeySession(session.session_id), (err, res) => {
           if(err){
             reject(err);
           } else {
@@ -239,7 +272,6 @@
     }
 
     private etcd_update_session = this.etcd_create_session;
-
 
   }
   export const SessionService = new SessionCache(ConfigService.get('session_idle_timeout'));

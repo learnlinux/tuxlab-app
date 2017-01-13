@@ -36,6 +36,8 @@ import { InitObject, SetupObject, VerifyObject } from '../api/environment';
 import { Container } from './container';
 import { LabRuntime } from './lab_runtime';
 
+import { ContainerCacheObj } from '../services/session';
+
 export class Session {
   // SessionID
   public session_id;
@@ -54,6 +56,11 @@ export class Session {
 
   // Containers
   private _containers : Container[];
+  public getContainerCacheObj() : ContainerCacheObj[] {
+    return _.map(this._containers, (container) => {
+      return container.getContainerCacheObj();
+    });
+  }
 
   // Ready Function
   public _onUpdate : (session : Session) => void;
@@ -77,13 +84,6 @@ export class Session {
       return instruction;
     });
   }
-
-/************************
- *    INIT FUNCTION     *
- ************************/
- public init() : void {
-
- }
 
 /************************
  *    DESTROY FUNCTION  *
