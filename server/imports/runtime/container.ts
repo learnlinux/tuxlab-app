@@ -33,23 +33,23 @@
     private _ready : Promise<Container>;
 
     // Container Objects
-    private _config : VMConfigCustom;
+    public config : VMConfigCustom;
 
     // Container Details
     public container_id : string;
     public container_pass : string;
     public node_ip : string;
 
-    constructor(config : VMConfig){
+    constructor(cfg : VMConfig){
       var _this = this;
 
       this._ready = new Promise((resolve, reject) => {
 
         // Get Config from VMConfig
-        _this._config = VMResolveConfig(config);
-        const docker_config = {
-          'Image': _this._config.image,
-          'Cmd': _this._config.cmd,
+        _this.config = VMResolveConfig(cfg);
+        const dockerconfig = {
+          'Image': _this.config.image,
+          'Cmd': _this.config.cmd,
           'AttachStdin': false,
           'AttachStdout': false,
           'AttachStderr': false,
@@ -59,7 +59,7 @@
         };
 
         // Dockerode Create Container
-        docker.createContainer(docker_config, (err, container) => {
+        docker.createContainer(dockerconfig, (err, container) => {
           if (err) {
             reject(err);
           } else {
@@ -190,7 +190,7 @@
     }
 
     public getPass() : Promise<string> {
-      return this.shell("cat "+this._config.password_path).then((data) => {
+      return this.shell("cat "+this.config.password_path).then((data) => {
         let [stdout, stdin] = data;
         if (stdin === ""){
           return stdout;

@@ -11,6 +11,8 @@
     image: string; // Image Name from DockerHub
     cmd : string; // Entry Command. Defaults to entry.sh
 
+    ssh_port: number; // SSH Port
+
     // USER DETAILS
     username : string; // User to login. Defaults to root.
     password_path : string; // Path to randomly-generated SSH Password.
@@ -21,6 +23,7 @@
   const alpine : VMConfigCustom = {
     image: "tuxlab/labvm-alpine",
     cmd: "./entry.sh",
+    ssh_port: 22,
     username: "root",
     password_path: "/pass"
   }
@@ -29,6 +32,7 @@
   const rhel7 : VMConfigCustom = {
     image: "tuxlab/labvm-rhel7",
     cmd: "./entry.sh",
+    ssh_port: 22,
     username: "root",
     password_path: "/pass"
   }

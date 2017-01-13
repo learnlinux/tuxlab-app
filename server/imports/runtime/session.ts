@@ -21,6 +21,7 @@ const etcd = new Etcd(etcd_conn_str, {
 });
 
 /* SESSION IMPORTS */
+import { Users } from '../../../both/collections/user.collection';
 import { Task } from '../../../both/models/lab.model';
 interface Instruction {
   id: number;
@@ -36,64 +37,67 @@ import { Container } from './container';
 import { LabRuntime } from './lab_runtime';
 
 export class Session {
+  // SessionID
+  public session_id;
 
   // Lab Runtime
+  public lab_id : string;
   private _lab : LabRuntime;
-  public user;
   public instructions : Instruction[];
   public current_task = 0;
+
+  // User
+  private _user; //user_id
+  public getUserObj(){
+    return Users.findOne({ _id : this._user });
+  }
 
   // Containers
   private _containers : Container[];
 
   // Ready Function
-  private _ready : Promise<Session>;
-  public ready() : Promise<{}> {
-    return this._ready;
-  }
+  public _onUpdate : (session : Session) => void;
 
 /************************
  *     CONSTRUCTOR      *
  ************************/
-  constructor (lab : LabRuntime){
-    this._ready =
 
-    // Copy LabRuntime Instructions
-    new Promise((resolve, reject) => {
+  constructor (session_id: string, user_id : string, lab : LabRuntime, containers : Container[]){
+    // Set Session ID.  Used for DNS Name and SSH Username.
+    this.session_id = session_id;
 
-      this._lab = lab;
-      this.instructions = _.map(this._lab.tasks, function(task){
-        let instruction = <Instruction>_.clone(task);
-            instruction.log = "";
-        return instruction;
-      });
+    this._user = user_id;
+    this.lab_id = lab.id;
+    this._lab = lab;
+    this._containers = containers;
 
-    // Get VMConfig from Runtime
-    }).then(() => {
-        return lab.getVMConfig();
-
-    // Create Containers
-    }).then((vm : VMConfigCustom[]) => {
-        this._containers = _.map(vm, (config) => {
-            return new Container(config);
-        });
-        return;
-
-    // Initialize Container
-    }).then(() => {
-
-        // Execute in Parallel
-        return Promise.all([this.container_init(), this.etcd_create()]);
+    this.instructions = _.map(this._lab.tasks, function(task){
+      let instruction = <Instruction>_.clone(task);
+          instruction.log = "";
+      return instruction;
     });
-
   }
 
 /************************
- *      DESTRUCTOR      *
+ *    INIT FUNCTION     *
+ ************************/
+ public init() : void {
+
+ }
+
+/************************
+ *    DESTROY FUNCTION  *
  ************************/
  public destroy() : void {
 
  }
+
+/************************
+*    TASK FUNCTIONS     *
+************************/
+public nextTask() : void {
+  this._onUpdate(this);
+}
 
 /************************
 *  ENVIRONMENT OBJECT  *
@@ -149,34 +153,11 @@ export class Session {
     }));
   }
 
-/************************
- *      ETCD OBJECT     *
- ************************/
-  private etcd_create() : Promise<{}>{
-    // Create Proxy Records
-    let createProxy = new Promise((resolve, reject) => {
-          let record = {
-          };
-
-          etcd.set('/redrouter/SSH::'+this.user, record, {
-
-          }, (err, res) => {
-
-          });
-      });
-
-    // Create DNS Records
-    let createDNS = new Promise((resolve, reject) => {
-
-    });
-
-    // Create Session Records
-    let createSession = new Promise((resolve, reject) => {
-
-    });
-
-    // RETURN
-    return Promise.all([createProxy, createDNS, createSession]);
+  /*
+    UTILITY
+  */
+  public getDefaultContainer(){
+    return this._containers[0];
   }
 
 }

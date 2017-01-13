@@ -11,16 +11,17 @@
  */
  export abstract class Cache {
     protected _cache : NodeCache;
-    protected abstract _TTL : number;
+    protected  _TTL : number;
 
-    constructor(){
+    constructor(TTL : number){
+      this._TTL = TTL;
       this._cache = new NodeCache({
         errorOnMissing: true,
         useClones: false
       });
     }
 
-    public exists(key : string) : Promise<boolean>{
+    protected exists(key : string) : Promise<boolean>{
       return new Promise((resolve, reject) => {
         this._cache.getTtl(key, (err, success) => {
           if (!err && success){
@@ -34,7 +35,7 @@
       });
     }
 
-    public renew(key : string) : Promise<{}> {
+    protected renew(key : string) : Promise<{}> {
       return new Promise(function(resolve, reject){
         this._cache(key, this._TTL, function(err, changed){
           if (!err && changed){
