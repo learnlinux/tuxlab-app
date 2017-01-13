@@ -52,7 +52,7 @@
         this._destroy = destroyFn;
       }
 
-      nextTask(task : Task){
+      public nextTask(task : Task){
           this._tasks.push(task);
       }
     }

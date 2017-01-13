@@ -15,7 +15,8 @@
   /* LAB MODEL */
   export interface Lab {
     _id?: string;
-    name: string;
+    name?: string;
+    description?: string;
     course_id: string;
     updated: number;
     status: LabStatus

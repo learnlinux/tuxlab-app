@@ -16,6 +16,7 @@
 
  import { VMConfig, VMResolveConfig, VMConfigCustom } from '../api/vmconfig';
  import { Lab, isValidLabObject } from '../api/lab'
+ import { InitObject, SetupObject, VerifyObject } from '../api/environment';
 
  /*
   LabSandbox
@@ -32,8 +33,7 @@
   Sets options for creating a labfile
  */
  export interface LabFileImportOpts{
-   _id?: string;
-   name: string;
+   id?: string;
    course_id: string;
    file: string;
  }
@@ -43,8 +43,9 @@
     protected static _TTL : number = Config.get('labruntime_idle_timeout');
 
     // Lab Model Elements
-    id : string = "";
+    id? : string;
     name: string;
+    description?: string;
     course_id: string;
     updated: number;
     status: LabStatus;
@@ -83,7 +84,6 @@
 
           // Create LabRun
           return new LabRuntime({
-            name: opts.name,
             course_id: opts.course_id,
             updated: Date.now(),
             status: LabStatus.hidden,
@@ -92,12 +92,32 @@
           }).ready();
         }).then((runtime) => {
 
-          // Add to Cache
-          LabRuntime._cache.set(opts._id, runtime, LabRuntime._TTL, function(err){
-            //TODO log error
-          });
+          // Add to Database
+          let record = {
+            name: runtime.name,
+            description: runtime.description,
+            course_id: opts.course_id,
+            updated: Date.now(),
+            status: LabStatus.hidden,
+            file: opts.file,
+            tasks: runtime.tasks
+          }
 
-          //TODO Add to Database
+          if (typeof opts.id === "string"){
+            Labs.update({ '_id' : opts.id }, record);
+          } else {
+            opts.id = Labs.insert(record);
+          }
+
+          // Set Variables
+          runtime.id = opts.id;
+          runtime.name = (<Lab>runtime._sandbox.Lab).name;
+          runtime.description = (<Lab>runtime._sandbox.Lab).description;
+
+          // Add to Cache
+          LabRuntime._cache.set(opts.id, runtime, LabRuntime._TTL, function(err){
+            throw err;
+          });
 
           return runtime;
         });
@@ -170,22 +190,83 @@
           //TODO: Handle LabInstance Errors
         }
 
-        // Set Parameters
+        // Copy
         Object.assign(this, lab);
         resolve(this);
       });
     }
 
+    /*
+      ready()
+      Returns promise confirming the LabRuntime
+      is up and running.
+    */
     public ready() : Promise<LabRuntime> {
       return this._ready;
     }
 
+    /*
+      getVMConfig()
+      Returns VMConfig Array
+    */
     public getVMConfig() : Promise<VMConfigCustom[]> {
       return this.ready().then(() => {
         if (this._sandbox.Lab instanceof Lab){
           return _.map(this._sandbox.Lab._vm, VMResolveConfig);
         }
       });
+    }
+
+    /*
+      exec_init()
+    */
+    public exec_init(obj : InitObject){
+      this.ready().then(() => {
+        if (this._sandbox.Lab instanceof Lab){
+          this._sandbox.Lab._init(obj);
+        } else {
+          throw "invalidLab";
+        }
+      });
+    }
+
+    /*
+      exec_destroy()
+    */
+    public exec_destroy(obj : InitObject){
+      this.ready().then(() => {
+        if (this._sandbox.Lab instanceof Lab){
+          return this._sandbox.Lab._destroy(obj);
+        } else {
+          throw "invalidLab";
+        }
+      });
+    }
+
+    /*
+      exec_setup()
+    */
+    public exec_setup(task_id : number, obj : SetupObject){
+      this.ready().then(() => {
+        if (this._sandbox.Lab instanceof Lab){
+          return this._sandbox.Lab._tasks[task_id].setup(obj);
+        } else {
+          throw "invalidLab";
+        }
+      });
+    }
+
+    /*
+      exec_verify()
+    */
+    public exec_verify(task_id : number, obj : VerifyObject){
+      this.ready().then(() => {
+        if (this._sandbox.Lab instanceof Lab){
+          this._sandbox.Lab._tasks[task_id].verify(obj);
+        } else {
+          throw "invalidLab";
+        }
+      })
     }
 
  }

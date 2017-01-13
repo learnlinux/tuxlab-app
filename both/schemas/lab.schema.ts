@@ -44,6 +44,10 @@ const taskSchema = new SimpleSchema({
     name: {
       type: String
     },
+    description:{
+      type: String,
+      optional: true
+    },
     updated: {
       type: Number,
       autoValue: function(){

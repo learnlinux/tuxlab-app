@@ -23,6 +23,9 @@ export const SessionSchema : SimpleSchema = new SimpleSchema({
   status:{
     type: Number
   },
+  expires:{
+    type: Number
+  },
   current_task:{
     type: Number
   },

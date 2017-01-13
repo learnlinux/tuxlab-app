@@ -38,9 +38,9 @@ export class Session extends Cache {
   protected static _TTL = Config.get('session_idle_timeout');
 
   // Session
-  // session_id has to be time-unique; it is used for checking if the session
-  // was already created.
-  public session_id;
+  public session_id : string;
+  public expires : number;
+  public status : SessionStatus = SessionStatus.active;
   private static constructSessionID(user_id : string){
     return user_id;
   }
@@ -71,11 +71,13 @@ export class Session extends Cache {
     // Construct Cache
     super();
 
-    // Set Session ID.  Used for DNS Name and SSH Username.
-    this.session_id = Session.constructSessionID(this.user_id);
+    // Copy Values
+    _.extend(this, obj);
 
-    // Check if Session Exists.
+    // Set Expiration
+    this.expires = Date.now() + Config.get('session_idle_timeout');
 
+    // Copy Instructions into Class
     this.instructions = _.map(this.lab.tasks, function(task){
       let instruction = <Instruction>_.clone(task);
       return instruction;
@@ -123,7 +125,7 @@ export class Session extends Cache {
 
   private static getSession_mongo(session_id : string, user_id : string) : Promise <Session>{
     return new Promise((resolve, reject) => {
-      let res = Sessions.findOne({ 'session_id' : session_id, 'status' : 2 });
+      let res = Sessions.findOne({ 'session_id' : session_id, 'status' : SessionStatus.active });
 
       if (!res){
         resolve(undefined);
@@ -212,11 +214,13 @@ export class Session extends Cache {
 /************************
  *   DESTROY FUNCTION   *
  ************************/
- public destroy() : void {
+ public destroy(status : SessionStatus) : void {
+   this.status = status;
+
    Promise.all(
      [
       this.cache_del(),
-      this.mongo_update_status(SessionStatus.completed)
+      this.mongo_update_status(status)
      ]);
  }
 
@@ -256,6 +260,7 @@ export class Session extends Cache {
         user_id : this.user_id,
         lab_id : this.lab_id,
         status: SessionStatus.active,
+        expires: this.expires,
         current_task : this.current_task,
         containers : container_obj
       }
@@ -297,7 +302,7 @@ export class Session extends Cache {
           'lab_id' : this.lab_id,
           'status' : SessionStatus.active
         }, {
-          $set : { 'status' : status }
+          $set : { 'status' : status, 'expires' : this.expires}
         }, (err) => {
           if (err) {
             reject();
@@ -362,6 +367,10 @@ export class Session extends Cache {
       });
     });
   }
+
+  private etcd_renew_proxy = this.etcd_create_proxy;
+
+  private etcd_renew_dns = this.etcd_create_dns;
 
   private etcd_delete_proxy() : Promise<{}> {
     return new Promise((resolve, reject) => {
@@ -447,27 +456,64 @@ export class Session extends Cache {
   ************************/
   public renew() : void {
 
+    // Update Expiration Time
+    this.expires = Date.now() + Config.get('session_idle_timeout');
+
     // Renew in Object Cache
     this.cache_renew();
 
-    //TODO: Renew ETCD Objects
+    // Renew ETCD Objects
+    Promise.all([this.etcd_renew_proxy, this.etcd_renew_dns]);
+
+    // Renew in MongoDB
+    this.mongo_update_status(SessionStatus.active);
   }
 
   private initLab() : Promise<{}> {
-
+    return new Promise((resolve, reject) => {
+      this.lab.exec_init(this.getInitObject(resolve, reject));
+    });
   }
 
   private destroyLab() : Promise<{}> {
-
+    return new Promise((resolve, reject) => {
+      this.lab.exec_destroy(this.getInitObject(resolve, reject));
+    });
   }
 
   public nextTask() : Promise<{}> {
     return new Promise((resolve, reject) => {
 
-      this.current_task++;
-      this.mongo_update_task(); // Updates current task in MongoDB.
-      resolve();
+      /* FUNCTIONS PASSED INTO VERIFIER */
+      let completed = function(){
 
+        // Check if Lab Completed
+        if (this.lab.tasks.length >= this.current_task + 1){
+
+          // Complete Lab
+          this.destroy(SessionStatus.completed);
+          resolve();
+
+        } else {
+
+          // Proceed to Next Task
+          this.current_task++;
+          this.mongo_update_task();
+
+          this.lab.exec_setup(this.current_task, this.getSetupObject(resolve, reject));
+        }
+      }
+
+      let retry = function(){
+        resolve();
+      }
+
+      let failed = function(){
+        this.destroy(SessionStatus.failed);
+        resolve();
+      }
+
+      return this.lab.exec_verify(this.current_task, this.getVerifyObject(completed, failed, retry));
     });
   }
 }
