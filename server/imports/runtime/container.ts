@@ -6,11 +6,12 @@
 
  import * as fs from 'fs';
 
+ import { Container as ContainerModel } from '../../../both/models/session.model';
+
  import { VM } from '../api/vm';
  import { VMConfig, VMConfigCustom, VMResolveConfig } from '../api/vmconfig';
 
- import { ConfigService } from '../services/config';
- import { ContainerCacheObj } from '../services/session';
+ import { Config } from '../config';
 
 /*
   Create Dockerode Instance
@@ -21,17 +22,17 @@
  import * as DExec from '~dockerode/lib/exec';
  const docker = new Docker({
    protocol: 'https',
-   host: ConfigService.get('swarm_node_ip'),
-   port: ConfigService.get('swarm_node_port'),
-   ca: fs.readFileSync(ConfigService.get('ssl_ca')),
-   cert: fs.readFileSync(ConfigService.get('ssl_cert')),
-   key: fs.readFileSync(ConfigService.get('ssl_key'))
+   host: Config.get('swarm_node_ip'),
+   port: Config.get('swarm_node_port'),
+   ca: fs.readFileSync(Config.get('ssl_ca')),
+   cert: fs.readFileSync(Config.get('ssl_cert')),
+   key: fs.readFileSync(Config.get('ssl_key'))
  });
 
 /*
   Container Class
 */
- export class Container implements VM {
+ export class Container implements VM, ContainerModel {
     private _ready : Promise<Container>;
 
     // Container Objects
@@ -43,7 +44,6 @@
     public node_ip : string;
 
     constructor(cfg : VMConfig, id? : string){
-
       this.config = VMResolveConfig(cfg);
 
       let prepare_containers : Promise<any>;
@@ -131,7 +131,7 @@
       };
     }
 
-    public getContainerCacheObj() : ContainerCacheObj {
+    public getContainerJSON() : ContainerJSON {
       return {
         id: this.container_id,
         config: this.config
@@ -139,8 +139,6 @@
     }
 
     public shell_stream(command) : Promise<Readable> {
-      var _this = this;
-
       // Set Exec Options
       const exec_options : DContainer.ExecOptions = {
         AttachStdout: true,
@@ -154,7 +152,7 @@
 
       return this.ready().then(() => {
         return new Promise(function(resolve, reject){
-          docker.getContainer(_this.container_id).exec(exec_options, (err, exec) => {
+          docker.getContainer(this.container_id).exec(exec_options, (err, exec) => {
             if (err) {
               reject(err);
             } else {
@@ -218,5 +216,4 @@
         }
       });
     }
-
  }

@@ -1,5 +1,5 @@
 /**
-    COURSE MODEL
+  COURSE MODEL
 **/
 
   /* COURSE DESCRIPTION */

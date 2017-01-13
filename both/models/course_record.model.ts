@@ -1,5 +1,5 @@
 /**
-    COURSE RECORD MODEL
+  COURSE RECORD MODEL
 **/
 
 /* Task Model */

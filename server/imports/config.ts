@@ -37,4 +37,4 @@
     }
   }
 
-  export const ConfigService = new TuxConfig();
+  export const Config = new TuxConfig();
