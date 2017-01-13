@@ -11,7 +11,7 @@ export abstract class Cache {
        useClones: false,
        stdTTL: Cache._TTL
      });
-   protected abstract static _TTL : number;
+   protected static _TTL : number;
 
    protected static cache_keyExists(key : string) : Promise<boolean>{
      return new Promise((resolve, reject) => {

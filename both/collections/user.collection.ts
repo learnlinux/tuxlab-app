@@ -6,8 +6,8 @@
   import { Mongo } from 'meteor/mongo'
   import { MongoObservable } from 'meteor-rxjs';
 
-  import { UserSchema } from '../schemas/user.schema'
-  import { User, Role } from '../models/user.model'
+  import { UserSchema } from '../schemas/user.schema';
+  import { User, Role } from '../models/user.model';
 
 /**
   CREATE USER COLLECTION

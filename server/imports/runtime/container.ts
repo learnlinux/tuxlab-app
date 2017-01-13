@@ -131,13 +131,6 @@
       };
     }
 
-    public getContainerJSON() : ContainerJSON {
-      return {
-        id: this.container_id,
-        config: this.config
-      };
-    }
-
     public shell_stream(command) : Promise<Readable> {
       // Set Exec Options
       const exec_options : DContainer.ExecOptions = {

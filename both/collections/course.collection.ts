@@ -5,9 +5,9 @@
   import { Mongo } from 'meteor/mongo'
   import { MongoObservable } from 'meteor-rxjs';
 
-  import { CourseSchema } from '../schemas/course.schema'
-  import { Course } from '../models/course.model'
-  import { Roles } from '../collections/user.collection'
+  import { CourseSchema } from '../schemas/course.schema';
+  import { Course } from '../models/course.model';
+  import { Roles } from '../collections/user.collection';
 
 /**
   CREATE COURSE COLLECTION

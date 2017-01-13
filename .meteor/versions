@@ -25,6 +25,8 @@ ddp-common@1.2.8
 ddp-server@1.3.12
 deps@1.0.12
 diff-sequence@1.0.7
+dispatch:mocha-phantomjs@0.1.9
+dispatch:phantomjs-tests@0.0.7
 ecmascript@0.6.1
 ecmascript-runtime@0.3.15
 ejson@1.0.13
@@ -52,6 +54,7 @@ npm-mongo@2.2.11_2
 observe-sequence@1.0.14
 ordered-dict@1.0.9
 practicalmeteor:chai@2.1.0_1
+practicalmeteor:mocha-core@1.0.1
 practicalmeteor:sinon@1.14.1_2
 promise@0.8.8
 raix:eventemitter@0.1.3

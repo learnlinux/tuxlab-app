@@ -8,7 +8,8 @@
     "start:prod": "meteor run --production",
     "build": "meteor build ./build/",
     "clear": "meteor reset",
-    "meteor:update": "meteor update --all-packages"
+    "meteor:update": "meteor update --all-packages",
+    "test": "meteor test --once --driver-package dispatch:mocha-phantomjs"
   },
   "devDependencies": {
     "@types/meteor": "^1.3.31"

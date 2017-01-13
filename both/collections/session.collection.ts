@@ -6,8 +6,8 @@
   import { Mongo } from 'meteor/mongo'
   import { MongoObservable } from 'meteor-rxjs';
 
-  import { SessionSchema } from '../schemas/session.schema'
-  import { Session } from '../models/session.model'
+  import { SessionSchema } from '../schemas/session.schema';
+  import { Session } from '../models/session.model';
 
 /**
   CREATE USER COLLECTION

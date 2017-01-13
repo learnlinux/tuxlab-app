@@ -23,3 +23,4 @@ angular2-compilers
 hwillson:stub-collections
 aldeed:collection2-core@2.0.0
 underscore
+dispatch:mocha-phantomjs
