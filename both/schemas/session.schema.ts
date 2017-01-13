@@ -2,7 +2,8 @@
   SESSION SCHEMA
 ***/
 
-import { SimpleSchema } from 'simpl-schema';
+// Simple Schema
+import SimpleSchema from 'simpl-schema';
 
 const ContainerSchema = new SimpleSchema({
   conntainer_id : {
@@ -30,6 +31,9 @@ export const SessionSchema : SimpleSchema = new SimpleSchema({
     type: Number
   },
   containers : {
-    type: [ContainerSchema]
+    type: Array
+  },
+  'containers.$' : {
+    type: ContainerSchema
   }
 });

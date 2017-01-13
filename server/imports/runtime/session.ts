@@ -5,9 +5,9 @@
 */
 
 /* IMPORTS */
-import { Config } from '../config';
-import { Cache } from '../cache';
-import { etcd } from '../etcd';
+import { Config } from '../service/config';
+import { Cache } from '../service/cache';
+import { etcd } from '../service/etcd';
 
 import { Users } from '../../../both/collections/user.collection';
 import { Task } from '../../../both/models/lab.model';

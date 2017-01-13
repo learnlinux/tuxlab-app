@@ -29,15 +29,8 @@
     student: Role[];
   }
 
-  /* SESSION MODEL */
-  interface Session {
-    lab_id: string;
-    started: number;
-  }
-
   /* USER MODEL */
   export interface User extends Meteor.User {
     profile: Profile;
     roles: Roles;
-    sessions: Session[];
   }

@@ -8,8 +8,8 @@
  import * as vm from 'vm';
  import * as UglifyJS from 'uglify-js';
 
- import { Config } from '../config';
- import { Cache } from '../cache';
+ import { Config } from '../service/config';
+ import { Cache } from '../service/cache';
 
  import { Lab as LabModel, Task as TaskModel, LabStatus } from '../../../both/models/lab.model';
  import { Labs } from '../../../both/collections/lab.collection';

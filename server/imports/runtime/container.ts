@@ -11,7 +11,7 @@
  import { VM } from '../api/vm';
  import { VMConfig, VMConfigCustom, VMResolveConfig } from '../api/vmconfig';
 
- import { Config } from '../config';
+ import { Config } from '../service/config';
 
 /*
   Create Dockerode Instance

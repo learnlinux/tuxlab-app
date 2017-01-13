@@ -2,7 +2,8 @@
   LABS SCHEMA
 ***/
 
-import { SimpleSchema } from 'simpl-schema';
+// Simple Schema
+import SimpleSchema from 'simpl-schema';
 
 import { Courses } from '../collections/course.collection';
 
@@ -66,6 +67,9 @@ const taskSchema = new SimpleSchema({
       type: String
     },
     tasks: {
-      type: [taskSchema]
+      type: Array
+    },
+    'tasks.$':{
+      type: taskSchema
     }
   });

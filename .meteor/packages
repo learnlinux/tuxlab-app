@@ -21,6 +21,7 @@ angular2-compilers
 
 ## MONGO
 hwillson:stub-collections
-aldeed:collection2-core@2.0.0
+aldeed:collection2-core
 underscore
 dispatch:mocha-phantomjs
+aldeed:schema-index

@@ -2,7 +2,8 @@
   USER SCHEMA
 ***/
 
-import { SimpleSchema } from 'simpl-schema';
+// Simple Schema
+import SimpleSchema from 'simpl-schema';
 
 /* Profile Schema */
   const profileSchema = new SimpleSchema({
@@ -43,30 +44,26 @@ import { SimpleSchema } from 'simpl-schema';
       type: Boolean
     },
     administrator: {
-      type: [roleSchema],
+      type: Array,
       defaultValue: []
+    },
+    'administrator.$' : {
+      type: roleSchema
     },
     instructor: {
-      type: [roleSchema],
+      type: Array,
       defaultValue: []
+    },
+    'instructor.$': {
+      type: roleSchema,
     },
     student: {
-      type: [roleSchema],
+      type: Array,
       defaultValue: []
-    }
-  });
-
-/* Session Schema */
-  const sessionSchema = new SimpleSchema({
-    lab_id: {
-      type: String
     },
-    started:{
-      type: Number,
-  	  autoValue: function(){
-  	     return Date.now();
-  	  }
-    }
+    'student.$': {
+      type: roleSchema,
+    },
   });
 
 /* User Schema */
@@ -81,9 +78,5 @@ import { SimpleSchema } from 'simpl-schema';
     },
     roles: {
       type: rolesSchema
-    },
-    sessions:{
-      type: [sessionSchema],
-      defaultValue: []
     }
   });

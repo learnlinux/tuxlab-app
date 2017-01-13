@@ -4,7 +4,7 @@
 
 // Simple Schema Creation
 import { Meteor } from 'meteor/meteor';
-import { SimpleSchema } from 'simpl-schema';
+import SimpleSchema from 'simpl-schema';
 
 // Import Models
 import { ContentPermissions, EnrollPermissions } from '../models/course.model'
@@ -68,10 +68,16 @@ const permissionsSchema = new SimpleSchema({
       type: String
     },
     instructors: {
-      type: [userSchema]
+      type: Array
+    },
+    'instructors.$': {
+      type: userSchema
     },
     administrators: {
-      type: [userSchema]
+      type: Array
+    },
+    'administrators.$': {
+      type: userSchema
     },
     course_description: {
       type: descriptionSchema,
@@ -85,11 +91,13 @@ const permissionsSchema = new SimpleSchema({
       type: permissionsSchema,
     },
     labs: {
-      type: [String],
+      type: Array
+    },
+    'labs.$':{
+      type: String,
       custom: function() {
-        let validLabs = Labs.find({ _id: { $in: this.value } });
-        if(Meteor.isServer && validLabs.count() !== this.value.length) {
-          return("One or more labs were invalid.");
+        if (typeof Labs.findOne({_id: this.value}) === undefined){
+          return "invalidLab";
         }
       }
     }

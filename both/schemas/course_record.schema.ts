@@ -4,7 +4,7 @@
 
 // Simple Schema Creation
 import { Meteor } from 'meteor/meteor';
-import { SimpleSchema } from 'simpl-schema';
+import SimpleSchema from 'simpl-schema';
 
 // Collections
 import { Users } from '../collections/user.collection';
@@ -24,17 +24,16 @@ import { TaskStatus } from '../models/course_record.model';
       allowedValues: TaskStatus
     },
     grade: {
-      type: [Number],
+      type: Array,
       minCount: 2,
       maxCount: 2
+    },
+    'grade.$': {
+      type: Number
     },
     data: {
       type: Object,
       optional: true
-    },
-    attempted: {
-      type: [Number],
-      decimal: false
     }
   });
 
@@ -53,11 +52,11 @@ import { TaskStatus } from '../models/course_record.model';
       type: Object,
       optional: true
     },
-    attempted: {
-      type: [Number]
-    },
     tasks: {
-      type: [taskRecordSchema]
+      type: Array
+    },
+    'tasks.$': {
+      type: taskRecordSchema
     }
   });
 
@@ -80,6 +79,9 @@ import { TaskStatus } from '../models/course_record.model';
       }
     },
     labs: {
-      type: [labRecordSchema]
+      type: Array
+    },
+    'labs.$': {
+      type: labRecordSchema
     }
   });
