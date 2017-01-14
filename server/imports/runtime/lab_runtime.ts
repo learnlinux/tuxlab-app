@@ -62,12 +62,12 @@
     public static createLabRuntime(opts : LabFileImportOpts) : Promise<LabRuntime> {
         return new Promise<LabRuntime>((resolve, reject) => {
           // Regex for Markdown in Comments
-          const comment_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
+          const comment_filter = /\/\*( |\n)*?@(.*?)(\n)((.|\n)*?)\*\//gm;
           let tasks = [], comment = [], index = 0;
           while ((comment = comment_filter.exec(opts.file)) !== null){
             tasks.push ({
               id: (index += 1),
-              name: comment[2],
+              name: comment[2].replace(/[^\w\s]/gi, '').trim(), // Remove special characters
               md: comment[4]
             });
           }

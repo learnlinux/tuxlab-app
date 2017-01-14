@@ -20,7 +20,7 @@ export const Identity = `
     env.success();
   });
 
-  /* @Success Task
+  /* @Task 1
      Description of task.  Task is pretty cool.
   */
   Lab.nextTask({
@@ -32,7 +32,7 @@ export const Identity = `
     }
   });
 
-  /* @Failure Task
+  /* @Task 2
      Description of task.  Task is pretty cool.
   */
   Lab.nextTask({
