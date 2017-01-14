@@ -7,10 +7,10 @@
   import { expect } from 'chai';
   import * as _ from 'underscore';
 
-  import { Labs } from '../../../both/collections/lab.collection';
-  import { LabRuntime, LabFileImportOpts } from '../../../server/imports/runtime/lab_runtime';
+  import { Labs } from '../../both/collections/lab.collection';
+  import { LabRuntime, LabFileImportOpts } from '../../server/imports/runtime/lab_runtime';
 
-  import { createTestCollections, example_records} from '../collection/collection';
+  import { createTestCollections, example_records} from './collection';
 
   // Import Examples
   import { Identity } from './lab_runtime.examples';

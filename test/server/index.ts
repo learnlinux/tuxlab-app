@@ -3,8 +3,8 @@
   CANNOT USE INFRASTRUCTURE
 **/
 
-import { CollectionTests } from './collection/collection';
-import { LabRuntimeTests } from './runtime/lab_runtime';
+import { CollectionTests } from './collection';
+import { LabRuntimeTests } from './lab_runtime';
 
 export function ServerTests() {
   CollectionTests();

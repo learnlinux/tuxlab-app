@@ -9,7 +9,9 @@
 
 import * as _ from 'underscore';
 
+import { ClientTests } from './client/index';
 import { ServerTests } from './server/index';
+import { InfrastructureTests } from './infra/index';
 
 // Parse Test Object
 let tests = [];
@@ -24,7 +26,7 @@ if(typeof (<any>process.env).TUXLAB_TEST !== "undefined"){
 
 // Client
   if(_.contains(tests, "CLIENT")){
-
+    ClientTests();
   }
 
 // Server, No-Infra
@@ -34,5 +36,5 @@ if(typeof (<any>process.env).TUXLAB_TEST !== "undefined"){
 
 // Server, With Infra
   if(_.contains(tests, "INFRA")){
-
+    InfrastructureTests();
   }

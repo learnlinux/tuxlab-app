@@ -195,7 +195,6 @@
 
         // Copy Variables from Constructor
         Object.assign(this, lab);
-
         resolve(this);
       });
     }
