@@ -4,9 +4,11 @@
 **/
 
 import { CollectionTests } from './collection';
+import { RoleTests } from './roles';
 import { LabRuntimeTests } from './lab_runtime';
 
-export function ServerTests() {
+export function APITests() {
   CollectionTests();
+  RoleTests();
   LabRuntimeTests();
 }

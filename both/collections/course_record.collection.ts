@@ -21,8 +21,12 @@
         insert: function(user_id, course) {
           return Users.getRoleFor(user_id, course._id) >= 1;
         },
-        update: Users.isGlobalAdministrator,
-        remove: Users.isGlobalAdministrator,
+        update: function(user_id, course, fields) {
+          return Users.isGlobalAdministrator(user_id);
+        },
+        remove: function(user_id, course) {
+          return Users.isGlobalAdministrator(user_id);
+        },
         fetch: []
       });
     }

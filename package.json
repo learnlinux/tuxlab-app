@@ -9,11 +9,9 @@
     "build": "meteor build ./build/",
     "clear": "meteor reset",
     "meteor:update": "meteor update --all-packages",
-    "test": "TUXLAB_TEST='CLIENT,SERVER,INFRA' npm run test:meteor",
-    "test:server": "TUXLAB_TEST='SERVER' npm run test:meteor",
-    "test:infra": "TUXLAB_TEST='INFRA' npm run test:meteor",
-    "test:client": "TUXLAB_TEST='CLIENT' npm run test:meteor",
-    "test:meteor": "meteor test --once --driver-package=dispatch:mocha-phantomjs"
+    "test": "npm run test:api",
+    "test:api": "meteor test --once --driver-package=dispatch:mocha-phantomjs",
+    "test:infra": "meteor test --once --full-app --driver-package=dispatch:mocha-phantomjs"
   },
   "devDependencies": {
     "chai": "^3.5.0"

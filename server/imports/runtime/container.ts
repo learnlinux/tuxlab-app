@@ -17,7 +17,7 @@
   Create Dockerode Instance
 */
  import { Readable } from 'stream';
- import * as Docker from '~dockerode/lib/docker';
+ import * as Docker from 'dockerode';
  import * as DContainer from '~dockerode/lib/container';
  import * as DExec from '~dockerode/lib/exec';
  const docker = new Docker({
