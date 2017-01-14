@@ -11,8 +11,8 @@
   });
 
   // Setup function run before all other tasks
-  Lab.init(function(){
-
+  Lab.init(function(env){
+    
   });
 
   // Task
@@ -20,15 +20,15 @@
      Description of task.  Task is pretty cool.
   */
   Lab.nextTask({
-    setup: function(){
+    setup: function(env){
 
     },
-    verifier: function(){
+    verifier: function(env){
 
     }
   })
 
   // Destroy function for performing any final tasks
-  Lab.destroy(function(){
+  Lab.destroy(function(env){
 
   });

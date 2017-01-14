@@ -6,10 +6,9 @@
     LAB STATUS
   */
   export enum LabStatus{
-    hidden, //
-    secret, //
-    private, //
-    public //
+    hidden, // Visible only to Admins and Instructors
+    open, // Users can begin
+    closed // Users cannot begin
   }
 
   /* LAB MODEL */

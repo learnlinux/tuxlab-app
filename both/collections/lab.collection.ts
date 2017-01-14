@@ -4,32 +4,31 @@
 **/
   import { Meteor } from 'meteor/meteor';
   import { Mongo } from 'meteor/mongo'
-  import { MongoObservable } from 'meteor-rxjs';
 
   import { LabSchema } from '../schemas/lab.schema';
   import { Lab } from '../models/lab.model';
-  import { Roles } from '../collections/user.collection';
+  import { Role } from '../models/user.model';
+  import { Users } from '../collections/user.collection';
 
 /**
   CREATE USER COLLECTION
 **/
-  export const Labs = new Mongo.Collection<Lab>('labs');
+  export const Labs = new LabCollection();
+  class LabCollection extends Mongo.Collection<Lab> {
+    constructor(){
+      super('labs');
+      this.attachSchema(LabSchema);
 
-  // Attach Schema
-  Labs.attachSchema(LabSchema);
+      // Set Editing Permissions
+      let isAuthorized = function(user_id : string, lab : Lab){
+          return Users.getRoleFor(user_id, lab.course_id) >= Role.course_administrator;
+      }
 
-  // Set Editing Permissions
-  let isAuthorized = function(user_id : string, lab : Lab){
-      return Roles.isGlobalAdministrator(user_id) ||
-             Roles.isAdministratorFor(lab.course_id,user_id);
+      this.allow({
+        insert: isAuthorized,
+        update: isAuthorized,
+        remove: isAuthorized,
+        fetch: ["course_id"]
+      });
+    }
   }
-
-  Labs.allow({
-    insert: isAuthorized,
-    update: isAuthorized,
-    remove: isAuthorized,
-    fetch: ["course_id"]
-  });
-
-  // Create Observable
-  export const LabsObsv = new MongoObservable.Collection<Lab>(Labs);

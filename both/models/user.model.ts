@@ -14,20 +14,21 @@
   }
 
   /* ROLE MODEL */
-  export interface Role {
+  export enum Role {
+    student = 1,
+    instructor = 2,
+    course_administrator = 3,
+    global_admin = 4
+  }
+  export interface Privilege {
     course_id: string;
     course_record: string;
-  }
-
-  interface Roles {
-    global_admin : boolean
-    administrator: Role[];
-    instructor: Role[];
-    student: Role[];
+    role: Role
   }
 
   /* USER MODEL */
   export interface User extends Meteor.User {
     profile: Profile;
-    roles: Roles;
+    global_admin: boolean,
+    roles: Privilege[];
   }

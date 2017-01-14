@@ -2,27 +2,27 @@
   IMPORTS
 **/
   import { Mongo } from 'meteor/mongo';
-  import { MongoObservable } from 'meteor-rxjs';
 
   import { CourseRecordSchema } from '../schemas/course_record.schema';
   import { CourseRecord } from '../models/course_record.model';
-  import { Roles } from '../collections/user.collection';
+  import { Users } from '../collections/user.collection';
 
 /**
   CREATE COURSERECORD COLLECTION
 **/
-  export const CourseRecords = new Mongo.Collection<CourseRecord>('course_records');
-  CourseRecords.attachSchema(CourseRecordSchema);
+  export const CourseRecords = new CourseRecordCollection();
+  class CourseRecordCollection extends Mongo.Collection<CourseRecord> {
 
-  // Set Editing Permissions
-  CourseRecords.allow({
-    insert: Roles.isGlobalAdministrator,
-    update: Roles.isGlobalAdministrator,
-    remove: Roles.isGlobalAdministrator,
-    fetch: []
-  });
+    constructor(){
+      super('course_records');
+      this.attachSchema(CourseRecordSchema);
 
-/**
-  CREATE COURSERECORD OBSERVABLE
-**/
-export const CourseRecordsObsv = new MongoObservable.Collection<CourseRecord>(CourseRecords);
+      // Set Editing Permissions
+      this.allow({
+        insert: Users.isGlobalAdministrator,
+        update: Users.isGlobalAdministrator,
+        remove: Users.isGlobalAdministrator,
+        fetch: []
+      });
+    }
+  }

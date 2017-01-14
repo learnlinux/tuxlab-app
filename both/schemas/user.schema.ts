@@ -22,40 +22,16 @@ import SimpleSchema from 'simpl-schema';
   });
 
 /* Role Schema */
-  const roleSchema = new SimpleSchema({
-    course_id : {
+  const privilegeSchema = new SimpleSchema({
+    course_id: {
       type: String
     },
-    course_record : {
+    course_record: {
       type: String
+    },
+    role: {
+      type: Number
     }
-  });
-
-  const rolesSchema = new SimpleSchema({
-    global_admin: {
-      type: Boolean
-    },
-    administrator: {
-      type: Array,
-      defaultValue: []
-    },
-    'administrator.$' : {
-      type: roleSchema
-    },
-    instructor: {
-      type: Array,
-      defaultValue: []
-    },
-    'instructor.$': {
-      type: roleSchema,
-    },
-    student: {
-      type: Array,
-      defaultValue: []
-    },
-    'student.$': {
-      type: roleSchema,
-    },
   });
 
 /* User Schema */
@@ -68,7 +44,13 @@ import SimpleSchema from 'simpl-schema';
     profile: {
       type: profileSchema
     },
+    global_admin: {
+      type: Boolean
+    },
     roles: {
-      type: rolesSchema
+      type: Array
+    },
+    'roles.$': {
+      type: privilegeSchema
     }
   });

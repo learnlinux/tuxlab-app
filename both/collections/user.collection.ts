@@ -12,56 +12,40 @@
 /**
   CREATE USER COLLECTION
 **/
-  export const Users = new Mongo.Collection<User>('users');
 
-  // Attach Schema
-  Users.attachSchema(UserSchema);
+  export const Users = new UserCollection();
+  class UserCollection extends Mongo.Collection<User> {
 
-  // Create User Observable
-  export const UsersObsv = new MongoObservable.Collection<User>(Users);
+    constructor(){
+      super('users');
+      this.attachSchema(UserSchema);
+    }
 
-/**
-  DEFINE USER ROLES METHODS
-**/
-  export class Roles {
+    // getRoleFor
+    public getRoleFor(course_id : string, user_id : string) : Role {
+      let user : User = this.findOne(user_id);
+      if (typeof user === "undefined"){
+        return 0;
+      } else if (user.global_admin){
+        return 4;
+      } else {
+        let role = _.find(user.roles, function(priv){
+          return priv.course_id = course_id;
+        });
 
-      // Get User by ID
-      private static fromID(user_id : string) {
-          return <User> Meteor.users.findOne(user_id);
+        return role.role;
       }
+    }
 
-      // Checked if Logged In
-      public static isLoggedIn(user){
-        return (typeof user !== 'undefined') && (user !== null);
-      }
+    // setRoleFor
+    public setRoleFor(course_id: string, user_id: string, role : Role) : void {
+      //TODO Implement
+    }
 
-      // isStudentFor
-      public static isStudentFor(course_id: string, user_id : string){
-        let user : User = Roles.fromID(user_id);
-        return Roles.isLoggedIn(user) &&
-               (user.roles.student.map(function(role){ return role.course_id }).indexOf(course_id) >= 0);
-      }
-
-      // isInstructorFor
-      public static isInstructorFor(course_id: string, user_id : string){
-        let user : User = Roles.fromID(user_id);
-        return Roles.isLoggedIn(user) &&
-               (user.roles.instructor.map(function(role){ return role.course_id }).indexOf(course_id) >= 0);
-      }
-
-      // isAdministratorFor
-      public static isAdministratorFor(course_id: string, user_id : string){
-        let user : User = Roles.fromID(user_id);
-
-        return Roles.isLoggedIn(user) &&
-               (user.roles.global_admin ||
-               (user.roles.administrator.map(function(role){ return role.course_id }).indexOf(course_id) >= 0));
-      }
-
-      // isGlobalAdministrator
-      public static isGlobalAdministrator(user_id : string){
-        let user : User = Roles.fromID(user_id);
-        return Roles.isLoggedIn(user) && user.roles.global_admin;
-      }
+    // isGlobalAdministrator
+     public isGlobalAdministrator (user_id : string) : boolean {
+      let user : User = this.findOne(user_id);
+      return (typeof user !== "undefined") && (user.global_admin);
+    }
 
   }
