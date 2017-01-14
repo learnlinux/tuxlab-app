@@ -25,7 +25,8 @@
  //TODO Prevent hacking by injecting into TuxLab object.
  export const LabSandbox = {
    TuxLab: Lab,
-   Lab: {}
+   Lab: {},
+   Environment: {}
  }
 
  /*
@@ -62,17 +63,14 @@
         return new Promise<LabRuntime>((resolve, reject) => {
           // Regex for Markdown in Comments
           const comment_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
-          const title_filter = /\/\*( |\n)*?@(.*?)( |\n)((.|\n)*?)\*\//gm;
-
-          let comments = opts.file.match(comment_filter);
-          let tasks = comments.map((comment, index, arr) => {
-            let markdown = title_filter.exec(comment);
-            return {
-              id: (index + 1),
-              name: markdown[2],
-              md: markdown[4]
-            }
-          });
+          let tasks = [], comment = [], index = 0;
+          while ((comment = comment_filter.exec(opts.file)) !== null){
+            tasks.push ({
+              id: (index += 1),
+              name: comment[2],
+              md: comment[4]
+            });
+          }
 
           // Uglify JS to minimize Storage
           let code = "";
@@ -229,7 +227,8 @@
     public exec_init(obj : InitObject){
       this.ready().then(() => {
         if (this._sandbox.Lab instanceof Lab){
-          this._sandbox.Lab._init(obj);
+          this._sandbox.Environment = obj;
+          return vm.runInContext("Lab._init(Environment)",this._context);
         } else {
           throw new Error("invalidLab");
         }
@@ -242,7 +241,8 @@
     public exec_destroy(obj : InitObject){
       this.ready().then(() => {
         if (this._sandbox.Lab instanceof Lab){
-          return this._sandbox.Lab._destroy(obj);
+          this._sandbox.Environment = obj;
+          return vm.runInContext("Lab._destroy(Environment)",this._context);
         } else {
           throw new Error("invalidLab");
         }
@@ -255,7 +255,8 @@
     public exec_setup(task_id : number, obj : SetupObject){
       this.ready().then(() => {
         if (this._sandbox.Lab instanceof Lab){
-          return this._sandbox.Lab._tasks[task_id].setup(obj);
+          this._sandbox.Environment = obj;
+          return vm.runInContext("Lab._tasks["+task_id+"].setup(Environment)",this._context);
         } else {
           throw new Error("invalidLab");
         }
@@ -268,7 +269,8 @@
     public exec_verify(task_id : number, obj : VerifyObject){
       this.ready().then(() => {
         if (this._sandbox.Lab instanceof Lab){
-          this._sandbox.Lab._tasks[task_id].verify(obj);
+          this._sandbox.Environment = obj;
+          return vm.runInContext("Lab._tasks["+task_id+"].verfiy(Environment)",this._context);
         } else {
           throw new Error("invalidLab");
         }

@@ -7,23 +7,24 @@
   import { expect } from 'chai';
   import * as _ from 'underscore';
 
-  import { Labs } from '../../both/collections/lab.collection';
-  import { LabRuntime, LabFileImportOpts } from '../../server/imports/runtime/lab_runtime';
+  import { Labs } from '../../../both/collections/lab.collection';
+  import { LabRuntime, LabFileImportOpts } from '../../../server/imports/runtime/lab_runtime';
 
-  import { createTestCollections, example_records} from '../collection/collection.test';
+  import { createTestCollections, example_records} from '../collection/collection';
 
   // Import Examples
   import { Identity } from './lab_runtime.examples';
 
-  if (Meteor.isServer){
+  export function LabRuntimeTests(){
     describe('Lab Runtime', function(){
 
-      it('should start with test database', createTestCollections);
 
       describe('Example #1 - Identity', function(){
         let lab : LabRuntime;
         let lab_id_cache : string;
         let lab_id_mongo : string;
+
+        it('should start with test database', createTestCollections);
 
         it('should import from file', function(){
           let record : LabFileImportOpts = {

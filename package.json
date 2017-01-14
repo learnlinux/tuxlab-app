@@ -9,7 +9,11 @@
     "build": "meteor build ./build/",
     "clear": "meteor reset",
     "meteor:update": "meteor update --all-packages",
-    "test": "meteor test --once --driver-package=dispatch:mocha-phantomjs"
+    "test": "TUXLAB_TEST='CLIENT,SERVER,INFRA' npm run test:meteor",
+    "test:server": "TUXLAB_TEST='SERVER' npm run test:meteor",
+    "test:infra": "TUXLAB_TEST='INFRA' npm run test:meteor",
+    "test:client": "TUXLAB_TEST='CLIENT' npm run test:meteor",
+    "test:meteor": "meteor test --once --driver-package=dispatch:mocha-phantomjs"
   },
   "devDependencies": {
     "chai": "^3.5.0"
@@ -33,7 +37,6 @@
     "node-cache": "^4.1.1",
     "reflect-metadata": "0.1.9",
     "rxjs": "5.0.2",
-    "safe-eval": "^0.3.0",
     "simpl-schema": "^0.1.0",
     "uglify-js": "^2.7.5",
     "zone.js": "0.7.4"

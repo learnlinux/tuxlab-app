@@ -5,7 +5,7 @@
 export const Identity = `
 /*
  *  Example Lab File
- *  @author: Derek Brown
+ *  author: Derek Brown
  */
 
   // Constructor for Lab.  No need to import anything!
@@ -17,11 +17,10 @@ export const Identity = `
 
   // Setup function run before all other tasks
   Lab.init(function(env){
-
+    env.success();
   });
 
-  // Task
-  /* @TASKNAME
+  /* @Success Task
      Description of task.  Task is pretty cool.
   */
   Lab.nextTask({
@@ -30,6 +29,18 @@ export const Identity = `
     },
     verifier: function(env){
       env.completed();
+    }
+  });
+
+  /* @Failure Task
+     Description of task.  Task is pretty cool.
+  */
+  Lab.nextTask({
+    setup: function(env){
+      env.failure();
+    },
+    verifier: function(env){
+      env.failed();
     }
   })
 
