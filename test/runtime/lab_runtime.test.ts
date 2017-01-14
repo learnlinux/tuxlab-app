@@ -18,13 +18,24 @@
 
       it('should start with test database', createTestCollections);
 
-      it('should import the simple example', function(){
+      /** IDENTITY EXAMPLE **/
+      let lab_id;
+
+      it('should import the identity example', function(){
         let record : LabFileImportOpts = {
           course_id: example_records.course._id,
           file: Identity
         };
 
-        return LabRuntime.createLabRuntime(record);
+        return LabRuntime.createLabRuntime(record)
+            .then(function(lab : LabRuntime){
+              lab_id = lab.id;
+            });
       });
+
+      it('should get the identity example from cache', function(){
+        return LabRuntime.getLabRuntime(lab_id);
+      });
+
     });
   }
