@@ -21,19 +21,13 @@
    // User Interface
    getUserProfile : () => Profile;
    getUserID() : string {
-     return this.getUserProfile()._id;
+     return this.getUserID();
    }
-   getNickName() : string{
-     return this.getUserProfile().nickname;
+   getName() : string{
+     return this.getUserProfile().name;
    }
-   getFirstName() : string{
-     return this.getUserProfile().first_name;
-   }
-   getLastName() : string{
-     return this.getUserProfile().last_name;
-   }
-   getSchool() : string{
-     return this.getUserProfile().school;
+   getOrg() : string{
+     return this.getUserProfile().organization;
    }
 
    // Command Interface for VM

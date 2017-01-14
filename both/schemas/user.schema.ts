@@ -7,18 +7,10 @@ import SimpleSchema from 'simpl-schema';
 
 /* Profile Schema */
   const profileSchema = new SimpleSchema({
-    first_name: {
+    name: {
       type: String
     },
-    last_name: {
-      type: String
-    },
-    nickname: {
-      type: String,
-      unique: true,
-      regEx: /^[a-zA-Z0-9_-]*$/
-    },
-    school: {
+    organization: {
       type: String
     },
     email: {

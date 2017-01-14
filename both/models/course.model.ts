@@ -10,9 +10,9 @@
 
   /* PERMISSIONS */
   interface Permissions {
-    meta: boolean;
-    content: ContentPermissions;
-    enroll: EnrollPermissions;
+    meta: boolean; // Is the course visible in searches and explore views?
+    content: ContentPermissions; // Who can view content from this course?
+    enroll: EnrollPermissions;   // Who is allowed to enroll in the course?
   }
 
   export enum ContentPermissions {
@@ -39,8 +39,8 @@
     course_number?: string;
     course_description?: CourseDescription;
     featured: boolean;
-    instructors: User[];
-    administrators: User[];
-    permissions: Permissions;
     labs: string[];
+    administrators: User[];
+    instructors: User[];
+    permissions: Permissions;
   }

@@ -7,11 +7,8 @@
 
   /* PROFILE MODEL */
   export interface Profile {
-    _id: string;
-    first_name: string;
-    last_name: string;
-    nickname: string;
-    school: string;
+    name: string;
+    organization: string;
     email: string;
     picture?: string;
   }

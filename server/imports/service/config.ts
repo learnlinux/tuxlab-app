@@ -24,12 +24,14 @@
     constructor(){
       super([]);
 
+      var slf = this;
+
       // Import from process.env and process.argv
       super.argv().env();
 
       // Import from assets specified abovse
       _.each(configFiles, function(name : string){
-        this.add(name, {
+        slf.add(name, {
           type: 'literal',
           store: JSON.parse(Assets.getText("settings."+name+".json"))
         });
