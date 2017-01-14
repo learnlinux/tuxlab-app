@@ -19,7 +19,9 @@
 
       // Set Editing Permissions
       this.allow({
-        insert: Users.isGlobalAdministrator,
+        insert: function(user_id, course) {
+          return Users.getRoleFor(user_id, course._id) >= 1;
+        },
         update: Users.isGlobalAdministrator,
         remove: Users.isGlobalAdministrator,
         fetch: []

@@ -7,7 +7,9 @@
   import { MongoObservable } from 'meteor-rxjs';
 
   import { UserSchema } from '../schemas/user.schema';
-  import { User, Role } from '../models/user.model';
+  import { User, Role, Privilege } from '../models/user.model';
+
+  import { CourseRecords } from './course_record.collection';
 
 /**
   CREATE USER COLLECTION
@@ -21,25 +23,61 @@
       this.attachSchema(UserSchema);
     }
 
-    // getRoleFor
-    public getRoleFor(course_id : string, user_id : string) : Role {
+    private getPrivilegeFor(course_id : string, user_id : string) : Privilege {
       let user : User = this.findOne(user_id);
       if (typeof user === "undefined"){
-        return 0;
-      } else if (user.global_admin){
-        return 4;
+        undefined;
       } else {
         let role = _.find(user.roles, function(priv){
           return priv.course_id = course_id;
         });
 
-        return role.role;
+        return role;
       }
     }
 
-    // setRoleFor
+    public getRoleFor(course_id : string, user_id : string) : Role {
+      let res = this.getPrivilegeFor(course_id, user_id);
+      if (typeof res === "undefined"){
+        return Role.guest;
+      } else if (this.isGlobalAdministrator(user_id)) {
+        return Role.global_admin;
+      } else {
+        return res.role;
+      }
+    }
+
+    public getCourseRecordFor(course_id : string, user_id : string) : string {
+      let res = this.getPrivilegeFor(course_id, user_id);
+      if (typeof res === "undefined") {
+        return undefined;
+      } else {
+        return res.course_record;
+      }
+    }
+
     public setRoleFor(course_id: string, user_id: string, role : Role) : void {
-      //TODO Implement
+
+      // Check if Course Record Created
+      let course_record_id;
+      if (this.getRoleFor(course_id, user_id) == 0) {
+        course_record_id = CourseRecords.insert({
+          user_id : user_id,
+          course_id: course_id,
+          labs: []
+        });
+      } else {
+        course_record_id = this.getCourseRecordFor(course_id, user_id);
+      }
+
+      // Set Role in User Database
+      let record : Privilege = {
+        course_id : course_id,
+        course_record : course_record_id,
+        role: role
+      }
+      this.update({ _id : user_id }, { '$pull' : {'roles' : {'course_id' : course_id}}, '$push' : record});
+
     }
 
     // isGlobalAdministrator

@@ -40,7 +40,6 @@
     course_description?: CourseDescription;
     featured: boolean;
     labs: string[];
-    administrators: User[];
     instructors: User[];
     permissions: Permissions;
   }

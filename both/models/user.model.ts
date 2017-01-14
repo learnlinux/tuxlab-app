@@ -15,6 +15,7 @@
 
   /* ROLE MODEL */
   export enum Role {
+    guest = 0,
     student = 1,
     instructor = 2,
     course_administrator = 3,

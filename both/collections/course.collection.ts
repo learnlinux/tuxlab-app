@@ -15,7 +15,6 @@
     'course_number',
     'course_description',
     'instructors',
-    'administrators',
     'permissions',
     'labs'
   ];

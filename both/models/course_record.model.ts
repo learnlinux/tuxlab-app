@@ -29,6 +29,7 @@ interface LabRecord {
 
 /* CourseRecord Model */
 export interface CourseRecord {
+  _id?: string;
   user_id: string;
   course_id: string;
   labs: LabRecord[];

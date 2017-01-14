@@ -73,12 +73,6 @@ const permissionsSchema = new SimpleSchema({
     'instructors.$': {
       type: userSchema
     },
-    administrators: {
-      type: Array
-    },
-    'administrators.$': {
-      type: userSchema
-    },
     course_description: {
       type: descriptionSchema,
       optional: true
