@@ -33,7 +33,7 @@
   Sets options for creating a labfile
  */
  export interface LabFileImportOpts{
-   id?: string;
+   _id?: string;
    course_id: string;
    file: string;
  }
@@ -43,7 +43,7 @@
     protected static _TTL : number = Config.get('labruntime_idle_timeout');
 
     // Lab Model Elements
-    id? : string;
+    _id? : string;
     name: string;
     description?: string;
     course_id: string;
@@ -95,7 +95,7 @@
         }).then((runtime) => {
 
           // Set Variables
-          runtime.id = opts.id;
+          runtime._id = opts._id;
           runtime.name = (<Lab>runtime._sandbox.Lab).name;
           runtime.description = (<Lab>runtime._sandbox.Lab).description;
 
@@ -110,14 +110,14 @@
             tasks: runtime.tasks
           }
 
-          if (typeof opts.id === "string"){
-            Labs.update({ '_id' : opts.id }, record);
+          if (typeof opts._id === "string"){
+            Labs.update({ '_id' : opts._id }, record);
           } else {
-            opts.id = Labs.insert(record);
+            runtime._id = Labs.insert(record);
           }
 
           // Add to Cache
-          LabRuntime._cache.set(opts.id, runtime, LabRuntime._TTL);
+          LabRuntime._cache.set(runtime._id, runtime, LabRuntime._TTL);
 
           return runtime;
         });
@@ -126,35 +126,39 @@
     public static getLabRuntime(lab_id : string) : Promise<LabRuntime> {
       return LabRuntime.cache_keyExists(lab_id).then(function(exists){
         if (exists){
+          return new Promise(function(resolve,reject){
+              // Get LabRuntime from Cache
+              LabRuntime._cache.get(lab_id, function (err, value: LabRuntime){
+                if (!err && typeof value !== "undefined"){
+                  LabRuntime.cache_keyRenew(lab_id); // Renew Key
+                  resolve(value);
+                } else {
+                  reject(err);
+                }
+              });
+          });
+        } else {
+          return new Promise((resolve, reject) => {
 
-          // Get LabRuntime from Cache
-          LabRuntime._cache.get(lab_id, function(err, value){
-            if (!err && typeof value !== "undefined"){
-              throw "LabRuntimeCache Error";
+            let lab_model = Labs.findOne({ _id : lab_id});
+
+            if (typeof lab_model === "undefined"){
+              reject(new Error("LabNotFound"));
+
             } else {
+              let runtime = new LabRuntime(lab_model);
 
-              // Renew in Cache
-              LabRuntime.cache_keyRenew(lab_id);
-              return value;
+              // Store LabRuntime in Cache
+              LabRuntime._cache.set(lab_id, runtime, this._TTL, function(err){
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(runtime);
+                }
+              });
             }
           });
-
-        } else {
-
-          // Create LabRuntime from Database
-          let runtime = new LabRuntime(Labs.findOne({ _id : lab_id}));
-
-          // Store LabRuntime in Cache
-          this._cache.set(lab_id, runtime, this._TTL, function(err){
-            throw err;
-          });
-
-          // Return Runtime
-          return runtime;
         }
-
-      }).catch(function(err){
-        throw "LabRuntimeCache Error";
       });
     }
 
@@ -227,7 +231,7 @@
         if (this._sandbox.Lab instanceof Lab){
           this._sandbox.Lab._init(obj);
         } else {
-          throw "invalidLab";
+          throw new Error("invalidLab");
         }
       });
     }
@@ -240,7 +244,7 @@
         if (this._sandbox.Lab instanceof Lab){
           return this._sandbox.Lab._destroy(obj);
         } else {
-          throw "invalidLab";
+          throw new Error("invalidLab");
         }
       });
     }
@@ -253,7 +257,7 @@
         if (this._sandbox.Lab instanceof Lab){
           return this._sandbox.Lab._tasks[task_id].setup(obj);
         } else {
-          throw "invalidLab";
+          throw new Error("invalidLab");
         }
       });
     }
@@ -266,7 +270,7 @@
         if (this._sandbox.Lab instanceof Lab){
           this._sandbox.Lab._tasks[task_id].verify(obj);
         } else {
-          throw "invalidLab";
+          throw new Error("invalidLab");
         }
       })
     }

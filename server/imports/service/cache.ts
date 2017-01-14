@@ -7,21 +7,20 @@ import * as NodeCache from 'node-cache';
 export abstract class Cache {
    protected static _cache : NodeCache =
      new NodeCache({
-       errorOnMissing: true,
        useClones: false,
        stdTTL: Cache._TTL
      });
    protected static _TTL : number;
 
-   protected static cache_keyExists(key : string) : Promise<boolean>{
+   protected static cache_keyExists(key : string) : Promise<{}>{
      return new Promise((resolve, reject) => {
        this._cache.get(key, (err, success) => {
-         if (!err && success){
+         if (!err && typeof success === "object"){
            resolve(true);
-         } else if (!err && !success){
+         } else if (!err && typeof success !== "object"){
            resolve(false);
          } else {
-           reject();
+           reject(err);
          }
        })
      });
@@ -33,7 +32,7 @@ export abstract class Cache {
          if (!err && changed){
            resolve();
          } else {
-           reject();
+           reject(err);
          }
        });
      });
