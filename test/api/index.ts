@@ -4,7 +4,7 @@
 **/
 
 import { CollectionTests } from './collection';
-import { RoleTests } from './roles';
+import { RoleTests } from './collection.roles';
 import { LabRuntimeTests } from './lab_runtime';
 
 export function APITests() {

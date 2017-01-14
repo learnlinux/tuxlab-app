@@ -10,10 +10,11 @@
   import { Labs } from '../../both/collections/lab.collection';
   import { LabRuntime, LabFileImportOpts } from '../../server/imports/runtime/lab_runtime';
 
-  import { createTestCollections, example_records} from './collection';
+  import { createTestCollections } from './collection';
+  import { ExampleCollectionRecords } from './collection.example';
 
   // Import Examples
-  import { Identity } from './lab_runtime.examples';
+  import { Identity } from './lab_runtime.example';
 
   export function LabRuntimeTests(){
     describe('Lab Runtime', function(){
@@ -26,7 +27,7 @@
 
       it('should import from file', function(){
         let record : LabFileImportOpts = {
-          course_id: example_records.course._id,
+          course_id: ExampleCollectionRecords.course._id,
           file: Identity
         };
 
