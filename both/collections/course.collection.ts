@@ -43,11 +43,11 @@
     }
 
     public addInstructor(course_id : string, user_id : string){
-
+      this.update({ _id: course_id }, { '$addToSet' : { instructors : user_id}});
     }
 
     public removeInstructor(course_id : string, user_id : string){
-
+      this.update({ _id: course_id }, { '$pull' : { instructors : user_id}});
     }
   }
   export const Courses = new CourseCollection();

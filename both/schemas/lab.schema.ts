@@ -12,10 +12,7 @@ import { Courses } from '../collections/course.collection';
 /**********************/
 
 const taskSchema = new SimpleSchema({
-    _id: {
-      type: String
-    },
-    updated: {
+    id: {
       type: Number
     },
     name: {
@@ -31,9 +28,6 @@ const taskSchema = new SimpleSchema({
 /*     LAB SCHEMA     */
 /**********************/
   export const LabSchema = new SimpleSchema({
-    _id: {
-      type: String
-    },
     course_id: {
       type: String,
       custom: function() {

@@ -58,9 +58,6 @@ const permissionsSchema = new SimpleSchema({
 
 /* Course Schema */
   export const CourseSchema = new SimpleSchema({
-    _id: {
-       type: String
-    },
     course_name: {
       type: String
     },

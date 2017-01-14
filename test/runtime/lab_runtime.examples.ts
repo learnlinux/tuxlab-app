@@ -1,3 +1,8 @@
+/**
+  Example Labfiles for Testing
+**/
+
+export const Identity = `
 /*
  *  Example Lab File
  *  @author: Derek Brown
@@ -12,7 +17,7 @@
 
   // Setup function run before all other tasks
   Lab.init(function(env){
-    
+
   });
 
   // Task
@@ -21,14 +26,15 @@
   */
   Lab.nextTask({
     setup: function(env){
-
+      env.success();
     },
     verifier: function(env){
-
+      env.completed();
     }
   })
 
   // Destroy function for performing any final tasks
   Lab.destroy(function(env){
-
+    env.success();
   });
+`;

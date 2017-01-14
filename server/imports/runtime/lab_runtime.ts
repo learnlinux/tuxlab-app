@@ -22,7 +22,7 @@
   LabSandbox
   Exports Modules for use by Instructors in Labfile
  */
- //TODO test injecting into TuxLab Object
+ //TODO Prevent hacking by injecting into TuxLab object.
  export const LabSandbox = {
    TuxLab: Lab,
    Lab: {}
@@ -83,17 +83,24 @@
           }
 
           // Create LabRun
-          return new LabRuntime({
+          resolve(new LabRuntime({
             course_id: opts.course_id,
             updated: Date.now(),
             status: LabStatus.hidden,
             file: opts.file,
             tasks: tasks
-          }).ready();
+          }));
+        }).then((runtime) => {
+          return runtime.ready();
         }).then((runtime) => {
 
+          // Set Variables
+          runtime.id = opts.id;
+          runtime.name = (<Lab>runtime._sandbox.Lab).name;
+          runtime.description = (<Lab>runtime._sandbox.Lab).description;
+
           // Add to Database
-          let record = {
+          let record : LabModel = {
             name: runtime.name,
             description: runtime.description,
             course_id: opts.course_id,
@@ -109,15 +116,8 @@
             opts.id = Labs.insert(record);
           }
 
-          // Set Variables
-          runtime.id = opts.id;
-          runtime.name = (<Lab>runtime._sandbox.Lab).name;
-          runtime.description = (<Lab>runtime._sandbox.Lab).description;
-
           // Add to Cache
-          LabRuntime._cache.set(opts.id, runtime, LabRuntime._TTL, function(err){
-            throw err;
-          });
+          LabRuntime._cache.set(opts.id, runtime, LabRuntime._TTL);
 
           return runtime;
         });
@@ -146,7 +146,7 @@
 
           // Store LabRuntime in Cache
           this._cache.set(lab_id, runtime, this._TTL, function(err){
-            //TODO log error
+            throw err;
           });
 
           // Return Runtime
@@ -162,6 +162,7 @@
       super();
 
       this._ready = new Promise((resolve, reject) => {
+
         // Compile Lab
         if (typeof lab.file === "string" && lab.file !== ""){
           try{
@@ -170,7 +171,7 @@
                 timeout: Config.get('labruntime_init_timeout')
             });
           } catch (e){
-            //TODO: Handle LabInstance Errors
+            reject(e);
           }
         }
 
@@ -179,7 +180,7 @@
           try{
             this._code.runInContext(this._context);
           } catch (e) {
-            //TODO: Handle LabInstance Errors
+            reject(e);
           }
         }
 
@@ -187,11 +188,12 @@
         try {
           isValidLabObject(this._sandbox);
         } catch (e) {
-          //TODO: Handle LabInstance Errors
+          reject(e);
         }
 
-        // Copy
+        // Copy Variables from Constructor
         Object.assign(this, lab);
+
         resolve(this);
       });
     }

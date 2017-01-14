@@ -26,8 +26,8 @@
       vm: VMConfig | VMConfig[];
     }
     export class Lab {
-      name : string;
-      description? : string;
+      public name : string;
+      public description? : string;
       public _vm : VMConfig[];
       _init : InitFunction = (env) => { env.success(); }
       _destroy : InitFunction = (env) => { env.success(); }
@@ -44,11 +44,11 @@
         }
       }
 
-      set init (initFn : InitFunction){
+      public init (initFn : InitFunction){
         this._init = initFn;
       }
 
-      set destroy (destroyFn : InitFunction){
+      public destroy (destroyFn : InitFunction){
         this._destroy = destroyFn;
       }
 
