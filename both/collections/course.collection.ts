@@ -22,8 +22,8 @@
 /**
   CREATE COURSE COLLECTION
 **/
-  export const Courses = new CourseCollection();
   class CourseCollection extends Mongo.Collection<Course> {
+
     constructor(){
       super('courses');
       this.attachSchema(CourseSchema);
@@ -33,7 +33,7 @@
         insert: Users.isGlobalAdministrator,
         update: function(user_id : string, course : Course, fields : string[]){
           return Users.isGlobalAdministrator(user_id) ||
-                 (Users.getRoleFor(course._id, user_id) >=  Role.course_administrator &&
+                 (Users.getRoleFor(course._id, user_id) >=  Role.course_admin &&
                     fields.every(function(field){return allowed.indexOf(field) >= 0})
                  );
         },
@@ -41,4 +41,13 @@
         fetch: ["_id"]
       });
     }
+
+    public addInstructor(course_id : string, user_id : string){
+
+    }
+
+    public removeInstructor(course_id : string, user_id : string){
+
+    }
   }
+  export const Courses = new CourseCollection();

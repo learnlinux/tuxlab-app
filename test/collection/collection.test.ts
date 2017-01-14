@@ -5,6 +5,7 @@
 
   import { Meteor } from 'meteor/meteor';
   import { expect } from 'chai';
+  import * as _ from "underscore";
 
   // Import Collection Objects
   import { CourseRecords } from '../../both/collections/course_record.collection';
@@ -29,12 +30,8 @@
         email : "derek@example.org",
         picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
       },
-      roles: {
-        global_admin: true,
-        administrator: [],
-        instructor: [],
-        student: []
-      }
+      global_admin: true,
+      roles: []
     },
     course_admin : {
       _id : "",
@@ -44,12 +41,8 @@
         email : "aaron@example.org",
         picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
       },
-      roles: {
-        global_admin: false,
-        administrator: [],
-        instructor: [],
-        student: []
-      }
+      global_admin: false,
+      roles: []
     },
     instructor : {
       _id : "",
@@ -59,12 +52,8 @@
         email : "sander@example.org",
         picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
       },
-      roles: {
-        global_admin: false,
-        administrator: [],
-        instructor: [],
-        student: []
-      }
+      global_admin: false,
+      roles: []
     },
     student : {
       _id : "",
@@ -74,12 +63,8 @@
         email : "cem@example.org",
         picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
       },
-      roles: {
-        global_admin: false,
-        administrator: [],
-        instructor: [],
-        student: []
-      }
+      global_admin: false,
+      roles: []
     },
     course : {
       _id: "",
@@ -91,7 +76,6 @@
       },
       featured: false,
       labs: [],
-      administrators: [],
       instructors: [],
       permissions: {
         meta: true,
@@ -142,50 +126,32 @@
       });
     });
 
-    it ('should contain example course records', function(){
+    it ('should contain example users', function(done){
       let users = ['global_admin', 'course_admin', 'instructor', 'student'];
 
       users.forEach(function(user){
-        let course_record : CourseRecord = {
-          user_id: example_records[user]._id,
-          course_id: example_records.course._id,
-          labs: []
-        }
-
-        expect(CourseRecords.insert(course_record)).to.be.a('string');
+        example_records[user]._id =  Users.insert(example_records[user])
+        expect(example_records[user]._id).to.be.a('string');
       });
+      done();
     });
 
-    it ('should contain example global admin', function(done){
-      Users.insert(example_records.global_admin, function(err, user_id){
-        expect(err).to.not.exist;
-        example_records.global_admin._id = user_id;
-        done();
+    it ('should allow setting user roles', function(done){
+      let users = ['course_admin', 'instructor', 'student'];
+
+      users.forEach(function(user){
+        Users.setRoleFor(example_records.course._id, example_records[user]._id, Role[user]);
       });
+      done();
     });
 
-    it ('should contain example course admin', function(done){
-      Users.insert(example_records.course_admin, function(err, user_id){
-        expect(err).to.not.exist;
-        example_records.course_admin._id = user_id;
-        done();
-      });
-    });
+    it ('should allow getting user roles', function(done){
+      let roles = ['global_admin', 'course_admin', 'instructor', 'student'];
 
-    it ('should contain example instructor', function(done){
-      Users.insert(example_records.instructor, function(err, user_id){
-        expect(err).to.not.exist;
-        example_records.instructor._id = user_id;
-        done();
+      roles.forEach(function(user){
+        expect(Users.getRoleFor(example_records.course._id, example_records[user]._id)).to.be.equal(Role[user]);
       });
-    });
-
-    it ('should contain example student', function(done){
-      Users.insert(example_records.student, function(err, user_id){
-        expect(err).to.not.exist;
-        example_records.student._id = user_id;
-        done();
-      });
+      done();
     });
 
   }

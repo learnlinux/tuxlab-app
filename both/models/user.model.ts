@@ -18,13 +18,13 @@
     guest = 0,
     student = 1,
     instructor = 2,
-    course_administrator = 3,
+    course_admin = 3,
     global_admin = 4
   }
   export interface Privilege {
     course_id: string;
     course_record: string;
-    role: Role
+    role: Role;
   }
 
   /* USER MODEL */

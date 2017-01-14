@@ -15,7 +15,6 @@
   CREATE USER COLLECTION
 **/
 
-  export const Users = new UserCollection();
   class UserCollection extends Mongo.Collection<User> {
 
     constructor(){
@@ -38,10 +37,10 @@
 
     public getRoleFor(course_id : string, user_id : string) : Role {
       let res = this.getPrivilegeFor(course_id, user_id);
-      if (typeof res === "undefined"){
-        return Role.guest;
-      } else if (this.isGlobalAdministrator(user_id)) {
+      if (this.isGlobalAdministrator(user_id)){
         return Role.global_admin;
+      } else if (typeof res === "undefined") {
+        return Role.guest;
       } else {
         return res.role;
       }
@@ -60,7 +59,7 @@
 
       // Check if Course Record Created
       let course_record_id;
-      if (this.getRoleFor(course_id, user_id) == 0) {
+      if (this.getRoleFor(course_id, user_id) == Role.guest) {
         course_record_id = CourseRecords.insert({
           user_id : user_id,
           course_id: course_id,
@@ -76,8 +75,9 @@
         course_record : course_record_id,
         role: role
       }
-      this.update({ _id : user_id }, { '$pull' : {'roles' : {'course_id' : course_id}}, '$push' : record});
 
+      this.update({ _id : user_id }, { '$pull' : {'roles' : {'course_id' : course_id}}});
+      this.update({ _id : user_id }, { '$push' : {'roles' : record}});
     }
 
     // isGlobalAdministrator
@@ -87,3 +87,4 @@
     }
 
   }
+  export const Users = new UserCollection();

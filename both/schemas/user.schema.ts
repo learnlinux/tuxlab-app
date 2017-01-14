@@ -5,6 +5,8 @@
 // Simple Schema
 import SimpleSchema from 'simpl-schema';
 
+import { Role } from '../models/user.model';
+
 /* Profile Schema */
   const profileSchema = new SimpleSchema({
     name: {
@@ -30,7 +32,7 @@ import SimpleSchema from 'simpl-schema';
       type: String
     },
     role: {
-      type: Number
+      type: Role
     }
   });
 

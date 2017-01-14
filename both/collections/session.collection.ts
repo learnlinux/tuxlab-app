@@ -11,10 +11,10 @@
 /**
   CREATE SESSION COLLECTION
 **/
-  export const Sessions = new SessionCollection();
   class SessionCollection extends Mongo.Collection<Session> {
     constructor(){
       super('sessions');
       this.attachSchema(SessionSchema);
     }
   }
+  export const Sessions = new SessionCollection();

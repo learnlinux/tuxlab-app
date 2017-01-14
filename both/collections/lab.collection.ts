@@ -13,7 +13,6 @@
 /**
   CREATE USER COLLECTION
 **/
-  export const Labs = new LabCollection();
   class LabCollection extends Mongo.Collection<Lab> {
     constructor(){
       super('labs');
@@ -21,7 +20,7 @@
 
       // Set Editing Permissions
       let isAuthorized = function(user_id : string, lab : Lab){
-          return Users.getRoleFor(user_id, lab.course_id) >= Role.course_administrator;
+          return Users.getRoleFor(user_id, lab.course_id) >= Role.course_admin;
       }
 
       this.allow({
@@ -32,3 +31,4 @@
       });
     }
   }
+  export const Labs = new LabCollection();

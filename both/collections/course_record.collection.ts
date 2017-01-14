@@ -10,7 +10,6 @@
 /**
   CREATE COURSERECORD COLLECTION
 **/
-  export const CourseRecords = new CourseRecordCollection();
   class CourseRecordCollection extends Mongo.Collection<CourseRecord> {
 
     constructor(){
@@ -28,3 +27,4 @@
       });
     }
   }
+  export const CourseRecords = new CourseRecordCollection();
