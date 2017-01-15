@@ -5,7 +5,6 @@
     "dockerode": "registry:npm/dockerode#2.3.1+20161017101347",
     "nconf": "registry:dt/nconf#0.0.0+20161212190028",
     "node-cache": "registry:dt/node-cache#3.0.0+20160816205622",
-    "node-etcd": "https://raw.githubusercontent.com/learnlinux/meteor-typings/master/node-etcd.d.ts",
     "uglify-js": "registry:dt/uglify-js#2.6.1+20160510010627"
   },
   "globalDependencies": {
@@ -13,6 +12,7 @@
     "meteor": "https://gist.githubusercontent.com/jacobdr/6010b922d449e4aa1b001862f200e3ef/raw/d2baf474c271ff1c9d77961ae11750cdcbc30abb/meteor.d.ts",
     "mocha": "registry:dt/mocha#2.2.5+20161221010438",
     "node": "registry:env/node#6.0.0+20170102175725",
-    "underscore": "registry:dt/underscore#1.8.3+20161123125004"
+    "underscore": "registry:dt/underscore#1.8.3+20161123125004",
+    "node-etcd": "https://raw.githubusercontent.com/learnlinux/meteor-typings/master/node-etcd.d.ts"
   }
 }

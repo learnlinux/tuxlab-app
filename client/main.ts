@@ -1,13 +1,12 @@
+/**
+  TuxLab Client Application
+**/
 
-/* Import Angular2 and MEteor Components
 import "angular2-meteor-polyfills";
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { enableProdMode } from "@angular/core";
-import { TuxLabModule } from "./imports/app";
-
-enableProdMode();
+import { AppModule } from "./imports/app.module";
 
 Meteor.startup(() => {
-   platformBrowserDynamic().bootstrapModule(TuxLabModule);
+   platformBrowserDynamic().bootstrapModule(AppModule);
 });
-*/

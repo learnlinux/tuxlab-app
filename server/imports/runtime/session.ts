@@ -374,7 +374,7 @@ export class Session extends Cache {
 
   private etcd_delete_proxy() : Promise<{}> {
     return new Promise((resolve, reject) => {
-      etcd.del(Session.etcd_getKeyProxy(this), (err) => {
+      etcd.del(Session.etcd_getKeyProxy(this), {}, (err) => {
         if(err){
           reject(err);
         } else {
@@ -386,7 +386,7 @@ export class Session extends Cache {
 
   private etcd_delete_dns() : Promise<{}> {
     return new Promise((resolve, reject) => {
-      etcd.del(Session.etcd_getKeyDNS(this), (err, res) => {
+      etcd.del(Session.etcd_getKeyDNS(this),{}, (err, res) => {
         if(err){
           reject(err);
         } else {

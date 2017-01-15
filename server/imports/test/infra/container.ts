@@ -7,8 +7,8 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import * as _ from 'underscore';
 
-import { VMConfig } from '../../server/imports/api/vmconfig';
-import { Container } from '../../server/imports/runtime/container';
+import { VMConfig } from '../../../../server/imports/api/vmconfig';
+import { Container } from '../../../../server/imports/runtime/container';
 
 export function ContainerTests() {
 

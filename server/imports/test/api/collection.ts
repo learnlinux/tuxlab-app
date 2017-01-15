@@ -8,18 +8,18 @@
   import * as _ from "underscore";
 
   // Import Collection Objects
-  import { CourseRecords } from '../../both/collections/course_record.collection';
-  import { Courses } from '../../both/collections/course.collection';
-  import { Labs } from '../../both/collections/lab.collection';
-  import { Sessions } from '../../both/collections/session.collection';
-  import { Users } from '../../both/collections/user.collection';
+  import { CourseRecords } from '../../../../both/collections/course_record.collection';
+  import { Courses } from '../../../../both/collections/course.collection';
+  import { Labs } from '../../../../both/collections/lab.collection';
+  import { Sessions } from '../../../../both/collections/session.collection';
+  import { Users } from '../../../../both/collections/user.collection';
 
   // Import Collection Models
-  import { CourseRecord } from '../../both/models/course_record.model';
-  import { Course, ContentPermissions, EnrollPermissions } from '../../both/models/course.model';
-  import { Lab, LabStatus } from '../../both/models/lab.model';
-  import { Session } from '../../both/models/session.model';
-  import { User, Role } from '../../both/models/user.model';
+  import { CourseRecord } from '../../../../both/models/course_record.model';
+  import { Course, ContentPermissions, EnrollPermissions } from '../../../../both/models/course.model';
+  import { Lab, LabStatus } from '../../../../both/models/lab.model';
+  import { Session } from '../../../../both/models/session.model';
+  import { User, Role } from '../../../../both/models/user.model';
 
   import { ExampleCollectionRecords } from './collection.example';
 

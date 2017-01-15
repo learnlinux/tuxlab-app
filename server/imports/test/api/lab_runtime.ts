@@ -7,8 +7,8 @@
   import { expect } from 'chai';
   import * as _ from 'underscore';
 
-  import { Labs } from '../../both/collections/lab.collection';
-  import { LabRuntime, LabFileImportOpts } from '../../server/imports/runtime/lab_runtime';
+  import { Labs } from '../../../../both/collections/lab.collection';
+  import { LabRuntime, LabFileImportOpts } from '../../../../server/imports/runtime/lab_runtime';
 
   import { createTestCollections } from './collection';
   import { ExampleCollectionRecords } from './collection.example';

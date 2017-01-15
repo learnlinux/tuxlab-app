@@ -1,9 +1,9 @@
 // Import Collection Models
-import { CourseRecord } from '../../both/models/course_record.model';
-import { Course, ContentPermissions, EnrollPermissions } from '../../both/models/course.model';
-import { Lab, LabStatus } from '../../both/models/lab.model';
-import { Session } from '../../both/models/session.model';
-import { User, Role } from '../../both/models/user.model';
+import { CourseRecord } from '../../../../both/models/course_record.model';
+import { Course, ContentPermissions, EnrollPermissions } from '../../../../both/models/course.model';
+import { Lab, LabStatus } from '../../../../both/models/lab.model';
+import { Session } from '../../../../both/models/session.model';
+import { User, Role } from '../../../../both/models/user.model';
 
 export let ExampleCollectionRecords = {
   global_admin : {
