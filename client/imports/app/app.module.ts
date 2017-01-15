@@ -1,11 +1,14 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { AppComponent } from "./app.component";
+import { DemoComponent } from "./demo/demo.component";
+import { DemoDataService } from "./demo/demo-data.service";
 
 @NgModule({
   // Components, Pipes, Directive
   declarations: [
-    AppComponent
+    AppComponent,
+    DemoComponent
   ],
   // Entry Components
   entryComponents: [
@@ -13,7 +16,7 @@ import { AppComponent } from "./app.component";
   ],
   // Providers
   providers: [
-
+    DemoDataService
   ],
   // Modules
   imports: [
