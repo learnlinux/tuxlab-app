@@ -5,6 +5,9 @@
 // Simple Schema
 import SimpleSchema from 'simpl-schema';
 
+// Session Model
+import { SessionStatus } from '../models/session.model';
+
 const ContainerSchema = new SimpleSchema({
   conntainer_id : {
     type : String
@@ -25,7 +28,7 @@ export const SessionSchema : SimpleSchema = new SimpleSchema({
     type: Number
   },
   expires:{
-    type: Number
+    type: Date
   },
   current_task:{
     type: Number

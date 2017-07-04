@@ -6,7 +6,8 @@ export enum SessionStatus {
   active = 0, // Currently Active Session
   completed = 1, // Session was destroyed by tuxlab-app, success
   failed = 2, // Session was destroyed by tuxlab-app, failed
-  terminated = 3 // Session was destroyed by tuxlab-daemon
+  destroyed = 3 // Session was destroyed by tuxlab-daemon
+  // NOTE: THIS IS HARD-CODED INTO SESSION-DAEMON.
 }
 
 export interface Container {
