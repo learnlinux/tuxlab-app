@@ -14,27 +14,27 @@
     "test:infra": "meteor test --once --full-app --driver-package=dispatch:mocha-phantomjs"
   },
   "devDependencies": {
-    "chai": "^3.5.0"
+    "chai": "^4.0.2"
   },
   "dependencies": {
-    "@angular/common": "2.4.1",
-    "@angular/compiler": "2.4.1",
-    "@angular/core": "2.4.1",
-    "@angular/forms": "2.4.1",
-    "@angular/platform-browser": "2.4.1",
-    "@angular/platform-browser-dynamic": "2.4.1",
-    "@angular/router": "3.4.1",
+    "@angular/common": "4.2.5",
+    "@angular/compiler": "4.2.5",
+    "@angular/core": "4.2.5",
+    "@angular/forms": "4.2.5",
+    "@angular/platform-browser": "4.2.5",
+    "@angular/platform-browser-dynamic": "4.2.5",
+    "@angular/router": "4.2.5",
     "angular2-meteor": "0.7.1",
-    "angular2-meteor-polyfills": "0.1.1",
+    "angular2-meteor-polyfills": "0.2.0",
     "angular2-meteor-tests-polyfills": "0.0.2",
     "babel-runtime": "^6.18.0",
     "dockerode": "^2.3.1",
     "meteor-node-stubs": "^0.2.4",
     "nconf": "^0.8.4",
     "node-cache": "^4.1.1",
-    "reflect-metadata": "0.1.9",
-    "simpl-schema": "^0.1.0",
-    "uglify-js": "^2.7.5",
-    "zone.js": "0.7.4"
+    "reflect-metadata": "0.1.10",
+    "simpl-schema": "^0.3.1",
+    "uglify-js": "^3.0.23",
+    "zone.js": "0.8.12"
   }
 }

@@ -1,4 +1,6 @@
 # TuxLab
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/learnlinux/tuxlab-app.svg)](https://greenkeeper.io/)
 Platform for creating Interactive Linux Courses
 
 ## Installation
