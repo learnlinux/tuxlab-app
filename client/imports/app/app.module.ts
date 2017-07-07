@@ -9,7 +9,6 @@ import { MaterialModule, MdToolbarModule, MdSidenavModule, MdButtonModule, MdChi
 
 // App Component
 import { AppComponent } from "./app.component";
-import { AppRoutingModule } from "./app.routes";
 
 @NgModule({
   // Components, Pipes, Directive

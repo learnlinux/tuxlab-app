@@ -6,7 +6,7 @@ autoupdate@1.3.12
 babel-compiler@6.19.3
 babel-runtime@1.0.1
 barbatus:caching-compiler@1.1.9
-barbatus:css-compiler@0.4.1
+barbatus:css-compiler@0.3.6
 barbatus:scss-compiler@3.8.3
 barbatus:typescript@0.6.7
 barbatus:typescript-compiler@0.9.7
@@ -63,7 +63,6 @@ reactive-var@1.0.11
 reload@1.1.11
 retry@1.0.9
 routepolicy@1.0.12
-shell-server@0.2.3
 spacebars@1.0.15
 spacebars-compiler@1.1.2
 standard-minifier-css@1.3.4

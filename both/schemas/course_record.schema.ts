@@ -2,9 +2,10 @@
   COURSE_RECORDS SCHEMA
 ***/
 
-// Simple Schema Creation
 import { Meteor } from 'meteor/meteor';
-import SimpleSchema from 'simpl-schema';
+// Simple Schema
+declare var SimpleSchema;
+SimpleSchema = require('simpl-schema');
 
 // Collections
 import { Users } from '../collections/user.collection';
