@@ -5,12 +5,13 @@ import * as NodeCache from 'node-cache';
    NodeCache Wrapper
 */
 export abstract class Cache {
+   protected static _TTL : number;
+
    protected static _cache : NodeCache =
      new NodeCache({
        useClones: false,
        stdTTL: Cache._TTL
      });
-   protected static _TTL : number;
 
    protected static cache_keyExists(key : string) : Promise<{}>{
      return new Promise((resolve, reject) => {

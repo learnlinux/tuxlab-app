@@ -5,6 +5,8 @@
 
 import * as _ from 'underscore';
 
+import { Meteor } from 'meteor/meteor';
+
 import { APITests } from './api/index';
 
 if (Meteor.isServer){

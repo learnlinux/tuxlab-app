@@ -143,7 +143,7 @@
         stdin: true
       }
 
-      return this.ready().then(() => {
+      return <Promise<Readable>> this.ready().then(() => {
         return new Promise(function(resolve, reject){
           docker.getContainer(this.container_id).exec(exec_options, (err, exec) => {
             if (err) {

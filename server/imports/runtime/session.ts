@@ -117,7 +117,7 @@ export class Session extends Cache {
         if (err){
           reject(err);
         } else {
-          resolve(val);
+          resolve(<Session>val);
         }
       });
     });

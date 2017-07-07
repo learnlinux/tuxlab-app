@@ -80,7 +80,7 @@
             reject("uglifyError");
           }
 
-          // Create LabRun
+          // Create LabRuntime
           resolve(new LabRuntime({
             course_id: opts.course_id,
             updated: Date.now(),
@@ -122,7 +122,7 @@
     }
 
     public static getLabRuntime(lab_id : string) : Promise<LabRuntime> {
-      return LabRuntime.cache_keyExists(lab_id).then(function(exists){
+      return <Promise<LabRuntime>> LabRuntime.cache_keyExists(lab_id).then(function(exists){
         if (exists){
           return new Promise(function(resolve,reject){
               // Get LabRuntime from Cache

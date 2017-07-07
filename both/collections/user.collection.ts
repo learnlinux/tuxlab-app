@@ -4,7 +4,6 @@
 **/
   import { Meteor } from 'meteor/meteor'
   import { Mongo } from 'meteor/mongo'
-  import { MongoObservable } from 'meteor-rxjs';
 
   import { UserSchema } from '../schemas/user.schema';
   import { User, Role, Privilege } from '../models/user.model';

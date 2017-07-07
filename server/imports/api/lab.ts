@@ -65,7 +65,7 @@
     }
 
     function isValidTaskObject (task : any) : boolean {
-       return (typeof task === "Object") &&
+       return (typeof task === "object") &&
               (typeof task.setup === "function") &&
               (typeof task.verify === "function");
     }

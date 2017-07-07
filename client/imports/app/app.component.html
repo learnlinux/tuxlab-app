@@ -1,4 +1,67 @@
-<div class="app">
-    <h1>Hello Angular2-Meteor!</h1>
-    <demo></demo>
+<div id="tuxlab">
+  <md-sidenav-container>
+
+    <!-- Sidenav Container -->
+    <md-sidenav #sidenav mode="side">
+      <md-toolbar>
+        <img id="logo" src="assets/logo/v1.head.png" />
+        <span id="textmark">TuxLab | CMU</span>
+        <button md-icon-button (click)="sidenav.toggle()" hide-lg><md-icon>menu</md-icon></button>
+      </md-toolbar>
+
+      <div class="profile">
+        <div class="pic">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Dr._Subra_Suresh%2C_Ninth_President_of_Carnegie_Mellon_University%2C_July_2013.jpg" />
+          <div class="username">Subra Suresh</div>
+          <div class="org">Carnegie Mellon</div>
+          <div class="buttons">
+            <a md-raised-button><md-icon>person</md-icon>Account</a>
+            <a md-raised-button><md-icon>vpn_key</md-icon>Log Out</a>
+          </div>
+        </div>
+      </div>
+
+      <md-list class="sidenav_menu">
+        <md-list-item><a md-button class="active"><md-icon>home</md-icon>Dashboard</a></md-list-item>
+        <md-list-item><a md-button><md-icon>library_books</md-icon>My Courses</a></md-list-item>
+        <md-list-item><a md-button><md-icon>explore</md-icon>Explore Courses</a></md-list-item>
+        <md-list-item><a md-button><md-icon>build</md-icon>Administration</a></md-list-item>
+      </md-list>
+    </md-sidenav>
+
+    <!-- Menu Button -->
+    <div id="navbar" *ngIf="!sidenav.opened">
+      <md-toolbar>
+        <button id="menubutton" (click)="sidenav.toggle()"><md-icon>menu</md-icon></button>
+        <label></label>
+      </md-toolbar>
+    </div>
+
+    <!-- Content Container -->
+    <div class="router-wrap">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="overlay">
+        <div class="menu">
+          <md-chip-list>
+            <md-chip>About</md-chip>
+            <md-chip>Legal</md-chip>
+            <md-chip>News</md-chip>
+            <md-chip>GitHub</md-chip>
+            <md-chip>Facebook</md-chip>
+          </md-chip-list>
+        </div><br>
+        <label>Copyright &copy; 2017 Carnegie Mellon University. All Rights Reserved.</label>
+      </div>
+      <div class="background">
+        <svg class="snow_hill" xmlns="http://www.w3.org/2000/svg" width="100%" height="300" viewBox="0 0 350 235" preserveAspectRatio="none">
+          <path d="M0 235h350V59.024C116.373 75.394 224.07-53.64 0 26.404z"></path>
+        </svg>
+      </div>
+    </div>
+
+  </md-sidenav-container>
 </div>

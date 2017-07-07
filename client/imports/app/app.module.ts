@@ -1,14 +1,20 @@
+
+// Angular Core
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+
+// Angular Material
+import { MaterialModule, MdToolbarModule, MdSidenavModule, MdButtonModule, MdChipsModule } from '@angular/material';
+
+// App Component
 import { AppComponent } from "./app.component";
-import { DemoComponent } from "./demo/demo.component";
-import { DemoDataService } from "./demo/demo-data.service";
+import { AppRoutingModule } from "./app.routes";
 
 @NgModule({
   // Components, Pipes, Directive
   declarations: [
-    AppComponent,
-    DemoComponent
+    AppComponent
   ],
   // Entry Components
   entryComponents: [
@@ -16,11 +22,16 @@ import { DemoDataService } from "./demo/demo-data.service";
   ],
   // Providers
   providers: [
-    DemoDataService
   ],
   // Modules
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule,
+    MaterialModule,
+    MdToolbarModule,
+    MdSidenavModule,
+    MdButtonModule,
+    MdChipsModule
   ],
   // Main Component
   bootstrap: [ AppComponent ]
