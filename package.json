@@ -14,19 +14,13 @@
     "chai": "^4.0.2"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@angular/animations": "^4.2.5",
-=======
->>>>>>> 7986837b608110486b2b44bddfd775725f50f6b6
     "@angular/common": "4.2.5",
     "@angular/compiler": "4.2.5",
     "@angular/core": "4.2.5",
     "@angular/forms": "4.2.5",
-<<<<<<< HEAD
     "@angular/http": "4.2.5",
     "@angular/material": "^2.0.0-beta.7",
-=======
->>>>>>> 7986837b608110486b2b44bddfd775725f50f6b6
     "@angular/platform-browser": "4.2.5",
     "@angular/platform-browser-dynamic": "4.2.5",
     "@angular/router": "4.2.5",
@@ -38,17 +32,10 @@
     "meteor-node-stubs": "^0.2.11",
     "nconf": "^0.8.4",
     "node-cache": "^4.1.1",
-<<<<<<< HEAD
     "reflect-metadata": "0.1.9",
     "rxjs": "^5.4.1",
     "simpl-schema": "^0.1.0",
     "uglify-js": "^2.7.5",
     "zone.js": "0.8.4"
-=======
-    "reflect-metadata": "0.1.10",
-    "simpl-schema": "^0.3.1",
-    "uglify-js": "^3.0.23",
-    "zone.js": "0.8.12"
->>>>>>> 7986837b608110486b2b44bddfd775725f50f6b6
   }
 }

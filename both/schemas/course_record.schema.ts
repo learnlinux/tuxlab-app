@@ -3,9 +3,9 @@
 ***/
 
 import { Meteor } from 'meteor/meteor';
+
 // Simple Schema
-declare var SimpleSchema;
-SimpleSchema = require('simpl-schema');
+import SimpleSchema from 'simpl-schema';
 
 // Collections
 import { Users } from '../collections/user.collection';
