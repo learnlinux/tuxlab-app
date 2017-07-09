@@ -1,0 +1,14 @@
+div.course_list{
+  min-height: 80vh;
+
+  md-grid-list{
+    width: 100%;
+    max-width: 960px;
+
+    md-grid-tile{
+      md-card{
+        width: 100%;
+      }
+    }
+  }
+}

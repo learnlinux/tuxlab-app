@@ -2,6 +2,8 @@
   COURSE MODEL
 **/
 
+  import { User } from './user.model';
+
   /* COURSE DESCRIPTION */
   interface CourseDescription {
     content: string;
@@ -26,11 +28,6 @@
     None
   }
 
-  /* User */
-  interface User {
-    _id: string;
-    name: string;
-  }
 
   /* COURSE MODEL */
   export interface Course {

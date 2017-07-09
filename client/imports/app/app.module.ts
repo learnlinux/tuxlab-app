@@ -13,6 +13,9 @@ import { MaterialModule, MdToolbarModule, MdSidenavModule, MdButtonModule, MdChi
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routes";
 
+// Accounts Service
+import AccountService from "./account/account.service";
+
 @NgModule({
   // Components, Pipes, Directive
   declarations: [
@@ -24,6 +27,7 @@ import { AppRoutingModule } from "./app.routes";
   ],
   // Providers
   providers: [
+    AccountService
   ],
   // Modules
   imports: [
@@ -41,7 +45,7 @@ import { AppRoutingModule } from "./app.routes";
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
-  constructor() {
+  constructor(private accountService : AccountService) {
 
   }
 }

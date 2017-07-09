@@ -2,26 +2,42 @@
 /**
   IMPORTS
 **/
+
+  import * as _ from "lodash";
   import { Meteor } from 'meteor/meteor'
   import { Mongo } from 'meteor/mongo'
 
   import { UserSchema } from '../schemas/user.schema';
+
   import { User, Role, Privilege } from '../models/user.model';
+  import { Course } from '../models/course.model';
 
   import { CourseRecords } from './course_record.collection';
+  import { Courses } from './course.collection';
+
 
 /**
-  CREATE USER COLLECTION
+  EXTEND USER COLLECTION
 **/
 
-  class UserCollection extends Mongo.Collection<User> {
-
-    constructor(){
-      super('users');
-      this.attachSchema(UserSchema);
+    /* INTERFACE */
+    interface UsersCollection extends Mongo.Collection<Meteor.User> {
+      getPrivilegeFor(course_id : string, user_id : string) : Privilege;
+      getCoursesFor(user_id : string) : Course[];
+      getRoleFor(course_id : string, user_id : string) : Role;
+      getCourseRecordFor(course_id : string, user_id : string) : string;
+      setRoleFor(course_id: string, user_id: string, role : Role) : void;
+      isGlobalAdministrator(user_id: string) : boolean;
     }
 
-    private getPrivilegeFor(course_id : string, user_id : string) : Privilege {
+    /* IMPLEMENTATION */
+    export const Users : UsersCollection = (<UsersCollection>Meteor.users);
+
+    // Attach Schema
+    Users.attachSchema(UserSchema);
+
+    // getPrivilegeFor
+    Users.getPrivilegeFor = function(course_id : string, user_id : string) : Privilege {
       let user : User = this.findOne(user_id);
       if (typeof user === "undefined"){
         undefined;
@@ -34,7 +50,8 @@
       }
     }
 
-    public getRoleFor(course_id : string, user_id : string) : Role {
+    // getRoleFor
+    Users.getRoleFor = function(course_id : string, user_id : string) : Role {
       let res = this.getPrivilegeFor(course_id, user_id);
       if (this.isGlobalAdministrator(user_id)){
         return Role.global_admin;
@@ -45,7 +62,35 @@
       }
     }
 
-    public getCourseRecordFor(course_id : string, user_id : string) : string {
+    // getCoursesFor
+    Users.getCoursesFor = function(user_id : string) : Course[] {
+
+      // Get Student Courses
+      const courses_student = CourseRecords.find({
+        user_id: user_id
+      }).map(function(course_record){
+        return course_record.course_id;
+      });
+
+      // Get Instructor Courses
+      const courses_instructor = Courses.find({
+        instructors: user_id
+      }).map(function(course){
+        return course._id;
+      });
+
+      // Merge Course Lists
+      const courses : string[] = _.union(courses_student, courses_instructor);
+
+      // Map to Find Courses
+      return _.map(courses, function(course_id){
+        return Courses.findOne({ '_id' : course_id});
+      })
+    }
+
+
+    // getCourseRecordFor
+    Users.getCourseRecordFor = function(course_id : string, user_id : string) : string {
       let res = this.getPrivilegeFor(course_id, user_id);
       if (typeof res === "undefined") {
         return undefined;
@@ -54,7 +99,8 @@
       }
     }
 
-    public setRoleFor(course_id: string, user_id: string, role : Role) : void {
+    // setRoleFor
+    Users.setRoleFor = function(course_id: string, user_id: string, role : Role) : void {
 
       // Check if Course Record Created
       let course_record_id;
@@ -80,10 +126,7 @@
     }
 
     // isGlobalAdministrator
-     public isGlobalAdministrator (user_id : string) : boolean {
+     Users.isGlobalAdministrator = function(user_id : string) : boolean {
       let user : User = this.findOne(user_id);
       return (typeof user !== "undefined") && (user.global_admin);
     }
-
-  }
-  export const Users = new UserCollection();

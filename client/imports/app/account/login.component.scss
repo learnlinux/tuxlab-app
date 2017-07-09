@@ -54,8 +54,17 @@ div.tuxlab-login{
 
       md-list-item{
         width: 100%;
-        margin-bottom:40px;
+        margin-bottom:30px;
 
+        &.error{
+          margin-bottom: 10px;
+          font-size: 16px;
+
+          md-icon{
+            color: mat-color($tuxlab-app-warn);
+            margin-right: 6px;
+          }
+        }
 
         md-input-container{
           width: 80%;
