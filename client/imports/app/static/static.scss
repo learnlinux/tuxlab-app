@@ -1,0 +1,36 @@
+
+.static_page{
+  width: 100%;
+  max-width: 960px;
+  min-height: 900px;
+
+  box-sizing: border-box;
+  margin: 30px auto;
+  padding: 25px;
+
+  background-color: #fff;
+  box-shadow:
+   0 -1px 1px rgba(0,0,0,0.15),
+   0 -10px 0 -5px #eee,
+   0 -10px 1px -4px rgba(0,0,0,0.15),
+   0 -20px 0 -10px #eee,
+   0 -20px 1px -9px rgba(0,0,0,0.15);
+
+  h1, h2, h3, h4, h5, h6 {
+      color: #3C4858;
+  }
+
+  h1 {
+    margin: 5px;
+
+    font-size: 38px;
+    font-weight: 300;
+  }
+
+  h2 {
+    margin: 5px;
+
+    font-weight: 400;
+    font-size: 22px;
+  }
+}

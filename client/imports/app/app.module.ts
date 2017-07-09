@@ -3,6 +3,8 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 // Angular Material
 import { MaterialModule, MdToolbarModule, MdSidenavModule, MdButtonModule, MdChipsModule } from '@angular/material';
@@ -26,7 +28,9 @@ import { AppRoutingModule } from "./app.routes";
   // Modules
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
+    FlexLayoutModule,
     MaterialModule,
     MdToolbarModule,
     MdSidenavModule,

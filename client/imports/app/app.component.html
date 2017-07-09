@@ -4,7 +4,7 @@
     <!-- Sidenav Container -->
     <md-sidenav #sidenav mode="side">
       <md-toolbar>
-        <img id="logo" src="assets/logo/v1.head.png" />
+        <img class="logo" src="assets/logo/v1.head.png" />
         <span id="textmark">TuxLab | CMU</span>
         <button md-icon-button (click)="sidenav.toggle()" hide-lg><md-icon>menu</md-icon></button>
       </md-toolbar>
@@ -29,11 +29,12 @@
       </md-list>
     </md-sidenav>
 
-    <!-- Menu Button -->
+    <!-- Menu Bar -->
     <div id="navbar" *ngIf="!sidenav.opened">
       <md-toolbar>
         <button id="menubutton" (click)="sidenav.toggle()"><md-icon>menu</md-icon></button>
-        <label></label>
+        <img class="logo" src="assets/logo/v1.head.png" />
+        <label>TuxLab | CMU</label>
       </md-toolbar>
     </div>
 
@@ -47,11 +48,11 @@
       <div class="overlay">
         <div class="menu">
           <md-chip-list>
-            <md-chip>About</md-chip>
-            <md-chip>Legal</md-chip>
-            <md-chip>News</md-chip>
-            <md-chip>GitHub</md-chip>
-            <md-chip>Facebook</md-chip>
+            <a [routerLink]="['/help']"><md-chip>Help</md-chip></a>
+            <a [routerLink]="['/legal']"><md-chip>Legal</md-chip></a>
+            <a href="http://tuxlab.org" ><md-chip>Website</md-chip></a>
+            <a href="https://github.com/learnlinux"><md-chip>GitHub</md-chip></a>
+            <a href="https://www.facebook.com/tuxlablinux/"><md-chip>Facebook</md-chip></a>
           </md-chip-list>
         </div><br>
         <label>Copyright &copy; 2017 Carnegie Mellon University. All Rights Reserved.</label>
