@@ -48,7 +48,6 @@ div#tuxlab{
       height: 64px;
 
       color: #3C4858;
-      font-size: 34px;
 
       md-toolbar{
         padding:0px;
@@ -62,14 +61,19 @@ div#tuxlab{
           border:none;
         }
 
-        label{
-          margin-top:6px;
-          margin-left: 12px;
-          font-weight: 300;
-        }
+        a {
+          text-decoration: none;
+          color: inherit;
 
-        img.logo{
-          margin-left: 10px;
+          div{
+            margin-left: 12px;
+            font-weight: 300;
+            font-size: 26px;
+          }
+
+          img.logo{
+            margin-left: 10px;
+          }
         }
       }
     }
@@ -113,9 +117,18 @@ div#tuxlab{
 
         background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('http://www.pelagicodyssey.ca/ao2/95.jpg') no-repeat center/cover;
 
-        div.pic{
+        div.inner{
           margin:0 auto;
           text-align: center;
+
+          md-icon.login_icon{
+            width: 100px;
+            height: 100px;
+            margin:20px 0px 10px 0px;
+
+            font-size: 110px;
+            color: #fff;
+          }
 
           div.username{
             font-size:28px;

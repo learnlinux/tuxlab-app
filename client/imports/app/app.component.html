@@ -9,8 +9,10 @@
         <button md-icon-button (click)="sidenav.toggle()" hide-lg><md-icon>menu</md-icon></button>
       </md-toolbar>
 
+
+      <!-- Profile Region -->
       <div class="profile">
-        <div class="pic">
+        <div class="inner" *ngIf="false">
           <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Dr._Subra_Suresh%2C_Ninth_President_of_Carnegie_Mellon_University%2C_July_2013.jpg" />
           <div class="username">Subra Suresh</div>
           <div class="org">Carnegie Mellon</div>
@@ -19,10 +21,19 @@
             <a md-raised-button><md-icon>vpn_key</md-icon>Log Out</a>
           </div>
         </div>
+
+        <div class="inner">
+          <md-icon class="login_icon">account_circle</md-icon>
+          <div class="org">Carnegie Mellon</div>
+          <div class="buttons">
+            <a md-raised-button [routerLink]="['login']"><md-icon>person</md-icon>Login</a>
+          </div>
+        </div>
       </div>
 
+      <!-- Sidenav Menu -->
       <md-list class="sidenav_menu">
-        <md-list-item><a md-button class="active"><md-icon>home</md-icon>Dashboard</a></md-list-item>
+        <md-list-item><a md-button [routerLink]="['/']" routerLinkActive="active"><md-icon>home</md-icon>Dashboard</a></md-list-item>
         <md-list-item><a md-button><md-icon>library_books</md-icon>My Courses</a></md-list-item>
         <md-list-item><a md-button><md-icon>explore</md-icon>Explore Courses</a></md-list-item>
         <md-list-item><a md-button><md-icon>build</md-icon>Administration</a></md-list-item>
@@ -33,8 +44,10 @@
     <div id="navbar" *ngIf="!sidenav.opened">
       <md-toolbar>
         <button id="menubutton" (click)="sidenav.toggle()"><md-icon>menu</md-icon></button>
-        <img class="logo" src="assets/logo/v1.head.png" />
-        <label>TuxLab | CMU</label>
+        <a [routerLink]="['/']" fxLayout fxLayoutAlign="center center">
+            <img class="logo" src="assets/logo/v1.head.png" />
+            <div>TuxLab | CMU</div>
+        </a>
       </md-toolbar>
     </div>
 
