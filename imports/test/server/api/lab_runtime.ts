@@ -7,28 +7,33 @@
   import { expect } from 'chai';
   import * as _ from 'lodash';
 
-  import { Lab } from '../../../both/models/lab.model';
-  import { Labs } from '../../../both/collections/lab.collection';
-  import { LabRuntime, LabFileImportOpts } from '../../../server/imports/runtime/lab_runtime';
+  import { DefaultFixtures } from '../../../fixtures';
 
-  import { createTestCollections } from './collection';
-  import { ExampleCollectionRecords } from './collection.example';
-
-  // Import Examples
+  import { Lab } from '../../../../both/models/lab.model';
+  import { Labs } from '../../../../both/collections/lab.collection';
+  import { LabRuntime, LabFileImportOpts } from '../../../../server/imports/runtime/lab_runtime';
   import { Identity } from './lab_runtime.example';
 
   export function LabRuntimeTests(){
     describe('Lab Runtime', function(){
 
+      let fixtures : DefaultFixtures;
+
       let lab : LabRuntime;
       let lab_id_cache : string;
       let lab_id_mongo : string;
 
-      it('should start with test database', createTestCollections);
+      before(function(){
+        fixtures = new DefaultFixtures();
+      });
+
+      after(function(){
+        fixtures.destructor();
+      });
 
       it('should import from file', function(){
         let record : LabFileImportOpts = {
-          course_id: ExampleCollectionRecords.course._id,
+          course_id: fixtures.courses.gpi,
           file: Identity
         };
 

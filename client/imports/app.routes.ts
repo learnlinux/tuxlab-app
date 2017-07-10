@@ -13,10 +13,11 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import AccountService from './account/account.service';
 import Dashboard from './account/dashboard.component';
 import Login from './account/login.component';
+import { Users } from '../../both/collections/user.collection';
 
 // Course
 import CourseList from './course/course_list.component';
-
+import CourseView from './course/course_view.component';
 
 // Lab
 
@@ -26,11 +27,24 @@ import Legal from './static/legal.component';
 
 export const AppRoutes : Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+
+  // Account
   { path: 'dashboard', component: Dashboard },
+  { path: 'login', component: Login },
+
+  // Static
   { path: 'help', component: Help },
   { path: 'legal', component: Legal },
-  { path: 'login', component: Login },
-  { path: 'courses', component: CourseList }
+
+  // Courses
+  { path: 'explore', component: CourseList },
+  { path: 'courses', component: CourseList },
+  { path: 'courses/:id', component: CourseView,
+    children : [
+
+    ]
+  }
+
 ]
 
 @NgModule({
@@ -39,13 +53,14 @@ export const AppRoutes : Routes = [
     Help,
     Legal,
     Login,
-    CourseList
+    CourseList,
+    CourseView
   ],
   imports: [
     RouterModule.forRoot(
       AppRoutes,
       {
-        enableTracing: true,
+        enableTracing: false,
       }
     ),
     CommonModule,

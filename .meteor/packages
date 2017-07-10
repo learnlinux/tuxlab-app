@@ -27,4 +27,4 @@ dispatch:mocha-phantomjs
 dynamic-import
 accounts-password
 steffo:meteor-accounts-saml
-dburles:factory
+autopublish

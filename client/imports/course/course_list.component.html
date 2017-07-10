@@ -1,21 +1,22 @@
-<div class="course_list" fxLayout fxLayoutAlign="center flex-start">
+<div class="course_list" fxLayout="column" fxLayoutAlign="flex-start center">
 
-  <!-- Course List (*ngFor="let course of courses") -->
-  <md-grid-list cols="2" rowHeight="200px">
-    <md-grid-tile>
+  <h1>{{ this.title }}</h1>
+
+  <md-grid-list cols="2" rowHeight="150px" gutterSize="15px">
+    <md-grid-tile *ngFor="let course of courses | async">
       <md-card>
         <!-- Header Information -->
         <md-card-header>
-          <md-card-title>Great Practical Ideas for Computer Scientists</md-card-title>
-          <md-card-subtitle>Tom Cortina</md-card-subtitle>
+          <md-card-title>{{ course.course_name }}</md-card-title>
+          <md-card-subtitle></md-card-subtitle>
         </md-card-header>
 
         <!-- Action Buttons -->
         <md-card-actions>
-          <button md-button>
+          <a [routerLink]="['/courses', course._id ]" md-button>
             <md-icon>class</md-icon>
             View Course
-          </button>
+          </a>
         </md-card-actions>
       </md-card>
     </md-grid-tile>

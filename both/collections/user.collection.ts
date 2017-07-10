@@ -4,8 +4,9 @@
 **/
 
   import * as _ from "lodash";
-  import { Meteor } from 'meteor/meteor'
-  import { Mongo } from 'meteor/mongo'
+  import { Meteor } from 'meteor/meteor';
+  import { Mongo } from 'meteor/mongo';
+  import { MongoObservable, ObservableCursor } from 'meteor-rxjs';
 
   import { UserSchema } from '../schemas/user.schema';
 
@@ -22,8 +23,9 @@
 
     /* INTERFACE */
     interface UsersCollection extends Mongo.Collection<User> {
+      observable : MongoObservable.Collection<User>;
       getPrivilegeFor(course_id : string, user_id : string) : Privilege;
-      getCoursesFor(user_id : string) : Course[];
+      getCoursesFor(user_id : string) : ObservableCursor<Course>;
       getRoleFor(course_id : string, user_id : string) : Role;
       getCourseRecordFor(course_id : string, user_id : string) : string;
       setRoleFor(course_id: string, user_id: string, role : Role) : void;
@@ -35,6 +37,9 @@
 
     // Attach Schema
     Users.attachSchema(UserSchema);
+
+    // Create Observable
+    Users.observable = new MongoObservable.Collection<User>(Users);
 
     // getPrivilegeFor
     Users.getPrivilegeFor = function(course_id : string, user_id : string) : Privilege {
@@ -63,7 +68,7 @@
     }
 
     // getCoursesFor
-    Users.getCoursesFor = function(user_id : string) : Course[] {
+    Users.getCoursesFor = function(user_id : string) : ObservableCursor<Course> {
 
       // Get Student Courses
       const courses_student = CourseRecords.find({
@@ -83,9 +88,8 @@
       const courses : string[] = _.union(courses_student, courses_instructor);
 
       // Map to Find Courses
-      return _.map(courses, function(course_id){
-        return Courses.findOne({ '_id' : course_id});
-      })
+      return Courses.observable.find({ '_id' : { '$in' : courses }});
+
     }
 
 

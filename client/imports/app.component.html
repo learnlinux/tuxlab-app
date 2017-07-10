@@ -34,9 +34,9 @@
       <!-- Sidenav Menu -->
       <md-list class="sidenav_menu">
         <md-list-item><a md-button [routerLink]="['/dashboard']" routerLinkActive="active"><md-icon>home</md-icon>Dashboard</a></md-list-item>
-        <md-list-item><a md-button [routerLink]="['/courses']" routerLinkActive="active"><md-icon>library_books</md-icon>My Courses</a></md-list-item>
-        <md-list-item><a md-button><md-icon>explore</md-icon>Explore Courses</a></md-list-item>
-        <md-list-item><a md-button><md-icon>build</md-icon>Administration</a></md-list-item>
+        <md-list-item><a md-button [routerLink]="['/courses']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><md-icon>library_books</md-icon>My Courses</a></md-list-item>
+        <md-list-item><a md-button [routerLink]="['/explore']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><md-icon>explore</md-icon>Explore Courses</a></md-list-item>
+        <md-list-item><a md-button [routerLink]="['/admin']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><md-icon>build</md-icon>Administration</a></md-list-item>
       </md-list>
     </md-sidenav>
 

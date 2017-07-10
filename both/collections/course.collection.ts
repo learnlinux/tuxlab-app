@@ -3,6 +3,7 @@
   IMPORTS
 **/
   import { Mongo } from 'meteor/mongo'
+  import { MongoObservable } from 'meteor-rxjs';
 
   import { CourseSchema } from '../schemas/course.schema';
   import { Course } from '../models/course.model';
@@ -23,10 +24,14 @@
   CREATE COURSE COLLECTION
 **/
   class CourseCollection extends Mongo.Collection<Course> {
+    public observable : MongoObservable.Collection<Course>;
 
     constructor(){
       super('courses');
       this.attachSchema(CourseSchema);
+
+      // Create Observable
+      this.observable = new MongoObservable.Collection(this);
 
       // Set Editing Permissions
       this.allow({

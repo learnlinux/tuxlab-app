@@ -2,6 +2,7 @@
   IMPORTS
 **/
   import { Mongo } from 'meteor/mongo';
+  import { MongoObservable } from 'meteor-rxjs';
 
   import { CourseRecordSchema } from '../schemas/course_record.schema';
   import { CourseRecord } from '../models/course_record.model';
@@ -11,10 +12,16 @@
   CREATE COURSERECORD COLLECTION
 **/
   class CourseRecordCollection extends Mongo.Collection<CourseRecord> {
+    public observable : MongoObservable.Collection<CourseRecord>;
 
     constructor(){
       super('course_records');
+
+      // Attach Schema
       this.attachSchema(CourseRecordSchema);
+
+      // Create Observable
+      this.observable = new MongoObservable.Collection(this);
 
       // Set Editing Permissions
       this.allow({

@@ -5,7 +5,6 @@
 
  // Imports
  import { Meteor } from 'meteor/meteor';
- import { Factory } from 'meteor/dburles:factory';
 
  // Collections Objects
  import { Sessions } from '../../both/collections/session.collection';
@@ -34,95 +33,127 @@
     Users.remove({});
   }
 
+
  /*
-  * createDefaultFixtures
-  * checks if databases are empty.  If they are, loads
-  * the database fixtures.
+  * defaultFixtures
   */
- export function createDefaultFixtures(){
+ export class DefaultFixtures{
+   public users : {
+     "global_admin" : string,
+     "course_admin" : string,
+     "instructor" : string,
+     "student" : string
+   };
 
-   console.log("Creating Default Fixtures");
+   public courses : {
+     "gpi" : string
+   };
 
-   // Users
-     Factory.define<User>('users/global_admin', Users, {
-       profile: {
-         name : "Derek Brown",
-         organization : "Carnegie Mellon University",
-         email : "derek@example.org",
-         picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
-       },
-       global_admin: true,
-       roles: []
+   public labs : {
+     "gpi/git" : string
+   }
+
+   constructor(){
+
+     // Users
+     this.users = {
+       "global_admin": Users.insert({
+                         profile: {
+                              name : "Derek Brown",
+                              organization : "Carnegie Mellon University",
+                              email : "derek@example.org",
+                              picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
+                            },
+                            global_admin: true,
+                            roles: []
+                         }),
+
+       "course_admin":  Users.insert({
+                          profile: {
+                            name : "Aaron Mortenson",
+                            organization : "Carnegie Mellon University",
+                            email : "aaron@example.org",
+                            picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
+                          },
+                          global_admin: false,
+                          roles: []
+                        }),
+
+        "instructor": Users.insert({
+                          profile: {
+                            name : "Sander Shi",
+                            organization : "Carnegie Mellon University",
+                            email : "sander@example.org",
+                            picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
+                          },
+                          global_admin: false,
+                          roles: []
+                        }),
+
+         "student":  Users.insert({
+                        profile: {
+                          name : "Cem Ersoz",
+                          organization : "Carnegie Mellon University",
+                          email : "cem@example.org",
+                          picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
+                        },
+                        global_admin: false,
+                        roles: []
+                     })
+     };
+
+     // Courses
+     this.courses = ({
+       "gpi" : Courses.insert({
+                   course_name: "Great Practical Ideas for Computer Scientists",
+                   course_number: "15-131",
+                   course_description: {
+                     content: "Some stuff about content of the course.  Markdown allowed.",
+                     syllabus: "Some stuff about the syllabus.  Markdown allowed."
+                   },
+                   featured: false,
+                   labs: [
+                   ],
+                   instructors: [
+                   ],
+                   permissions: {
+                     meta: true,
+                     content: ContentPermissions.Any,
+                     enroll: EnrollPermissions.Any
+                   }
+                 })
      });
-     Factory.create('users/global_admin');
 
-     Factory.define<User>('users/course_admin', Users, {
-       profile: {
-         name : "Aaron Mortenson",
-         organization : "Carnegie Mellon University",
-         email : "aaron@example.org",
-         picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
-       },
-       global_admin: false,
-       roles: []
-     });
-     Factory.create('users/course_admin');
+     // Labs
+     this.labs = {
+       "gpi/git" :  Labs.insert({
+          name: "Getting Started with Git",
+          description: "Learn basics of Git with GitHub",
+          course_id: this.courses.gpi,
+          updated: Date.now(),
+          status: LabStatus.closed,
+          file: "Lab = new TuxLab({name : 'GitHub Lab',description: 'Teaches users how to clone a repository.', vm: 'alpine'});",
+          tasks: []
+        })
+     }
+   }
 
-     Factory.define<User>('users/instructor', Users, {
-       profile: {
-         name : "Sander Shi",
-         organization : "Carnegie Mellon University",
-         email : "sander@example.org",
-         picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
-       },
-       global_admin: false,
-       roles: []
-     });
-     Factory.create('users/instructor');
+   public destructor(){
 
-     Factory.define<User>('users/student', Users, {
-       profile: {
-         name : "Cem Ersoz",
-         organization : "Carnegie Mellon University",
-         email : "cem@example.org",
-         picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
-       },
-       global_admin: false,
-       roles: []
-     });
-     Factory.create('users/student');
+     // Delete Users
+     _.forEach(this.users, function(value, key){
+       Users.remove({ '_id' : value });
+     })
 
-     // Course
-     Factory.define<Course>('courses/gpi', Courses, {
-       course_name: "Great Practical Ideas for Computer Scientists",
-       course_number: "15-131",
-       course_description: {
-         content: "Some stuff about content of the course.  Markdown allowed.",
-         syllabus: "Some stuff about the syllabus.  Markdown allowed."
-       },
-       featured: false,
-       labs: [
-       ],
-       instructors: [
-       ],
-       permissions: {
-         meta: true,
-         content: ContentPermissions.Any,
-         enroll: EnrollPermissions.Any
-       }
-     });
-     Factory.create('courses/gpi');
+     // Delete Courses
+     _.forEach(this.courses, function(value, key){
+       Courses.remove({ '_id' : value });
+     })
 
-     // Lab
-     Factory.define<Lab>('labs/intro_git', Labs, {
-       name: "Getting Started with Git",
-       description: "Learn basics of Git with GitHub",
-       course_id: Factory.get('courses/gpi'),
-       updated: Date.now(),
-       status: LabStatus.closed,
-       file: "Lab = new TuxLab({name : 'GitHub Lab',description: 'Teaches users how to clone a repository.', vm: 'alpine'});",
-       tasks: []
-     });
-     Factory.create('labs/intro_git');
+     // Delete Labs
+     _.forEach(this.labs, function(value, key){
+       Labs.remove({ '_id' : value });
+     })
+   }
 
  }
