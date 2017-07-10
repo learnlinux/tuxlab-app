@@ -41,21 +41,6 @@ const permissionsSchema = new SimpleSchema({
     }
   });
 
-/* User Schema */
-  const userSchema = new SimpleSchema({
-    name: {
-      type: String
-    },
-    id: {
-      type: String,
-      custom: function(){
-        if (Meteor.isServer && typeof Users.findOne({ _id: this.value }) === undefined){
-          return "invalidUser";
-        }
-      }
-    }
-  });
-
 /* Course Schema */
   export const CourseSchema = new SimpleSchema({
     course_name: {
@@ -68,7 +53,12 @@ const permissionsSchema = new SimpleSchema({
       type: Array
     },
     'instructors.$': {
-      type: userSchema
+      type: String,
+      custom: function(){
+        if (Meteor.isServer && typeof Users.findOne({ _id: this.value }) === undefined){
+          return "invalidUser";
+        }
+      }
     },
     course_description: {
       type: descriptionSchema,

@@ -3,7 +3,7 @@
  * Interface describing a VM configuration for TuxLab
  */
 
-   import * as _ from "underscore";
+   import * as _ from "lodash";
 
   /* CONFIGURATION INTERFACE */
   export interface VMConfigCustom {

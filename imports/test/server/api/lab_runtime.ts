@@ -5,10 +5,11 @@
 
   import { Meteor } from 'meteor/meteor';
   import { expect } from 'chai';
-  import * as _ from 'underscore';
+  import * as _ from 'lodash';
 
-  import { Labs } from '../../../../both/collections/lab.collection';
-  import { LabRuntime, LabFileImportOpts } from '../../../../server/imports/runtime/lab_runtime';
+  import { Lab } from '../../../both/models/lab.model';
+  import { Labs } from '../../../both/collections/lab.collection';
+  import { LabRuntime, LabFileImportOpts } from '../../../server/imports/runtime/lab_runtime';
 
   import { createTestCollections } from './collection';
   import { ExampleCollectionRecords } from './collection.example';
@@ -43,7 +44,7 @@
 
       it('should re-id in database (for testing)', function(){
         let doc = Labs.findOne({ _id: lab_id_cache });
-        doc = _.omit(doc, '_id');
+        doc = (<Lab>_.omit(doc, '_id'));
         Labs.remove({ _id: lab_id_cache });
         lab_id_mongo = Labs.insert(doc);
         expect(lab_id_mongo).to.not.equal(lab_id_cache);

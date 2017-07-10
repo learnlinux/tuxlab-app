@@ -1,4 +1,4 @@
-import * as _ from 'underscore';
+import * as _ from 'lodash';
 import * as NodeCache from 'node-cache';
 
 /*

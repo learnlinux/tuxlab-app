@@ -27,6 +27,7 @@
     "@angular/platform-browser-dynamic": "^4.2.5",
     "@angular/router": "^4.2.5",
     "@types/lodash": "^4.14.68",
+    "@types/meteor": "^1.4.2",
     "angular2-meteor": "0.7.1",
     "angular2-meteor-polyfills": "0.2.0",
     "angular2-meteor-tests-polyfills": "0.0.2",

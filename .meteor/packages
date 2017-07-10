@@ -16,7 +16,6 @@ standard-minifier-js@2.1.0      # JS minifier run for production mode
 es5-shim@4.6.15                 # ECMAScript 5 compatibility for older browsers.
 
 ## ANGULAR
-underscore@1.0.10
 angular2-compilers
 
 ## MONGO
@@ -28,3 +27,4 @@ dispatch:mocha-phantomjs
 dynamic-import
 accounts-password
 steffo:meteor-accounts-saml
+dburles:factory

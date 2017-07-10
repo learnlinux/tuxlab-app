@@ -21,7 +21,7 @@
 **/
 
     /* INTERFACE */
-    interface UsersCollection extends Mongo.Collection<Meteor.User> {
+    interface UsersCollection extends Mongo.Collection<User> {
       getPrivilegeFor(course_id : string, user_id : string) : Privilege;
       getCoursesFor(user_id : string) : Course[];
       getRoleFor(course_id : string, user_id : string) : Role;
@@ -43,7 +43,7 @@
         undefined;
       } else {
         let role = _.find(user.roles, function(priv){
-          return priv.course_id = course_id;
+          return priv.course_id == course_id;
         });
 
         return role;

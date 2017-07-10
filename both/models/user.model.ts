@@ -23,7 +23,7 @@
   }
   export interface Privilege {
     course_id: string;
-    course_record: string;
+    course_record?: string; // NOTE: May not have been created yet.
     role: Role;
   }
 

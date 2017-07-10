@@ -3,7 +3,7 @@
   @author: Derek Brown
 **/
 
-import * as _ from 'underscore';
+import * as _ from 'lodash';
 
 import { InfrastructureTests } from './infra/index';
 

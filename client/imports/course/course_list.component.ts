@@ -11,8 +11,8 @@
   import style from "./course_list.component.scss";
 
 // Import Course Data
-	import { Course } from '../../../../both/models/course.model';
-	import { Users } from '../../../../both/collections/user.collection';
+	import { Course } from '../../../both/models/course.model';
+	import { Users } from '../../../both/collections/user.collection';
 
   @Component({
     selector: 'tuxlab-course-list',

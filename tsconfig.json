@@ -16,10 +16,11 @@
     "node_modules"
   ],
   "filesGlob" : [
+    "node_modules/@types",
     "both/**/*.ts",
     "client/**/*.ts",
     "server/**/*.ts",
-    "test/**/*.ts",
+    "imports/**/*.ts",
     "typings/index.d.ts"
   ],
   "compileOnSave": false,

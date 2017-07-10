@@ -5,7 +5,7 @@
  */
 
     /* IMPORTS */
-    import * as _ from "underscore";
+    import * as _ from "lodash";
 
     import { VMConfig, VMConfigCustom, VMValidateConfig } from './vmconfig';
     import { InitObject, SetupObject, VerifyObject } from './environment';

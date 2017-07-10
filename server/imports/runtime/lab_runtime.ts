@@ -4,7 +4,7 @@
  * @author: Derek Brown, Cem Ersoz
  */
 
- import * as _ from "underscore";
+ import * as _ from "lodash";
  import * as vm from 'vm';
  import * as UglifyJS from 'uglify-js';
 

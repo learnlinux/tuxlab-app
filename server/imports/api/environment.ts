@@ -4,7 +4,7 @@
  * @author: Derek Brown, Cem Ersoz
  */
 
- import * as _ from "underscore";
+ import * as _ from "lodash";
 
  import { Profile } from '../../../both/models/user.model';
  import { VM } from './vm';
