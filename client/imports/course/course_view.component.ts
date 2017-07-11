@@ -3,10 +3,10 @@
 	import { Meteor } from 'meteor/meteor';
 	import { Tracker } from 'meteor/tracker';
 	import { MeteorComponent } from 'angular2-meteor';
-	import { Router, ActivatedRoute } from "@angular/router";
 
 // Angular Imports
-	import { Component, Input } from '@angular/core';
+	import { Component, Input, ChangeDetectorRef } from '@angular/core';
+	import { Router, ActivatedRoute } from "@angular/router";
 
 // Define Course List Component
   import template from "./course_view.component.html";
@@ -29,19 +29,22 @@
   export default class CourseView extends MeteorComponent {
 		private course : Course;
 
-    constructor(private router : Router, private route: ActivatedRoute) {
+    constructor( private router : Router, private route: ActivatedRoute, private ref:ChangeDetectorRef ) {
 			super();
+
     }
 
-    ngOnInit(){
+		ngOnInit(){
 			var self = this;
 
-			this.route.params
+			self.route.params
 				.map(params => params['id'])
 				.subscribe((id) => {
-					Tracker.autorun(function(){
+					Tracker.autorun(() => {
 						self.course = Courses.findOne({ _id : id });
+						self.ref.detectChanges();
 					})
 				});
     }
+
   }

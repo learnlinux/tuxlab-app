@@ -1,17 +1,50 @@
+@import '../app.theme';
+
 div.course_view{
   width: 100%;
   max-width: 960px;
   min-height: 900px;
 
-  box-sizing: border-box;
   margin: 30px auto;
-  padding: 25px;
+  padding: 45px;
 
-  background-color: #fff;
-  box-shadow:
-   0 -1px 1px rgba(0,0,0,0.15),
-   0 -10px 0 -5px #eee,
-   0 -10px 1px -4px rgba(0,0,0,0.15),
-   0 -20px 0 -10px #eee,
-   0 -20px 1px -9px rgba(0,0,0,0.15);
+
+   h2{
+     font-weight: 300;
+     font-size: 22px;
+   }
+
+   div.info {
+     div.title{
+       padding: 20px 0px 10px 0px;
+       font-size: 21px;
+       font-weight: 400;
+
+      $left-size: 90px;
+      div.left{
+        width: $left-size;
+        height: $left-size;
+
+        color: #fff;
+        line-height: $left-size;
+        text-align: center;
+
+        background-color: mat-color($tuxlab-app-primary);
+        flex-shrink: 0;
+      }
+
+      div.right{
+        margin-left: 15px;
+
+        span.instructors{
+          color: #555;
+        }
+      }
+     }
+   }
+
+   div.labs{
+
+   }
+
 }

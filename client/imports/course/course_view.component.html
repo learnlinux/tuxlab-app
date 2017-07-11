@@ -2,16 +2,26 @@
 
   <!-- Info -->
   <div class="info">
-    <div class="title">
-      <md-icon>book</md-icon>
-      <span class="course_number">{{ course.course_number }}</span>
-      <span class="course_name"></span>
+    <div class="title" fxLayout fxLayoutAlign="flex-start">
+      <div class="left">
+        {{ course.course_number }}
+      </div>
+
+      <div class="right" fxLayout="column" fxLayoutAlign="center">
+        <span class="course_name">{{ course.course_name }}</span>
+        <span class="instructors" *ngIf="course.instructors.length !== 0" >
+          Instructors:
+          <span *ngFor="let instructor of course.instructors">
+            {{instructor.display_name}}
+          </span>
+        </span>
+      </div>
     </div>
   </div>
 
   <!-- Labs -->
   <div class="labs">
-
+    <h2> Labs </h2>
   </labs>
 
 </div>
