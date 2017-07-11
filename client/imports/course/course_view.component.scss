@@ -11,12 +11,12 @@ div.course_view{
 
    h2{
      font-weight: 300;
-     font-size: 22px;
+     font-size: 30px;
+     margin-left: 10px;
    }
 
-   div.info {
+   md-card.info {
      div.title{
-       padding: 20px 0px 10px 0px;
        font-size: 21px;
        font-weight: 400;
 

@@ -1,0 +1,5 @@
+export * from './course_record.model'
+export * from './course.model'
+export * from './lab.model'
+export * from './session.model'
+export * from './user.model'

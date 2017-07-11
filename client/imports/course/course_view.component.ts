@@ -13,9 +13,12 @@
   import style from "./course_view.component.scss";
 
 // Import Course Data
+  import { CourseRecord } from '../../../both/models/course_record.model';
 	import { Course } from '../../../both/models/course.model';
+	import { Lab } from '../../../both/models/lab.model';
+
+	import { CourseRecords } from '../../../both/collections/course_record.collection';
 	import { Courses } from '../../../both/collections/course.collection';
-	import { Users } from '../../../both/collections/user.collection';
 
 // Export Data Interface
 
@@ -28,10 +31,11 @@
 // Export Dashboard Class
   export default class CourseView extends MeteorComponent {
 		private course : Course;
+		private course_record : CourseRecord;
+		private labs : Lab[];
 
-    constructor( private router : Router, private route: ActivatedRoute, private ref:ChangeDetectorRef ) {
+    constructor( private router : Router, private route: ActivatedRoute, private ref: ChangeDetectorRef ) {
 			super();
-
     }
 
 		ngOnInit(){
@@ -42,9 +46,12 @@
 				.subscribe((id) => {
 					Tracker.autorun(() => {
 						self.course = Courses.findOne({ _id : id });
+						self.course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : id });
+						self.labs = Courses.getLabs(id);
 						self.ref.detectChanges();
 					})
 				});
     }
+
 
   }

@@ -1,7 +1,7 @@
 <div class="course_view" *ngIf="course" >
 
   <!-- Info -->
-  <div class="info">
+  <md-card class="info">
     <div class="title" fxLayout fxLayoutAlign="flex-start">
       <div class="left">
         {{ course.course_number }}
@@ -17,11 +17,15 @@
         </span>
       </div>
     </div>
-  </div>
+  </md-card>
 
   <!-- Labs -->
-  <div class="labs">
+  <section class="labs">
     <h2> Labs </h2>
-  </labs>
+
+    <div class="lab" *ngFor="let lab of labs">
+      
+    </div>
+  </section>
 
 </div>

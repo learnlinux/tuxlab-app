@@ -9,6 +9,7 @@
   import { Course } from '../models/course.model';
   import { Role } from '../models/user.model';
   import { Users } from '../collections/user.collection';
+  import { Labs } from '../collections/lab.collection';
 
   // Array of Fields that can be Updated
   const allowed = [
@@ -53,6 +54,11 @@
 
     public removeInstructor(course_id : string, user_id : string){
       this.update({ _id: course_id }, { '$pull' : { instructors : user_id}});
+    }
+
+    public getLabs(course_id : string){
+      const labs = this.findOne({ _id: course_id }).labs;
+      return Labs.find({ _id : { '$in' : labs}}).fetch();
     }
   }
   export const Courses = new CourseCollection();

@@ -21,10 +21,13 @@ interface TaskRecord {
 
 /* LabRecord Model */
 interface LabRecord {
-  lab_id: string;
   data?: any;
   attempted: number[];
   tasks: TaskRecord[];
+}
+
+interface LabRecords {
+  [lab_id : string] : LabRecord;
 }
 
 /* CourseRecord Model */
@@ -32,5 +35,5 @@ export interface CourseRecord {
   _id?: string;
   user_id: string;
   course_id: string;
-  labs: LabRecord[];
+  labs: LabRecords;
 }

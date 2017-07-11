@@ -2,6 +2,7 @@
   COURSE_RECORDS SCHEMA
 ***/
 
+import * as _ from "lodash";
 import { Meteor } from 'meteor/meteor';
 
 // Simple Schema
@@ -40,15 +41,6 @@ import { TaskStatus } from '../models/course_record.model';
 
 /* Lab Schema */
   const labRecordSchema = new SimpleSchema({
-    lab_id: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id,
-      custom: function() {
-        if (Meteor.isServer && typeof Labs.findOne({ _id: this.value }) === undefined){
-          return "invalidLab";
-        }
-      }
-    },
     data: {
       type: Object,
       optional: true
@@ -65,6 +57,7 @@ import { TaskStatus } from '../models/course_record.model';
   export const CourseRecordSchema = new SimpleSchema({
     user_id: {
       type: String,
+      regEx: SimpleSchema.RegEx.Id,
       custom: function() {
         if (Meteor.isServer && typeof Users.findOne({ _id: this.value }) === undefined){
           return "invalidUser";
@@ -80,9 +73,19 @@ import { TaskStatus } from '../models/course_record.model';
       }
     },
     labs: {
-      type: Array
-    },
-    'labs.$': {
-      type: labRecordSchema
+      type: Object,
+      blackbox: true,
+      custom: function() {
+        _.forEach(this.value, function(lab_record, lab_id){
+
+          // Validate lab_id
+          if (Meteor.isServer && typeof Labs.findOne({ _id: this.lab_id }) === undefined){
+            return "invalidLab";
+          }
+
+          // Validate lab_record
+          labRecordSchema.validate(lab_record);
+        });
+      }
     }
   });

@@ -1,0 +1,5 @@
+export * from './course_record.schema'
+export * from './course.schema'
+export * from './lab.schema'
+export * from './session.schema'
+export * from './user.schema'
