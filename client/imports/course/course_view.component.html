@@ -1,4 +1,17 @@
-<div class="course_view" >
+<div class="course_view" *ngIf="course" >
 
-  
+  <!-- Info -->
+  <div class="info">
+    <div class="title">
+      <md-icon>book</md-icon>
+      <span class="course_number">{{ course.course_number }}</span>
+      <span class="course_name"></span>
+    </div>
+  </div>
+
+  <!-- Labs -->
+  <div class="labs">
+
+  </labs>
+
 </div>

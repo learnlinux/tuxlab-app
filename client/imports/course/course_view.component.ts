@@ -1,6 +1,7 @@
 // Meteor Imports
 	import * as _ from "lodash";
 	import { Meteor } from 'meteor/meteor';
+	import { Tracker } from 'meteor/tracker';
 	import { MeteorComponent } from 'angular2-meteor';
 	import { Router, ActivatedRoute } from "@angular/router";
 
@@ -33,10 +34,14 @@
     }
 
     ngOnInit(){
+			var self = this;
+
 			this.route.params
 				.map(params => params['id'])
 				.subscribe((id) => {
-					this.course = Courses.findOne({ id : id});
+					Tracker.autorun(function(){
+						self.course = Courses.findOne({ _id : id });
+					})
 				});
     }
   }
