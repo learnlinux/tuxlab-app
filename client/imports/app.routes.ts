@@ -20,6 +20,8 @@ import CourseList from './course/course_list.component';
 import CourseView from './course/course_view.component';
 
 // Lab
+import LabView from './lab/lab_view.component';
+import LabTerminal from './lab/lab_terminal.component';
 
 // Static
 import Help from './static/help.component';
@@ -39,11 +41,10 @@ export const AppRoutes : Routes = [
   // Courses
   { path: 'explore', component: CourseList },
   { path: 'courses', component: CourseList },
-  { path: 'courses/:id', component: CourseView,
-    children : [
+  { path: 'courses/:id', component: CourseView },
 
-    ]
-  }
+  // Labs
+  { path: 'labs/:id', component: LabView }
 
 ]
 
@@ -54,7 +55,9 @@ export const AppRoutes : Routes = [
     Legal,
     Login,
     CourseList,
-    CourseView
+    CourseView,
+    LabView,
+    LabTerminal
   ],
   imports: [
     RouterModule.forRoot(

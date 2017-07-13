@@ -9,11 +9,11 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 // Angular Material
 import { MaterialModule, MdToolbarModule, MdSidenavModule, MdButtonModule, MdChipsModule } from '@angular/material';
 
-// App Component
+// Components
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routes";
 
-// Accounts Service
+// Services
 import AccountService from "./account/account.service";
 
 @NgModule({
@@ -44,6 +44,7 @@ import AccountService from "./account/account.service";
   // Main Component
   bootstrap: [ AppComponent ]
 })
+
 export class AppModule {
   constructor(private accountService : AccountService) {
 

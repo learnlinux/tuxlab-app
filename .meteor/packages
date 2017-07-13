@@ -25,6 +25,10 @@ aldeed:schema-index
 ## TESTING
 dispatch:mocha-phantomjs
 dynamic-import
+
+## ACCOUNTS
 accounts-password
 steffo:meteor-accounts-saml
+
+## DEBUG
 autopublish

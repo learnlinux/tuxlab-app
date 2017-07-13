@@ -26,7 +26,7 @@ interface LabRecord {
   tasks: TaskRecord[];
 }
 
-interface LabRecords {
+export interface LabRecords {
   [lab_id : string] : LabRecord;
 }
 

@@ -20,7 +20,6 @@
  import { User, Role } from '../../both/models/user.model';
  import { Users } from '../../both/collections/user.collection';
 
-
  /*
   * cleanupDatabase
   * cleans up databases
@@ -32,7 +31,6 @@
     Sessions.remove({});
     Users.remove({});
   }
-
 
  /*
   * defaultFixtures
@@ -123,6 +121,7 @@
                    }
                  })
      });
+     Courses.addInstructor
 
      // Labs
      this.labs = {
@@ -135,7 +134,8 @@
           file: "Lab = new TuxLab({name : 'GitHub Lab',description: 'Teaches users how to clone a repository.', vm: 'alpine'});",
           tasks: []
         })
-     }
+     };
+     Courses.addLab(this.courses['gpi'], this.labs['gpi/git']);
    }
 
    public destructor(){

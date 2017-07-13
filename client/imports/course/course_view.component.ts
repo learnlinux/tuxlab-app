@@ -7,6 +7,7 @@
 // Angular Imports
 	import { Component, Input, ChangeDetectorRef } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
+	import { ObservableCursor } from 'meteor-rxjs';
 
 // Define Course List Component
   import template from "./course_view.component.html";
@@ -32,7 +33,7 @@
   export default class CourseView extends MeteorComponent {
 		private course : Course;
 		private course_record : CourseRecord;
-		private labs : Lab[];
+		private labs : ObservableCursor<Lab>;
 
     constructor( private router : Router, private route: ActivatedRoute, private ref: ChangeDetectorRef ) {
 			super();

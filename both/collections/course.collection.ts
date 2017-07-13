@@ -8,6 +8,8 @@
   import { CourseSchema } from '../schemas/course.schema';
   import { Course } from '../models/course.model';
   import { Role } from '../models/user.model';
+  import { Lab } from '../models/lab.model';
+
   import { Users } from '../collections/user.collection';
   import { Labs } from '../collections/lab.collection';
 
@@ -56,9 +58,20 @@
       this.update({ _id: course_id }, { '$pull' : { instructors : user_id}});
     }
 
+    public addLab(course_id : string, lab_id  : string){
+      this.update({ _id: course_id }, { '$addToSet' : { labs : lab_id }});
+    }
+
+    public removeLab(course_id : string, lab_id : string){
+      this.update({ _id: course_id }, { '$pull' : { instructors : lab_id}});
+    }
+
     public getLabs(course_id : string){
-      const labs = this.findOne({ _id: course_id }).labs;
-      return Labs.find({ _id : { '$in' : labs}}).fetch();
+      var course;
+
+      if(typeof (course = this.findOne({ _id: course_id })) !== "undefined"){
+        return Labs.observable.find({ _id : { '$in' : course.labs }});
+      }
     }
   }
   export const Courses = new CourseCollection();

@@ -109,10 +109,11 @@
       // Check if Course Record Created
       let course_record_id;
       if (this.getRoleFor(course_id, user_id) == Role.guest) {
+
         course_record_id = CourseRecords.insert({
           user_id : user_id,
           course_id: course_id,
-          labs: []
+          labs: {}
         });
       } else {
         course_record_id = this.getCourseRecordFor(course_id, user_id);

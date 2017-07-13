@@ -1,0 +1,7 @@
+div#tuxlab-terminal{
+  height: calc(100vh - 100px);
+
+  & > div.terminal{
+    height: 100%;
+  }
+}

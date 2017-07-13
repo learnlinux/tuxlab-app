@@ -11,6 +11,14 @@
     closed // Users cannot begin
   }
 
+  /* TASK MODEL */
+  export interface Task {
+    id: number;
+    name: string;
+    md: string;
+  }
+
+
   /* LAB MODEL */
   export interface Lab {
     _id?: string;
@@ -21,11 +29,4 @@
     status: LabStatus
     file: string;
     tasks: Task[];
-  }
-
-  /* TASK MODEL */
-  export interface Task {
-    id: number;
-    name: string;
-    md: string;
   }
