@@ -66,7 +66,6 @@
           let tasks = [], comment = [], index = 0;
           while ((comment = comment_filter.exec(opts.file)) !== null){
             tasks.push ({
-              id: (index += 1),
               name: comment[2].replace(/[^\w\s]/gi, '').trim(), // Remove special characters
               md: comment[4]
             });

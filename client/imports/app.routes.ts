@@ -9,6 +9,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule, MdButtonModule, MdListModule, MdInputModule, MdGridListModule } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 
+// Imports
+import { MarkdownModule } from 'angular2-markdown';
+
 // Account
 import AccountService from './account/account.service';
 import Dashboard from './account/dashboard.component';
@@ -73,7 +76,8 @@ export const AppRoutes : Routes = [
     MdListModule,
     MdButtonModule,
     MdInputModule,
-    MdGridListModule
+    MdGridListModule,
+    MarkdownModule.forRoot(),
   ],
   exports: [
     RouterModule

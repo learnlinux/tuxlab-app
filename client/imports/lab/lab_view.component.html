@@ -1,9 +1,33 @@
-<div class="tuxlab-lab-view" *ngIf="lab"  fxLayout fxLayoutAlign="center flex-start">
+<!-- Lab Component -->
+<div class="tuxlab-lab-view" fxLayout fxLayoutAlign="center flex-start">
+
+  <!-- Markdown Component -->
   <div>
+    <md-toolbar>
+      <button md-icon-button><md-icon>arrow_back</md-icon></button>
+      <span class="center-text">
+        <span class="number">3</span>
+        Task Name
+      </span>
+      <button md-icon-button><md-icon>arrow_forward</md-icon></button>
+    </md-toolbar>
 
   </div>
+
+  <!-- Terminal Component -->
   <div>
-    <tuxlab-terminal>
-    </tuxlab-terminal>
+    <md-toolbar>
+      <span class="spacer"></span>
+      <button md-icon-button><md-icon>dns</md-icon></button>
+      <button md-icon-button><md-icon>refresh</md-icon></button>
+    </md-toolbar>
+
+    <tuxlab-terminal></tuxlab-terminal>
   </div>
+</div>
+
+<!-- Loading Spinner -->
+<div class="loading" fxLayout fxLayoutAlign="center center">
+  <md-progress-spinner color="primary" mode="indeterminate">
+  </md-progress-spinner>
 </div>

@@ -2,7 +2,7 @@
   Example Labfiles for Testing
 **/
 
-export const Identity = `
+export const ExampleLabfile = `
 /*
  *  Example Lab File
  *  author: Derek Brown

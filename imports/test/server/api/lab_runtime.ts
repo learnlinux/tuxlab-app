@@ -12,7 +12,7 @@
   import { Lab } from '../../../../both/models/lab.model';
   import { Labs } from '../../../../both/collections/lab.collection';
   import { LabRuntime, LabFileImportOpts } from '../../../../server/imports/runtime/lab_runtime';
-  import { Identity } from './lab_runtime.example';
+  import { ExampleLabfile } from './lab_runtime.example';
 
   export function LabRuntimeTests(){
     describe('Lab Runtime', function(){
@@ -34,7 +34,7 @@
       it('should import from file', function(){
         let record : LabFileImportOpts = {
           course_id: fixtures.courses.gpi,
-          file: Identity
+          file: ExampleLabfile
         };
 
         return LabRuntime.createLabRuntime(record)

@@ -12,9 +12,6 @@ import { Courses } from '../collections/course.collection';
 /**********************/
 
 const taskSchema = new SimpleSchema({
-    id: {
-      type: Number
-    },
     name: {
       type: String
     },

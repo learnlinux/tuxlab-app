@@ -7,7 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 // Angular Material
-import { MaterialModule, MdToolbarModule, MdSidenavModule, MdButtonModule, MdChipsModule } from '@angular/material';
+import { MaterialModule, MdToolbarModule, MdSidenavModule, MdButtonModule, MdChipsModule, MdProgressSpinnerModule } from '@angular/material';
+
+// External Imports
+import { MarkdownModule } from 'angular2-markdown';
 
 // Components
 import { AppComponent } from "./app.component";
@@ -39,7 +42,9 @@ import AccountService from "./account/account.service";
     MdToolbarModule,
     MdSidenavModule,
     MdButtonModule,
-    MdChipsModule
+    MdChipsModule,
+    MdProgressSpinnerModule,
+    MarkdownModule.forRoot()
   ],
   // Main Component
   bootstrap: [ AppComponent ]

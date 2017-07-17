@@ -1,5 +1,58 @@
+@import '../app.theme';
+
+// Loading
+.loading{
+  width: 100%;
+  height: 100vh;
+}
+
+// Sections
 .tuxlab-lab-view{
   & > div {
     width: 50%;
+
+    &:first-child md-toolbar{
+        background: #d7d7d7;
+    }
+
+    &:last-child md-toolbar{
+        background: #e2e2e2;
+    }
+  }
+
+  // Toolbar
+  md-toolbar{
+    span.spacer{
+      flex: 1 1 auto;
+    }
+
+    span.center-text{
+      color: #333;
+      font-weight: 400;
+      font-size: 24px;
+
+      span.number{
+        display: inline-block;
+        height: 40px;
+        width: 40px;
+
+        color:#fff;
+        text-align: center;
+        line-height: 40px;
+
+        margin-right: 5px;
+
+        border-radius: 50%;
+        background:mat-color($tuxlab-app-primary);
+      }
+    }
+
+    &.success span.center-text span.number{
+      background: #4caf50;
+    }
+
+    &.failed span.center-text span.number{
+      background: #f44336;
+    }
   }
 }

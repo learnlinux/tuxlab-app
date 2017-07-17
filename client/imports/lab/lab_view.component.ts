@@ -12,10 +12,13 @@
 // Define Lab View Component
   import template from "./lab_view.component.html";
   import style from "./lab_view.component.scss";
+	import prism_style from "prismjs/themes/prism.css";
 
 // Import Lab Data
 	import { Lab } from '../../../both/models/lab.model';
 	import { Labs } from '../../../both/collections/lab.collection';
+	import { Session } from '../../../both/models/session.model';
+	import { Sessions } from '../../../both/collections/session.collection';
 
 // Export Data Interface
   @Component({
@@ -27,9 +30,11 @@
 // Export LabView Class
   export default class LabView extends MeteorComponent {
 		private lab : Lab;
+		private session : Session;
 
     constructor( private router : Router, private route: ActivatedRoute, private ref: ChangeDetectorRef ) {
 			super();
+			prism_style;
     }
 
 		ngOnInit(){

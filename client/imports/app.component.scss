@@ -9,8 +9,26 @@ html, body, main {
   font-family: 'Roboto', sans-serif;
 }
 
+// Icon Button
 button[md-icon-button]{
   background-color: transparent;
+}
+
+// Center Text in Toolbar
+md-toolbar{
+
+  span.spacer{
+    flex: 1 1 auto;
+  }
+
+  span.center-text{
+    margin:0 auto;
+    align-self: center;
+
+    color:#fff;
+    font-size: 24px;
+    font-weight: 300;
+  }
 }
 
 div#tuxlab{
@@ -25,21 +43,12 @@ div#tuxlab{
     md-toolbar#navbar {
       min-height:60px;
       max-height:60px;
-
-      span.spacer{
-        flex: 1 1 auto;
-      }
     }
 
     // Logo
     img.logo {
       height:34px;
       width: 38px;
-    }
-
-    // Router Outlet
-    .router-wrap {
-      padding: 20px;
     }
 
     // Navbar
@@ -91,19 +100,10 @@ div#tuxlab{
         min-height:60px;
         max-height:60px;
 
-        span.spacer{
-          flex: 1 1 auto;
-        }
-
         background-color: mat-color($tuxlab-app-primary);
 
-        span#textmark{
-          margin:0 auto;
-          align-self: center;
-
-          color:#fff;
-          font-size: 24px;
-          font-weight: 300;
+        span.spacer{
+          flex: 1 1 auto;
         }
 
         md-icon{

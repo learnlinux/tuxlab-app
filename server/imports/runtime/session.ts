@@ -20,14 +20,18 @@ import { InitObject, SetupObject, VerifyObject } from '../api/environment';
 import { Container } from './container';
 import { LabRuntime } from './lab_runtime';
 
+
+
 /*
-  Instruction
-  Interface for accessing markdown and labVM output.
+  SessionObj
+  Elements needed to construct SessionObj.
 */
-export interface Instruction {
-  id: number;
-  name: string;
-  md: string;
+interface SessionObj{
+  session_id : string,
+  user_id : string,
+  lab_id : string,
+  lab : LabRuntime,
+  containers : Container[]
 }
 
 /*
@@ -41,15 +45,14 @@ export class Session extends Cache {
   public session_id : string;
   public expires : number;
   public status : SessionStatus = SessionStatus.active;
-  private static constructSessionID(user_id : string){
-    return user_id;
+  private static constructSessionID(user_id : string, lab_id : string){
+    return user_id + '/' + lab_id;
   }
 
   // Lab
   private lab : LabRuntime;
   public lab_id : string;
   public current_task = 0;
-  public instructions : Instruction[];
 
   // User
   public user_id; //user_id
@@ -76,12 +79,6 @@ export class Session extends Cache {
 
     // Set Expiration
     this.expires = Date.now() + Config.get('session_idle_timeout');
-
-    // Copy Instructions into Class
-    this.instructions = _.map(this.lab.tasks, function(task){
-      let instruction = <Instruction>_.clone(task);
-      return instruction;
-    });
   }
 
   /*
@@ -89,8 +86,8 @@ export class Session extends Cache {
     Retrieves the session from the cache or mongodb if found.  If lab_id
     is supplied, it will try to create the session if it doesn't exist.
   */
-  public static getSession(user_id : string, lab_id? : string) : Promise<Session>{
-    let session_id = Session.constructSessionID(user_id);
+  public static getSession(user_id : string, lab_id : string) : Promise<Session>{
+    let session_id = Session.constructSessionID(user_id, lab_id);
 
     return Session.getSession_cache(session_id)// Look in Session Cache
       .then((val) => {
@@ -204,10 +201,7 @@ export class Session extends Cache {
            session.etcd_create_dns(),
            session.cache_add(),
            session.mongo_add()
-          ])
-        .then(() => {
-          return session;
-        });
+         ]);
       })
   }
 
@@ -516,16 +510,4 @@ export class Session extends Cache {
       return this.lab.exec_verify(this.current_task, this.getVerifyObject(completed, failed, retry));
     });
   }
-}
-
-/*
-  SessionObj
-  Elements needed to construct SessionObj; used internally.
-*/
-interface SessionObj{
-  session_id : string,
-  user_id : string,
-  lab_id : string,
-  lab : LabRuntime,
-  containers : Container[]
 }

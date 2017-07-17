@@ -121,7 +121,6 @@
                    }
                  })
      });
-     Courses.addInstructor
 
      // Labs
      this.labs = {
@@ -132,7 +131,16 @@
           updated: Date.now(),
           status: LabStatus.closed,
           file: "Lab = new TuxLab({name : 'GitHub Lab',description: 'Teaches users how to clone a repository.', vm: 'alpine'});",
-          tasks: []
+          tasks: [
+            {
+              name : "Git Init",
+              md: "This is some markdown."
+            },
+            {
+              name : "Git Pull",
+              md: "This is also some markdown."
+            }
+          ]
         })
      };
      Courses.addLab(this.courses['gpi'], this.labs['gpi/git']);

@@ -13,7 +13,6 @@
 
   /* TASK MODEL */
   export interface Task {
-    id: number;
     name: string;
     md: string;
   }
