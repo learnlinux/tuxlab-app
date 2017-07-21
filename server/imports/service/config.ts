@@ -16,8 +16,7 @@
   const configFiles = [
     "env",
     "labvm",
-    "domain",
-    "login"
+    "domain"
   ]
 
   class TuxConfig extends nconf.Provider {

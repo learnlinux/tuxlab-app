@@ -32,17 +32,11 @@
       isGlobalAdministrator(user_id: string) : boolean;
     }
 
+    var UsersCollection : UsersCollection = (<UsersCollection>Meteor.users);
+
     /* IMPLEMENTATION */
-    export const Users : UsersCollection = (<UsersCollection>Meteor.users);
-
-    // Attach Schema
-    Users.attachSchema(UserSchema);
-
-    // Create Observable
-    Users.observable = new MongoObservable.Collection<User>(Users);
-
     // getPrivilegeFor
-    Users.getPrivilegeFor = function(course_id : string, user_id : string) : Privilege {
+    UsersCollection.getPrivilegeFor = function(course_id : string, user_id : string) : Privilege {
       let user : User = this.findOne(user_id);
       if (typeof user === "undefined"){
         undefined;
@@ -56,7 +50,7 @@
     }
 
     // getRoleFor
-    Users.getRoleFor = function(course_id : string, user_id : string) : Role {
+    UsersCollection.getRoleFor = function(course_id : string, user_id : string) : Role {
       let res = this.getPrivilegeFor(course_id, user_id);
       if (this.isGlobalAdministrator(user_id)){
         return Role.global_admin;
@@ -68,7 +62,7 @@
     }
 
     // getCoursesFor
-    Users.getCoursesFor = function(user_id : string) : ObservableCursor<Course> {
+    UsersCollection.getCoursesFor = function(user_id : string) : ObservableCursor<Course> {
 
       // Get Student Courses
       const courses_student = CourseRecords.find({
@@ -94,7 +88,7 @@
 
 
     // getCourseRecordFor
-    Users.getCourseRecordFor = function(course_id : string, user_id : string) : string {
+    UsersCollection.getCourseRecordFor = function(course_id : string, user_id : string) : string {
       let res = this.getPrivilegeFor(course_id, user_id);
       if (typeof res === "undefined") {
         return undefined;
@@ -104,7 +98,7 @@
     }
 
     // setRoleFor
-    Users.setRoleFor = function(course_id: string, user_id: string, role : Role) : void {
+    UsersCollection.setRoleFor = function(course_id: string, user_id: string, role : Role) : void {
 
       // Check if Course Record Created
       let course_record_id;
@@ -131,7 +125,9 @@
     }
 
     // isGlobalAdministrator
-     Users.isGlobalAdministrator = function(user_id : string) : boolean {
+    UsersCollection.isGlobalAdministrator = function(user_id : string) : boolean {
       let user : User = this.findOne(user_id);
       return (typeof user !== "undefined") && (user.global_admin);
     }
+
+    export const Users = UsersCollection;

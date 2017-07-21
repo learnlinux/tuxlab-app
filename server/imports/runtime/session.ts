@@ -20,8 +20,6 @@ import { InitObject, SetupObject, VerifyObject } from '../api/environment';
 import { Container } from './container';
 import { LabRuntime } from './lab_runtime';
 
-
-
 /*
   SessionObj
   Elements needed to construct SessionObj.
@@ -62,7 +60,7 @@ export class Session extends Cache {
 
   // Containers
   private containers : Container[];
-  public getDefaultContainer(){
+  private getDefaultContainer(){
     return this.containers[0];
   }
 
@@ -162,6 +160,7 @@ export class Session extends Cache {
 
       // Get LabRuntime
       return LabRuntime.getLabRuntime(lab_id)
+      
       .then((lab : LabRuntime) => {
         lab = lab;
       })
@@ -178,9 +177,6 @@ export class Session extends Cache {
         });
       })
 
-      // Initialize Containers
-      .then(() => {
-      })
 
       // Create Session Object
       .then(() => {
@@ -193,6 +189,12 @@ export class Session extends Cache {
         });
       })
 
+      // Initialize Container
+      .then((session) => {
+        return session.initLab()
+        .then(() => session);
+      })
+
       // Create Session Records
       .then((session : Session) => {
         return Promise.all(
@@ -201,21 +203,29 @@ export class Session extends Cache {
            session.etcd_create_dns(),
            session.cache_add(),
            session.mongo_add()
-         ]);
+         ]).then(function(){
+           return session;
+         })
       })
   }
 
 /************************
  *   DESTROY FUNCTION   *
  ************************/
- public destroy(status : SessionStatus) : void {
+ public destroy(status : SessionStatus) : Promise<any> {
    this.status = status;
 
-   Promise.all(
+   // Run Lab Destroy Function
+   this.destroyLab();
+
+   return Promise.all(
      [
       this.cache_del(),
       this.mongo_update_status(status)
-     ]);
+     ])
+    .then(function(){
+      return { status: SessionStatus.destroyed };
+    })
  }
 
 /************************
@@ -245,7 +255,9 @@ export class Session extends Cache {
       let container_obj : ContainerModel[] =
         _.map(this.containers, (container : Container) => {
           return {
-            container_id : container.container_id
+            node_ip : container.node_ip,
+            container_id : container.container_id,
+            container_pass : container.container_pass
           };
         });
 
@@ -448,6 +460,7 @@ export class Session extends Cache {
   /************************
   *    SESSION FUNCTIONS  *
   ************************/
+
   public renew() : void {
 
     // Update Expiration Time

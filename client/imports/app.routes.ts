@@ -44,10 +44,10 @@ export const AppRoutes : Routes = [
   // Courses
   { path: 'explore', component: CourseList },
   { path: 'courses', component: CourseList },
-  { path: 'courses/:id', component: CourseView },
+  { path: 'courses/:course_id', component: CourseView },
 
   // Labs
-  { path: 'labs/:id', component: LabView }
+  { path: 'courses/:course_id/labs/:lab_id', component: LabView }
 
 ]
 

@@ -11,7 +11,9 @@ export enum SessionStatus {
 }
 
 export interface Container {
-  container_id: string
+  node_ip: string,
+  container_id: string,
+  container_pass: string
 }
 
 export interface Session {

@@ -163,5 +163,4 @@
        Labs.remove({ '_id' : value });
      })
    }
-
  }

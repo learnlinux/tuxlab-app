@@ -38,14 +38,14 @@
 
       // Set Editing Permissions
       this.allow({
-        insert: Users.isGlobalAdministrator,
+        insert: function(user_id : string) { return Users.isGlobalAdministrator(user_id) },
         update: function(user_id : string, course : Course, fields : string[]){
           return Users.isGlobalAdministrator(user_id) ||
                  (Users.getRoleFor(course._id, user_id) >=  Role.course_admin &&
                     fields.every(function(field){return allowed.indexOf(field) >= 0})
                  );
         },
-        remove: Users.isGlobalAdministrator,
+        remove: function(user_id) { return Users.isGlobalAdministrator(user_id) },
         fetch: ["_id"]
       });
     }

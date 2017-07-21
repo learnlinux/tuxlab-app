@@ -8,11 +8,11 @@
   import * as _ from 'lodash';
 
   import { DefaultFixtures } from '../../../fixtures';
+  import { Example1 } from '../../../fixtures/example_labs';
 
   import { Lab } from '../../../../both/models/lab.model';
   import { Labs } from '../../../../both/collections/lab.collection';
   import { LabRuntime, LabFileImportOpts } from '../../../../server/imports/runtime/lab_runtime';
-  import { ExampleLabfile } from './lab_runtime.example';
 
   export function LabRuntimeTests(){
     describe('Lab Runtime', function(){
@@ -34,7 +34,7 @@
       it('should import from file', function(){
         let record : LabFileImportOpts = {
           course_id: fixtures.courses.gpi,
-          file: ExampleLabfile
+          file: Example1
         };
 
         return LabRuntime.createLabRuntime(record)

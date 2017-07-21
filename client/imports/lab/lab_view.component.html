@@ -3,14 +3,26 @@
 
   <!-- Markdown Component -->
   <div>
+
+    <!-- Toolbar -->
     <md-toolbar>
-      <button md-icon-button><md-icon>arrow_back</md-icon></button>
+      <button md-raised-button color="primary"><md-icon>library_books</md-icon>&nbsp;Return</button>
+
+      <button md-icon-button (click)="task_index = task_index - 1"><md-icon>arrow_back</md-icon></button>
+
       <span class="center-text">
-        <span class="number">3</span>
-        Task Name
+        <span class="number">{{ task_index }}</span>
+        {{ (lab | async)?.tasks[task_index].name }}
       </span>
-      <button md-icon-button><md-icon>arrow_forward</md-icon></button>
+
+      <button md-icon-button (click)="task_index = task_index + 1" *ngIf="task_index < (session | async)?.current_task; else checkButton"><md-icon>arrow_forward</md-icon></button>
+      <button #checkButton (click)="check" md-icon-button><md-icon>check</md-icon></button>
     </md-toolbar>
+
+    <!-- Content -->
+    <markdown>
+      {{ (lab | async)?.tasks[task_index].md }}
+    </markdown>
 
   </div>
 

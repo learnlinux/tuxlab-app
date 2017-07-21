@@ -1,7 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 
- import { Meteor } from 'meteor/meteor';
-
- import { DefaultFixtures, cleanupDatabase } from '../imports/fixtures'
+import { DefaultFixtures, cleanupDatabase } from '../imports/fixtures'
 
 // Load Fixtures if Development Mode
  if (Meteor.isDevelopment){

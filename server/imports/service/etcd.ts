@@ -4,7 +4,7 @@
  */
 
 import * as fs from 'fs';
-import { Etcd } from 'node-etcd';
+import * as Etcd from 'node-etcd';
 import { Config } from './config';
 
 const etcd_conn_str =

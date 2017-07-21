@@ -1,5 +1,10 @@
 // Meteor Imports
 	import * as _ from "lodash";
+	import { Observable } from 'rxjs/Observable';
+	import 'rxjs/add/operator/map';
+	import 'rxjs/add/operator/mergeMap';
+	import 'rxjs/add/observable/bindNodeCallback';
+
 	import { Meteor } from 'meteor/meteor';
 	import { Tracker } from 'meteor/tracker';
 	import { MeteorComponent } from 'angular2-meteor';
@@ -29,8 +34,10 @@
 
 // Export LabView Class
   export default class LabView extends MeteorComponent {
-		private lab : Lab;
-		private session : Session;
+		private lab : Observable<Lab>;
+		private session : Observable<Session>;
+
+		private task_index : number;
 
     constructor( private router : Router, private route: ActivatedRoute, private ref: ChangeDetectorRef ) {
 			super();
@@ -40,16 +47,31 @@
 		ngOnInit(){
 			var self = this;
 
-      // Get Lab Object
-			self.route.params
-				.map(params => params['id'])
-				.subscribe((id) => {
-					Tracker.autorun(() => {
-						self.lab = Labs.findOne({ _id : id });
-						self.ref.detectChanges();
-					})
+			// Lab
+			this.lab = self.route.params
+				.map(params => params['lab_id'])
+				.map((id) => {
+					var lab = Labs.findOne({ _id : id });
+					if(_.isNull(lab)){
+						throw "Lab Not Found";
+					} else {
+						return lab;
+					}
 				});
+
+			// Session
+			this.session = this.lab.mergeMap((lab) => {
+				return Observable.bindNodeCallback<Session>(Meteor.call)('session.getOrCreate',Meteor.userId(),lab._id);
+			});
+
+			// Set Task Index
+			this.session.subscribe((session) => {
+				this.task_index = session.current_task;
+			});
     }
 
+		check(){
+
+		}
 
   }

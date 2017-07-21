@@ -43,7 +43,7 @@
 			var self = this;
 
 			self.route.params
-				.map(params => params['id'])
+				.map(params => params['course_id'])
 				.subscribe((id) => {
 					Tracker.autorun(() => {
 						self.course = Courses.findOne({ _id : id });
