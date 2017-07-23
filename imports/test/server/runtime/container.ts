@@ -12,32 +12,33 @@ import { Container } from '../../../../server/imports/runtime/container';
 
 export function ContainerTests() {
 
-  describe('Container', function(){
-    let container;
-    const vmconfig : VMConfig = 'alpine';
+  describe('Containers', () => {
 
-    it('can be created from config', function(){
-      container = new Container(vmconfig);
-      return container.ready();
+    var containers_test = [
+      {
+        name : "Alpine LabVM",
+        config : "alpine"
+      }
+    ];
+
+    _.each(containers_test, ({name, config}) => {
+        var container;
+
+        it(name + " | should create container", () => {
+          container = new Container(config);
+          return container.ready();
+        });
+
+        it(name + " | should echo back shell input", () => {
+          container.shell("echo test").then(([stdout, stderr]) =>{
+            expect(stdout).to.be.equal("test");
+            expect(stderr).to.be.equal("");
+          });
+        })
+
+        it(name + " | should delete container", () => {
+          return container.destroy();
+        })
     });
-
-
-    it('can execute shell commands', function(){
-      return container.shell("echo 'test';").then(([stdout, stderr]) =>{
-        expect(stdout).to.be.equal("test");
-        expect(stderr).to.be.equal("");
-      });
-    });
-
-    it('can be obtained from container_id', function(){
-       let container2 = new Container(vmconfig, container.id);
-       return container2.ready().then(() => {
-         return container2.shell("echo 'test';").then(([stdout, stderr]) =>{
-           expect(stdout).to.be.equal("test");
-           expect(stderr).to.be.equal("");
-         });
-       });
-    })
-
   })
 }

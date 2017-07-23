@@ -23,7 +23,7 @@ aldeed:collection2-core
 aldeed:schema-index
 
 ## TESTING
-dispatch:mocha-phantomjs
+meteortesting:mocha
 dynamic-import
 
 ## ACCOUNTS

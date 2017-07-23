@@ -9,7 +9,7 @@
   export interface VMConfigCustom {
     // IMAGE DETAILS
     image: string; // Image Name from DockerHub
-    cmd : string; // Entry Command. Defaults to entry.sh
+    cmd : string[]; // Entry Command. Defaults to entry.sh
 
     ssh_port: number; // SSH Port
 
@@ -22,7 +22,7 @@
   /* CONFIGURATION DEFAULTS */
   const alpine : VMConfigCustom = {
     image: "tuxlab/labvm-alpine",
-    cmd: "./entry.sh",
+    cmd: ["./entry.sh"],
     ssh_port: 22,
     username: "root",
     password_path: "/pass"
@@ -31,7 +31,7 @@
   /* tuxlab/labvm-rhel7 */
   const rhel7 : VMConfigCustom = {
     image: "tuxlab/labvm-rhel7",
-    cmd: "./entry.sh",
+    cmd: ["./entry.sh"],
     ssh_port: 22,
     username: "root",
     password_path: "/pass"

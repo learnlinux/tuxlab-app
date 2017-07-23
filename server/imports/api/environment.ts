@@ -41,7 +41,7 @@
    }
 
    // Convenience Methods for Accessing the Default VM
-   shell(command : string) : Promise<[String,String]> {
+   shell(command : string[]) : Promise<[String,String]> {
      return this.getDefaultVM().shell(command);
    }
 

@@ -160,7 +160,7 @@ export class Session extends Cache {
 
       // Get LabRuntime
       return LabRuntime.getLabRuntime(lab_id)
-      
+
       .then((lab : LabRuntime) => {
         lab = lab;
       })
@@ -255,7 +255,7 @@ export class Session extends Cache {
       let container_obj : ContainerModel[] =
         _.map(this.containers, (container : Container) => {
           return {
-            node_ip : container.node_ip,
+            container_ip : container.container_ip,
             container_id : container.container_id,
             container_pass : container.container_pass
           };
@@ -359,7 +359,7 @@ export class Session extends Cache {
   private etcd_create_dns () : Promise<{}> {
     return new Promise((resolve, reject) => {
       let record = {
-        host: this.getDefaultContainer().node_ip
+        host: this.getDefaultContainer().container_ip
       };
 
       etcd.set(Session.etcd_getKeyDNS(this), record, {

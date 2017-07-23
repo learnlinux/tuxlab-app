@@ -25,13 +25,11 @@ export function SessionTests(){
       fixtures.destructor();
     });
 
-    it('should create sessions', function(done){
+
+    it('Create', function(){
       Session.getSession(user, lab)
       .then(function(res){
          session = res;
-
-
-         done();
       });
     });
 

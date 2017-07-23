@@ -9,7 +9,7 @@ import SimpleSchema from 'simpl-schema';
 import { SessionStatus } from '../models/session.model';
 
 const ContainerSchema = new SimpleSchema({
-  node_ip : {
+  container_ip : {
     type : String
   },
   conntainer_id : {
