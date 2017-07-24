@@ -38,6 +38,13 @@ export function SessionTests(){
       return session.nextTask();
     });
 
+    it('Example 1 | Get Session from Cache', () => {
+      return Session.getSession(user,lab)
+      .then((res) => {
+        session = res;
+      });
+    });
+
     it('Example 1 | Should fail on task 1', () => {
       return session.nextTask()
         .then(() => {

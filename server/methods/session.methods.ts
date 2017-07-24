@@ -8,29 +8,59 @@ import { SessionStatus } from '../../both/models/session.model';
 
 Meteor.methods({
 
-  'session.getOrCreate'(user_id, lab_id){
-      return Session.getSession(user_id, lab_id);
+  'session.getOrCreate'(lab_id){
+      const user_id = Meteor.userId();
+
+      if(user_id){
+        return Session.getSession(user_id, lab_id)
+        .then((session) => {
+          return session.getJSON();
+        })
+      } else {
+        throw new Meteor.Error("Authorization Required");
+      }
   },
 
-  'session.renew'(user_id, lab_id){
-    return Session.getSession(user_id, lab_id)
-    .then((session) => {
-      return session.renew();
-    });
+  'session.renew'(lab_id){
+    const user_id = Meteor.userId();
+
+    if(user_id){
+      return Session.getSession(user_id, lab_id)
+      .then((session) => {
+        return session.renew();
+      });
+    } else {
+      throw new Meteor.Error("Authorization Required");
+    }
   },
 
-  'session.nextTask'(user_id, lab_id){
-    return Session.getSession(user_id, lab_id)
-    .then((session) => {
-      return session.nextTask();
-    });
+  'session.nextTask'(lab_id){
+    const user_id = Meteor.userId();
+
+    if(user_id){
+      return Session.getSession(user_id, lab_id)
+      .then((session) => {
+        return session.nextTask();
+      })
+      .then((session) => {
+        return session.getJSON();
+      })
+    } else {
+      throw new Meteor.Error("Authorization Required");
+    }
   },
 
-  'session.destroy'(user_id, lab_id){
-    return Session.getSession(user_id, lab_id)
-    .then((session) => {
-      return session.destroy(SessionStatus.destroyed);
-    });
+  'session.destroy'(lab_id){
+    const user_id = Meteor.userId();
+
+    if(user_id){
+      return Session.getSession(user_id, lab_id)
+      .then((session) => {
+        return session.destroy(SessionStatus.destroyed);
+      });
+    } else {
+      throw new Meteor.Error("Authorization Required");
+    }
   }
 
 })

@@ -1,10 +1,15 @@
-import 'zone.js';
-import 'reflect-metadata';
-
 // Angular Component
-import { Component, ViewEncapsulation, ViewChild, Renderer2  } from "@angular/core";
+import { Component, ViewEncapsulation, ViewChild, Renderer2, NgZone  } from "@angular/core";
 import { MdSidenav, MdButton } from "@angular/material";
 import { ActivatedRoute } from '@angular/router';
+
+// Meteor
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
+
+// User Model
+import { User } from '../../both/models/user.model';
+import AccountService from './account/account.service';
 
 // Template
 import template from "./app.component.html";
@@ -20,9 +25,14 @@ import style from "./app.component.scss";
 export class AppComponent {
   @ViewChild("sidenav") sidenav: MdSidenav;
   private renderer : Renderer2;
+  private user : Meteor.User;
 
-  constructor(private render: Renderer2){
+  constructor(private accountService : AccountService, private render: Renderer2, zone : NgZone){
     this.renderer = render;
+
+    Tracker.autorun(() => {
+      zone.run(() => this.user = Meteor.user());
+    });
   }
 
   ngAfterViewInit(){

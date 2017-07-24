@@ -2,6 +2,7 @@
 	import * as _ from "lodash";
 	import { Observable } from 'rxjs/Observable';
 	import 'rxjs/add/operator/map';
+	import 'rxjs/add/operator/distinct';
 	import 'rxjs/add/operator/mergeMap';
 	import 'rxjs/add/observable/bindNodeCallback';
 
@@ -45,11 +46,11 @@
     }
 
 		ngOnInit(){
-			var self = this;
 
 			// Lab
-			this.lab = self.route.params
+			this.lab = this.route.params
 				.map(params => params['lab_id'])
+				.distinct()
 				.map((id) => {
 					var lab = Labs.findOne({ _id : id });
 					if(_.isNull(lab)){
@@ -61,7 +62,9 @@
 
 			// Session
 			this.session = this.lab.mergeMap((lab) => {
-				return Observable.bindNodeCallback<Session>(Meteor.call)('session.getOrCreate',Meteor.userId(),lab._id);
+				if(lab && lab._id){
+					return Observable.bindNodeCallback<Session>(Meteor.call)('session.getOrCreate',lab._id);
+				}
 			});
 
 			// Set Task Index

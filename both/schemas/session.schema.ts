@@ -22,7 +22,9 @@ const ContainerSchema = new SimpleSchema({
 
 export const SessionSchema : SimpleSchema = new SimpleSchema({
   session_id: {
-    type: String
+    type: String,
+    index: true,
+    unique: true
   },
   user_id: {
     type: String

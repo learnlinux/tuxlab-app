@@ -11,7 +11,7 @@
 
       <!-- Profile Region -->
       <div class="profile">
-        <div class="inner" *ngIf="false">
+        <div *ngIf="user" class="inner">
           <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Dr._Subra_Suresh%2C_Ninth_President_of_Carnegie_Mellon_University%2C_July_2013.jpg" />
           <div class="username">Subra Suresh</div>
           <div class="org">Carnegie Mellon</div>
@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <div class="inner">
+        <div *ngIf="!user" class="inner">
           <md-icon class="login_icon">account_circle</md-icon>
           <div class="org">Carnegie Mellon</div>
           <div class="buttons">

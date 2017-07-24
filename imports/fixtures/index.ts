@@ -59,17 +59,19 @@
      // Users
      this.users = {
        "global_admin": Users.insert({
-                         profile: {
-                              name : "Derek Brown",
-                              organization : "Carnegie Mellon University",
-                              email : "derek@example.org",
-                              picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
+                            username: "global_admin",
+                            profile: {
+                                  name : "Derek Brown",
+                                  organization : "Carnegie Mellon University",
+                                  email : "derek@example.org",
+                                  picture : "https://c2.staticflickr.com/4/3025/2414332460_bb710ed7b3.jpg"
                             },
                             global_admin: true,
                             roles: []
                          }),
 
        "course_admin":  Users.insert({
+                          username: "course_admin",
                           profile: {
                             name : "Aaron Mortenson",
                             organization : "Carnegie Mellon University",
@@ -81,6 +83,7 @@
                         }),
 
         "instructor": Users.insert({
+                          username: "instructor",
                           profile: {
                             name : "Sander Shi",
                             organization : "Carnegie Mellon University",
@@ -92,6 +95,7 @@
                         }),
 
          "student":  Users.insert({
+                        username: "student",
                         profile: {
                           name : "Cem Ersoz",
                           organization : "Carnegie Mellon University",
@@ -102,6 +106,11 @@
                         roles: []
                      })
      };
+     Accounts.setPassword(this.users["global_admin"], "global_admin");
+     Accounts.setPassword(this.users["course_admin"], "course_admin");
+     Accounts.setPassword(this.users["instructor"], "instructor");
+     Accounts.setPassword(this.users["student"], "student");
+
 
      // Courses
      this.courses = ({

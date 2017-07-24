@@ -1,5 +1,5 @@
 <!-- Lab Component -->
-<div class="tuxlab-lab-view" fxLayout fxLayoutAlign="center flex-start">
+<div class="tuxlab-lab-view" fxLayout fxLayoutAlign="center flex-start" *ngIf="(lab | async) && (session | async); else loading">
 
   <!-- Markdown Component -->
   <div>
@@ -15,8 +15,11 @@
         {{ (lab | async)?.tasks[task_index].name }}
       </span>
 
-      <button md-icon-button (click)="task_index = task_index + 1" *ngIf="task_index < (session | async)?.current_task; else checkButton"><md-icon>arrow_forward</md-icon></button>
-      <button #checkButton (click)="check" md-icon-button><md-icon>check</md-icon></button>
+      <span *ngIf="task_index < (session | async)?.current_task; let forward; else check">
+        <button *ngIf="forward" md-icon-button (click)="task_index = task_index + 1" ><md-icon>arrow_forward</md-icon></button>
+        <button *ngIf="check" md-icon-button (click)="check"><md-icon>check</md-icon></button>
+      </span>
+
     </md-toolbar>
 
     <!-- Content -->
@@ -39,7 +42,9 @@
 </div>
 
 <!-- Loading Spinner -->
-<div class="loading" fxLayout fxLayoutAlign="center center">
-  <md-progress-spinner color="primary" mode="indeterminate">
-  </md-progress-spinner>
-</div>
+<ng-template #loading>
+  <div class="loading" fxLayout="column" fxLayoutAlign="center center">
+    <div><h2> {{ (lab | async)?.name }} </h2></div>
+    <md-progress-spinner color="primary" mode="indeterminate"></md-progress-spinner>
+  </div>
+</ng-template>

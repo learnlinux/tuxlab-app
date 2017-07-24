@@ -104,6 +104,18 @@
         })
     }
 
+    /*
+      getJSON()
+      Gets this object as a JSON Object, safe for returning to the end user.
+     */
+     public getJSON() : ContainerModel {
+       return {
+         container_ip : this.container_ip,
+         container_id : this.container_id,
+         container_pass: this.container_pass
+       }
+     }
+
     public ready() : Promise<Container> {
       return this._ready;
     }

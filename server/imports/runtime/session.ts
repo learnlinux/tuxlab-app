@@ -28,6 +28,7 @@ import { LabRuntime } from './lab_runtime';
   Elements needed to construct SessionObj.
 */
 interface SessionObj{
+  _id? : string,
   session_id : string,
   user_id : string,
   lab_id : string,
@@ -43,6 +44,7 @@ export class Session extends Cache {
   protected static _TTL = Config.get('session_idle_timeout');
 
   // Session
+  public _id : string;
   public session_id : string;
   public expires : Date;
   public status : SessionStatus = SessionStatus.active;
@@ -84,6 +86,25 @@ export class Session extends Cache {
   }
 
   /*
+    getJSON()
+    Gets this object as a JSON Object, safe for returning to the end user.
+   */
+   public getJSON() : SessionModel {
+     return {
+       _id : this._id,
+       session_id : this.session_id,
+       user_id : this.user_id,
+       lab_id: this.lab_id,
+       status: this.status,
+       expires: this.expires,
+       current_task : this.current_task,
+       containers : _.map(this.containers, function(c : Container){
+         return c.getJSON();
+       })
+     }
+   }
+
+  /*
     getSession
     Retrieves the session from the cache or mongodb if found.  If lab_id
     is supplied, it will try to create the session if it doesn't exist.
@@ -97,12 +118,12 @@ export class Session extends Cache {
            log.debug("Session | Retrieved from Cache");
            return val;
          } else {
+           log.debug("Session | Retrieved from MongoDB");
            return Session.getSession_mongo(session_id, user_id); // Look in MongoDB
          }
        })
      .then((val) => {
        if (typeof val === "object" && val instanceof Session) {
-         log.debug("Session | Retrieved from MongoDB");
          return val;
        } else {
          log.debug("Session | Creating New");
@@ -147,6 +168,7 @@ export class Session extends Cache {
           });
 
           return new Session({
+            _id : res._id,
             session_id : session_id,
             user_id : user_id,
             lab_id : res.lab_id,
@@ -303,11 +325,12 @@ export class Session extends Cache {
         containers : container_obj
       }
 
-      Sessions.insert(record,(err) => {
+      Sessions.insert(record,(err, res) => {
         if (err){
           log.debug("Session | Error creating session record", err);
           reject(err);
         } else {
+          this._id = res;
           resolve();
         }
       })
@@ -528,7 +551,7 @@ export class Session extends Cache {
     });
   }
 
-  public nextTask() : Promise<{}> {
+  public nextTask() : Promise<Session> {
     return new Promise((resolve, reject) => {
 
       /* FUNCTIONS PASSED INTO VERIFIER */
@@ -550,12 +573,12 @@ export class Session extends Cache {
       }
 
       let retry = () => {
-        resolve();
+        resolve(this);
       }
 
       let fail = () => {
         self.destroy(SessionStatus.failed);
-        resolve();
+        resolve(this);
       }
 
       return this.lab.exec_verify(this.current_task, this.getVerifyObject(reject, completed, fail, retry));
