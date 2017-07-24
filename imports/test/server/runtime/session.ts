@@ -9,32 +9,43 @@ import { Session } from '../../../../server/imports/runtime/session';
 
 export function SessionTests(){
 
-  describe('Session', function(){
-    let fixtures : DefaultFixtures;
-    let user : string;
-    let lab : string;
-    let session : Session;
+  describe('Session', () => {
+    var fixtures : DefaultFixtures;
+    var user : string;
+    var lab : string;
+    var session : Session;
 
-    before(function(){
+    before(() => {
       fixtures = new DefaultFixtures();
       user = fixtures.users["course_admin"];
       lab = fixtures.labs["gpi/git"];
     });
 
-    after(function(){
+    after(() => {
       fixtures.destructor();
     });
 
+    it('Example1 | Create Session',function(){
+      this.timeout(5000);
 
-    it('Create', function(){
-      Session.getSession(user, lab)
-      .then(function(res){
+      return Session.getSession(user, lab)
+      .then((res) => {
          session = res;
       });
     });
 
-    it('should complete task 1', function(){
+    it('Example 1 | Should complete task 0', () => {
       return session.nextTask();
+    });
+
+    it('Example 1 | Should fail on task 1', () => {
+      return session.nextTask()
+        .then(() => {
+          throw "Shouldn't Succeed."
+        })
+        .catch(() => {
+          return null;
+        });
     })
 
   });

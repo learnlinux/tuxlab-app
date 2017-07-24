@@ -22,7 +22,7 @@ export interface Session {
   user_id : string,
   lab_id: string,
   status: SessionStatus,
-  expires: number,
+  expires: Date,
   current_task : number,
   containers : Container[]
 }

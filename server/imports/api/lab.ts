@@ -29,8 +29,8 @@
       public name : string;
       public description? : string;
       public _vm : VMConfig[];
-      _init : InitFunction = (env) => { env.success(); }
-      _destroy : InitFunction = (env) => { env.success(); }
+      _init : InitFunction = (env) => { env.next(); }
+      _destroy : InitFunction = (env) => { env.next(); }
       _tasks : Task[] = [];
 
       constructor (opts : LabConstr){

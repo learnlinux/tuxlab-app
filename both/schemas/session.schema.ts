@@ -12,7 +12,7 @@ const ContainerSchema = new SimpleSchema({
   container_ip : {
     type : String
   },
-  conntainer_id : {
+  container_id : {
     type : String
   },
   container_pass : {

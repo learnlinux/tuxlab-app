@@ -11,9 +11,6 @@
 
  abstract class Environment implements VM {
 
-   // Error Handling interface
-   error : (err : string) => void; // Prints Error on Screen
-
    // Lab Data Interface
    setLabData : (data : any) => void;
    getLabData : () => void;
@@ -55,13 +52,13 @@
  export class InitObject extends Environment {
 
    // Setup Progress Interface
-    success : () => void; // Continuation Function: Task Ready
-    failure : () => void; // Continuation Function: Failed to Setup task.
+    next : () => void; // Continuation Function: Task Ready
+    error : (error? : Error) => void; // Continuation Function: Failed to Setup task.
 
     // Constructor from Object
     constructor(obj){
       super(obj);
-      _.extend(this, _.pick(obj, ['succcess', 'failure']));
+      _.extend(this, _.pick(obj, ['next', 'error']));
     }
  }
 
@@ -86,22 +83,23 @@
  export class SetupObject extends TaskObject {
 
    // Setup Progress Interface
-   success : () => void; // Continuation Function: Task Ready
-   failure : () => void; // Continuation Function: Failed to Setup task.
+   next : () => void; // Continuation Function: Task Ready
+   error : (error? : Error) => void; // Continuation Function: Failed to Setup task.
 
    // Constructor from Object
    constructor(obj){
      super(obj);
-     _.extend(this, _.pick(obj, ['succcess', 'failure']));
+     _.extend(this, _.pick(obj, ['next', 'error']));
    }
  }
 
  export class VerifyObject extends TaskObject {
 
    // Lab Progress Interface
-   completed : () => void; // Continuation Function: Goes to next Task
-   failed : () => void; // Continuation Function: Marks lab a failure and exits.
+   next : () => void; // Continuation Function: Goes to next Task
+   fail : () => void; // Continuation Function: Marks lab a failure and exits.
    retry : () => void; // Continuation Function: Prompts user to retry;
+   error: (error? : Error) => void; // Continuation Function: Marks Lab as having Erred.
 
    // Lab Grade Interface
    setGrade : (n : number, d : number) => void; // n : numerator, d: denom
@@ -109,6 +107,6 @@
    // Constructor from Object
    constructor(obj){
      super(obj);
-     _.extend(this, _.pick(obj, ['completed', 'failed', 'retry', 'setGrade']));
+     _.extend(this, _.pick(obj, ['next', 'fail', 'retry', 'error', 'setGrade']));
    }
  }

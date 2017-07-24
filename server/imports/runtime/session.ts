@@ -5,9 +5,12 @@
 */
 
 /* IMPORTS */
+import * as _ from "lodash";
+
 import { Config } from '../service/config';
 import { Cache } from '../service/cache';
 import { etcd } from '../service/etcd';
+import { log } from '../service/log';
 
 import { Users } from '../../../both/collections/user.collection';
 import { Task } from '../../../both/models/lab.model';
@@ -41,10 +44,10 @@ export class Session extends Cache {
 
   // Session
   public session_id : string;
-  public expires : number;
+  public expires : Date;
   public status : SessionStatus = SessionStatus.active;
   private static constructSessionID(user_id : string, lab_id : string){
-    return user_id + '/' + lab_id;
+    return user_id + '-' + lab_id;
   }
 
   // Lab
@@ -76,7 +79,8 @@ export class Session extends Cache {
     _.extend(this, obj);
 
     // Set Expiration
-    this.expires = Date.now() + Config.get('session_idle_timeout');
+    this.expires = new Date();
+    this.expires.setSeconds(this.expires.getSeconds() + Config.get('session_idle_timeout'));
   }
 
   /*
@@ -90,6 +94,7 @@ export class Session extends Cache {
     return Session.getSession_cache(session_id)// Look in Session Cache
       .then((val) => {
          if (typeof val === "object" && val instanceof Session) {
+           log.debug("Session | Retrieved from Cache");
            return val;
          } else {
            return Session.getSession_mongo(session_id, user_id); // Look in MongoDB
@@ -97,10 +102,10 @@ export class Session extends Cache {
        })
      .then((val) => {
        if (typeof val === "object" && val instanceof Session) {
+         log.debug("Session | Retrieved from MongoDB");
          return val;
-       } else if (typeof lab_id === "undefined") {
-         return undefined;
        } else {
+         log.debug("Session | Creating New");
          return Session.getSession_create(session_id,user_id,lab_id); // Create New
        }
      })
@@ -120,15 +125,14 @@ export class Session extends Cache {
 
   private static getSession_mongo(session_id : string, user_id : string) : Promise <Session>{
     return new Promise((resolve, reject) => {
+
       let res = Sessions.findOne({ 'session_id' : session_id, 'status' : SessionStatus.active });
 
-      if (!res){
-        resolve(undefined);
+      if (!(res instanceof Session)){
+        return resolve(null);
       } else {
-        // OBJECTS
-        let lab : LabRuntime;
-
         // Get LabRuntime
+        let lab : LabRuntime;
         LabRuntime.getLabRuntime(res.lab_id)
 
         // Get VMConfig
@@ -136,6 +140,7 @@ export class Session extends Cache {
           lab = lab;
           return lab.getVMConfig();
         })
+
         .then((config : VMConfigCustom[]) => {
           let containers = _.map(config, (vm : VMConfigCustom, i : number) => {
               return new Container(vm, res.containers[i].container_id);
@@ -154,15 +159,16 @@ export class Session extends Cache {
   }
 
   private static getSession_create(session_id : string, user_id : string, lab_id : string) : Promise <Session>{
-      //OBJECTS
-      let lab : LabRuntime;
-      let containers : Container[];
+      var lab : LabRuntime;
+      var session : Session;
+      var containers : Container[];
+
 
       // Get LabRuntime
       return LabRuntime.getLabRuntime(lab_id)
 
-      .then((lab : LabRuntime) => {
-        lab = lab;
+      .then((res : LabRuntime) => {
+        lab = res;
       })
 
       // Get VMConfig from Runtime
@@ -177,10 +183,16 @@ export class Session extends Cache {
         });
       })
 
+      // Wait for Containers to come Online
+      .then(() => {
+        return Promise.all(_.map(containers, (container => {
+          return container.ready();
+        })));
+      })
 
       // Create Session Object
       .then(() => {
-        return new Session({
+        session = new Session({
           session_id : session_id,
           user_id : user_id,
           lab_id : lab_id,
@@ -190,22 +202,24 @@ export class Session extends Cache {
       })
 
       // Initialize Container
-      .then((session) => {
-        return session.initLab()
-        .then(() => session);
+      .then(() => {
+        return session.initLab();
       })
 
       // Create Session Records
-      .then((session : Session) => {
+      .then(() => {
         return Promise.all(
           [
            session.etcd_create_proxy(),
            session.etcd_create_dns(),
            session.cache_add(),
            session.mongo_add()
-         ]).then(function(){
-           return session;
-         })
+         ]);
+      })
+
+      // Return Session
+      .then(() => {
+        return session;
       })
   }
 
@@ -233,19 +247,37 @@ export class Session extends Cache {
  ************************/
   private cache_add() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.set(this.session_id, this);
+      return Session._cache.set(this.session_id, this, (err, res) => {
+        if(err){
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
     });
   }
 
   private cache_del() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.del(this.session_id);
+      return Session._cache.del(this.session_id, (err, res) => {
+        if(err){
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
     });
   }
 
   private cache_renew() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.ttl(this.session_id, Session._TTL);
+      return Session._cache.ttl(this.session_id, Session._TTL, (err, res) => {
+        if(err){
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
     });
   }
 
@@ -273,6 +305,7 @@ export class Session extends Cache {
 
       Sessions.insert(record,(err) => {
         if (err){
+          log.debug("Session | Error creating session record", err);
           reject(err);
         } else {
           resolve();
@@ -323,24 +356,28 @@ export class Session extends Cache {
  *     ETCD RECORDS     *
  ************************/
   private static etcd_getKeyProxy(session : Session) : string{
-    return '/redrouter/SSH::'+session.getUserObj()._id;
+    return '/redrouter/SSH::'+session.session_id;
   }
 
   private static etcd_getKeyDNS(session : Session) : string {
     return '/skydns/' + Config.get('ssh_dns_root')
                                .split('.')
                                .reverse()
-                               .push(session.session_id)
+                               .concat([
+                                 session.user_id,
+                                 session.lab_id
+                               ])
                                .join('/');
   }
 
 
   private etcd_create_proxy() : Promise<{}> {
+
     return new Promise((resolve, reject) => {
       let record = {
-        docker_container: this.getDefaultContainer().container_id,
         port: this.getDefaultContainer().config.ssh_port,
         username: this.session_id,
+        docker_container: this.getDefaultContainer().container_id,
         allowed_auth: ["password"]
       };
 
@@ -408,9 +445,8 @@ export class Session extends Cache {
   private getEnvironmentObject(){
     return {
       vm: _.map(this.containers, (container) => {
-        container.getVMInterface();
+        return container.getVMInterface();
       }),
-      error: () => {},
       setLabData: () => {},
       getLabData: () => {},
       getUserProfile: () => {},
@@ -427,33 +463,32 @@ export class Session extends Cache {
     };
   }
 
-  private getInitObject(success, failure) : InitObject{
+  private getInitObject(next, error) : InitObject{
     return new InitObject(_.extend(this.getEnvironmentObject(),
     {
-      success: success,
-      failure: failure
+      next: next,
+      error: error
     }));
   }
 
-  private getSetupObject(success, failure) : SetupObject{
+  private getSetupObject(next, error) : SetupObject{
     return new SetupObject(_.extend(this.getEnvironmentObject(),
                                     this.getTaskObject(),
     {
-      success: success,
-      failure: failure
+      next: next,
+      error: error
     }));
   }
 
-  private getVerifyObject(completed, failed, retry) : VerifyObject {
+  private getVerifyObject(error, next, fail, retry) : VerifyObject {
     return new VerifyObject(_.extend(this.getEnvironmentObject(),
                                      this.getTaskObject(),
       {
-      setGrade: (n : number, d : number) => {
-
-      },
-      completed: completed,
-      failed: failed,
-      retry: retry
+        setGrade: (n : number, d : number) => {},
+        error: error,
+        next: next,
+        fail: fail,
+        retry: retry
     }));
   }
 
@@ -464,7 +499,8 @@ export class Session extends Cache {
   public renew() : void {
 
     // Update Expiration Time
-    this.expires = Date.now() + Config.get('session_idle_timeout');
+    this.expires = new Date();
+    this.expires.setSeconds(this.expires.getSeconds() + Config.get('session_idle_timeout'));
 
     // Renew in Object Cache
     this.cache_renew();
@@ -479,7 +515,11 @@ export class Session extends Cache {
   private initLab() : Promise<{}> {
     return new Promise((resolve, reject) => {
       this.lab.exec_init(this.getInitObject(resolve, reject));
-    });
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        this.lab.exec_setup(this.current_task, this.getSetupObject(resolve, reject));
+      })
+    })
   }
 
   private destroyLab() : Promise<{}> {
@@ -492,35 +532,33 @@ export class Session extends Cache {
     return new Promise((resolve, reject) => {
 
       /* FUNCTIONS PASSED INTO VERIFIER */
-      let completed = function(){
+      var self = this;
+      let next_task_fn = this.getSetupObject(resolve, reject);
 
+      let completed = () => {
         // Check if Lab Completed
-        if (this.lab.tasks.length >= this.current_task + 1){
-
+        if (self.lab.tasks.length <= self.current_task + 1){
           // Complete Lab
           this.destroy(SessionStatus.completed);
           resolve();
-
         } else {
-
           // Proceed to Next Task
-          this.current_task++;
-          this.mongo_update_task();
-
-          this.lab.exec_setup(this.current_task, this.getSetupObject(resolve, reject));
+          self.current_task++;
+          self.mongo_update_task();
+          self.lab.exec_setup(self.current_task, next_task_fn);
         }
       }
 
-      let retry = function(){
+      let retry = () => {
         resolve();
       }
 
-      let failed = function(){
-        this.destroy(SessionStatus.failed);
+      let fail = () => {
+        self.destroy(SessionStatus.failed);
         resolve();
       }
 
-      return this.lab.exec_verify(this.current_task, this.getVerifyObject(completed, failed, retry));
+      return this.lab.exec_verify(this.current_task, this.getVerifyObject(reject, completed, fail, retry));
     });
   }
 }

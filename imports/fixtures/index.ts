@@ -4,6 +4,7 @@
  **/
 
  // Imports
+ import * as _ from "lodash";
  import { Meteor } from 'meteor/meteor';
 
  // Collections Objects
@@ -19,6 +20,8 @@
 
  import { User, Role } from '../../both/models/user.model';
  import { Users } from '../../both/collections/user.collection';
+
+ import { Example1 } from "./example_labs";
 
  /*
   * cleanupDatabase
@@ -130,7 +133,7 @@
           course_id: this.courses.gpi,
           updated: Date.now(),
           status: LabStatus.closed,
-          file: "Lab = new TuxLab({name : 'GitHub Lab',description: 'Teaches users how to clone a repository.', vm: 'alpine'});",
+          file: Example1,
           tasks: [
             {
               name : "Git Init",

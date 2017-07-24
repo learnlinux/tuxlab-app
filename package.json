@@ -25,9 +25,15 @@
     "@angular/platform-browser": "^4.3.1",
     "@angular/platform-browser-dynamic": "^4.3.1",
     "@angular/router": "^4.3.1",
+    "@types/chai": "^4.0.1",
     "@types/dockerode": "^2.4.3",
     "@types/lodash": "^4.14.68",
     "@types/meteor": "^1.4.2",
+    "@types/nconf": "0.0.34",
+    "@types/node": "^8.0.15",
+    "@types/node-cache": "^4.1.0",
+    "@types/uglify-js": "^2.6.29",
+    "@types/winston": "^2.3.3",
     "@types/xterm": "^2.0.3",
     "angular2-markdown": "^1.6.0",
     "angular2-meteor": "0.7.1",
@@ -46,6 +52,7 @@
     "rxjs": "^5.4.2",
     "simpl-schema": "^0.1.1",
     "uglify-js": "^2.7.5",
+    "winston": "^2.3.1",
     "xterm": "^2.8.1",
     "zone.js": "0.8.4"
   }

@@ -5,6 +5,7 @@
 
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
+
 import * as _ from 'lodash';
 
 import { VMConfig } from '../../../../server/imports/api/vmconfig';

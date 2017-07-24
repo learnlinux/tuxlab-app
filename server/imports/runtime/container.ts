@@ -12,6 +12,7 @@
  import { VM } from '../api/vm';
  import { VMConfig, VMConfigCustom, VMResolveConfig } from '../api/vmconfig';
 
+ import { log } from "../service/log";
  import { Config } from '../service/config';
 
 /*
@@ -92,7 +93,7 @@
 
         // Get Password
         }).then(() => {
-          self.getPass()
+          return self.getPass()
           .then(function(pass){
             self.container_pass = pass;
           });
@@ -132,18 +133,14 @@
         AttachStderr: true,
         Cmd: command
       }
+
       const start_options = {
         hijack: true,
-        stdin: true
+        stdin: false
       }
 
-      // Wait for Container to be Ready
-      return this.ready()
-
       // Create Exec Object
-      .then(() : Promise<Dockerode.Exec> => {
-        return this._container.exec(exec_options)
-      })
+      return this._container.exec(exec_options)
 
       // Start Exec Object
       .then((exec : Dockerode.Exec) : Promise<any> => {
@@ -219,6 +216,7 @@
 
     public getPass() : Promise<string> {
       return this.shell(["cat",this.config.password_path]).then(([stdout, stderr]) => {
+
         if (stderr === ""){
           return stdout;
         } else {

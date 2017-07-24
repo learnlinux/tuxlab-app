@@ -17,7 +17,7 @@ export const Example1 = `
 
   // Setup function run before all other tasks
   Lab.init(function(env){
-    env.success();
+    env.next();
   });
 
   /* @Task 1
@@ -25,10 +25,10 @@ export const Example1 = `
   */
   Lab.nextTask({
     setup: function(env){
-      env.success();
+      env.next();
     },
-    verifier: function(env){
-      env.completed();
+    verify: function(env){
+      env.next();
     }
   });
 
@@ -37,15 +37,15 @@ export const Example1 = `
   */
   Lab.nextTask({
     setup: function(env){
-      env.failure();
+      env.next();
     },
-    verifier: function(env){
-      env.failed();
+    verify: function(env){
+      env.fail();
     }
   })
 
   // Destroy function for performing any final tasks
   Lab.destroy(function(env){
-    env.success();
+    env.next();
   });
 `;

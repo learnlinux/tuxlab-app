@@ -1,15 +1,9 @@
 {
   "name": "TuxLab",
-  "dependencies": {
-    "chai": "registry:npm/chai#3.5.0+20160723033700",
-    "nconf": "registry:dt/nconf#0.0.0+20161212190028",
-    "node-cache": "registry:dt/node-cache#3.0.0+20160816205622",
-    "uglify-js": "registry:dt/uglify-js#2.6.1+20160510010627"
-  },
+  "dependencies": {},
   "globalDependencies": {
     "collection2": "https://raw.githubusercontent.com/learnlinux/meteor-typings/master/aldeed%3Acollection2-core.d.ts",
-    "mocha": "registry:dt/mocha#2.2.5+20161221010438",
-    "node": "registry:env/node#6.0.0+20170102175725",
+    "mocha": "registry:dt/mocha",
     "node-etcd": "https://raw.githubusercontent.com/learnlinux/meteor-typings/master/node-etcd.d.ts",
     "static-files": "https://raw.githubusercontent.com/learnlinux/meteor-typings/master/static-files.d.ts"
   }
