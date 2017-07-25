@@ -9,5 +9,5 @@ import { AppModule } from "./imports/";
 enableProdMode();
 
 Meteor.startup(() => {
-   platformBrowserDynamic().bootstrapModule(AppModule);
+    platformBrowserDynamic().bootstrapModule(AppModule);
 });

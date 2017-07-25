@@ -9,14 +9,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   <!-- ICONS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   <!-- FAVICON -->
   <link rel='shortcut icon' type='image/x-icon' href='assets/favicon/favicon.ico' />
 
+  <!-- LOADING STYLE -->
+  <style>
+    #loading{
+      height: 100vh;
+      width: 100%;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #loading div.logo{
+      width: 150px;
+      height: 150px;
+
+      background-image: url('assets/logo/v1.head.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+
+    #loading div.load-text{
+      width: 12em;
+      padding: 10px;
+      margin-left: 20px;
+
+      background-color: #000;
+      color: #fff;
+      font-family: "Courier","Lucida Console", serif;
+      font-size:30px;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    #loading div.load-text div.l{
+      width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+
+      margin-left: 5px;
+
+      animation: type 2s steps(11, end) infinite;
+      -webkit-animation: type 2s steps(11, end) infinite;
+    }
+
+    @keyframes type{
+      from { width: 0; }
+    }
+
+  </style>
 </head>
 
 <body>
-  <tuxlab></tuxlab>
+  <tuxlab>
+    <div id="loading">
+      <div class="logo"></div>
+      <div class="load-text">
+        <div><b>$</b></div>
+        <div class="l">Loading...</div>
+      </div>
+    </div>
+  </tuxlab>
 </body>
