@@ -5,15 +5,14 @@
 
 import * as fs from 'fs';
 import * as Etcd from 'node-etcd';
-import { Config } from './config';
 
 const etcd_conn_str =
-  Config.get('etcd_node_proto')+"://"+
-  Config.get('etcd_node_ip')+":"+
-  Config.get('etcd_node_port')
+  Meteor.settings['env']['etcd_node_proto']+"://"+
+  Meteor.settings['env']['etcd_node_ip']+":"+
+  Meteor.settings['env']['etcd_node_port']
 
 export const etcd = new Etcd(etcd_conn_str, {
-  ca: fs.readFileSync(Config.get('ssl_ca')),
-  cert: fs.readFileSync(Config.get('ssl_cert')),
-  key: fs.readFileSync(Config.get('ssl_key'))
+  ca: fs.readFileSync(Meteor.settings['domain']['ssl_ca']),
+  cert: fs.readFileSync(Meteor.settings['domain']['ssl_cert']),
+  key: fs.readFileSync(Meteor.settings['domain']['ssl_key'])
 });

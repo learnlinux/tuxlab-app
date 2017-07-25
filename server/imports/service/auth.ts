@@ -1,4 +1,0 @@
-
-/*
- *  Shibboleth Authentication Provider
- */
