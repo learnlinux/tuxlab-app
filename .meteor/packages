@@ -28,7 +28,8 @@ dynamic-import
 
 ## ACCOUNTS
 accounts-password
-steffo:meteor-accounts-saml
+accounts-google
 
 ## DEBUG
 autopublish
+service-configuration

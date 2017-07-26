@@ -41,7 +41,7 @@
      <!-- 3rd Party Logins -->
      <h2> Organization Login <h2>
      <div fxLayout fxLayoutAlign="center">
-       <button md-raised-button><md-icon>account_balance</md-icon>Carnegie Mellon</button>
+       <button md-raised-button *ngIf="google" (click)="LoginWithGoogle()"><md-icon>account_balance</md-icon>Google Login</button>
      </div>
 
   </div>

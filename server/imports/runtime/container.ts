@@ -29,11 +29,11 @@
     // Dockerode Instance
     private static docker = new Dockerode({
       protocol: 'https',
-      host: Meteor.settings['env']['swarm_node_ip'].toString(),
-      port: Meteor.settings['env']['swarm_node_port'].toString(),
-      ca: fs.readFileSync(Meteor.settings['domain']['ssl_ca']).toString(),
-      cert: fs.readFileSync(Meteor.settings['domain']['ssl_cert']).toString(),
-      key: fs.readFileSync(Meteor.settings['domain']['ssl_key']).toString()
+      host: Meteor.settings['private']['env']['swarm_node_ip'].toString(),
+      port: Meteor.settings['private']['env']['swarm_node_port'].toString(),
+      ca: fs.readFileSync(Meteor.settings['private']['domain']['ssl_ca']).toString(),
+      cert: fs.readFileSync(Meteor.settings['private']['domain']['ssl_cert']).toString(),
+      key: fs.readFileSync(Meteor.settings['private']['domain']['ssl_key']).toString()
     });
 
     // Container Objects

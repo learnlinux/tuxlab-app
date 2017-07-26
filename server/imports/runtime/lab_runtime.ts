@@ -42,7 +42,7 @@
 
  export class LabRuntime extends Cache implements LabModel {
     // LabCache Elements
-    protected static _TTL : number = Meteor.settings['labvm']['labruntime_idle_timeout'];
+    protected static _TTL : number = Meteor.settings['private']['labvm']['labruntime_idle_timeout'];
 
     // Lab Model Elements
     _id? : string;
@@ -65,7 +65,7 @@
       return {
         filename : this._id + '.js',
         displayErrors: true,
-        timeout: Meteor.settings['labvm']['labruntime_init_timeout']
+        timeout: Meteor.settings['private']['labvm']['labruntime_init_timeout']
       }
     };
 
@@ -73,7 +73,7 @@
       return {
         filename : id + '.js',
         displayErrors: true,
-        timeout: Meteor.settings['labvm']['labruntime_init_timeout']
+        timeout: Meteor.settings['private']['labvm']['labruntime_init_timeout']
       }
     }
 

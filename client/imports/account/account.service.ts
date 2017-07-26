@@ -19,6 +19,20 @@ export default class AccountService {
     });
   }
 
+  loginWithGoogle() : Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      Meteor.loginWithGoogle({
+        requestPermissions: ['profile', 'email']
+      }, (error) => {
+        if(error){
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
   logout(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Meteor.logout((e: Error) => {

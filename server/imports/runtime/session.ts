@@ -40,7 +40,7 @@ interface SessionObj{
 */
 export class Session extends Cache {
   // Cache
-  protected static _TTL = Meteor.settings['labvm']['session_idle_timeout'];
+  protected static _TTL = Meteor.settings['private']['labvm']['session_idle_timeout'];
 
   // Session
   public _id : string;
@@ -81,7 +81,7 @@ export class Session extends Cache {
 
     // Set Expiration
     this.expires = new Date();
-    this.expires.setSeconds(this.expires.getSeconds() + Meteor.settings['labvm']['session_idle_timeout']);
+    this.expires.setSeconds(this.expires.getSeconds() + Meteor.settings['private']['labvm']['session_idle_timeout']);
   }
 
   /*
@@ -382,7 +382,7 @@ export class Session extends Cache {
   }
 
   private static etcd_getKeyDNS(session : Session) : string {
-    return '/skydns/' + Meteor.settings['domain']['ssh_dns_root']
+    return '/skydns/' + Meteor.settings['private']['domain']['ssh_dns_root']
                                .split('.')
                                .reverse()
                                .concat([
@@ -522,7 +522,7 @@ export class Session extends Cache {
 
     // Update Expiration Time
     this.expires = new Date();
-    this.expires.setSeconds(this.expires.getSeconds() + Meteor.settings['labvm']['session_idle_timeout']);
+    this.expires.setSeconds(this.expires.getSeconds() + Meteor.settings['private']['labvm']['session_idle_timeout']);
 
     // Renew in Object Cache
     this.cache_renew();
