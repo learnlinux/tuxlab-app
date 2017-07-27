@@ -6,7 +6,7 @@
   "scripts": {
     "start": "meteor run",
     "postinstall": "$(meteor npm bin)/typings install;",
-    "test": "TEST_CLIENT=0 meteor test --once --driver-package=meteortesting:mocha"
+    "test": "TEST_CLIENT=0 meteor test --settings ./private/settings.json --once --driver-package=meteortesting:mocha"
   },
   "devDependencies": {
     "chai": "^4.0.2",

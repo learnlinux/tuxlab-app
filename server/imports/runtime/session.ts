@@ -117,12 +117,12 @@ export class Session extends Cache {
            log.debug("Session | Retrieved from Cache");
            return val;
          } else {
-           log.debug("Session | Retrieved from MongoDB");
-           return Session.getSession_mongo(session_id, user_id); // Look in MongoDB
+           return Session.getSession_mongo(session_id); // Look in MongoDB
          }
        })
      .then((val) => {
        if (typeof val === "object" && val instanceof Session) {
+         log.debug("Session | Retrieved from MongoDB");
          return val;
        } else {
          log.debug("Session | Creating New");
@@ -143,39 +143,68 @@ export class Session extends Cache {
     });
   }
 
-  private static getSession_mongo(session_id : string, user_id : string) : Promise <Session>{
-    return new Promise((resolve, reject) => {
+  private static getSession_mongo(session_id : string) : Promise <Session>{
 
-      let res = Sessions.findOne({ 'session_id' : session_id, 'status' : SessionStatus.active });
+    return Sessions.rawCollection().findAndModify(
+        {
+          'session_id' : session_id,
+          'status' : { $in : [SessionStatus.creating, SessionStatus.active] }
+        },
+        {},
+        {
+          $setOnInsert: {
+            'session_id' : session_id,
+            'status' : SessionStatus.creating
+          }
+        },
+        {
+          new: false,
+          upsert: true
+      })
 
-      if (!(res instanceof Session)){
-        return resolve(null);
-      } else {
-        // Get LabRuntime
-        let lab : LabRuntime;
-        LabRuntime.getLabRuntime(res.lab_id)
+    .then((res) => {
+      return new Promise((resolve, reject) => {
 
-        // Get VMConfig
-        .then((lab : LabRuntime) => {
-          lab = lab;
-          return lab.getVMConfig();
-        })
 
-        .then((config : VMConfigCustom[]) => {
-          let containers = _.map(config, (vm : VMConfigCustom, i : number) => {
-              return new Container(vm, res.containers[i].container_id);
+        if (res.ok != 1) {
+          return reject(new Error(res.err));
+
+        } else if (!res.lastErrorObject.updatedExisting){
+          return resolve(null);
+
+        } else if (res.value.status) {
+          return reject(new Error("Session in invalid state."));
+
+        } else {
+
+          var session_record : SessionModel = res.value;
+
+          // Get LabRuntime
+          let lab : LabRuntime;
+          LabRuntime.getLabRuntime(session_record.lab_id)
+
+          // Get VMConfig
+          .then((lab : LabRuntime) => {
+            lab = lab;
+            return lab.getVMConfig();
+          })
+
+          .then((config : VMConfigCustom[]) => {
+            let containers = _.map(config, (vm : VMConfigCustom, i : number) => {
+                return new Container(vm, session_record.containers[i].container_id);
+            });
+
+            return new Session({
+              _id : session_record._id,
+              session_id : session_id,
+              user_id : session_record.user_id,
+              lab_id : session_record.lab_id,
+              lab : lab,
+              containers : containers
+            });
           });
-
-          return new Session({
-            _id : res._id,
-            session_id : session_id,
-            user_id : user_id,
-            lab_id : res.lab_id,
-            lab : lab,
-            containers : containers
-          });
-        });
-      }
+        }
+      });
     });
   }
 
@@ -231,10 +260,10 @@ export class Session extends Cache {
       .then(() => {
         return Promise.all(
           [
+           session.mongo_add(),
            session.etcd_create_proxy(),
            session.etcd_create_dns(),
-           session.cache_add(),
-           session.mongo_add()
+           session.cache_add()
          ]);
       })
 
@@ -324,7 +353,13 @@ export class Session extends Cache {
         containers : container_obj
       }
 
-      Sessions.insert(record,(err, res) => {
+      Sessions.update({
+        session_id : this.session_id,
+        status: SessionStatus.creating
+      },
+      {
+        '$set' : record
+      },(err, res) => {
         if (err){
           log.debug("Session | Error creating session record", err);
           reject(err);
@@ -339,11 +374,7 @@ export class Session extends Cache {
   private mongo_update_task() : Promise<{}>{
     return new Promise((resolve, reject) => {
       Sessions.update(
-        { 'session_id' : this.session_id,
-          'user_id' : this.user_id,
-          'lab_id' : this.lab_id,
-          'status' : SessionStatus.active
-        }, {
+        { '_id' : this._id }, {
           $set : { 'current_task' : this.current_task }
         }, (err) => {
           if (err) {
@@ -358,11 +389,7 @@ export class Session extends Cache {
   private mongo_update_status(status : SessionStatus) : Promise<{}>{
     return new Promise((resolve, reject) => {
       Sessions.update(
-        { 'session_id' : this.session_id,
-          'user_id' : this.user_id,
-          'lab_id' : this.lab_id,
-          'status' : SessionStatus.active
-        }, {
+        { '_id' : this._id }, {
           $set : { 'status' : status, 'expires' : this.expires}
         }, (err) => {
           if (err) {

@@ -3,10 +3,11 @@
 **/
 
 export enum SessionStatus {
-  active = 0, // Currently Active Session
-  completed = 1, // Session was destroyed by tuxlab-app, success
-  failed = 2, // Session was destroyed by tuxlab-app, failed
-  destroyed = 3 // Session was destroyed by tuxlab-daemon
+  creating = 0, // Lock while Session is being Created
+  active = 1, // Currently Active Session
+  completed = 2, // Session was destroyed by tuxlab-app, success
+  failed = 3, // Session was destroyed by tuxlab-app, failed
+  destroyed = 4 // Session was destroyed by tuxlab-daemon
   // NOTE: THIS IS HARD-CODED INTO SESSION-DAEMON.
 }
 
