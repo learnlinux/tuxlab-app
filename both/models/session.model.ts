@@ -19,11 +19,14 @@ export interface Container {
 
 export interface Session {
   _id? : string,
+
   session_id: string,
   user_id : string,
   lab_id: string,
+
   status: SessionStatus,
   expires: Date,
   current_task : number,
+  
   containers : Container[]
 }

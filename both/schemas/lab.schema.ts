@@ -5,7 +5,9 @@
 // Simple Schema
 import SimpleSchema from 'simpl-schema';
 
+import { LabStatus } from '../models/lab.model';
 import { Courses } from '../collections/course.collection';
+
 
 /**********************/
 /*    TASK SCHEMA     */
@@ -46,13 +48,9 @@ const taskSchema = new SimpleSchema({
         return Date.now();
       }
     },
-    hidden:{
-      type: Boolean,
-      defaultValue: true
-    },
-    disabled:{
-      type: Boolean,
-      defaultValue: false
+    status : {
+      type: Number,
+      allowedValues: LabStatus
     },
     file: {
       type: String

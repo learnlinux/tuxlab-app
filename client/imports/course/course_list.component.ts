@@ -1,8 +1,11 @@
 // Meteor Imports
 	import * as _ from "lodash";
 	import { Meteor } from 'meteor/meteor';
-	import { ObservableCursor } from "meteor-rxjs";
 	import { MeteorComponent } from 'angular2-meteor';
+	import { ObservableCursor } from "meteor-rxjs";
+	import { Observable } from 'rxjs/Observable';
+	import 'rxjs/add/operator/mergeMap';
+	import 'rxjs/add/operator/distinct';
 
 // Angular Imports
   import { Router } from "@angular/router";
@@ -18,7 +21,6 @@
 	import { Users } from '../../../both/collections/user.collection';
 
 // Export Data Interface
-
   @Component({
     selector: 'tuxlab-course-list',
     template,
@@ -37,14 +39,20 @@
 			if(this.router.url === "/courses"){
 				if(Meteor.userId() === null){
 					this.router.navigate(['/login']);
+
 				} else {
+
 					this.title = "My Courses";
 					this.courses = Users.getCoursesFor(Meteor.userId());
+					Meteor.subscribe('courses.user');
+
 				}
 
 			} else if (this.router.url === "/explore"){
+
 				this.title = "Explore";
-				this.courses = Courses.observable.find({});
+				this.courses = Courses.observable.find();
+				Meteor.subscribe('courses.explore', 0);
 
 			} else {
 

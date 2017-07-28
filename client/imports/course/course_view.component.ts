@@ -3,11 +3,13 @@
 	import { Meteor } from 'meteor/meteor';
 	import { Tracker } from 'meteor/tracker';
 	import { MeteorComponent } from 'angular2-meteor';
+	import { Observable } from 'rxjs/Observable';
+	import 'rxjs/add/operator/mergeMap';
+	import 'rxjs/add/operator/distinct';
 
 // Angular Imports
 	import { Component, Input, ChangeDetectorRef } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
-	import { ObservableCursor } from 'meteor-rxjs';
 
 // Define Course List Component
   import template from "./course_view.component.html";
@@ -20,6 +22,7 @@
 
 	import { CourseRecords } from '../../../both/collections/course_record.collection';
 	import { Courses } from '../../../both/collections/course.collection';
+	import { Labs } from '../../../both/collections/lab.collection';
 
 // Export Data Interface
 
@@ -31,28 +34,58 @@
 
 // Export Dashboard Class
   export default class CourseView extends MeteorComponent {
-		private course : Course;
-		private course_record : CourseRecord;
-		private labs : ObservableCursor<Lab>;
+		private course : Observable<Course>;
+		private course_record : Observable<CourseRecord>;
+		private labs : Observable<Lab[]>;
 
     constructor( private router : Router, private route: ActivatedRoute, private ref: ChangeDetectorRef ) {
 			super();
     }
 
 		ngOnInit(){
-			var self = this;
 
-			self.route.params
+			this.course = this.route.params
 				.map(params => params['course_id'])
-				.subscribe((id) => {
-					Tracker.autorun(() => {
-						self.course = Courses.findOne({ _id : id });
-						self.course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : id });
-						self.labs = Courses.getLabs(id);
-						self.ref.detectChanges();
-					})
+				.distinct()
+				.mergeMap((course_id) => {
+					return Observable.bindCallback<Course>((cb) => {
+						Meteor.subscribe('courses.id', course_id, () => {
+							var course = Courses.findOne({ _id : course_id });
+							if(_.isNull(course)){
+								console.error("Course Not Found");
+							} else {
+								cb(course);
+							}
+						});
+					})();
+				});
+
+			this.course_record = this.course
+				.mergeMap((course) => {
+					return Observable.bindCallback<CourseRecord>((cb) => {
+						Meteor.subscribe('course_records.id', course._id, Meteor.userId(), () => {
+							var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
+							if(_.isNull(course_record)){
+								console.error("Course Record Not Found");
+							} else {
+								cb(course_record);
+							}
+						});
+					})();
+				});
+
+			this.labs = this.course
+				.mergeMap((course) => {
+					return Observable.bindCallback<Lab[]>((cb) => {
+						Meteor.subscribe('labs.course', course._id, () => {
+							var labs = Labs.find({ course_id : course._id });
+							if(_.isNull(labs)){
+								console.error("Course Record Not Found");
+							} else {
+								cb(labs.fetch());
+							}
+						});
+					})();
 				});
     }
-
-
   }

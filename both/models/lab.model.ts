@@ -17,7 +17,6 @@
     md: string;
   }
 
-
   /* LAB MODEL */
   export interface Lab {
     _id?: string;

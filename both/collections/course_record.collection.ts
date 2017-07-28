@@ -7,6 +7,7 @@
   import { CourseRecordSchema } from '../schemas/course_record.schema';
   import { CourseRecord } from '../models/course_record.model';
   import { Users } from '../collections/user.collection';
+  import { Role } from '../models/user.model';
 
 /**
   CREATE COURSERECORD COLLECTION
@@ -26,7 +27,7 @@
       // Set Editing Permissions
       this.allow({
         insert: function(user_id, course) {
-          return Users.getRoleFor(user_id, course._id) >= 1;
+          return Users.getRoleFor(user_id, course._id) >= Role.instructor;
         },
         update: function(user_id, course, fields) {
           return Users.isGlobalAdministrator(user_id);

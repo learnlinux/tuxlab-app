@@ -33,19 +33,25 @@
     }
 
     var UsersCollection : UsersCollection = (<UsersCollection>Meteor.users);
+        UsersCollection.observable = new MongoObservable.Collection(UsersCollection);
 
     /* IMPLEMENTATION */
     // getPrivilegeFor
-    UsersCollection.getPrivilegeFor = function(course_id : string, user_id : string) : Privilege {
+    UsersCollection.getPrivilegeFor = function(course_id : string, user_id : string) : Privilege | null {
       let user : User = this.findOne(user_id);
+
       if (typeof user === "undefined"){
-        undefined;
+        return null;
       } else {
         let role = _.find(user.roles, function(priv){
           return priv.course_id == course_id;
         });
 
-        return role;
+        if(_.isUndefined(role)){
+          return null;
+        } else {
+          return role;
+        }
       }
     }
 
@@ -60,6 +66,7 @@
         return res.role;
       }
     }
+
 
     // getCoursesFor
     UsersCollection.getCoursesFor = function(user_id : string) : ObservableCursor<Course> {

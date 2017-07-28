@@ -18,8 +18,8 @@
   }
 
   export enum ContentPermissions {
-    Any,
-    Auth,
+    Any, // Anyone in the Domain
+    Auth, // Members of the Course
     None
   }
 

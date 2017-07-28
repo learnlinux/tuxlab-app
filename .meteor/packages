@@ -29,7 +29,4 @@ dynamic-import
 ## ACCOUNTS
 accounts-password
 accounts-google
-
-## DEBUG
-autopublish
 service-configuration

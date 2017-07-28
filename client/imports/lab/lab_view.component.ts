@@ -50,18 +50,16 @@
 
 				// Lab
 				this.lab = this.route.params
-					.map(params => params['lab_id'])
+					.map(params => [params['course_id'], params['lab_id']])
 					.distinct()
-					.mergeMap((id) => {
+					.mergeMap(([course_id, lab_id]) => {
 						return Observable.bindCallback<Lab>((cb) => {
-							Meteor.subscribe('labs', { _id: id }, {
-								onReady: () => {
-									var lab = Labs.findOne({ _id : id });
-									if(_.isNull(lab)){
-										console.error("Lab Not Found");
-									} else {
-										cb(lab);
-									}
+							Meteor.subscribe('labs.course',course_id, () => {
+								var lab = Labs.findOne({ _id : lab_id });
+								if(_.isNull(lab)){
+									console.error("Lab Not Found");
+								} else {
+									cb(lab);
 								}
 							});
 						})();
