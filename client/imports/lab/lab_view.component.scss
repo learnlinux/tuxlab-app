@@ -26,6 +26,12 @@
       flex: 1 1 auto;
     }
 
+    button.disabled{
+      md-icon{
+        color: #555;
+      }
+    }
+
     span.center-text{
       color: #333;
       font-weight: 400;

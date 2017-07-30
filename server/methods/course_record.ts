@@ -11,8 +11,6 @@ function courseRecordsId(course_id, user_id){
     throw new Meteor.Error("Not Authorized");
   }
 
-  let course_record : Course = Courses.findOne({ _id : course_id, user_id });
-
   switch(Users.getRoleFor(course_id, Meteor.userId())){
     case Role.instructor:
     case Role.course_admin:

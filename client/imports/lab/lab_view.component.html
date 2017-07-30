@@ -1,23 +1,21 @@
 <!-- Lab Component -->
-<div class="tuxlab-lab-view" fxLayout fxLayoutAlign="center flex-start" *ngIf="(lab | async) && (session | async); else loading">
+<div class="tuxlab-lab-view" fxLayout fxLayoutAlign="center flex-start" *ngIf="(session | async); else loading">
 
   <!-- Markdown Component -->
   <div>
 
     <!-- Toolbar -->
     <md-toolbar>
-      <button md-raised-button color="primary"><md-icon>library_books</md-icon>&nbsp;Return</button>
-
-      <button md-icon-button (click)="task_index = task_index - 1"><md-icon>arrow_back</md-icon></button>
+      <button md-icon-button (click)="task_index = (task_index > 0) ? task_index - 1 : task_index"><md-icon>arrow_back</md-icon></button>
 
       <span class="center-text">
-        <span class="number">{{ task_index }}</span>
-        {{ (lab | async)?.tasks[task_index].name }}
+        <span class="number">{{ task_index + 1 }}</span>
+        {{ (lab | async)?.tasks[task_index]?.name }}
       </span>
 
-      <span *ngIf="task_index < (session | async)?.current_task; let forward; else check">
-        <button *ngIf="forward" md-icon-button (click)="task_index = task_index + 1" ><md-icon>arrow_forward</md-icon></button>
-        <button *ngIf="check" md-icon-button (click)="check"><md-icon>check</md-icon></button>
+      <span>
+        <button *ngIf="task_index < (session | async)?.current_task" md-icon-button (click)="task_index = task_index + 1" ><md-icon>arrow_forward</md-icon></button>
+        <button *ngIf="task_index >= (session | async)?.current_task" md-icon-button (click)="check"><md-icon>check</md-icon></button>
       </span>
 
     </md-toolbar>
@@ -33,7 +31,7 @@
   <div>
     <md-toolbar>
       <span class="spacer"></span>
-      <button md-icon-button><md-icon>dns</md-icon></button>
+      <button md-icon-button (click)="openConnectionDetails()"><md-icon>dns</md-icon></button>
       <button md-icon-button><md-icon>refresh</md-icon></button>
     </md-toolbar>
 

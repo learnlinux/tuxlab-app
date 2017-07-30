@@ -10,7 +10,7 @@
   const explore_limit = 20;
   function coursesExplore(skip){
     return Courses.find({
-      "permssions.meta" : true,
+      "permissions.meta" : true,
       "permissions.content" : ContentPermissions.Any
     }, {
       skip : skip,
@@ -25,24 +25,24 @@
   Meteor.publish('courses.user', coursesUser);
 
   function coursesId(course_id){
-    if(!Meteor.userId()){
-      throw new Meteor.Error("Not Authorized");
-    }
-
-    let course : Course = Courses.findOne({ _id : course_id });
 
     switch(Users.getRoleFor(course_id, Meteor.userId())){
       case Role.guest:
-        if(course.permissions.content === ContentPermissions.Auth)
-          throw new Meteor.Error("Unauthorized");
+        return Courses.find({
+          "_id" : course_id,
+          "permissions.content" : ContentPermissions.Any
+        });
       case Role.student:
-        if(course.permissions.content === ContentPermissions.None)
-          throw new Meteor.Error("Unauthorized");
+        return Courses.find({
+          "_id" : course_id,
+          "permissions.content" : { "$ne" : ContentPermissions.None }
+        });
+
       case Role.instructor:
       case Role.course_admin:
       case Role.global_admin:
-        break;
+        return Courses.find({ _id : course_id });
     }
-    return Courses.find({ _id : course_id });
+
   }
   Meteor.publish('courses.id', coursesId);

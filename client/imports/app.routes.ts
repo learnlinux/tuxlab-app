@@ -7,7 +7,7 @@ import { FormsModule }          from '@angular/forms';
 
 // Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule, MdButtonModule, MdListModule, MdInputModule, MdGridListModule } from '@angular/material';
+import { MaterialModule, MdButtonModule, MdListModule, MdInputModule, MdGridListModule, MdDialogModule } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 // Imports
@@ -25,7 +25,7 @@ import CourseList from './course/course_list.component';
 import CourseView from './course/course_view.component';
 
 // Lab
-import LabView from './lab/lab_view.component';
+import { LabView, ConnectionDetailsDialog } from './lab/lab_view.component';
 import LabTerminal from './lab/lab_terminal.component';
 
 // Static
@@ -62,7 +62,8 @@ export const AppRoutes : Routes = [
     CourseList,
     CourseView,
     LabView,
-    LabTerminal
+    LabTerminal,
+    ConnectionDetailsDialog
   ],
   imports: [
     RouterModule.forRoot(
@@ -80,6 +81,7 @@ export const AppRoutes : Routes = [
     MdButtonModule,
     MdInputModule,
     MdGridListModule,
+    MdDialogModule,
     MarkdownModule.forRoot(),
   ],
   exports: [
@@ -88,6 +90,9 @@ export const AppRoutes : Routes = [
   providers: [
     AccountService,
     AuthGuard
+  ],
+  entryComponents: [
+    ConnectionDetailsDialog
   ]
 })
 export class AppRoutingModule { }

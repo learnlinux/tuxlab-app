@@ -4,8 +4,7 @@
 	import 'rxjs/add/operator/map';
 	import 'rxjs/add/operator/distinct';
 	import 'rxjs/add/operator/mergeMap';
-	import 'rxjs/add/observable/bindNodeCallback';
-	import 'rxjs/add/observable/bindCallback';
+	import 'rxjs/add/observable/fromPromise';
 
 	import { Meteor } from 'meteor/meteor';
 	import { Tracker } from 'meteor/tracker';
@@ -14,10 +13,12 @@
 // Angular Imports
 	import { Component, Input } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
+	import { MdDialog } from '@angular/material';
 	import { ObservableCursor } from 'meteor-rxjs';
 
 // Define Lab View Component
-  import template from "./lab_view.component.html";
+	import template from "./lab_view.component.html";
+	import template_dialog from "./lab_view_connection_dialog.html";
   import style from "./lab_view.component.scss";
 	import prism_style from "prismjs/themes/prism.css";
 
@@ -27,21 +28,33 @@
 	import { Session } from '../../../both/models/session.model';
 	import { Sessions } from '../../../both/collections/session.collection';
 
-// Export Data Interface
-  @Component({
-    selector: 'tuxlab-lab-view',
-    template,
-    styles: [ style ]
-  })
 
-// Export LabView Class
-  export default class LabView extends MeteorComponent {
+//  ConnectionDialog Class
+	@Component({
+		selector: 'tuxlab-lab-connection-details',
+		template: template_dialog,
+		styles: [ style ]
+	})
+	export class ConnectionDetailsDialog extends MeteorComponent {
+		public session : Observable<Session>;
+	}
+
+//  LabView Class
+	@Component({
+		selector: 'tuxlab-lab-view',
+		template,
+		styles: [ style ]
+	})
+
+  export class LabView extends MeteorComponent {
 		private lab : Observable<Lab>;
-		private session : Observable<{} | Session>;
+		private session : Observable<Session>;
 
 		private task_index : number;
 
-    constructor( private router : Router, private route: ActivatedRoute) {
+    constructor( private router : Router,
+								 private route: ActivatedRoute,
+							 	 private dialog : MdDialog) {
 			super();
 			prism_style;
     }
@@ -53,16 +66,19 @@
 					.map(params => [params['course_id'], params['lab_id']])
 					.distinct()
 					.mergeMap(([course_id, lab_id]) => {
-						return Observable.bindCallback<Lab>((cb) => {
-							Meteor.subscribe('labs.course',course_id, () => {
-								var lab = Labs.findOne({ _id : lab_id });
-								if(_.isNull(lab)){
-									console.error("Lab Not Found");
-								} else {
-									cb(lab);
-								}
-							});
-						})();
+
+						return Observable.fromPromise(
+							new Promise((resolve, reject) => {
+								Meteor.subscribe('labs.course',course_id, () => {
+									var lab = Labs.findOne({ _id : lab_id });
+									if(_.isNull(lab)){
+										console.error("Lab Not Found");
+									} else {
+										resolve(lab);
+									}
+								});
+							})
+						);
 					});
 
 				// Session
@@ -71,21 +87,23 @@
 				.distinct(x => x._id)
 				.mergeMap((lab) => {
 					if(lab && lab._id){
-						return Observable.bindNodeCallback<Session>(Meteor.call)('session.getOrCreate',lab._id)
-										.catch((e) => {
-											console.error(e);
-											return Observable.empty();
-										});
-					}
-				});
-
-				// Set Task Index
-				this.session.subscribe((session) => {
-					if("current_task" in session){
-						this.task_index = (<Session>session).current_task;
+						return Observable.fromPromise(
+							new Promise((resolve, reject) => {
+								Meteor.call('session.getOrCreate',lab._id, (err, res) => {
+									if(err){
+										reject(err);
+									} else {
+										this.task_index = res.current_task;
+										resolve(res);
+									}
+								});
+						}));
 					}
 				});
     }
 
-
+		private openConnectionDetails(){
+			var dialogRef = this.dialog.open(ConnectionDetailsDialog);
+					dialogRef.componentInstance.session = this.session;
+		}
   }

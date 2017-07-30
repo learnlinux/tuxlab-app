@@ -6,6 +6,7 @@
 	import { Observable } from 'rxjs/Observable';
 	import 'rxjs/add/operator/mergeMap';
 	import 'rxjs/add/operator/distinct';
+	import 'rxjs/add/observable/fromPromise';
 
 // Angular Imports
 	import { Component, Input, ChangeDetectorRef } from '@angular/core';
@@ -48,44 +49,51 @@
 				.map(params => params['course_id'])
 				.distinct()
 				.mergeMap((course_id) => {
-					return Observable.bindCallback<Course>((cb) => {
-						Meteor.subscribe('courses.id', course_id, () => {
-							var course = Courses.findOne({ _id : course_id });
-							if(_.isNull(course)){
-								console.error("Course Not Found");
-							} else {
-								cb(course);
-							}
-						});
-					})();
+					return Observable.fromPromise(
+						new Promise((resolve, reject) => {
+							Meteor.subscribe('courses.id', course_id, () => {
+								var course = Courses.findOne({ _id : course_id });
+								if(_.isNull(course)){
+									reject("Course Not Found");
+								} else {
+									resolve(course);
+								}
+							});
+						})
+					)
 				});
 
 			this.course_record = this.course
 				.mergeMap((course) => {
-					return Observable.bindCallback<CourseRecord>((cb) => {
-						Meteor.subscribe('course_records.id', course._id, Meteor.userId(), () => {
-							var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
-							if(_.isNull(course_record)){
-								console.error("Course Record Not Found");
-							} else {
-								cb(course_record);
-							}
-						});
-					})();
+					return Observable.fromPromise(
+						new Promise((resolve, reject) => {
+							Meteor.subscribe('course_records.id', course._id, Meteor.userId(), () => {
+								var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
+								if(_.isNull(course_record)){
+									reject("Course Record Not Found");
+								} else {
+									resolve(course_record);
+								}
+							});
+						})
+					);
 				});
 
 			this.labs = this.course
 				.mergeMap((course) => {
-					return Observable.bindCallback<Lab[]>((cb) => {
-						Meteor.subscribe('labs.course', course._id, () => {
-							var labs = Labs.find({ course_id : course._id });
-							if(_.isNull(labs)){
-								console.error("Course Record Not Found");
-							} else {
-								cb(labs.fetch());
-							}
-						});
-					})();
+					return Observable.fromPromise(
+						new Promise((resolve, reject) => {
+							Meteor.subscribe('labs.course', course._id, () => {
+								var labs = Labs.find({ course_id : course._id });
+								if(_.isNull(labs)){
+									reject("Course Record Not Found");
+								} else {
+									resolve(labs.fetch());
+								}
+							});
+						})
+					);
 				});
+
     }
   }

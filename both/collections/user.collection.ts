@@ -40,27 +40,22 @@
     UsersCollection.getPrivilegeFor = function(course_id : string, user_id : string) : Privilege | null {
       let user : User = this.findOne(user_id);
 
-      if (typeof user === "undefined"){
-        return null;
-      } else {
-        let role = _.find(user.roles, function(priv){
-          return priv.course_id == course_id;
+      if(typeof user !== "undefined" && _.has(user, "roles")){
+        return _.find(user.roles, function(rec){
+          return rec.course_id == course_id;
         });
-
-        if(_.isUndefined(role)){
-          return null;
-        } else {
-          return role;
-        }
+      } else {
+        return null;
       }
     }
 
     // getRoleFor
     UsersCollection.getRoleFor = function(course_id : string, user_id : string) : Role {
       let res = this.getPrivilegeFor(course_id, user_id);
+
       if (this.isGlobalAdministrator(user_id)){
         return Role.global_admin;
-      } else if (typeof res === "undefined") {
+      } else if (_.isUndefined(res) || _.isNull(res)) {
         return Role.guest;
       } else {
         return res.role;

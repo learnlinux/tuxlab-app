@@ -29,6 +29,9 @@
 		private error : boolean;
 		private errorText : string;
 
+		private redirect_url : string;
+		private google : boolean = false;
+
     constructor(private accountService : AccountService,
 							  private router: Router,
 							  private route: ActivatedRoute,
@@ -37,14 +40,7 @@
 			super();
     }
 
-		private redirect_url : string;
-		private google : boolean = false;
-
 		ngOnInit(){
-			// Get Redirect URL
-			this.route.data
-				.map(data => data["redirect_url"] || '/dashboard')
-				.subscribe(redirect_url => this.redirect_url = redirect_url);
 
 			// Wait for Settings
 			Meteor.startup(() => {
@@ -53,6 +49,12 @@
 				})
 			});
 
+			// Set Redirect URL
+			this.route.queryParamMap
+				.map(params => params.get('redirect_url') || '')
+				.subscribe((url) => {
+					this.redirect_url = url;
+				})
 		}
 
 		private login({username, password}){
@@ -63,6 +65,7 @@
 
 			// Redirect
 			.then(() =>{
+				console.log(this.redirect_url);
 				this.router.navigateByUrl(this.redirect_url);
 			})
 

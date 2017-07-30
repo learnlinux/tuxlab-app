@@ -114,7 +114,6 @@ export class Session extends Cache {
     return Session.getSession_cache(session_id)// Look in Session Cache
       .then((val) => {
          if (typeof val === "object" && val instanceof Session) {
-           log.debug("Session | Retrieved from Cache");
            return val;
          } else {
            return Session.getSession_mongo(session_id); // Look in MongoDB
@@ -122,7 +121,7 @@ export class Session extends Cache {
        })
      .then((val) => {
        if (typeof val === "object" && val instanceof Session) {
-         log.debug("Session | Retrieved from MongoDB");
+         log.debug("Session | Retrieving from Cache");
          return val;
        } else {
          log.debug("Session | Creating New");

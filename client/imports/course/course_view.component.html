@@ -1,17 +1,17 @@
-<div class="course_view" *ngIf="course" >
+<div class="course_view" *ngIf="course | async" >
 
   <!-- Info -->
   <md-card class="info">
     <div class="title" fxLayout fxLayoutAlign="flex-start">
       <div class="left">
-        {{ course.course_number }}
+        {{ (course | async)?.course_number }}
       </div>
 
       <div class="right" fxLayout="column" fxLayoutAlign="center">
-        <span class="course_name">{{ course.course_name }}</span>
-        <span class="instructors" *ngIf="course.instructors.length !== 0" >
+        <span class="course_name">{{ (course | async)?.course_name }}</span>
+        <span class="instructors" *ngIf="(course | async)?.instructors.length !== 0" >
           Instructors:
-          <span *ngFor="let instructor of course.instructors">
+          <span *ngFor="let instructor of (course | async)?.instructors">
             {{instructor.display_name}}
           </span>
         </span>
