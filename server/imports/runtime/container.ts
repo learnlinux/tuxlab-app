@@ -42,11 +42,14 @@
     // Container Details
     private _container : Dockerode.Container;
     public container_id : string;
-    public container_pass : string;
     public container_ip : string;
+    public proxy_username : string;
+    public container_username : string;
+    public container_pass : string;
 
     constructor(cfg : VMConfig, id? : string){
       this.config = VMResolveConfig(cfg);
+      this.container_username = this.config.username;
 
       let prepare_containers : Promise<Dockerode.Container>;
 
@@ -72,34 +75,33 @@
 
       } else if (typeof id === "string"){
         // Get Container
-        prepare_containers= new Promise((resolve, reject) => {
+        prepare_containers = new Promise((resolve, reject) => {
           resolve(Container.docker.getContainer(id));
         });
       }
 
-      var self = this;
       this._ready = prepare_containers
 
         // Get Container Object
         .then((container) => {
-          self._container = container;
+          this._container = container;
           return container.inspect();
 
         // Set Container IP and IP
         }).then((details) => {
-          self.container_ip = (<any>details).Node.IP; //TOOD https://github.com/DefinitelyTyped/DefinitelyTyped/pull/18322
-          self.container_id = details.Id;
+          this.container_ip = (<any>details).Node.IP; //TOOD https://github.com/DefinitelyTyped/DefinitelyTyped/pull/18322
+          this.container_id = details.Id;
 
         // Get Password
         }).then(() => {
-          return self.getPass()
-          .then(function(pass){
-            self.container_pass = pass;
+          return this.getPass()
+          .then((pass) => {
+            this.container_pass = pass;
           });
 
         // Return Self
-        }).then(() => {
-          return self;
+        }).then((password) => {
+          return this;
         })
     }
 
@@ -111,6 +113,8 @@
        return {
          container_ip : this.container_ip,
          container_id : this.container_id,
+         proxy_username : this.proxy_username,
+         container_username: this.container_username,
          container_pass: this.container_pass
        }
      }

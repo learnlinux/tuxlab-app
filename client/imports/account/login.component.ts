@@ -65,7 +65,6 @@
 
 			// Redirect
 			.then(() =>{
-				console.log(this.redirect_url);
 				this.router.navigateByUrl(this.redirect_url);
 			})
 

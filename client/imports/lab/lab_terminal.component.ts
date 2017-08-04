@@ -5,6 +5,9 @@
 	import { Component, ViewChild, ElementRef } from '@angular/core';
 	import { MeteorComponent } from 'angular2-meteor';
 
+// Import Socket.IO
+	import * as io from "socket.io-client";
+
 // Import Xterm
   import * as Terminal from 'xterm/dist/xterm';
 	import 'xterm/dist/addons/fit/fit.js';
@@ -35,5 +38,4 @@
 			this.xterm.open(this.container.nativeElement);
 			this.xterm.fit();
 		}
-
   }

@@ -51,6 +51,7 @@
 		private session : Observable<Session>;
 
 		private task_index : number;
+		private connection_details : any;
 
     constructor( private router : Router,
 								 private route: ActivatedRoute,
@@ -66,7 +67,6 @@
 					.map(params => [params['course_id'], params['lab_id']])
 					.distinct()
 					.mergeMap(([course_id, lab_id]) => {
-
 						return Observable.fromPromise(
 							new Promise((resolve, reject) => {
 								Meteor.subscribe('labs.course',course_id, () => {
@@ -93,7 +93,14 @@
 									if(err){
 										reject(err);
 									} else {
+										console.log("Connected to Session:");
+										console.log(res);
+
 										this.task_index = res.current_task;
+										this.connection_details = {
+
+										};
+
 										resolve(res);
 									}
 								});
@@ -104,6 +111,6 @@
 
 		private openConnectionDetails(){
 			var dialogRef = this.dialog.open(ConnectionDetailsDialog);
-					dialogRef.componentInstance.session = this.session;
+
 		}
   }

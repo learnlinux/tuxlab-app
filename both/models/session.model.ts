@@ -14,19 +14,20 @@ export enum SessionStatus {
 export interface Container {
   container_ip: string,
   container_id: string,
+  proxy_username: string,
+  container_username: string,
   container_pass: string
 }
 
 export interface Session {
   _id? : string,
 
-  session_id: string,
   user_id : string,
   lab_id: string,
 
   status: SessionStatus,
   expires: Date,
   current_task : number,
-  
+
   containers : Container[]
 }

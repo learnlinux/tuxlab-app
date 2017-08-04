@@ -15,17 +15,18 @@ const ContainerSchema = new SimpleSchema({
   container_id : {
     type : String
   },
+  proxy_username: {
+    type: String
+  },
+  container_username: {
+    type: String
+  },
   container_pass : {
     type : String
   }
 });
 
 export const SessionSchema : SimpleSchema = new SimpleSchema({
-  session_id: {
-    type: String,
-    index: true,
-    unique: true
-  },
   user_id: {
     type: String
   },

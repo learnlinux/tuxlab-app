@@ -28,7 +28,6 @@ import { LabRuntime } from './lab_runtime';
 */
 interface SessionObj{
   _id? : string,
-  session_id : string,
   user_id : string,
   lab_id : string,
   lab : LabRuntime,
@@ -44,7 +43,6 @@ export class Session extends Cache {
 
   // Session
   public _id : string;
-  public session_id : string;
   public expires : Date;
   public status : SessionStatus = SessionStatus.active;
   private static constructSessionID(user_id : string, lab_id : string){
@@ -64,9 +62,6 @@ export class Session extends Cache {
 
   // Containers
   private containers : Container[];
-  private getDefaultContainer(){
-    return this.containers[0];
-  }
 
 /************************
  *     CONSTRUCTOR      *
@@ -84,6 +79,10 @@ export class Session extends Cache {
     this.expires.setSeconds(this.expires.getSeconds() + Meteor.settings['private']['labvm']['session_idle_timeout']);
   }
 
+  public getSessionID(){
+    return Session.constructSessionID(this.user_id, this.lab_id);
+  }
+
   /*
     getJSON()
     Gets this object as a JSON Object, safe for returning to the end user.
@@ -91,7 +90,6 @@ export class Session extends Cache {
    public getJSON() : SessionModel {
      return {
        _id : this._id,
-       session_id : this.session_id,
        user_id : this.user_id,
        lab_id: this.lab_id,
        status: this.status,
@@ -116,7 +114,7 @@ export class Session extends Cache {
          if (typeof val === "object" && val instanceof Session) {
            return val;
          } else {
-           return Session.getSession_mongo(session_id); // Look in MongoDB
+           return Session.getSession_mongo(user_id, lab_id); // Look in MongoDB
          }
        })
      .then((val) => {
@@ -125,7 +123,7 @@ export class Session extends Cache {
          return val;
        } else {
          log.debug("Session | Creating New");
-         return Session.getSession_create(session_id,user_id,lab_id); // Create New
+         return Session.getSession_create(val, user_id,lab_id); // Create New
        }
      })
   }
@@ -142,17 +140,17 @@ export class Session extends Cache {
     });
   }
 
-  private static getSession_mongo(session_id : string) : Promise <Session>{
+  private static getSession_mongo(user_id : string, lab_id : string) : Promise <Session>{
 
     return Sessions.rawCollection().findAndModify(
         {
-          'session_id' : session_id,
+          'user_id' : user_id,
+          'lab_id' : lab_id,
           'status' : { $in : [SessionStatus.creating, SessionStatus.active] }
         },
         {},
         {
           $setOnInsert: {
-            'session_id' : session_id,
             'status' : SessionStatus.creating
           }
         },
@@ -164,12 +162,11 @@ export class Session extends Cache {
     .then((res) => {
       return new Promise((resolve, reject) => {
 
-
         if (res.ok != 1) {
           return reject(new Error(res.err));
 
         } else if (!res.lastErrorObject.updatedExisting){
-          return resolve(null);
+          return resolve(res.lastErrorObject.upserted);
 
         } else if (res.value.status) {
           return reject(new Error("Session in invalid state."));
@@ -195,7 +192,6 @@ export class Session extends Cache {
 
             return new Session({
               _id : session_record._id,
-              session_id : session_id,
               user_id : session_record.user_id,
               lab_id : session_record.lab_id,
               lab : lab,
@@ -210,8 +206,6 @@ export class Session extends Cache {
   private static getSession_create(session_id : string, user_id : string, lab_id : string) : Promise <Session>{
       var lab : LabRuntime;
       var session : Session;
-      var containers : Container[];
-
 
       // Get LabRuntime
       return LabRuntime.getLabRuntime(lab_id)
@@ -227,22 +221,22 @@ export class Session extends Cache {
 
       // Create Containers
       .then((vm : VMConfigCustom[]) => {
-        containers = _.map(vm, (config) => {
-            return new Container(config);
-        });
+        return Promise.all(_.map(vm, (config) => {
+            return (new Container(config)).ready();
+         }));
       })
 
-      // Wait for Containers to come Online
-      .then(() => {
-        return Promise.all(_.map(containers, (container => {
-          return container.ready();
-        })));
+      // Set Proxy Username
+      .then((containers) => {
+        return _.map(containers, (container, index) => {
+          container.proxy_username = session_id + '-' + index;
+          return container;
+        })
       })
 
       // Create Session Object
-      .then(() => {
+      .then((containers) => {
         session = new Session({
-          session_id : session_id,
           user_id : user_id,
           lab_id : lab_id,
           lab : lab,
@@ -296,7 +290,7 @@ export class Session extends Cache {
  ************************/
   private cache_add() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.set(this.session_id, this, (err, res) => {
+      return Session._cache.set(this.getSessionID(), this, (err, res) => {
         if(err){
           reject(err);
         } else {
@@ -308,7 +302,7 @@ export class Session extends Cache {
 
   private cache_del() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.del(this.session_id, (err, res) => {
+      return Session._cache.del(this.getSessionID(), (err, res) => {
         if(err){
           reject(err);
         } else {
@@ -320,7 +314,7 @@ export class Session extends Cache {
 
   private cache_renew() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.ttl(this.session_id, Session._TTL, (err, res) => {
+      return Session._cache.ttl(this.getSessionID(), Session._TTL, (err, res) => {
         if(err){
           reject(err);
         } else {
@@ -338,12 +332,13 @@ export class Session extends Cache {
           return {
             container_ip : container.container_ip,
             container_id : container.container_id,
+            proxy_username : container.proxy_username,
+            container_username : container.container_username,
             container_pass : container.container_pass
           };
         });
 
       let record : SessionModel = {
-        session_id : this.session_id,
         user_id : this.user_id,
         lab_id : this.lab_id,
         status: SessionStatus.active,
@@ -353,8 +348,9 @@ export class Session extends Cache {
       }
 
       Sessions.update({
-        session_id : this.session_id,
-        status: SessionStatus.creating
+        status: SessionStatus.creating,
+        user_id : this.user_id,
+        lab_id : this.lab_id
       },
       {
         '$set' : record
@@ -403,60 +399,62 @@ export class Session extends Cache {
 /************************
  *     ETCD RECORDS     *
  ************************/
-  private static etcd_getKeyProxy(session : Session) : string{
-    return '/redrouter/SSH::'+session.session_id;
+  private static etcd_getKeyProxy(container : Container) : string{
+    return '/redrouter/SSH::'+container.proxy_username;
   }
 
-  private static etcd_getKeyDNS(session : Session) : string {
+  private static etcd_getKeyDNS(container : Container) : string {
     return '/skydns/' + Meteor.settings['private']['domain']['ssh_dns_root']
-                               .split('.')
-                               .reverse()
-                               .concat([
-                                 session.user_id,
-                                 session.lab_id
-                               ])
-                               .join('/');
+                              .split('.')
+                              .reverse()
+                              .concat([
+                                 container.proxy_username
+                              ])
+                              .join('/');
   }
 
 
   private etcd_create_proxy() : Promise<{}> {
+    return Promise.all(_.map(this.containers, (container, index) => {
+      return new Promise((resolve, reject) => {
+        let record = {
+          port: container.config.ssh_port,
+          username: container.config.username,
+          docker_container: container.container_id,
+          allowed_auth: ["password"]
+        };
 
-    return new Promise((resolve, reject) => {
-      let record = {
-        port: this.getDefaultContainer().config.ssh_port,
-        username: this.session_id,
-        docker_container: this.getDefaultContainer().container_id,
-        allowed_auth: ["password"]
-      };
-
-      etcd.set(Session.etcd_getKeyProxy(this), record, {
-        prevExist: false // Verify that this creation is unique
-      }, (err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
+        etcd.set(Session.etcd_getKeyProxy(container), JSON.stringify(record), {
+          prevExist: false // Verify that this creation is unique
+        }, (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
       });
-    });
+    }));
   }
 
   private etcd_create_dns () : Promise<{}> {
-    return new Promise((resolve, reject) => {
-      let record = {
-        host: this.getDefaultContainer().container_ip
-      };
+    return Promise.all(_.map(this.containers, (container, index) => {
+      return new Promise((resolve, reject) => {
+        let record = {
+          host: container.container_ip
+        };
 
-      etcd.set(Session.etcd_getKeyDNS(this), record, {
-        prevExist: false // Verify that this creation is unique
-      }, (err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
+        etcd.set(Session.etcd_getKeyDNS(container), JSON.stringify(record), {
+          prevExist: false // Verify that this creation is unique
+        }, (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
       });
-    });
+    }));
   }
 
   private etcd_renew_proxy = this.etcd_create_proxy;
@@ -464,27 +462,31 @@ export class Session extends Cache {
   private etcd_renew_dns = this.etcd_create_dns;
 
   private etcd_delete_proxy() : Promise<{}> {
-    return new Promise((resolve, reject) => {
-      etcd.del(Session.etcd_getKeyProxy(this), {}, (err) => {
-        if(err){
-          reject(err);
-        } else {
-          resolve();
-        }
+    return Promise.all(_.map(this.containers, (container, index) => {
+      return new Promise((resolve, reject) => {
+        etcd.del(Session.etcd_getKeyProxy(container), {}, (err) => {
+          if(err){
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
       });
-    });
+    }));
   }
 
   private etcd_delete_dns() : Promise<{}> {
-    return new Promise((resolve, reject) => {
-      etcd.del(Session.etcd_getKeyDNS(this),{}, (err, res) => {
-        if(err){
-          reject(err);
-        } else {
-          resolve();
-        }
+    return Promise.all(_.map(this.containers, (container, index) => {
+      return new Promise((resolve, reject) => {
+        etcd.del(Session.etcd_getKeyDNS(container),{}, (err, res) => {
+          if(err){
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
       });
-    });
+    }));
   }
 
 /************************
