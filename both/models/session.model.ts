@@ -12,11 +12,13 @@ export enum SessionStatus {
 }
 
 export interface Container {
+  name? : string,
   container_ip: string,
+  container_dns: string,
   container_id: string,
-  proxy_username: string,
   container_username: string,
-  container_pass: string
+  container_pass: string,
+  proxy_username: string,
 }
 
 export interface Session {

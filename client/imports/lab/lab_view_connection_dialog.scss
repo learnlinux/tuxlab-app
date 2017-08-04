@@ -1,0 +1,21 @@
+
+div.details{
+  padding: 20px;
+
+  background-color: #333;
+  color:#efefef;
+  
+  table{
+    margin:0 auto;
+
+    tr{
+      td{
+        padding: 5px;
+
+        &:first-child{
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

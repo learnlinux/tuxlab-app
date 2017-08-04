@@ -43,9 +43,10 @@
     private _container : Dockerode.Container;
     public container_id : string;
     public container_ip : string;
-    public proxy_username : string;
+    public container_dns : string;
     public container_username : string;
     public container_pass : string;
+    public proxy_username : string;
 
     constructor(cfg : VMConfig, id? : string){
       this.config = VMResolveConfig(cfg);
@@ -111,11 +112,13 @@
      */
      public getJSON() : ContainerModel {
        return {
+         name : this.config.name,
          container_ip : this.container_ip,
+         container_dns : this.container_dns,
          container_id : this.container_id,
-         proxy_username : this.proxy_username,
          container_username: this.container_username,
-         container_pass: this.container_pass
+         container_pass: this.container_pass,
+         proxy_username : this.proxy_username,
        }
      }
 

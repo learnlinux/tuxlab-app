@@ -9,6 +9,10 @@ import SimpleSchema from 'simpl-schema';
 import { SessionStatus } from '../models/session.model';
 
 const ContainerSchema = new SimpleSchema({
+  name : {
+    type : String,
+    optional: true
+  },
   container_ip : {
     type : String
   },

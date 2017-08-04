@@ -1,19 +1,23 @@
+<h2> Connection Details </h2>
+
 <p>
   In addition to the web terminal here, you can connect to
   the Lab using an SSH Client.  The connection details are below:
 </p>
 
-<table *ngIf="(session | async)">
-  <tr>
-    <td> Host: </td>
-    <td>{{ (session | async)?.containers[0]?.container_ip }}</td>
-  </tr>
-  <tr>
-    <td> Username: </td>
-    <td>{{ (session | async)?.containers[0]?.container_pass }}</td>
-  </tr>
-  <tr>
-    <td> Password: </td>
-    <td> {{ (session | async)?.containers[0]?.container_pass }} </td>
-  </tr>
-</table>
+<div class="details">
+  <table>
+    <tr>
+      <td> Host: </td>
+      <td>{{ container.container_ip }}</td>
+    </tr>
+    <tr>
+      <td> Username: </td>
+      <td>{{ container.proxy_username }}</td>
+    </tr>
+    <tr>
+      <td> Password: </td>
+      <td> {{ container.container_pass }} </td>
+    </tr>
+  </table>
+</div>

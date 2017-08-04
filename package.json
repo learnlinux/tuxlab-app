@@ -41,6 +41,7 @@
     "angular2-meteor-tests-polyfills": "0.0.2",
     "babel-runtime": "^6.23.0",
     "bcrypt": "^1.0.2",
+    "bufferutil": "^3.0.2",
     "dockerode": "^2.4.3",
     "lodash": "^4.17.4",
     "meteor-node-stubs": "^0.2.11",
@@ -52,6 +53,7 @@
     "simpl-schema": "^0.1.1",
     "socket.io": "^2.0.3",
     "uglify-js": "^2.7.5",
+    "utf-8-validate": "^3.0.3",
     "winston": "^2.3.1",
     "xterm": "^2.8.1",
     "zone.js": "0.8.4"

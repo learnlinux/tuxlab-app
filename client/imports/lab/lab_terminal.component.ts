@@ -2,7 +2,7 @@
 	import * as _ from "lodash";
 	import { Meteor } from 'meteor/meteor';
 	import { Tracker } from 'meteor/tracker';
-	import { Component, ViewChild, ElementRef } from '@angular/core';
+	import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 	import { MeteorComponent } from 'angular2-meteor';
 
 // Import Socket.IO
@@ -25,8 +25,10 @@
 
 // Export LabView Class
   export default class LabTerminal extends MeteorComponent {
-		@ViewChild('terminal') container : ElementRef;
+		@ViewChild('terminal') terminal_container : ElementRef;
 		private xterm : Terminal;
+
+		@Input('container') container;
 
     constructor() {
       super();
@@ -34,8 +36,60 @@
     }
 
 		ngOnInit(){
-			this.xterm = new Terminal();
-			this.xterm.open(this.container.nativeElement);
-			this.xterm.fit();
+			this.xterm = new Terminal({});
 		}
+
+		public bindSocket(){
+			// Clear Terminal
+			this.xterm.clear();
+
+			// Get URL
+			var host = this.container.container_ip;
+			
+			// Create Socket Connection
+			var socket = io(host, {
+				'path' : '/xterm/socket.io',
+				'query' : 'username=' +
+									this.container.proxy_username +
+									'&password=' +
+									this.container.container_pass
+			});
+
+			// Bind to XTerm
+			socket.on('connect', () => {
+
+				// Pass Input
+				this.xterm.on('data', (data) => {
+					socket.emit('input', data);
+				});
+
+				// Read Output
+				socket.on('output', (data) => {
+					this.xterm.write(data);
+				}).on('disconnect', (err) => {
+					console.error(err);
+					socket.io.reconnection(false);
+				}).on('exception', (err) => {
+					console.error(err);
+					socket.io.reconnection(false);
+				}).on('error', (err) => {
+					console.error(err);
+					socket.io.reconnection(false);
+				});
+
+				// Resize Listener
+				this.xterm.on('resize', function (size) {
+					socket.emit('resize', {
+						cols : size.cols,
+						rows : size.rows
+					});
+				});
+
+				// Open Terminal
+				this.xterm.open(this.terminal_container.nativeElement);
+				this.xterm.fit();
+			});
+
+		}
+
   }

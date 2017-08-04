@@ -226,10 +226,11 @@ export class Session extends Cache {
          }));
       })
 
-      // Set Proxy Username
+      // Set Service Aliases
       .then((containers) => {
         return _.map(containers, (container, index) => {
           container.proxy_username = session_id + '-' + index;
+          container.container_dns = container.proxy_username + '.' + Meteor.settings['private']['domain']['ssh_dns_root'];
           return container;
         })
       })
@@ -329,13 +330,7 @@ export class Session extends Cache {
 
       let container_obj : ContainerModel[] =
         _.map(this.containers, (container : Container) => {
-          return {
-            container_ip : container.container_ip,
-            container_id : container.container_id,
-            proxy_username : container.proxy_username,
-            container_username : container.container_username,
-            container_pass : container.container_pass
-          };
+          return container.getJSON();
         });
 
       let record : SessionModel = {
@@ -404,13 +399,7 @@ export class Session extends Cache {
   }
 
   private static etcd_getKeyDNS(container : Container) : string {
-    return '/skydns/' + Meteor.settings['private']['domain']['ssh_dns_root']
-                              .split('.')
-                              .reverse()
-                              .concat([
-                                 container.proxy_username
-                              ])
-                              .join('/');
+    return '/skydns/' + container.container_dns.split('.').reverse().join('/');
   }
 
 

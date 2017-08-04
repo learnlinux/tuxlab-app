@@ -30,12 +30,21 @@
   <!-- Terminal Component -->
   <div>
     <md-toolbar>
+
+      <md-select placeholder="Machine" *ngIf="(session | async)?.containers?.length > 1" [(ngModel)]="container_index">
+         <md-option *ngFor="let container of (session | async)?.containers; let i = index" [value]="i">{{ (container)?.name ? container.name : i + 1 }}</md-option>
+      </md-select>
+      <span *ngIf="(session | async)?.containers?.length == 1">
+        {{ (session | async).containers[0]?.name ? (session | async).containers[0].name : LabVM }}
+      </span>
+
       <span class="spacer"></span>
+
       <button md-icon-button (click)="openConnectionDetails()"><md-icon>dns</md-icon></button>
-      <button md-icon-button><md-icon>refresh</md-icon></button>
+      <button md-icon-button (click)="refresh()"><md-icon>refresh</md-icon></button>
     </md-toolbar>
 
-    <tuxlab-terminal></tuxlab-terminal>
+    <tuxlab-terminal [container]="containers[container_index]"></tuxlab-terminal>
   </div>
 </div>
 

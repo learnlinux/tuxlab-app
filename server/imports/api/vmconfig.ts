@@ -7,10 +7,12 @@
 
   /* CONFIGURATION INTERFACE */
   export interface VMConfigCustom {
+    // META
+    name? : string; // Used to present multiple containers to students
+
     // IMAGE DETAILS
     image: string; // Image Name from DockerHub
     cmd : string[]; // Entry Command. Defaults to entry.sh
-
     ssh_port: number; // SSH Port
 
     // USER DETAILS

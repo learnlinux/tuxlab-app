@@ -11,32 +11,39 @@
 	import { MeteorComponent } from 'angular2-meteor';
 
 // Angular Imports
-	import { Component, Input } from '@angular/core';
+	import { Component, Input, ViewChild } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
 	import { MdDialog } from '@angular/material';
 	import { ObservableCursor } from 'meteor-rxjs';
 
 // Define Lab View Component
 	import template from "./lab_view.component.html";
+	import style from "./lab_view.component.scss";
+
+// Define Dialog Component
+	import style_dialog from "./lab_view_connection_dialog.scss";
 	import template_dialog from "./lab_view_connection_dialog.html";
-  import style from "./lab_view.component.scss";
+
+// Markdown Styles
 	import prism_style from "prismjs/themes/prism.css";
 
 // Import Lab Data
 	import { Lab } from '../../../both/models/lab.model';
 	import { Labs } from '../../../both/collections/lab.collection';
-	import { Session } from '../../../both/models/session.model';
+	import { Container, Session } from '../../../both/models/session.model';
 	import { Sessions } from '../../../both/collections/session.collection';
 
+// Lab Terminal
+	import LabTerminal from './lab_terminal.component';
 
 //  ConnectionDialog Class
 	@Component({
 		selector: 'tuxlab-lab-connection-details',
 		template: template_dialog,
-		styles: [ style ]
+		styles: [ style_dialog ]
 	})
 	export class ConnectionDetailsDialog extends MeteorComponent {
-		public session : Observable<Session>;
+		public container : Container;
 	}
 
 //  LabView Class
@@ -47,11 +54,17 @@
 	})
 
   export class LabView extends MeteorComponent {
+		@ViewChild(LabTerminal) terminal : LabTerminal;
+
+		// Data Objects
 		private lab : Observable<Lab>;
 		private session : Observable<Session>;
 
 		private task_index : number;
-		private connection_details : any;
+
+		private container_index : number = 0;
+		private containers : Container[];
+
 
     constructor( private router : Router,
 								 private route: ActivatedRoute,
@@ -60,8 +73,9 @@
 			prism_style;
     }
 
-		ngOnInit(){
 
+		// Load Data
+		ngOnInit(){
 				// Lab
 				this.lab = this.route.params
 					.map(params => [params['course_id'], params['lab_id']])
@@ -96,10 +110,12 @@
 										console.log("Connected to Session:");
 										console.log(res);
 
+										// Set Containers and Task Index
 										this.task_index = res.current_task;
-										this.connection_details = {
+										this.containers = res.containers;
 
-										};
+										// Trigger Connection if not Already
+										this.ngAfterViewInit();
 
 										resolve(res);
 									}
@@ -109,8 +125,16 @@
 				});
     }
 
-		private openConnectionDetails(){
-			var dialogRef = this.dialog.open(ConnectionDetailsDialog);
+		private _terminal_init = false;
+		ngAfterViewInit(){
+			if(this.terminal && !this._terminal_init){
+				this.terminal.bindSocket();
+				this._terminal_init = true;
+			}
+		}
 
+		private openConnectionDetails(){
+			var dialogRef = this.dialog.open(ConnectionDetailsDialog, { width: '600px' });
+			dialogRef.componentInstance.container = this.containers[this.container_index];
 		}
   }
