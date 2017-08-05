@@ -35,28 +35,30 @@
 
     constructor(private router : Router) {
 			super();
+    }
 
+		ngOnInit(){
+
+			// My Courses Page
 			if(this.router.url === "/courses"){
 				if(Meteor.userId() === null){
 					this.router.navigate(['/login']);
 
 				} else {
-
 					this.title = "My Courses";
 					this.courses = Users.getCoursesFor(Meteor.userId());
 					Meteor.subscribe('courses.user');
-
 				}
 
+			// Explore Courses Page
 			} else if (this.router.url === "/explore"){
-
 				this.title = "Explore";
 				this.courses = Courses.observable.find();
 				Meteor.subscribe('courses.explore', 0);
-
 			} else {
 
-			}
 
-    }
+
+			}
+		}
   }

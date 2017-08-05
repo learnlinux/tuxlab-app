@@ -71,11 +71,6 @@
 				console.error(err);
 			})
 
-			// Initial Resize
-			.once('output', () => {
-				this.xterm.fit();
-			})
-
 			// Bind to XTerm
 			socket.once('connect', () => {
 

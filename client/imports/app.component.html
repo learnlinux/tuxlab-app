@@ -39,43 +39,47 @@
       </md-list>
     </md-sidenav>
 
-    <!-- Menu Bar -->
-    <div id="navbar" *ngIf="!sidenav.opened">
-      <md-toolbar>
-        <button id="menubutton" (click)="sidenav.toggle()"><md-icon>menu</md-icon></button>
-        <a [routerLink]="['/']" fxLayout fxLayoutAlign="center center">
-            <img class="logo" src="assets/logo/v1.head.png" />
-            <div>TuxLab | CMU</div>
-        </a>
-      </md-toolbar>
-    </div>
+    <!-- Regular Content -->
+    <div fxLayout="row" fxLayoutAlign="flex-start">
 
-    <!-- Content Container -->
-    <div class="router-wrap">
-      <router-outlet></router-outlet>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-      <div class="overlay">
-        <div class="menu">
-          <md-chip-list>
-            <a [routerLink]="['/help']"><md-chip>Help</md-chip></a>
-            <a [routerLink]="['/legal']"><md-chip>Legal</md-chip></a>
-            <a href="http://tuxlab.org" ><md-chip>Website</md-chip></a>
-            <a href="https://github.com/learnlinux"><md-chip>GitHub</md-chip></a>
-            <a href="https://gitter.im/learnlinux/tuxlab-app"><md-chip>Gitter</md-chip></a>
-          </md-chip-list>
-        </div><br>
-        <label>Copyright &copy; 2017 Carnegie Mellon University. All Rights Reserved.</label>
+      <!-- Minimized Navbar -->
+      <div id="navbar" *ngIf="!sidenav.opened" fxFlex="64px" fxLayout="column" fxLayoutAlign="flex-start center">
+          <a class="menu" (click)="sidenav.toggle()"><md-icon>menu</md-icon></a>
+          <a [routerLink]="['/dashboard']"><md-icon>home</md-icon></a>
+          <a [routerLink]="['/courses']" ><md-icon>library_books</md-icon></a>
+          <a [routerLink]="['/explore']"><md-icon>explore</md-icon></a>
+          <a [routerLink]="['/admin']"><md-icon>build</md-icon></a>
       </div>
-      <div class="background">
-        <svg class="snow_hill" xmlns="http://www.w3.org/2000/svg" width="100%" height="300" viewBox="0 0 350 235" preserveAspectRatio="none">
-          <path d="M0 235h350V59.024C116.373 75.394 224.07-53.64 0 26.404z"></path>
-        </svg>
-      </div>
-    </div>
 
+      <!-- Content Container -->
+      <div fxFlexFill>
+        <div class="router-wrap">
+          <router-outlet></router-outlet>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+          <div class="overlay">
+            <div class="menu">
+              <md-chip-list>
+                <a [routerLink]="['/help']"><md-chip>Help</md-chip></a>
+                <a [routerLink]="['/legal']"><md-chip>Legal</md-chip></a>
+                <a href="http://tuxlab.org" ><md-chip>Website</md-chip></a>
+                <a href="https://github.com/learnlinux"><md-chip>GitHub</md-chip></a>
+                <a href="https://gitter.im/learnlinux/tuxlab-app"><md-chip>Gitter</md-chip></a>
+              </md-chip-list>
+            </div><br>
+            <label>Copyright &copy; 2017 Carnegie Mellon University. All Rights Reserved.</label>
+          </div>
+          <div class="background">
+            <svg class="snow_hill" xmlns="http://www.w3.org/2000/svg" width="100%" height="300" viewBox="0 0 350 235" preserveAspectRatio="none">
+              <path d="M0 235h350V59.024C116.373 75.394 224.07-53.64 0 26.404z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </md-sidenav-container>
 
 </div>

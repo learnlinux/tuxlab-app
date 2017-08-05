@@ -32,7 +32,6 @@ md-toolbar{
 }
 
 div#tuxlab{
-  // Sidenav Container
   md-sidenav-container {
     width: 100%;
     height: 100vh;
@@ -52,39 +51,46 @@ div#tuxlab{
     }
 
     // Navbar
+    $navbar-dimension: 64px;
     #navbar{
-      width: 100%;
-      height: 64px;
+      width: $navbar-dimension;
+      height: 100vh;
 
-      color: #3C4858;
+      background-color: #fff;
 
-      md-toolbar{
-        padding:0px;
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        #menubutton{
-          width: 64px;
-          height: 100%;
+        margin:5px 0px;
+
+        color: inherit;
+        text-decoration: none;
+
+        &:not(.menu){
+          width: $navbar-dimension - 10;
+          height: $navbar-dimension - 10;
+
+          border-radius: 10px;
+
+          &:hover{
+            background-color: mat-color($tuxlab-app-accent);
+          }
+        }
+
+        &.menu{
+          width: $navbar-dimension;
+          height: $navbar-dimension;
+
+          margin-top: 0px;
 
           color:#fff;
           background-color: mat-color($tuxlab-app-primary);
-          border:none;
         }
 
-        a {
-          text-decoration: none;
-          color: inherit;
-
-          div{
-            margin-left: 12px;
-            font-weight: 300;
-            font-size: 26px;
-          }
-
-          img.logo{
-            margin-left: 10px;
-          }
-        }
       }
+
     }
 
     // Side Navigation

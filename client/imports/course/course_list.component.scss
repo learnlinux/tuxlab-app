@@ -1,6 +1,17 @@
 div.course_list{
   min-height: 80vh;
 
+  .message{
+    width: 100%;
+    height: 60vh !important;
+
+    .emoji{
+      height: 180px;
+      width: 180px;
+      font-size: 180px !important;
+    }
+  }
+
   h1 {
     width: 100%;
     max-width: 960px;
