@@ -30,9 +30,17 @@ export class AppComponent {
   constructor(private accountService : AccountService, private render: Renderer2, zone : NgZone){
     this.renderer = render;
 
+    // Handle User Updates
     Tracker.autorun(() => {
-      zone.run(() => this.user = Meteor.user());
+      zone.run(() => {
+        this.user = Meteor.user();
+      });
     });
+
+    // Subscribe to Users
+    Meteor.startup(() => {
+      Meteor.subscribe("userData");
+    })
   }
 
   ngAfterViewInit(){

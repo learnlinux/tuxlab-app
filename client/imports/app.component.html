@@ -35,7 +35,7 @@
         <md-list-item><a md-button [routerLink]="['/dashboard']" routerLinkActive="active"><md-icon>home</md-icon>Dashboard</a></md-list-item>
         <md-list-item><a md-button [routerLink]="['/courses']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><md-icon>library_books</md-icon>My Courses</a></md-list-item>
         <md-list-item><a md-button [routerLink]="['/explore']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><md-icon>explore</md-icon>Explore Courses</a></md-list-item>
-        <md-list-item><a md-button [routerLink]="['/admin']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><md-icon>build</md-icon>Administration</a></md-list-item>
+        <md-list-item *ngIf="user?.global_admin"><a md-button [routerLink]="['/admin']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><md-icon>build</md-icon>Administration</a></md-list-item>
       </md-list>
     </md-sidenav>
 
@@ -48,7 +48,7 @@
           <a [routerLink]="['/dashboard']"><md-icon>home</md-icon></a>
           <a [routerLink]="['/courses']" ><md-icon>library_books</md-icon></a>
           <a [routerLink]="['/explore']"><md-icon>explore</md-icon></a>
-          <a [routerLink]="['/admin']"><md-icon>build</md-icon></a>
+          <a *ngIf="user?.global_admin" [routerLink]="['/admin']"><md-icon>build</md-icon></a>
       </div>
 
       <!-- Content Container -->

@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 
+import * as _ from "lodash";
+
+import { Users } from '../../../both/collections/user.collection';
+
 @Injectable()
 export default class AccountService {
   constructor() {
