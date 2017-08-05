@@ -19,7 +19,7 @@
 // Export Data Interface
   @Component({
     selector: 'tuxlab-terminal',
-    template: '<div id="tuxlab-terminal" #terminal></div>',
+    template: '<div id="tuxlab-terminal" #terminal (window:resize)="onResize($event)"></div>',
     styles: [ style ]
   })
 
@@ -35,8 +35,8 @@
 			XTermStyle;
     }
 
-		ngOnInit(){
-			this.xterm = new Terminal({});
+		onResize(){
+			this.xterm.fit();
 		}
 
 		public bindSocket(){
@@ -45,7 +45,7 @@
 
 			// Get URL
 			var host = this.container.container_ip;
-			
+
 			// Create Socket Connection
 			var socket = io(host, {
 				'path' : '/xterm/socket.io',
@@ -55,39 +55,48 @@
 									this.container.container_pass
 			});
 
+			// Open Terminal
+			this.xterm = new Terminal();
+			this.xterm.open(this.terminal_container.nativeElement, false);
+
+			// Bind to Socket
+			socket.on('output', (data) => {
+				this.xterm.write(data);
+			}).on('disconnect', (err) => {
+				console.error(err);
+				socket.io.reconnection(false);
+			}).on('exception', (err) => {
+				console.error(err);
+			}).on('error', (err) => {
+				console.error(err);
+			})
+
+			// Initial Resize
+			.once('output', () => {
+				this.xterm.fit();
+			})
+
 			// Bind to XTerm
-			socket.on('connect', () => {
+			socket.once('connect', () => {
 
 				// Pass Input
 				this.xterm.on('data', (data) => {
 					socket.emit('input', data);
 				});
 
-				// Read Output
-				socket.on('output', (data) => {
-					this.xterm.write(data);
-				}).on('disconnect', (err) => {
-					console.error(err);
-					socket.io.reconnection(false);
-				}).on('exception', (err) => {
-					console.error(err);
-					socket.io.reconnection(false);
-				}).on('error', (err) => {
-					console.error(err);
-					socket.io.reconnection(false);
+				// Pass Input
+				this.xterm.on('paste', (data) => {
+					socket.emit('input', data);
 				});
 
 				// Resize Listener
-				this.xterm.on('resize', function (size) {
+				this.xterm.on('resize', (size) => {
 					socket.emit('resize', {
 						cols : size.cols,
 						rows : size.rows
 					});
 				});
 
-				// Open Terminal
-				this.xterm.open(this.terminal_container.nativeElement);
-				this.xterm.fit();
 			});
 
 		}

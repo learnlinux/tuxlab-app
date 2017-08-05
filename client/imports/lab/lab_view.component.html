@@ -22,7 +22,7 @@
 
     <!-- Content -->
     <markdown>
-      {{ (lab | async)?.tasks[task_index].md }}
+      {{ (lab | async)?.tasks[task_index]?.md }}
     </markdown>
 
   </div>
@@ -35,7 +35,7 @@
          <md-option *ngFor="let container of (session | async)?.containers; let i = index" [value]="i">{{ (container)?.name ? container.name : i + 1 }}</md-option>
       </md-select>
       <span *ngIf="(session | async)?.containers?.length == 1">
-        {{ (session | async).containers[0]?.name ? (session | async).containers[0].name : LabVM }}
+        {{ (session | async)?.containers[0]?.name ? (session | async)?.containers[0].name : LabVM }}
       </span>
 
       <span class="spacer"></span>

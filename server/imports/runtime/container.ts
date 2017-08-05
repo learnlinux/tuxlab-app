@@ -95,13 +95,16 @@
 
         // Get Password
         }).then(() => {
-          return this.getPass()
-          .then((pass) => {
+          return new Promise((resolve, reject) => {
+            setTimeout(resolve, 500);
+          }).then(() => {
+            return this.getPass();
+          }).then((pass : string) => {
             this.container_pass = pass;
           });
 
         // Return Self
-        }).then((password) => {
+        }).then(() => {
           return this;
         })
     }
@@ -169,28 +172,12 @@
       .then((obj : any) : [Readable,Readable] => {
 
         var stdout = new PassThrough();
-        stdout.setEncoding('utf-8');
         var stderr = new PassThrough();
-        stderr.setEncoding('utf-8');
 
         var stream = obj.output;
-        var header = null;
-        stream.on('readable', function() {
-          header = header || stream.read(8);
-          while (header !== null) {
-            var type = header.readUInt8(0);
-            var payload = stream.read(header.readUInt32BE(4));
-            if (payload === null){
-              break;
-            } else if (type == 1) {
-              stdout.write(payload);
-            } else if (type == 2){
-              stderr.write(payload);
-            }
-            header = stream.read(8);
-          }
-        });
-        stream.on('end', function(){
+        this._container.modem.demuxStream(stream, stdout, stderr);
+
+        stream.on('end', () => {
           stdout.emit('end');
           stderr.emit('end');
         })
@@ -211,13 +198,13 @@
           var stderr_chunks = [];
 
           stdout.on("data", (content) => {
-            stdout_chunks.push(content);
+            stdout_chunks.push(content.toString());
           });
           stdout.on("error", (error) => {
             reject(error);
           })
           stderr.on("data", (content) => {
-            stderr_chunks.push(content);
+            stderr_chunks.push(content.toString());
           })
           stderr.on("error", (error) => {
             reject(error);
@@ -234,7 +221,6 @@
 
     public getPass() : Promise<string> {
       return this.shell(["cat",this.config.password_path]).then(([stdout, stderr]) => {
-
         if (stderr === ""){
           return stdout;
         } else {

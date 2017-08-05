@@ -107,8 +107,6 @@
 									if(err){
 										reject(err);
 									} else {
-										console.log("Connected to Session:");
-										console.log(res);
 
 										// Set Containers and Task Index
 										this.task_index = res.current_task;
@@ -136,5 +134,9 @@
 		private openConnectionDetails(){
 			var dialogRef = this.dialog.open(ConnectionDetailsDialog, { width: '600px' });
 			dialogRef.componentInstance.container = this.containers[this.container_index];
+		}
+
+		private refresh(){
+			location.reload();
 		}
   }
