@@ -3,9 +3,15 @@
  tests session creation
 **/
 
+import { expect } from 'chai';
+
 import { DefaultFixtures, cleanupDatabase } from '../../../fixtures';
 
+import { SessionStatus } from '../../../../both/models/session.model';
 import { Session } from '../../../../server/imports/runtime/session';
+
+import { TaskStatus } from '../../../../both/models/course_record.model';
+import { CourseRecords } from '../../../../both/collections/course_record.collection';
 
 export function SessionTests(){
 
@@ -25,17 +31,65 @@ export function SessionTests(){
       fixtures.destructor();
     });
 
-    it('Example1 | Create Session',function(){
-      this.timeout(5000);
+    it('Example1 | Create Session',() => {
 
       return Session.getSession(user, lab)
+
+      // Set Session Globally
       .then((res) => {
          session = res;
-      });
+      })
+
+      // Validate Course Record Object
+      .then(() => {
+
+        // Get Course Record
+        var course_record = CourseRecords.findOne({
+          user_id : session.user_id,
+          course_id : fixtures.courses["gpi"]
+        });
+
+        // Find Session Record
+        expect(course_record).to.have.property("labs");
+        expect(course_record.labs).to.have.property(session.lab_id);
+        expect(course_record.labs[session.lab_id]).to.have.property(session._id);
+        var session_record = course_record.labs[session.lab_id][session._id]
+
+        // Validate Session Record
+        expect(session_record).to.have.property("tasks");
+        expect(session_record.tasks).to.have.lengthOf(2);
+        expect(session_record.tasks[0]).to.have.property("status");
+        expect(session_record.tasks[0].status).to.be.equal( TaskStatus.in_progress );
+        expect(session_record.tasks[1]).to.have.property("status");
+        expect(session_record.tasks[1].status).to.be.equal( TaskStatus.not_attempted );
+      })
     });
 
     it('Example 1 | Should complete task 0', () => {
-      return session.nextTask();
+      return session.nextTask()
+
+      .then(() => {
+
+        // Get Course Record
+        var course_record = CourseRecords.findOne({
+          user_id : session.user_id,
+          course_id : fixtures.courses["gpi"]
+        });
+
+        // Find Session Record
+        expect(course_record).to.have.property("labs");
+        expect(course_record.labs).to.have.property(session.lab_id);
+        expect(course_record.labs[session.lab_id]).to.have.property(session._id);
+        var session_record = course_record.labs[session.lab_id][session._id]
+
+        // Validate Session Record
+        expect(session_record).to.have.property("tasks");
+        expect(session_record.tasks).to.have.lengthOf(2);
+        expect(session_record.tasks[0]).to.have.property("status");
+        expect(session_record.tasks[0].status).to.be.equal( TaskStatus.success );
+        expect(session_record.tasks[1]).to.have.property("status");
+        expect(session_record.tasks[1].status).to.be.equal( TaskStatus.in_progress );
+      })
     });
 
     it('Example 1 | Get Session from Cache', () => {
@@ -46,14 +100,40 @@ export function SessionTests(){
     });
 
     it('Example 1 | Should fail on task 1', () => {
-      return session.nextTask()
-        .then(() => {
-          throw "Shouldn't Succeed."
-        })
-        .catch(() => {
-          return null;
-        });
-    })
 
+      // Task Promise Should Fail
+      return session.nextTask()
+      .then(() => {
+        throw "Shouldn't Succeed."
+      })
+      .catch(() => {
+        return null;
+      })
+
+      // Course Record Updated
+      .then(() => {
+
+        // Get Course Record
+        var course_record = CourseRecords.findOne({
+          user_id : session.user_id,
+          course_id : fixtures.courses["gpi"]
+        });
+
+        // Find Session Record
+        expect(course_record).to.have.property("labs");
+        expect(course_record.labs).to.have.property(session.lab_id);
+        expect(course_record.labs[session.lab_id]).to.have.property(session._id);
+        var session_record = course_record.labs[session.lab_id][session._id]
+
+        // Validate Session Record
+        expect(session_record).to.have.property("tasks");
+        expect(session_record.tasks).to.have.lengthOf(2);
+        expect(session_record.tasks[0]).to.have.property("status");
+        expect(session_record.tasks[0].status).to.be.equal( TaskStatus.success );
+        expect(session_record.tasks[1]).to.have.property("status");
+        expect(session_record.tasks[1].status).to.be.equal( TaskStatus.failure );
+      })
+
+    })
   });
 }

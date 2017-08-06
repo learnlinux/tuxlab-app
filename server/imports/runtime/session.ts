@@ -444,15 +444,17 @@ export class Session extends Cache {
     });
   }
 
-  private mongo_update_task_status(task_status : TaskStatus){
+  private mongo_update_task_status(task_status : TaskStatus) : void {
     var session_key = "labs." + this.lab_id + "." + this._id + ".";
 
     CourseRecords.update({
       "user_id" : this.user_id,
       "course_id" : this.lab.course_id
     }, {
-      [ session_key + "tasks." + this.current_task + ".status" ] : task_status
-    })
+      $set : { [ session_key + "tasks." + this.current_task + ".status" ] : task_status }
+    }, () => {
+
+    });
   };
 
 /************************
@@ -689,12 +691,10 @@ export class Session extends Cache {
       let next_task_fn = this.getSetupObject(resolve, reject);
 
       let error = (err) => {
-        this.mongo_update_task_status(TaskStatus.error);
         reject(err);
       }
 
       let completed = () => {
-        // Set Success Status
         this.mongo_update_task_status(TaskStatus.success);
 
         // Check if Lab Completed
@@ -702,12 +702,14 @@ export class Session extends Cache {
           // Complete Lab
           this.destroy(SessionStatus.completed);
           resolve();
+
         } else {
           // Proceed to Next Task
           this.current_task++;
-          this.mongo_update_task_status(TaskStatus.in_progress);
           this.mongo_update_task();
           this.lab.exec_setup(this.current_task, next_task_fn);
+          this.mongo_update_task_status(TaskStatus.in_progress);
+          resolve();
         }
       }
 
@@ -716,12 +718,15 @@ export class Session extends Cache {
       }
 
       let fail = () => {
-        this.mongo_update_task_status(TaskStatus.error);
         this.destroy(SessionStatus.failed);
-        resolve(this);
+        this.mongo_update_task_status(TaskStatus.failure);
+        resolve();
       }
 
       return this.lab.exec_verify(this.current_task, this.getVerifyObject(error, completed, fail, retry));
+    }).catch((err) => {
+      this.mongo_update_task_status(TaskStatus.error);
+      return err;
     });
   }
 }
