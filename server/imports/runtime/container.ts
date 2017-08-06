@@ -109,6 +109,7 @@
         })
     }
 
+
     /*
       getJSON()
       Gets this object as a JSON Object, safe for returning to the end user.
@@ -133,6 +134,11 @@
       return this.ready().then((container) => {
         return container._container.remove({ force: true });
       });
+    }
+
+    public static destroy(container_id : string) : Promise<{}> {
+      var container = Container.docker.getContainer(container_id);
+      return container.remove();
     }
 
     public getVMInterface() : VM {

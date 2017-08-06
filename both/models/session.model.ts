@@ -8,7 +8,6 @@ export enum SessionStatus {
   completed = 2, // Session was destroyed by tuxlab-app, success
   failed = 3, // Session was destroyed by tuxlab-app, failed
   destroyed = 4 // Session was destroyed by tuxlab-daemon
-  // NOTE: THIS IS HARD-CODED INTO SESSION-DAEMON.
 }
 
 export interface SessionTask {

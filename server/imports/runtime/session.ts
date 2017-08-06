@@ -289,10 +289,8 @@ export class Session extends Cache {
    // Run Lab Destroy Function
    this.destroyLab();
 
-   return Promise.all(
-     [
+     return Promise.all([
       this.cache_del(),
-      this.mongo_update_task_status(TaskStatus.failure),
       this.mongo_update_session_status(status)
      ])
     .then(function(){
