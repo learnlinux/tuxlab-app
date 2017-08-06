@@ -245,6 +245,7 @@ export class Session extends Cache {
       // Create Session Object
       .then((containers) => {
         session = new Session({
+          _id : session_id,
           user_id : user_id,
           lab_id : lab_id,
           lab : lab,
@@ -353,8 +354,13 @@ export class Session extends Cache {
     // Create Session Object
     return new Promise((resolve, reject) => {
       let record : SessionModel = {
+        _id : this._id,
+
+        // Details
         user_id : this.user_id,
         lab_id : this.lab_id,
+
+        // Session Status
         status: SessionStatus.active,
         expires: this.expires,
         current_task : this.current_task,
@@ -362,12 +368,11 @@ export class Session extends Cache {
         containers : container_obj
       }
 
-      Sessions.update({ _id : this._id },{ '$set' : record },(err, res) => {
+      Sessions.update({ _id : this._id.toString() },{ '$set' : record },(err, res) => {
         if (err){
           log.debug("Session | Error creating session record", err);
           reject(err);
         } else {
-          this._id = res;
           resolve();
         }
       })
@@ -376,32 +381,30 @@ export class Session extends Cache {
     // Create Course Record
     .then(() => {
       return new Promise((resolve, reject) => {
+
         CourseRecords.upsert({
           user_id : this.user_id,
           course_id : this.lab.course_id
         }, {
-          $push : {
-            labs : {
-              [this.lab_id] : {
-                [this._id] : {
-                  data : {},
-                  tasks : _.map(this.tasks, (task, i) => {
-                    if(i == 0){
-                      return {
-                        status : TaskStatus.in_progress
-                      };
-                    } else {
-                      return {
-                        status : TaskStatus.not_attempted
-                      };
-                    }
-                  })
-                }
-              }
+          $set : {
+            ["labs."+this.lab_id+"."+this._id.toString()] : {
+                data : {},
+                tasks : _.map(this.tasks, (task, i) => {
+                  if(i == 0){
+                    return {
+                      status : TaskStatus.in_progress
+                    };
+                  } else {
+                    return {
+                      status : TaskStatus.not_attempted
+                    };
+                  }
+                })
             }
           }
         }, (err) => {
           if(err){
+            log.debug("Session | Error creating course record", err);
             reject(err);
           } else {
             resolve()

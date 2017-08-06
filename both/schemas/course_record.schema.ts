@@ -45,7 +45,9 @@ import { TaskStatus } from '../models/course_record.model';
       optional: true
     },
     tasks: {
-      type: Array
+      type: Array,
+      optional: true,
+      defaultValue: []
     },
     'tasks.$': {
       type: taskRecordSchema

@@ -11,7 +11,6 @@ import { SessionStatus } from '../models/session.model';
 const SessionTask = new SimpleSchema({
   feedback : {
     type : String,
-    defaultValue: "",
     optional: true
   }
 });

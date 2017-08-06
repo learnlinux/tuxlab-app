@@ -29,7 +29,7 @@
   }
 
   export interface Instructor {
-    _id? : string,
+    id? : string,
     display_name : string
   }
 
