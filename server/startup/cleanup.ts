@@ -23,15 +23,34 @@
     ]
   }).subscribe((sessions : Session[]) => {
       _.forEach(sessions, (session) => {
-        log.info("Destroying Session "+session._id);
-        _.forEach(session.containers, (container_record) => {
-            Container.destroy(container_record.container_id)
-              .then(() => {
-                log.info("-- Destroyed Container "+container_record.container_id);
-              })
-              .catch((err) => {
-                log.warn("-- Error Destroying Container "+container_record.container_id, err);
-              })
-        });
+
+        // Destroy First to avoid Race Conditions
+        Sessions.rawCollection().findAndModify(
+          {
+            _id : session._id
+          },
+          {},
+          {
+            $set : { status : SessionStatus.destroyed }
+          },
+          {
+            new: true,
+            upsert: false
+          }
+        )
+
+        // Destroy Session
+        .then(() => {
+          log.info("Destroying Session "+session._id);
+          _.forEach(session.containers, (container_record) => {
+              Container.destroy(container_record.container_id)
+                .then(() => {
+                  log.info("-- Destroyed Container "+container_record.container_id);
+                })
+                .catch((err) => {
+                  log.warn("-- Error Destroying Container "+container_record.container_id, err);
+                })
+          });
+        })
       });
   });
