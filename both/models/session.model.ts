@@ -11,6 +11,10 @@ export enum SessionStatus {
   // NOTE: THIS IS HARD-CODED INTO SESSION-DAEMON.
 }
 
+export interface SessionTask {
+  feedback : string
+}
+
 export interface Container {
   name? : string,
   container_ip: string,
@@ -27,9 +31,13 @@ export interface Session {
   user_id : string,
   lab_id: string,
 
+  // Status
   status: SessionStatus,
   expires: Date,
+
+  // Tasks
   current_task : number,
+  tasks : SessionTask[],
 
   containers : Container[]
 }

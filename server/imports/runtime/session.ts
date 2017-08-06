@@ -11,11 +11,18 @@ import { Cache } from '../service/cache';
 import { etcd } from '../service/etcd';
 import { log } from '../service/log';
 
+/* COLLECTIONS */
 import { Users } from '../../../both/collections/user.collection';
+
 import { Task } from '../../../both/models/lab.model';
-import { Session as SessionModel, Container as ContainerModel, SessionStatus } from '../../../both/models/session.model';
+
+import { Session as SessionModel, Container as ContainerModel, SessionStatus, SessionTask } from '../../../both/models/session.model';
 import { Sessions } from '../../../both/collections/session.collection';
 
+import { TaskStatus } from '../../../both/models/course_record.model';
+import { CourseRecords } from '../../../both/collections/course_record.collection';
+
+/* RUNTIME */
 import { VMConfigCustom } from '../api/vmconfig';
 import { InitObject, SetupObject, VerifyObject } from '../api/environment';
 
@@ -31,6 +38,7 @@ interface SessionObj{
   user_id : string,
   lab_id : string,
   lab : LabRuntime,
+  tasks : SessionTask[],
   containers : Container[]
 }
 
@@ -53,6 +61,7 @@ export class Session extends Cache {
   private lab : LabRuntime;
   public lab_id : string;
   public current_task = 0;
+  public tasks;
 
   // User
   public user_id; //user_id
@@ -79,10 +88,6 @@ export class Session extends Cache {
     this.expires.setSeconds(this.expires.getSeconds() + Meteor.settings['private']['labvm']['session_idle_timeout']);
   }
 
-  public getSessionID(){
-    return Session.constructSessionID(this.user_id, this.lab_id);
-  }
-
   /*
     getJSON()
     Gets this object as a JSON Object, safe for returning to the end user.
@@ -95,6 +100,7 @@ export class Session extends Cache {
        status: this.status,
        expires: this.expires,
        current_task : this.current_task,
+       tasks : this.tasks,
        containers : _.map(this.containers, function(c : Container){
          return c.getJSON();
        })
@@ -195,6 +201,7 @@ export class Session extends Cache {
               user_id : session_record.user_id,
               lab_id : session_record.lab_id,
               lab : lab,
+              tasks : session_record.tasks,
               containers : containers
             });
           });
@@ -241,7 +248,12 @@ export class Session extends Cache {
           user_id : user_id,
           lab_id : lab_id,
           lab : lab,
-          containers : containers
+          containers : containers,
+          tasks : _.map(lab.tasks, () => {
+            return {
+              feedback : ""
+            };
+          })
         });
       })
 
@@ -279,7 +291,8 @@ export class Session extends Cache {
    return Promise.all(
      [
       this.cache_del(),
-      this.mongo_update_status(status)
+      this.mongo_update_task_status(TaskStatus.failure),
+      this.mongo_update_session_status(status)
      ])
     .then(function(){
       return { status: SessionStatus.destroyed };
@@ -289,9 +302,13 @@ export class Session extends Cache {
 /************************
  *    SESSION RECORDS    *
  ************************/
+ public getCacheID(){
+   return Session.constructSessionID(this.user_id, this.lab_id);
+ }
+
   private cache_add() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.set(this.getSessionID(), this, (err, res) => {
+      return Session._cache.set(this.getCacheID(), this, (err, res) => {
         if(err){
           reject(err);
         } else {
@@ -303,7 +320,7 @@ export class Session extends Cache {
 
   private cache_del() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.del(this.getSessionID(), (err, res) => {
+      return Session._cache.del(this.getCacheID(), (err, res) => {
         if(err){
           reject(err);
         } else {
@@ -315,7 +332,7 @@ export class Session extends Cache {
 
   private cache_renew() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      return Session._cache.ttl(this.getSessionID(), Session._TTL, (err, res) => {
+      return Session._cache.ttl(this.getCacheID(), Session._TTL, (err, res) => {
         if(err){
           reject(err);
         } else {
@@ -326,30 +343,26 @@ export class Session extends Cache {
   }
 
   private mongo_add() : Promise<{}>{
+
+    // Get Container Objects
+    let container_obj : ContainerModel[] =
+      _.map(this.containers, (container : Container) => {
+        return container.getJSON();
+      });
+
+    // Create Session Object
     return new Promise((resolve, reject) => {
-
-      let container_obj : ContainerModel[] =
-        _.map(this.containers, (container : Container) => {
-          return container.getJSON();
-        });
-
       let record : SessionModel = {
         user_id : this.user_id,
         lab_id : this.lab_id,
         status: SessionStatus.active,
         expires: this.expires,
         current_task : this.current_task,
+        tasks : this.tasks,
         containers : container_obj
       }
 
-      Sessions.update({
-        status: SessionStatus.creating,
-        user_id : this.user_id,
-        lab_id : this.lab_id
-      },
-      {
-        '$set' : record
-      },(err, res) => {
+      Sessions.update({ _id : this._id },{ '$set' : record },(err, res) => {
         if (err){
           log.debug("Session | Error creating session record", err);
           reject(err);
@@ -358,14 +371,53 @@ export class Session extends Cache {
           resolve();
         }
       })
-    });
+    })
+
+    // Create Course Record
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        CourseRecords.upsert({
+          user_id : this.user_id,
+          course_id : this.lab.course_id
+        }, {
+          $push : {
+            labs : {
+              [this.lab_id] : {
+                [this._id] : {
+                  data : {},
+                  tasks : _.map(this.tasks, (task, i) => {
+                    if(i == 0){
+                      return {
+                        status : TaskStatus.in_progress
+                      };
+                    } else {
+                      return {
+                        status : TaskStatus.not_attempted
+                      };
+                    }
+                  })
+                }
+              }
+            }
+          }
+        }, (err) => {
+          if(err){
+            reject(err);
+          } else {
+            resolve()
+          }
+        })
+      })
+    })
   }
 
   private mongo_update_task() : Promise<{}>{
     return new Promise((resolve, reject) => {
       Sessions.update(
         { '_id' : this._id }, {
-          $set : { 'current_task' : this.current_task }
+          $set : {
+            'current_task' : this.current_task,
+          }
         }, (err) => {
           if (err) {
             reject();
@@ -376,7 +428,7 @@ export class Session extends Cache {
     });
   };
 
-  private mongo_update_status(status : SessionStatus) : Promise<{}>{
+  private mongo_update_session_status(status : SessionStatus) : Promise<{}>{
     return new Promise((resolve, reject) => {
       Sessions.update(
         { '_id' : this._id }, {
@@ -390,6 +442,17 @@ export class Session extends Cache {
         });
     });
   }
+
+  private mongo_update_task_status(task_status : TaskStatus){
+    var session_key = "labs." + this.lab_id + "." + this._id + ".";
+
+    CourseRecords.update({
+      "user_id" : this.user_id,
+      "course_id" : this.lab.course_id
+    }, {
+      [ session_key + "tasks." + this.current_task + ".status" ] : task_status
+    })
+  };
 
 /************************
  *     ETCD RECORDS     *
@@ -478,27 +541,68 @@ export class Session extends Cache {
     }));
   }
 
+
 /************************
 *  ENVIRONMENT OBJECT  *
 ************************/
   private getEnvironmentObject(){
+    var session_key = "labs." + this.lab_id + "." + this._id + ".";
+
     return {
       vm: _.map(this.containers, (container) => {
         return container.getVMInterface();
       }),
-      setLabData: () => {},
-      getLabData: () => {},
-      getUserProfile: () => {},
+      setLabData: (data) => {
+          CourseRecords.update({
+            "user_id" : this.user_id,
+            "course_id" : this.lab.course_id
+          }, {
+            $set : {
+              [session_key + "data"] : data
+            }
+          });
+      },
+      getLabData: () => {
+        return CourseRecords.findOne({
+          "user_id" : this.user_id,
+          "course_id" : this.lab.course_id
+        })["labs"][this.lab_id][this._id].data;
+      },
+      getUserProfile: () => {
+        return Users.findOne(this.user_id).profile;
+      }
     };
   }
 
   private getTaskObject(){
-    return {
-      setTaskData: (data : string) => {},
-      getTaskData: () => {},
+    var session_key = "labs." + this.lab_id + "." + this._id + ".";
 
-      setMarkdown: (md : string) => {},
-      setLog: (md : string) => {}
+    return {
+      setTaskData: (data : string) => {
+        CourseRecords.update({
+          "user_id" : this.user_id,
+          "course_id" : this.lab.course_id
+        }, {
+          $set : {
+            [ session_key + "tasks." + this.current_task + ".data" ] : data
+          }
+        });
+      },
+      getTaskData: () => {
+        return CourseRecords.findOne({
+          "user_id" : this.user_id,
+          "course_id" : this.lab.course_id
+        })["labs"][this.lab_id][this._id].tasks[this.current_task].data;
+      },
+
+      setFeedback: (md : string) => {
+        this.tasks[this.current_task].feedback = md;
+        Sessions.update(this._id, {
+          $set : {
+            ["tasks." + this.current_task + ".feedback"] : md
+          }
+        })
+      }
     };
   }
 
@@ -523,7 +627,17 @@ export class Session extends Cache {
     return new VerifyObject(_.extend(this.getEnvironmentObject(),
                                      this.getTaskObject(),
       {
-        setGrade: (n : number, d : number) => {},
+        setGrade: (n : number, d : number) => {
+          var session_key = "labs." + this.lab_id + "." + this._id + ".";
+
+          CourseRecords.update({
+            "user_id" : this.user_id,
+            "course_id" : this.lab.course_id
+          }, {
+            [ session_key + "tasks." + this.current_task + ".grade" ] : [n,d]
+          });
+
+        },
         error: error,
         next: next,
         fail: fail,
@@ -548,7 +662,7 @@ export class Session extends Cache {
     Promise.all([this.etcd_renew_proxy, this.etcd_renew_dns]);
 
     // Renew in MongoDB
-    this.mongo_update_status(SessionStatus.active);
+    this.mongo_update_session_status(SessionStatus.active);
   }
 
   private initLab() : Promise<{}> {
@@ -571,20 +685,28 @@ export class Session extends Cache {
     return new Promise((resolve, reject) => {
 
       /* FUNCTIONS PASSED INTO VERIFIER */
-      var self = this;
       let next_task_fn = this.getSetupObject(resolve, reject);
 
+      let error = (err) => {
+        this.mongo_update_task_status(TaskStatus.error);
+        reject(err);
+      }
+
       let completed = () => {
+        // Set Success Status
+        this.mongo_update_task_status(TaskStatus.success);
+
         // Check if Lab Completed
-        if (self.lab.tasks.length <= self.current_task + 1){
+        if (this.lab.tasks.length <= this.current_task + 1){
           // Complete Lab
           this.destroy(SessionStatus.completed);
           resolve();
         } else {
           // Proceed to Next Task
-          self.current_task++;
-          self.mongo_update_task();
-          self.lab.exec_setup(self.current_task, next_task_fn);
+          this.current_task++;
+          this.mongo_update_task_status(TaskStatus.in_progress);
+          this.mongo_update_task();
+          this.lab.exec_setup(this.current_task, next_task_fn);
         }
       }
 
@@ -593,11 +715,12 @@ export class Session extends Cache {
       }
 
       let fail = () => {
-        self.destroy(SessionStatus.failed);
+        this.mongo_update_task_status(TaskStatus.error);
+        this.destroy(SessionStatus.failed);
         resolve(this);
       }
 
-      return this.lab.exec_verify(this.current_task, this.getVerifyObject(reject, completed, fail, retry));
+      return this.lab.exec_verify(this.current_task, this.getVerifyObject(error, completed, fail, retry));
     });
   }
 }

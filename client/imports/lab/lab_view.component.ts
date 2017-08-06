@@ -56,12 +56,12 @@
   export class LabView extends MeteorComponent {
 		@ViewChild(LabTerminal) terminal : LabTerminal;
 
-		// Data Objects
+		// Lab & Session
 		private lab : Observable<Lab>;
 		private session : Observable<Session>;
-
 		private task_index : number;
 
+		// Containers
 		private container_index : number = 0;
 		private containers : Container[];
 
@@ -123,6 +123,7 @@
 				});
     }
 
+		// Bind to Terminal Init
 		private _terminal_init = false;
 		ngAfterViewInit(){
 			if(this.terminal && !this._terminal_init){
@@ -131,12 +132,19 @@
 			}
 		}
 
-		private openConnectionDetails(){
+		// Connection Details
+		private connectionDetails(){
 			var dialogRef = this.dialog.open(ConnectionDetailsDialog, { width: '600px' });
 			dialogRef.componentInstance.container = this.containers[this.container_index];
 		}
 
+		// Refresh
 		private refresh(){
 			location.reload();
+		}
+
+		// Check Task Status
+		private check(){
+			
 		}
   }

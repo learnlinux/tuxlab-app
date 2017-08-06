@@ -30,10 +30,10 @@
           return Users.getRoleFor(user_id, course._id) >= Role.instructor;
         },
         update: function(user_id, course, fields) {
-          return Users.isGlobalAdministrator(user_id);
+          return Users.getRoleFor(user_id, course._id) >= Role.instructor;
         },
         remove: function(user_id, course) {
-          return Users.isGlobalAdministrator(user_id);
+          return Users.getRoleFor(user_id, course._id) >= Role.instructor;
         },
         fetch: []
       });

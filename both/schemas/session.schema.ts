@@ -8,6 +8,14 @@ import SimpleSchema from 'simpl-schema';
 // Session Model
 import { SessionStatus } from '../models/session.model';
 
+const SessionTask = new SimpleSchema({
+  feedback : {
+    type : String,
+    defaultValue: "",
+    optional: true
+  }
+});
+
 const ContainerSchema = new SimpleSchema({
   name : {
     type : String,
@@ -45,6 +53,12 @@ export const SessionSchema : SimpleSchema = new SimpleSchema({
   },
   current_task:{
     type: Number
+  },
+  tasks : {
+    type: Array
+  },
+  'tasks.$' : {
+    type: SessionTask
   },
   containers : {
     type: Array

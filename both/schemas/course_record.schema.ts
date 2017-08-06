@@ -12,21 +12,20 @@ import SimpleSchema from 'simpl-schema';
 import { Users } from '../collections/user.collection';
 import { Courses } from '../collections/course.collection';
 import { Labs } from '../collections/lab.collection';
+import { Sessions } from '../collections/session.collection';
 
 // Models
 import { TaskStatus } from '../models/course_record.model';
 
 /* Task Schema */
   const taskRecordSchema : SimpleSchema = new SimpleSchema({
-    _id: {
-      type: String
-    },
     status: {
       type: Number,
       allowedValues: TaskStatus
     },
     grade: {
       type: Array,
+      optional: true,
       minCount: 2,
       maxCount: 2
     },
@@ -39,8 +38,8 @@ import { TaskStatus } from '../models/course_record.model';
     }
   });
 
-/* Lab Schema */
-  const labRecordSchema = new SimpleSchema({
+/* Session Schema */
+  const sessionRecordSchema = new SimpleSchema({
     data: {
       type: Object,
       optional: true
@@ -50,6 +49,24 @@ import { TaskStatus } from '../models/course_record.model';
     },
     'tasks.$': {
       type: taskRecordSchema
+    }
+  });
+
+/* Lab Schema */
+  const labRecordSchema = new SimpleSchema({
+    type: Object,
+    blackbox: true,
+    custom: function() {
+      _.forEach(this.value, function(session_record, session_id){
+
+        // Validate lab_id
+        if (Meteor.isServer && typeof Sessions.findOne({ _id: this.session_id }) === undefined){
+          return "invalidLab";
+        }
+
+        // Validate lab_record
+        sessionRecordSchema.validate(session_record);
+      });
     }
   });
 

@@ -21,9 +21,13 @@
     </md-toolbar>
 
     <!-- Content -->
-    <markdown>
-      {{ (lab | async)?.tasks[task_index]?.md }}
-    </markdown>
+    <div class="task_content" *ngIf="(session | async)?.tasks[task_index] && (lab | async)?.tasks[task_index]">
+      <!-- Task Instructions -->
+      <markdown [data]="(lab | async)?.tasks[task_index]?.md"></markdown>
+
+      <!-- Feedback -->
+      <markdown [data]="(session | async)?.tasks[task_index]?.feedback"></markdown>
+    </div>
 
   </div>
 
@@ -40,7 +44,7 @@
 
       <span class="spacer"></span>
 
-      <button md-icon-button (click)="openConnectionDetails()"><md-icon>dns</md-icon></button>
+      <button md-icon-button (click)="connectionDetails()"><md-icon>dns</md-icon></button>
       <button md-icon-button (click)="refresh()"><md-icon>refresh</md-icon></button>
     </md-toolbar>
 

@@ -4,26 +4,29 @@
 
 /* Task Model */
 export enum TaskStatus {
-  Success,
-  Failure,
-  Skipped,
-  In_Progress,
-  Not_Attempted
+  success = 0,
+  failure = 1,
+  skipped = 2,
+  in_progress = 3,
+  not_attempted = 4,
+  error = 5
 }
 
 interface TaskRecord {
-  _id: string;
   status: TaskStatus;
-  grade: number[];
+  grade?: number[];
   data?: any[];
-  attempted: number[];
+}
+
+/* Session Record */
+interface SessionRecord {
+  data?: any;
+  tasks: TaskRecord[];
 }
 
 /* LabRecord Model */
 interface LabRecord {
-  data?: any;
-  attempted: number[];
-  tasks: TaskRecord[];
+  [session_id : string] : SessionRecord;
 }
 
 export interface LabRecords {

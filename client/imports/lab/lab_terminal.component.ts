@@ -40,9 +40,6 @@
 		}
 
 		public bindSocket(){
-			// Clear Terminal
-			this.xterm.clear();
-
 			// Get URL
 			var host = this.container.container_ip;
 
@@ -58,6 +55,9 @@
 			// Open Terminal
 			this.xterm = new Terminal();
 			this.xterm.open(this.terminal_container.nativeElement, false);
+			setTimeout(() => {
+				this.xterm.fit();
+			}, 1000)
 
 			// Bind to Socket
 			socket.on('output', (data) => {
@@ -69,6 +69,11 @@
 				console.error(err);
 			}).on('error', (err) => {
 				console.error(err);
+			}).once('data', () => {
+				socket.emit('resize', {
+					cols : this.xterm.size.cols,
+					rows : this.xterm.size.rows
+				});
 			})
 
 			// Bind to XTerm
@@ -91,7 +96,6 @@
 						rows : size.rows
 					});
 				});
-
 			});
 
 		}

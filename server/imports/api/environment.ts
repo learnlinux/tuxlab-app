@@ -70,8 +70,7 @@
    getTaskData : () => string;
 
    // Markdown Interface
-   setMarkdown : (md : string) => void; // Updates the Instructions themselves
-   setLog : (md : string) => void; // Updates only the "status area" of the instructions
+   setFeedback : (md : string) => void; // Updates the markdown feedback
 
    // Constructor from Object
    constructor(obj){
