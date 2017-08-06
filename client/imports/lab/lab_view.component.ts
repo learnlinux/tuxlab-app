@@ -4,14 +4,13 @@
 	import 'rxjs/add/operator/map';
 	import 'rxjs/add/operator/distinct';
 	import 'rxjs/add/operator/mergeMap';
-	import 'rxjs/add/observable/fromPromise';
 
 	import { Meteor } from 'meteor/meteor';
 	import { Tracker } from 'meteor/tracker';
 	import { MeteorComponent } from 'angular2-meteor';
 
 // Angular Imports
-	import { Component, Input, ViewChild } from '@angular/core';
+	import { Component, Input, ViewChild, NgZone } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
 	import { MdDialog } from '@angular/material';
 	import { ObservableCursor } from 'meteor-rxjs';
@@ -58,17 +57,14 @@
 
 		// Lab & Session
 		private lab : Observable<Lab>;
-		private session : Observable<Session>;
-		private task_index : number;
-
-		// Containers
+		private session : Session;
+		private task_index : number = 0;
 		private container_index : number = 0;
-		private containers : Container[];
-
 
     constructor( private router : Router,
 								 private route: ActivatedRoute,
-							 	 private dialog : MdDialog) {
+							 	 private dialog : MdDialog,
+							 	 private zone : NgZone ) {
 			super();
 			prism_style;
     }
@@ -76,6 +72,7 @@
 
 		// Load Data
 		ngOnInit(){
+
 				// Lab
 				this.lab = this.route.params
 					.map(params => [params['course_id'], params['lab_id']])
@@ -95,30 +92,26 @@
 						);
 					});
 
-				// Session
-				this.session = this.lab
+				this.lab
 				.filter((x) => { return _.has(x, "_id")})
 				.distinct(x => x._id)
-				.mergeMap((lab) => {
+				.subscribe((lab) => {
 					if(lab && lab._id){
-						return Observable.fromPromise(
-							new Promise((resolve, reject) => {
-								Meteor.call('session.getOrCreate',lab._id, (err, res) => {
-									if(err){
-										reject(err);
-									} else {
+						Meteor.call('session.getOrCreate',lab._id, (err, res) => {
+							if(err){
+								console.error(err);
+							} else {
 
-										// Set Containers and Task Index
-										this.task_index = res.current_task;
-										this.containers = res.containers;
+								// Pass Values to Session
+								this.zone.run(() => {
+									this.session = res;
+									this.task_index = res.current_task;
+								})
 
-										// Trigger Connection if not Already
-										this.ngAfterViewInit();
-
-										resolve(res);
-									}
-								});
-						}));
+								// Trigger Connection if not Already
+								this.ngAfterViewInit();
+							}
+						});
 					}
 				});
     }
@@ -135,7 +128,7 @@
 		// Connection Details
 		private connectionDetails(){
 			var dialogRef = this.dialog.open(ConnectionDetailsDialog, { width: '600px' });
-			dialogRef.componentInstance.container = this.containers[this.container_index];
+			dialogRef.componentInstance.container = this.session.containers[this.container_index];
 		}
 
 		// Refresh
@@ -143,8 +136,36 @@
 			location.reload();
 		}
 
+		private prevTask(){
+			this.zone.run(() => {
+				this.task_index = (this.task_index > 0) ? this.task_index - 1 : this.task_index;
+			})
+		}
+
+		private nextTask(){
+			this.zone.run(() => {
+				this.task_index++;
+			})
+		}
+
+
 		// Check Task Status
-		private check(){
-			
+		private checkTask(){
+			return new Promise((resolve, reject) => {
+				Meteor.call('session.nextTask', this.session.lab_id, (err, res) => {
+					if(err){
+						reject(err);
+					} else {
+						resolve(res);
+					}
+				})
+			})
+
+			// Set Observable<Session>
+			.then((res : Session) => {
+				this.zone.run(() => {
+					this.session = res;
+				})
+			})
 		}
   }

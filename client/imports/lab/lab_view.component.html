@@ -1,32 +1,30 @@
 <!-- Lab Component -->
-<div class="tuxlab-lab-view" fxLayout fxLayoutAlign="center flex-start" *ngIf="(session | async); else loading">
+<div class="tuxlab-lab-view" fxLayout fxLayoutAlign="center flex-start" *ngIf="session; else loading">
 
   <!-- Markdown Component -->
   <div>
 
     <!-- Toolbar -->
     <md-toolbar>
-      <button md-icon-button (click)="task_index = (task_index > 0) ? task_index - 1 : task_index"><md-icon>arrow_back</md-icon></button>
+      <button md-icon-button (click)="prevTask()"><md-icon>arrow_back</md-icon></button>
 
       <span class="center-text">
         <span class="number">{{ task_index + 1 }}</span>
         {{ (lab | async)?.tasks[task_index]?.name }}
       </span>
 
-      <span>
-        <button *ngIf="task_index < (session | async)?.current_task" md-icon-button (click)="task_index = task_index + 1" ><md-icon>arrow_forward</md-icon></button>
-        <button *ngIf="task_index >= (session | async)?.current_task" md-icon-button (click)="check"><md-icon>check</md-icon></button>
-      </span>
+        <button *ngIf="this.task_index < this.session.current_task" md-icon-button (click)="nextTask()" ><md-icon>arrow_forward</md-icon></button>
+        <button *ngIf="this.task_index >= this.session.current_task" md-icon-button (click)="checkTask()"><md-icon>check</md-icon></button>
 
     </md-toolbar>
 
     <!-- Content -->
-    <div class="task_content" *ngIf="(session | async)?.tasks[task_index] && (lab | async)?.tasks[task_index]">
+    <div class="task_content" *ngIf="session?.tasks?.length > task_index && (lab | async)?.tasks[task_index]">
       <!-- Task Instructions -->
       <markdown [data]="(lab | async)?.tasks[task_index]?.md"></markdown>
 
       <!-- Feedback -->
-      <markdown [data]="(session | async)?.tasks[task_index]?.feedback"></markdown>
+      <markdown [data]="session?.tasks[task_index]?.feedback"></markdown>
     </div>
 
   </div>
@@ -35,11 +33,11 @@
   <div>
     <md-toolbar>
 
-      <md-select placeholder="Machine" *ngIf="(session | async)?.containers?.length > 1" [(ngModel)]="container_index">
-         <md-option *ngFor="let container of (session | async)?.containers; let i = index" [value]="i">{{ (container)?.name ? container.name : i + 1 }}</md-option>
+      <md-select placeholder="Machine" *ngIf="session?.containers?.length > 1" [(ngModel)]="container_index">
+         <md-option *ngFor="let container of session?.containers; let i = index" [value]="i">{{ (container)?.name ? container.name : i + 1 }}</md-option>
       </md-select>
-      <span *ngIf="(session | async)?.containers?.length == 1">
-        {{ (session | async)?.containers[0]?.name ? (session | async)?.containers[0].name : LabVM }}
+      <span *ngIf="session?.containers?.length == 1">
+        {{ session?.containers[0]?.name ? session.containers[0].name : LabVM }}
       </span>
 
       <span class="spacer"></span>
@@ -48,7 +46,7 @@
       <button md-icon-button (click)="refresh()"><md-icon>refresh</md-icon></button>
     </md-toolbar>
 
-    <tuxlab-terminal [container]="containers[container_index]"></tuxlab-terminal>
+    <tuxlab-terminal [container]="session?.containers[container_index]"></tuxlab-terminal>
   </div>
 </div>
 

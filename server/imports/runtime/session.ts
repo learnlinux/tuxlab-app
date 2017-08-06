@@ -722,8 +722,9 @@ export class Session extends Cache {
         this.mongo_update_task_status(TaskStatus.failure);
         resolve();
       }
-
       return this.lab.exec_verify(this.current_task, this.getVerifyObject(error, completed, fail, retry));
+    }).then(() => {
+      return this;
     }).catch((err) => {
       this.mongo_update_task_status(TaskStatus.error);
       return err;
