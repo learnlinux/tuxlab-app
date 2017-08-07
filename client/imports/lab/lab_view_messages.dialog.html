@@ -1,0 +1,15 @@
+
+<!-- Title -->
+<div class="title">
+  <span>{{ data.title }}</span>
+</div>
+
+<!-- Message -->
+<p>
+  {{ data.message }}
+</p>
+
+<!-- Actions -->
+<md-dialog-actions fxLayout="row" fxLayoutAlign="flex-start flex-start">
+  <button md-button [routerLink]="['../']" md-dialog-close><md-icon>library_books</md-icon> &nbsp; Back to Course</button>
+</md-dialog-actions>

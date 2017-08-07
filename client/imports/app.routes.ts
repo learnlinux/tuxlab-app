@@ -25,7 +25,9 @@ import CourseList from './course/course_list.component';
 import CourseView from './course/course_view.component';
 
 // Lab
-import { LabView, ConnectionDetailsDialog } from './lab/lab_view.component';
+import { LabView } from './lab/lab_view.component';
+import { ConnectionDetailsDialog } from './lab/lab_view_connection.dialog';
+import { MessageDialog } from './lab/lab_view_messages.dialog';
 import LabTerminal from './lab/lab_terminal.component';
 
 // Static
@@ -68,7 +70,8 @@ export const AppRoutes : Routes = [
     CourseView,
     LabView,
     LabTerminal,
-    ConnectionDetailsDialog
+    ConnectionDetailsDialog,
+    MessageDialog
   ],
   imports: [
     RouterModule.forRoot(
@@ -98,7 +101,8 @@ export const AppRoutes : Routes = [
     AuthGuard
   ],
   entryComponents: [
-    ConnectionDetailsDialog
+    ConnectionDetailsDialog,
+    MessageDialog
   ]
 })
 export class AppRoutingModule { }

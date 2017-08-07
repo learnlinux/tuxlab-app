@@ -19,31 +19,19 @@
 	import template from "./lab_view.component.html";
 	import style from "./lab_view.component.scss";
 
-// Define Dialog Component
-	import style_dialog from "./lab_view_connection_dialog.scss";
-	import template_dialog from "./lab_view_connection_dialog.html";
-
 // Markdown Styles
 	import prism_style from "prismjs/themes/prism.css";
 
 // Import Lab Data
 	import { Lab } from '../../../both/models/lab.model';
 	import { Labs } from '../../../both/collections/lab.collection';
-	import { Container, Session } from '../../../both/models/session.model';
+	import { Container, Session, SessionStatus } from '../../../both/models/session.model';
 	import { Sessions } from '../../../both/collections/session.collection';
 
-// Lab Terminal
+// Subcomponents
 	import LabTerminal from './lab_terminal.component';
-
-//  ConnectionDialog Class
-	@Component({
-		selector: 'tuxlab-lab-connection-details',
-		template: template_dialog,
-		styles: [ style_dialog ]
-	})
-	export class ConnectionDetailsDialog extends MeteorComponent {
-		public container : Container;
-	}
+	import { ConnectionDetailsDialog } from './lab_view_connection.dialog';
+	import { MessageDialog } from './lab_view_messages.dialog';
 
 //  LabView Class
 	@Component({
@@ -165,7 +153,63 @@
 			.then((res : Session) => {
 				this.zone.run(() => {
 					this.session = res;
+					this.task_index = res.current_task;
 				})
+			})
+
+			// On Completed Popups
+			.then(() => {
+				this.zone.run(() => {
+
+					let dialog;
+					switch(this.session.status){
+
+						// Completed
+						case SessionStatus.completed:
+							dialog = this.dialog.open(MessageDialog, {
+								width: '500px',
+								height: '300px',
+								data : {
+									title : 'Good Job!',
+									message: `You have completed the lab.  The results of your lab
+														have been sent to your instructor for grading.`
+								}
+							});
+							break;
+
+						// Failed
+						case SessionStatus.failed:
+							dialog = this.dialog.open(MessageDialog, {
+								width: '500px',
+								height: '300px',
+								data : {
+									title : 'Oops!',
+									message: `Looks like you made a mistake in completing that task,
+														and are no longer allowed to continue with the lab.
+														If you believe this to be in error, contact your
+														instructor.`
+								}
+							});
+							break;
+
+						// Destroyed
+						case SessionStatus.destroyed:
+							dialog = this.dialog.open(MessageDialog, {
+								width: '500px',
+								height: '300px',
+								data : {
+									title : 'Uh Oh!',
+									message: `Looks like the lab you are trying to access has been
+														destroyed. Once you start a lab, it is only accessible
+														for a limited time, so make sure to complete the lab
+														as soon as possible.  You should attempt to re-complete
+														the lab from the course dashboard, otherwise contact
+														your instructor.`
+								}
+							});
+							break;
+					}
+				});
 			})
 		}
   }
