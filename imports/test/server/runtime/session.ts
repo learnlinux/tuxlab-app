@@ -9,6 +9,7 @@ import { DefaultFixtures, cleanupDatabase } from '../../../fixtures';
 
 import { SessionStatus } from '../../../../both/models/session.model';
 import { Session } from '../../../../server/imports/runtime/session';
+import { Sessions } from '../../../../both/collections/session.collection';
 
 import { TaskStatus } from '../../../../both/models/course_record.model';
 import { CourseRecords } from '../../../../both/collections/course_record.collection';
@@ -108,6 +109,14 @@ export function SessionTests(){
       })
       .catch(() => {
         return null;
+      })
+
+      // Session Record Updated
+      .then(() => {
+        var session_record = Sessions.findOne({ _id : session._id.toString() });
+        expect(session_record).to.not.be.null;
+        expect(session_record).to.have.property("status");
+        expect(session_record.status).to.be.equal(SessionStatus.failed);
       })
 
       // Course Record Updated

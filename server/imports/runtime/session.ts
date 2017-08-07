@@ -66,7 +66,7 @@ export class Session extends Cache {
   // User
   public user_id; //user_id
   public getUserObj(){
-    return Users.findOne({ _id : this.user_id });
+    return Users.findOne( this.user_id );
   }
 
   // Containers
@@ -82,10 +82,6 @@ export class Session extends Cache {
 
     // Copy Values
     _.extend(this, obj);
-
-    // Set Expiration
-    this.expires = new Date();
-    this.expires.setSeconds(this.expires.getSeconds() + Meteor.settings['private']['labvm']['session_idle_timeout']);
   }
 
   /*
@@ -136,28 +132,35 @@ export class Session extends Cache {
 
   private static getSession_cache(session_id : string) : Promise<Session>{
     return new Promise((resolve, reject) => {
-      Session._cache.get(session_id, (err, val) => {
+      Session._cache.get<Session>(session_id, (err, val) => {
         if (err){
           reject(err);
+        } else if (_.has(val,'status') && _.includes([SessionStatus.creating, SessionStatus.active],val.status)) {
+          resolve(val);
         } else {
-          resolve(<Session>val);
+          resolve(null);
         }
       });
     });
   }
 
-  private static getSession_mongo(user_id : string, lab_id : string) : Promise <Session>{
+  private static getExpirationDate(){
+    return new Date((new Date).getTime() + Meteor.settings['private']['labvm']['session_idle_timeout']);
+  }
 
+  private static getSession_mongo(user_id : string, lab_id : string) : Promise <Session>{
     return Sessions.rawCollection().findAndModify(
         {
-          'user_id' : user_id,
-          'lab_id' : lab_id,
+          'user_id' : user_id ,
+          'lab_id' : lab_id ,
           'status' : { $in : [SessionStatus.creating, SessionStatus.active] }
         },
         {},
         {
           $setOnInsert: {
-            'status' : SessionStatus.creating
+            '_id' : (new Mongo.ObjectID()).valueOf(),
+            'status' : SessionStatus.creating,
+            'expires' : Session.getExpirationDate()
           }
         },
         {
@@ -283,19 +286,20 @@ export class Session extends Cache {
 /************************
  *   DESTROY FUNCTION   *
  ************************/
- public destroy(status : SessionStatus) : Promise<any> {
+ public destroy(status : SessionStatus) : Promise<Session> {
    this.status = status;
 
    // Run Lab Destroy Function
    this.destroyLab();
 
-     return Promise.all([
-      this.cache_del(),
-      this.mongo_update_session_status(status)
-     ])
-    .then(function(){
-      return { status: SessionStatus.destroyed };
-    })
+   // Delete from Cache
+   return Promise.all([
+    this.mongo_update_session_status(status)
+   ])
+
+  .then(function(){
+    return this.toJSON();
+  })
  }
 
 /************************
@@ -352,8 +356,6 @@ export class Session extends Cache {
     // Create Session Object
     return new Promise((resolve, reject) => {
       let record : SessionModel = {
-        _id : this._id,
-
         // Details
         user_id : this.user_id,
         lab_id : this.lab_id,
@@ -366,7 +368,7 @@ export class Session extends Cache {
         containers : container_obj
       }
 
-      Sessions.update({ _id : this._id.toString() },{ '$set' : record },(err, res) => {
+      Sessions.update(this._id,{ '$set' : record },(err, res) => {
         if (err){
           log.debug("Session | Error creating session record", err);
           reject(err);
@@ -385,7 +387,7 @@ export class Session extends Cache {
           course_id : this.lab.course_id
         }, {
           $set : {
-            ["labs."+this.lab_id+"."+this._id.toString()] : {
+            ["labs."+this.lab_id+"."+this._id] : {
                 data : {},
                 tasks : _.map(this.tasks, (task, i) => {
                   if(i == 0){
@@ -414,8 +416,7 @@ export class Session extends Cache {
 
   private mongo_update_task() : Promise<{}>{
     return new Promise((resolve, reject) => {
-      Sessions.update(
-        { '_id' : this._id }, {
+      Sessions.update(this._id, {
           $set : {
             'current_task' : this.current_task,
           }
@@ -431,8 +432,7 @@ export class Session extends Cache {
 
   private mongo_update_session_status(status : SessionStatus) : Promise<{}>{
     return new Promise((resolve, reject) => {
-      Sessions.update(
-        { '_id' : this._id }, {
+      Sessions.update(this._id, {
           $set : { 'status' : status, 'expires' : this.expires}
         }, (err) => {
           if (err) {
@@ -600,7 +600,7 @@ export class Session extends Cache {
 
       setFeedback: (md : string) => {
         this.tasks[this.current_task].feedback = md;
-        Sessions.update(this._id, {
+        Sessions.update(this._id , {
           $set : {
             ["tasks." + this.current_task + ".feedback"] : md
           }

@@ -15,7 +15,7 @@
   Sessions.observable.find({
     $and : [
       {
-        expires : { $gt : new Date() }
+        expires : { $gt : new Date(), $exists : true }
       },
       {
         status : { $nin : [ SessionStatus.completed, SessionStatus.failed, SessionStatus.destroyed ] }

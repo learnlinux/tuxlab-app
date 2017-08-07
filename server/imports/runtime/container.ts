@@ -138,7 +138,7 @@
 
     public static destroy(container_id : string) : Promise<{}> {
       var container = Container.docker.getContainer(container_id);
-      return container.remove();
+      return container.remove({ force: true });
     }
 
     public getVMInterface() : VM {

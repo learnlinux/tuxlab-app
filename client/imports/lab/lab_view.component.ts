@@ -85,6 +85,7 @@
 				.distinct(x => x._id)
 				.subscribe((lab) => {
 					if(lab && lab._id){
+
 						Meteor.call('session.getOrCreate',lab._id, (err, res) => {
 							if(err){
 								console.error(err);
@@ -168,7 +169,6 @@
 						case SessionStatus.completed:
 							dialog = this.dialog.open(MessageDialog, {
 								width: '500px',
-								height: '300px',
 								data : {
 									title : 'Good Job!',
 									message: `You have completed the lab.  The results of your lab
@@ -181,7 +181,6 @@
 						case SessionStatus.failed:
 							dialog = this.dialog.open(MessageDialog, {
 								width: '500px',
-								height: '300px',
 								data : {
 									title : 'Oops!',
 									message: `Looks like you made a mistake in completing that task,
@@ -196,7 +195,6 @@
 						case SessionStatus.destroyed:
 							dialog = this.dialog.open(MessageDialog, {
 								width: '500px',
-								height: '300px',
 								data : {
 									title : 'Uh Oh!',
 									message: `Looks like the lab you are trying to access has been
