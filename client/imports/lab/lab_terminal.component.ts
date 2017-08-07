@@ -36,7 +36,9 @@
     }
 
 		onResize(){
-			this.xterm.fit();
+			if(!_.isNull(this.xterm)){
+				this.xterm.fit();
+			}
 		}
 
 		public bindSocket(){
@@ -86,7 +88,7 @@
 
 				// Pass Input
 				this.xterm.on('paste', (data) => {
-					socket.emit('input', data);
+					this.xterm.write('input', data);
 				});
 
 				// Resize Listener

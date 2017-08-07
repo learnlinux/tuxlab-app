@@ -9,7 +9,7 @@
 	import 'rxjs/add/observable/fromPromise';
 
 // Angular Imports
-	import { Component, Input, ChangeDetectorRef } from '@angular/core';
+	import { HostListener, Component, Input, ChangeDetectorRef } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
 
 // Define Course List Component
@@ -64,36 +64,57 @@
 				});
 
 			this.course_record = this.course
-				.mergeMap((course) => {
-					return Observable.fromPromise(
-						new Promise((resolve, reject) => {
-							Meteor.subscribe('course_records.id', course._id, Meteor.userId(), () => {
-								var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
-								if(_.isNull(course_record)){
-									reject("Course Record Not Found");
-								} else {
-									resolve(course_record);
-								}
-							});
-						})
-					);
-				});
+			.mergeMap((course) => {
+				return Observable.fromPromise(
+					new Promise((resolve, reject) => {
+						Meteor.subscribe('course_records.id', course._id, Meteor.userId(), () => {
+							var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
+							if(_.isNull(course_record)){
+								reject("Course Record Not Found");
+							} else {
+								resolve(course_record);
+							}
+						});
+					})
+				);
+			});
 
 			this.labs = this.course
-				.mergeMap((course) => {
-					return Observable.fromPromise(
-						new Promise((resolve, reject) => {
-							Meteor.subscribe('labs.course', course._id, () => {
-								var labs = Labs.find({ course_id : course._id });
-								if(_.isNull(labs)){
-									reject("Course Record Not Found");
-								} else {
-									resolve(labs.fetch());
-								}
-							});
-						})
-					);
-				});
-
+			.mergeMap((course) => {
+				return Observable.fromPromise(
+					new Promise((resolve, reject) => {
+						Meteor.subscribe('labs.course', course._id, () => {
+							var labs = Labs.find({ course_id : course._id });
+							if(_.isNull(labs)){
+								reject("Course Record Not Found");
+							} else {
+								resolve(labs.fetch());
+							}
+						});
+					})
+				);
+			});
     }
+
+		/* File Drop */
+		private dragActive = false;
+		@HostListener('drop', ['$event'])
+		onDrop(event) {
+			 event.preventDefault();
+			 this.dragActive = false;
+
+			 // Get File
+			 var fileReader = new FileReader();
+			 _.each(event.dataTransfer.files, (file) => {
+				 	var lab_file =  fileReader.readAsText(file);
+			 });
+		}
+
+		@HostListener('dragover', ['$event'])
+		onDragOver(event) {
+			 event.stopPropagation();
+			 event.preventDefault();
+			 event.dataTransfer.dropEffect = 'copy';
+		}
+
   }

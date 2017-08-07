@@ -19,12 +19,12 @@
     </md-toolbar>
 
     <!-- Content -->
-    <div class="task_content" *ngIf="session?.tasks?.length > task_index && (lab | async)?.tasks[task_index]">
+    <div class="task_content">
       <!-- Task Instructions -->
-      <markdown [data]="(lab | async)?.tasks[task_index]?.md"></markdown>
+      <markdown [data]="(lab | async)?.tasks[task_index]?.md || ''"></markdown>
 
       <!-- Feedback -->
-      <markdown [data]="session?.tasks[task_index]?.feedback"></markdown>
+      <markdown [data]="session?.tasks[task_index]?.feedback || ''"></markdown>
     </div>
 
   </div>

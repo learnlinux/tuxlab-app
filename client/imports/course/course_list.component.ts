@@ -56,9 +56,7 @@
 				this.courses = Courses.observable.find();
 				Meteor.subscribe('courses.explore', 0);
 			} else {
-
-
-
+				this.router.navigate(['error','404']);
 			}
 		}
   }

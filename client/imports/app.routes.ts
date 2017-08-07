@@ -29,6 +29,7 @@ import { LabView, ConnectionDetailsDialog } from './lab/lab_view.component';
 import LabTerminal from './lab/lab_terminal.component';
 
 // Static
+import ErrorPage from './static/error.component';
 import Help from './static/help.component';
 import Legal from './static/legal.component';
 
@@ -42,6 +43,7 @@ export const AppRoutes : Routes = [
   // Static
   { path: 'help', component: Help },
   { path: 'legal', component: Legal },
+  { path: 'error/:error_code', component: ErrorPage },
 
   // Courses
   { path: 'explore', component: CourseList },
@@ -49,14 +51,17 @@ export const AppRoutes : Routes = [
   { path: 'courses/:course_id', component: CourseView },
 
   // Labs
-  { path: 'courses/:course_id/labs/:lab_id', component: LabView, canActivate: [AuthGuard] }
+  { path: 'courses/:course_id/labs/:lab_id', component: LabView, canActivate: [AuthGuard] },
 
+  // Error Route
+  { path: '**', redirectTo: '/error/404' }
 ]
 
 @NgModule({
   declarations: [
     Dashboard,
     Help,
+    ErrorPage,
     Legal,
     Login,
     CourseList,

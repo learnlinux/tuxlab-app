@@ -1,0 +1,7 @@
+@import 'static';
+@import '../app.theme';
+
+.error_code{
+  font-size: 80px;
+  color: mat-color($tuxlab-app-primary);
+}
