@@ -26,31 +26,67 @@
 // Export Dashboard Class
   export default class CourseViewLabItem extends MeteorComponent {
     @Input('lab') lab : Lab;
-    public edit_mode : boolean = false;
+		private lab_backup : Lab;
 
-    // Lab Statuses
-    private status_options = _.map(_.filter(Object.keys(LabStatus), (k) => {
-      return isNaN(parseInt(k));
-    }), (k) => {
-      return { name : k, value : LabStatus[k] };
-    });
+    public edit_mode : boolean = false;
 
     constructor() {
 			super();
     }
 
 		ngOnInit(){
+			this.lab_backup = _.cloneDeep(this.lab);
+		}
 
+		// Lab Statuses
+		private status_options = [
+			{
+				name : 'Hidden',
+				value : LabStatus.hidden,
+				icon : 'lock'
+			},
+			{
+				name : 'Open',
+				value : LabStatus.open,
+				icon : 'lock_open'
+			},
+			{
+				name : 'Closed',
+				value : LabStatus.closed,
+				icon : 'lock_outline'
+			}
+		];
+
+		private getIcon(status_value){
+			return _.find(this.status_options, (opt) => {
+				return opt.value === status_value;
+			}).icon;
+		}
+
+		private cancel(){
+			this.edit_mode = false;
+			this.lab = this.lab_backup;
 		}
 
     private update(){
       Labs.update(this.lab._id, {
-
+				$set : {
+					name : this.lab.name,
+					description : this.lab.description
+				}
       }, (err, res) => {
-
-
-        this.edit_mode = false;
+				if(err){
+					console.error(err);
+				}
       });
     }
+
+		private delete(){
+			Labs.remove(this.lab._id, (err, res) => {
+				if(err){
+					console.error(err);
+				}
+			});
+		}
 
   }

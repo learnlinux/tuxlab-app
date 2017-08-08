@@ -1,15 +1,21 @@
+@import '../app.theme';
+
+md-card.edit-mode{
+  border-color: mat-color($tuxlab-app-primary);
+  box-shadow: 0 0 15px mat-color($tuxlab-app-primary);
+}
+
 md-card-header{
+  width: 100%;
 
   .mat-card-header-text{
     width: 100%;
   }
 
   input,textarea{
-    color: #000;
-    [disabled]{
-      border: none;
-      background-color: transparent;
-    }
+    border: none;
+    background-color: transparent;
+    color: #000 !important;
   }
 
   textarea{
@@ -38,8 +44,4 @@ md-card-header{
 
 md-card-actions{
   padding-left: 25px;
-
-  md-option{
-    text-transform: capitalize;
-  }
 }
