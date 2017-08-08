@@ -9,7 +9,7 @@
 	import 'rxjs/add/observable/fromPromise';
 
 // Angular Imports
-	import { HostListener, Component, Input, ChangeDetectorRef } from '@angular/core';
+	import { HostListener, Component, Input, ViewChildren, QueryList } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
 
 // Define Course List Component
@@ -25,7 +25,7 @@
 	import { Courses } from '../../../both/collections/course.collection';
 	import { Labs } from '../../../both/collections/lab.collection';
 
-// Export Data Interface
+	import CourseViewLabItem from './course_view_lab.component';
 
   @Component({
     selector: 'tuxlab-course-view',
@@ -39,7 +39,11 @@
 		private course_record : Observable<CourseRecord>;
 		private labs : Observable<Lab[]>;
 
-    constructor( private router : Router, private route: ActivatedRoute, private ref: ChangeDetectorRef ) {
+		@ViewChildren(CourseViewLabItem) lab_items : QueryList<CourseViewLabItem>;
+
+    constructor(private router : Router,
+								private route: ActivatedRoute
+							  ) {
 			super();
     }
 
@@ -70,6 +74,7 @@
 						Meteor.subscribe('course_records.id', course._id, Meteor.userId(), () => {
 							var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
 							if(_.isNull(course_record)){
+								this.router.navigate(['/error','404']);
 								reject("Course Record Not Found");
 							} else {
 								resolve(course_record);

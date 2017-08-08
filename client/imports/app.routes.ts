@@ -23,7 +23,7 @@ import { Users } from '../../both/collections/user.collection';
 // Course
 import CourseList from './course/course_list.component';
 import CourseView from './course/course_view.component';
-
+import CourseViewLabItem from './course/course_view_lab.component';
 // Lab
 import { LabView } from './lab/lab_view.component';
 import { ConnectionDetailsDialog } from './lab/lab_view_connection.dialog';
@@ -71,7 +71,8 @@ export const AppRoutes : Routes = [
     LabView,
     LabTerminal,
     ConnectionDetailsDialog,
-    MessageDialog
+    MessageDialog,
+    CourseViewLabItem
   ],
   imports: [
     RouterModule.forRoot(

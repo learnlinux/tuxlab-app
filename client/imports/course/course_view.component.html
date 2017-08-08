@@ -22,18 +22,9 @@
   <!-- Labs -->
   <section class="labs">
     <h2> Labs </h2>
-    <md-card *ngFor="let lab of labs | async">
-      <md-card-header>
-        <md-card-title>{{ lab.name }}</md-card-title>
-        <md-card-subtitle>{{ lab.description }}</md-card-subtitle>
-      </md-card-header>
-      <md-card-actions>
-        <button md-button routerLink="./labs/{{lab._id}}">
-          <md-icon>assignment</md-icon>
-          Complete Lab
-        </button>
-      </md-card-actions>
-    </md-card>
+    <ng-container *ngFor="let lab of labs | async">
+      <tuxlab-course-view-lab [lab]="lab"></tuxlab-course-view-lab>
+    </ng-container>
   </section>
 
   <!-- Add Lab -->

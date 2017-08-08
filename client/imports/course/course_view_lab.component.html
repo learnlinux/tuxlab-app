@@ -1,0 +1,49 @@
+<md-card [class.edit-mode]="edit_mode">
+
+  <md-card-header>
+    <!-- Title -->
+    <md-card-title>
+     <input mdInput [disabled]="!edit_mode" [(ngModel)]="lab.name">
+    </md-card-title>
+
+     <!-- Subtotal -->
+    <md-card-subtitle>
+      <textarea mdInput [disabled]="!edit_mode" [(ngModel)]="lab.description">
+      </textarea>
+    </md-card-subtitle>
+  </md-card-header>
+
+
+  <md-card-actions fxLayout="row" fxLayoutAlign="space-between">
+
+    <!-- Set Status -->
+    <div class="set_status">
+      <md-select placeholder="Visibility">
+         <md-option *ngFor="let status of status_options" [value]="status.value">{{ status.name }}</md-option>
+      </md-select>
+      <a> </a>
+    </div>
+
+    <!-- Action Buttons -->
+    <div *ngIf="!edit_mode">
+      <button md-button (click)="edit_mode=true">
+        <md-icon>edit_mode</md-icon>
+        Edit Lab
+      </button>
+      <button md-button routerLink="./labs/{{lab._id}}">
+        <md-icon>assignment</md-icon>
+        Start Lab
+      </button>
+    </div>
+    <div *ngIf="edit_mode">
+      <button md-button (click)="edit_mode=false">
+        <md-icon>clear</md-icon>
+        Cancel
+      </button>
+      <button md-button (click)="update()">
+        <md-icon>save</md-icon>
+        Save
+      </button>
+    </div>
+  </md-card-actions>
+</md-card>
