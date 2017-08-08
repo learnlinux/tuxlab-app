@@ -5,13 +5,14 @@
 
 // Angular Imports
   import { Router } from "@angular/router";
-	import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+	import { Component, Input, ChangeDetectionStrategy, NgZone } from '@angular/core';
 
 // Define Course List Component
   import template from "./course_view_lab.component.html";
   import style from "./course_view_lab.component.scss";
 
 // Collections and Models
+	import AccountService from '../account/account.service';
   import { Lab, LabStatus } from '../../../both/models/lab.model';
   import { Labs } from '../../../both/collections/lab.collection';
 
@@ -25,13 +26,21 @@
 
 // Export Dashboard Class
   export default class CourseViewLabItem extends MeteorComponent {
+		private user : Meteor.User;
+
     @Input('lab') lab : Lab;
 		private lab_backup : Lab;
 
     public edit_mode : boolean = false;
 
-    constructor() {
+    constructor(private accountService : AccountService, private zone : NgZone) {
 			super();
+
+			Tracker.autorun(() => {
+				zone.run(() => {
+					this.user = Meteor.user();
+				});
+			});
     }
 
 		ngOnInit(){

@@ -18,19 +18,21 @@
 
     <!-- Set Status -->
     <div class="set_status">
-      <span style="margin-right:5px;"><md-icon>{{ getIcon(lab.status) }}</md-icon></span>
-      <md-select placeholder="Visibility" [disabled]="!edit_mode" [(ngModel)]="lab.status">
-         <md-option *ngFor="let status of status_options" [value]="status.value">{{ status.name }}</md-option>
-      </md-select>
+      <ng-container *ngIf="user?.global_admin">
+        <span style="margin-right:5px;"><md-icon>{{ getIcon(lab.status) }}</md-icon></span>
+        <md-select placeholder="Visibility" [disabled]="!edit_mode" [(ngModel)]="lab.status">
+           <md-option *ngFor="let status of status_options" [value]="status.value">{{ status.name }}</md-option>
+        </md-select>
+      </ng-container>
     </div>
 
     <!-- Action Buttons -->
     <div *ngIf="!edit_mode">
-      <button md-button (click)="edit_mode=true">
+      <button *ngIf="user?.global_admin" md-button (click)="edit_mode=true">
         <md-icon>edit_mode</md-icon>
         Edit
       </button>
-      <button md-button routerLink="./labs/{{lab._id}}">
+      <button *ngIf="user" md-button routerLink="./labs/{{lab._id}}">
         <md-icon>assignment</md-icon>
         Start
       </button>

@@ -9,7 +9,7 @@
 	import 'rxjs/add/observable/fromPromise';
 
 // Angular Imports
-	import { HostListener, Component, Input, ViewChildren, QueryList } from '@angular/core';
+	import { HostListener, Component, Input, ViewChildren, QueryList, NgZone } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
 
 // Define Course List Component
@@ -17,6 +17,8 @@
   import style from "./course_view.component.scss";
 
 // Import Course Data
+	import AccountService from '../account/account.service';
+
   import { CourseRecord } from '../../../both/models/course_record.model';
 	import { Course } from '../../../both/models/course.model';
 	import { Lab } from '../../../both/models/lab.model';
@@ -35,17 +37,26 @@
 
 // Export Dashboard Class
   export default class CourseView extends MeteorComponent {
+		private user : Meteor.User;
 		private course : Observable<Course>;
 		private course_record : Observable<CourseRecord>;
 		private labs : Observable<Lab[]>;
 
 		@ViewChildren(CourseViewLabItem) lab_items : QueryList<CourseViewLabItem>;
 
-    constructor(private router : Router,
+		constructor(private accountService : AccountService,
+								private zone : NgZone,
+								private router : Router,
 								private route: ActivatedRoute
-							  ) {
+							 ) {
 			super();
-    }
+
+			Tracker.autorun(() => {
+				zone.run(() => {
+					this.user = Meteor.user();
+				});
+			});
+		}
 
 		ngOnInit(){
 
