@@ -8,11 +8,12 @@ md-card.edit-mode{
 md-card-header{
   width: 100%;
 
-  .mat-card-header-text{
-    width: 100%;
+  & > div {
+    width: 100% !important;
   }
 
   input,textarea{
+    width: 100%;
     border: none;
     background-color: transparent;
     color: #000 !important;

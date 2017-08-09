@@ -12,6 +12,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 
 // Imports
 import { MarkdownModule } from 'angular2-markdown';
+import { SortablejsModule } from 'angular-sortablejs';
 
 // Account
 import AccountService from './account/account.service';
@@ -93,6 +94,7 @@ export const AppRoutes : Routes = [
     MdGridListModule,
     MdDialogModule,
     MarkdownModule.forRoot(),
+    SortablejsModule
   ],
   exports: [
     RouterModule

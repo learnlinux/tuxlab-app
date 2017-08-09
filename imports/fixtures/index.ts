@@ -51,7 +51,8 @@
    };
 
    public labs : {
-     "gpi/git" : string
+     "gpi/git" : string;
+     "gpi/apache" : string;
    }
 
    constructor(){
@@ -153,9 +154,29 @@
               md: "This is also some markdown."
             }
           ]
+        }),
+       "gpi/apache" :  Labs.insert({
+          name: "Getting Started with Apache",
+          description: "Learn basics of Git with Apache",
+          course_id: this.courses.gpi,
+          updated: Date.now(),
+          status: LabStatus.closed,
+          file: Example1,
+          tasks: [
+            {
+              name : "Git Init",
+              md: "This is some markdown."
+            },
+            {
+              name : "Git Pull",
+              md: "This is also some markdown."
+            }
+          ]
         })
      };
      Courses.addLab(this.courses['gpi'], this.labs['gpi/git']);
+     Courses.addLab(this.courses['gpi'], this.labs['gpi/apache']);
+
    }
 
    public destructor(){

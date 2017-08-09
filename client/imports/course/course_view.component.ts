@@ -11,6 +11,7 @@
 // Angular Imports
 	import { HostListener, Component, Input, ViewChildren, QueryList, NgZone } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
+	import { SortablejsOptions } from 'angular-sortablejs';
 
 // Define Course List Component
   import template from "./course_view.component.html";
@@ -111,6 +112,19 @@
 				);
 			});
     }
+
+		/* Sortable */
+		private sortableOptions : SortablejsOptions = {
+			dataIdAttr: "labId",
+			store: {
+				get : (sortable : any) => {
+					return sortable.toArray();
+				},
+				set : (sortable : any) => {
+					Courses.reorderList(this.route.snapshot.params['course_id'], sortable.toArray());
+				}
+			}
+		};
 
 		/* File Drop */
 		private dragActive = false;

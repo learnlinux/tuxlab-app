@@ -2,6 +2,8 @@
 
   <!-- Info -->
   <md-card class="info">
+
+    <!-- Title Block -->
     <div class="title" fxLayout fxLayoutAlign="flex-start">
       <div class="left">
         {{ (course | async)?.course_number }}
@@ -17,14 +19,19 @@
         </span>
       </div>
     </div>
+
+    <!-- Actions Block -->
+
   </md-card>
 
   <!-- Labs -->
   <section class="labs">
     <h2> Labs </h2>
-    <ng-container *ngFor="let lab of labs | async">
-      <tuxlab-course-view-lab [lab]="lab"></tuxlab-course-view-lab>
-    </ng-container>
+    <div [sortablejs]="labs | async" [sortablejsOptions]="sortableOptions">
+      <div *ngFor="let lab of labs | async" [attr.labId]="lab._id">
+        <tuxlab-course-view-lab [lab]="lab"></tuxlab-course-view-lab>
+      </div>
+    </div>
   </section>
 
   <!-- Add Lab -->

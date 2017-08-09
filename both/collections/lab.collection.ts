@@ -26,7 +26,7 @@
 
       // Set Editing Permissions
       let isAuthorized = function(user_id : string, lab : Lab){
-          return Users.getRoleFor(user_id, lab.course_id) >= Role.course_admin;
+          return Users.getRoleFor(lab.course_id, user_id) >= Role.course_admin;
       }
 
       this.allow({

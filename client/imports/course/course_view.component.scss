@@ -43,8 +43,14 @@ div.course_view{
      }
    }
 
-   div.labs{
+   section.labs{
+     tuxlab-course-view-lab{
+       margin:15px;
 
+       &:first-child{
+         margin-top:0px;
+       }
+     }
    }
 
    section.add_lab{

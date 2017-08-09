@@ -73,5 +73,18 @@
         return Labs.observable.find({ _id : { '$in' : course.labs }});
       }
     }
+
+    public reorderList(course_id : string, labs : string[]) : Promise<any>{
+      return new Promise(function(resolve, reject){
+        this.rawCollection().findAndModify({ _id : course_id, $all : { labs : labs }},{},{ $set : { labs : labs } }, (err, res) => {
+          if(err){
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      })
+    }
+
   }
   export const Courses = new CourseCollection();
