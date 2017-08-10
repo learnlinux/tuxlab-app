@@ -18,7 +18,7 @@
 
     <!-- Set Status -->
     <div class="set_status">
-      <ng-container *ngIf="user?.global_admin">
+      <ng-container *ngIf="role >= Role.course_admin">
         <span style="margin-right:5px;"><md-icon>{{ getIcon(lab.status) }}</md-icon></span>
         <md-select placeholder="Visibility" [disabled]="!edit_mode" [(ngModel)]="lab.status">
            <md-option *ngFor="let status of status_options" [value]="status.value">{{ status.name }}</md-option>
@@ -28,7 +28,7 @@
 
     <!-- Action Buttons -->
     <div *ngIf="!edit_mode">
-      <button *ngIf="user?.global_admin" md-button (click)="edit_mode=true">
+      <button *ngIf="role >= Role.course_admin" md-button (click)="edit_mode=true">
         <md-icon>edit_mode</md-icon>
         Edit
       </button>

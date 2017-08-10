@@ -26,11 +26,11 @@
       this.observable = new MongoObservable.Collection(this);
 
       // Permissions
-      const allowed_fields = ['name', 'description', 'status'];
+      const allowed_fields = ['name', 'description', 'status', 'updated' ];
       super.allow({
         update: (user_id : string, lab : Lab, fields : string[]) => {
-          return _.intersection(fields, allowed_fields).length === 0 &&
-          Users.getRoleFor(user_id, lab.course_id) >= Role.instructor;
+          return _.reject(fields, key => _.includes(allowed_fields, key)).length === 0 &&
+          Users.getRoleFor(lab.course_id, user_id) >= Role.instructor;
         },
         fetch: ["course_id"]
       });

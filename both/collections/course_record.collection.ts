@@ -29,8 +29,8 @@
       const allowed_fields = [];
       super.allow({
         update: function(user_id, course_record : CourseRecord, fields) {
-          return _.intersection(fields, allowed_fields).length === 0 &&
-                 Users.getRoleFor(user_id, course_record.course_id) >= Role.instructor;
+          return _.reject(fields, key => _.includes(allowed_fields, key)).length === 0 &&
+                 Users.getRoleFor(course_record.course_id, user_id) >= Role.instructor;
         },
         fetch: []
       });

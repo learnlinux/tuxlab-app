@@ -17,7 +17,6 @@
   import template from "./course_view.component.html";
   import style from "./course_view.component.scss";
 
-// Import Course Data
 	import AccountService from '../account/account.service';
 	import { User, Role } from '../../../both/models/user.model';
 	import { Users } from '../../../both/collections/user.collection';
@@ -40,6 +39,8 @@
 
 // Export Dashboard Class
   export default class CourseView extends MeteorComponent {
+		private role : Role;
+
 		private course : Observable<Course>;
 		private course_record : Observable<CourseRecord>;
 		private labs : Observable<Lab[]>;
@@ -52,17 +53,24 @@
 								private route: ActivatedRoute
 							 ) {
 			super();
-
-			Tracker.autorun(() => {
-				zone.run(() => {
-					var role = Users.getRoleFor(this.route.snapshot.params['course_id'],Meteor.userId())
-					this.sortableOptions.disabled = (role < Role.instructor);
-				});
-			});
 		}
 
 		ngOnInit(){
 
+			// Get Role
+			this.route.params
+				.map(params => params['course_id'])
+				.distinct()
+				.subscribe((course_id) => {
+					Tracker.autorun(() => {
+						this.zone.run(() => {
+							this.role = Users.getRoleFor(course_id, Meteor.userId())
+							this.sortableOptions = this.sortableOptions.disabled = this.role < Role.instructor;
+						});
+					});
+				})
+
+			// Get Course
 			this.course = this.route.params
 				.map(params => params['course_id'])
 				.distinct()
@@ -72,6 +80,7 @@
 							Meteor.subscribe('courses.id', course_id, () => {
 								var course = Courses.findOne({ _id : course_id });
 								if(_.isNull(course)){
+									this.router.navigate(['/error','404']);
 									reject("Course Not Found");
 								} else {
 									resolve(course);
@@ -81,6 +90,7 @@
 					)
 				});
 
+			// Get Course Record
 			this.course_record = this.course
 			.mergeMap((course) => {
 				return Observable.fromPromise(
@@ -98,6 +108,7 @@
 				);
 			});
 
+			// Get Labs
 			this.labs = this.course
 			.mergeMap((course) => {
 				Meteor.subscribe('labs.course', course._id);
@@ -106,9 +117,8 @@
     }
 
 		/* Sortable */
-		private sortable : boolean = true;
+
 		private sortableOptions : SortablejsOptions = {
-			disabled : true,
 			dataIdAttr: "labId",
 			store: {
 				get : (sortable : any) => {
