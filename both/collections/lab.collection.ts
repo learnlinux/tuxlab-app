@@ -29,7 +29,7 @@
           return Users.getRoleFor(lab.course_id, user_id) >= Role.course_admin;
       }
 
-      this.allow({
+      super.allow({
         insert: isAuthorized,
         update: isAuthorized,
         remove: isAuthorized,

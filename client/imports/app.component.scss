@@ -9,6 +9,12 @@ html, body, main {
   font-family: 'Roboto', sans-serif;
 }
 
+// Override
+// https://github.com/angular/material2/issues/2112
+.mat-card-header-text {
+  width: 100% !important;
+}
+
 // Icon Button
 button[md-icon-button]{
   background-color: transparent;

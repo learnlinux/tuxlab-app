@@ -37,7 +37,7 @@
       this.observable = new MongoObservable.Collection(this);
 
       // Set Editing Permissions
-      this.allow({
+      super.allow({
         insert: function(user_id : string) { return Users.isGlobalAdministrator(user_id) },
         update: function(user_id : string, course : Course, fields : string[]){
           return Users.isGlobalAdministrator(user_id) ||
@@ -51,32 +51,32 @@
     }
 
     public addInstructor(course_id : string, user_id : string){
-      this.update({ _id: course_id }, { '$addToSet' : { instructors : user_id}});
+      super.update({ _id: course_id }, { '$addToSet' : { instructors : user_id}});
     }
 
     public removeInstructor(course_id : string, user_id : string){
-      this.update({ _id: course_id }, { '$pull' : { instructors : user_id}});
+      super.update({ _id: course_id }, { '$pull' : { instructors : user_id}});
     }
 
     public addLab(course_id : string, lab_id  : string){
-      this.update({ _id: course_id }, { '$addToSet' : { labs : lab_id }});
+      super.update({ _id: course_id }, { '$addToSet' : { labs : lab_id }});
     }
 
     public removeLab(course_id : string, lab_id : string){
-      this.update({ _id: course_id }, { '$pull' : { instructors : lab_id}});
+      super.update({ _id: course_id }, { '$pull' : { instructors : lab_id}});
     }
 
     public getLabs(course_id : string){
       var course;
 
-      if(typeof (course = this.findOne({ _id: course_id })) !== "undefined"){
+      if(typeof (course = super.findOne({ _id: course_id })) !== "undefined"){
         return Labs.observable.find({ _id : { '$in' : course.labs }});
       }
     }
 
-    public reorderList(course_id : string, labs : string[]) : Promise<any>{
-      return new Promise(function(resolve, reject){
-        this.rawCollection().findAndModify({ _id : course_id, $all : { labs : labs }},{},{ $set : { labs : labs } }, (err, res) => {
+    public reorderLabs(course_id : string, labs : string[]) : Promise<any>{
+      return new Promise((resolve, reject) => {
+        super.rawCollection().findAndModify({ _id : course_id, labs : { $all : labs }},{},{ $set : { labs : labs } }, (err, res) => {
           if(err){
             reject(err);
           } else {

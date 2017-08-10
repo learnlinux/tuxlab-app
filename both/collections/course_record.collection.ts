@@ -19,13 +19,13 @@
       super('course_records');
 
       // Attach Schema
-      this.attachSchema(CourseRecordSchema);
+      super.attachSchema(CourseRecordSchema);
 
       // Create Observable
       this.observable = new MongoObservable.Collection(this);
 
       // Set Editing Permissions
-      this.allow({
+      super.allow({
         insert: function(user_id, course) {
           return Users.getRoleFor(user_id, course._id) >= Role.instructor;
         },

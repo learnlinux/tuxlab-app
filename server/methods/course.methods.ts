@@ -7,6 +7,7 @@
   import { Role } from '../../both/models/user.model';
   import { Users } from '../../both/collections/user.collection';
 
+  /* PUBLICATION */
   const explore_limit = 20;
   function coursesExplore(skip){
     return Courses.find({
@@ -25,7 +26,6 @@
   Meteor.publish('courses.user', coursesUser);
 
   function coursesId(course_id){
-
     switch(Users.getRoleFor(course_id, Meteor.userId())){
       case Role.guest:
         return Courses.find({
@@ -43,6 +43,16 @@
       case Role.global_admin:
         return Courses.find({ _id : course_id });
     }
-
   }
   Meteor.publish('courses.id', coursesId);
+
+  /* METHODS */
+  Meteor.methods({
+    'Courses.reorderLabs'(course_id : string, labs : string[]){
+      return Courses.reorderLabs(course_id, labs)
+      .catch((err) => {
+        console.error(err);
+        throw new Meteor.Error("Redorder Conflict");
+      });
+    }
+  })

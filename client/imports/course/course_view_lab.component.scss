@@ -8,10 +8,6 @@ md-card.edit-mode{
 md-card-header{
   width: 100%;
 
-  & > div {
-    width: 100% !important;
-  }
-
   input,textarea{
     width: 100%;
     border: none;

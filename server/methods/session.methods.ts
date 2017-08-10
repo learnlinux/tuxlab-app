@@ -8,7 +8,7 @@ import { SessionStatus } from '../../both/models/session.model';
 
 Meteor.methods({
 
-  'session.getOrCreate'(lab_id){
+  'Sessions.getOrCreate'(lab_id){
       const user_id = Meteor.userId();
 
       if(user_id){
@@ -21,7 +21,7 @@ Meteor.methods({
       }
   },
 
-  'session.renew'(lab_id){
+  'Sessions.renew'(lab_id){
     const user_id = Meteor.userId();
 
     if(user_id){
@@ -34,7 +34,7 @@ Meteor.methods({
     }
   },
 
-  'session.nextTask'(lab_id){
+  'Sessions.nextTask'(lab_id){
     const user_id = Meteor.userId();
 
     if(user_id){
@@ -50,7 +50,7 @@ Meteor.methods({
     }
   },
 
-  'session.destroy'(lab_id){
+  'Sessions.destroy'(lab_id){
     const user_id = Meteor.userId();
 
     if(user_id){

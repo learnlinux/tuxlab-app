@@ -86,7 +86,7 @@
 				.subscribe((lab) => {
 					if(lab && lab._id){
 
-						Meteor.call('session.getOrCreate',lab._id, (err, res) => {
+						Meteor.call('Sessions.getOrCreate',lab._id, (err, res) => {
 							if(err){
 								console.error(err);
 							} else {
@@ -141,7 +141,7 @@
 		// Check Task Status
 		private checkTask(){
 			return new Promise((resolve, reject) => {
-				Meteor.call('session.nextTask', this.session.lab_id, (err, res) => {
+				Meteor.call('Sessions.nextTask', this.session.lab_id, (err, res) => {
 					if(err){
 						reject(err);
 					} else {

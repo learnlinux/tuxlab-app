@@ -19,6 +19,8 @@
 
 // Import Course Data
 	import AccountService from '../account/account.service';
+	import { User, Role } from '../../../both/models/user.model';
+	import { Users } from '../../../both/collections/user.collection';
 
   import { CourseRecord } from '../../../both/models/course_record.model';
 	import { Course } from '../../../both/models/course.model';
@@ -38,7 +40,6 @@
 
 // Export Dashboard Class
   export default class CourseView extends MeteorComponent {
-		private user : Meteor.User;
 		private course : Observable<Course>;
 		private course_record : Observable<CourseRecord>;
 		private labs : Observable<Lab[]>;
@@ -54,7 +55,8 @@
 
 			Tracker.autorun(() => {
 				zone.run(() => {
-					this.user = Meteor.user();
+					var role = Users.getRoleFor(this.route.snapshot.params['course_id'],Meteor.userId())
+					this.sortableOptions.disabled = (role < Role.instructor);
 				});
 			});
 		}
@@ -114,14 +116,16 @@
     }
 
 		/* Sortable */
+		private sortable : boolean = true;
 		private sortableOptions : SortablejsOptions = {
+			disabled : true,
 			dataIdAttr: "labId",
 			store: {
 				get : (sortable : any) => {
 					return sortable.toArray();
 				},
 				set : (sortable : any) => {
-					Courses.reorderList(this.route.snapshot.params['course_id'], sortable.toArray());
+					Meteor.call('Courses.reorderLabs', this.route.snapshot.params['course_id'], sortable.toArray());
 				}
 			}
 		};
