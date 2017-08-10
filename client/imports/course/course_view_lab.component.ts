@@ -91,7 +91,7 @@
     }
 
 		private delete(){
-			Meteor.call('Courses.removeLab', this.lab._id, this.lab.course_id, (err, res) => {
+			Meteor.call('Courses.removeLab', { course_id : this.lab.course_id, lab_id: this.lab._id }, (err, res) => {
 				if(err){
 					console.error(err);
 				}
