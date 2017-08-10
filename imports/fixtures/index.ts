@@ -14,14 +14,15 @@
 
  import { Course, ContentPermissions, EnrollPermissions } from '../../both/models/course.model';
  import { Courses } from '../../both/collections/course.collection';
+ import { createLab } from '../../server/methods/course.methods';
 
  import { Lab, LabStatus } from '../../both/models/lab.model';
  import { Labs } from '../../both/collections/lab.collection';
+ import { Example1 } from "./example_labs";
 
  import { User, Role } from '../../both/models/user.model';
  import { Users } from '../../both/collections/user.collection';
 
- import { Example1 } from "./example_labs";
 
  /*
   * cleanupDatabase
@@ -174,8 +175,8 @@
           ]
         })
      };
-     Courses.addLab(this.courses['gpi'], this.labs['gpi/git']);
-     Courses.addLab(this.courses['gpi'], this.labs['gpi/apache']);
+     createLab(this.courses['gpi'], this.labs['gpi/git']);
+     createLab(this.courses['gpi'], this.labs['gpi/apache']);
 
    }
 

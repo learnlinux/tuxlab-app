@@ -7,10 +7,11 @@
 
   import { CourseSchema } from '../schemas/course.schema';
   import { Course } from '../models/course.model';
-  import { Role } from '../models/user.model';
-  import { Lab } from '../models/lab.model';
 
+  import { Role } from '../models/user.model';
   import { Users } from '../collections/user.collection';
+
+  import { Lab, LabFileImportOpts } from '../models/lab.model';
   import { Labs } from '../collections/lab.collection';
 
   // Array of Fields that can be Updated
@@ -50,41 +51,14 @@
       });
     }
 
-    public addInstructor(course_id : string, user_id : string){
-      super.update({ _id: course_id }, { '$addToSet' : { instructors : user_id}});
-    }
-
-    public removeInstructor(course_id : string, user_id : string){
-      super.update({ _id: course_id }, { '$pull' : { instructors : user_id}});
-    }
-
-    public addLab(course_id : string, lab_id  : string){
-      super.update({ _id: course_id }, { '$addToSet' : { labs : lab_id }});
-    }
-
-    public removeLab(course_id : string, lab_id : string){
-      super.update({ _id: course_id }, { '$pull' : { instructors : lab_id}});
-    }
-
     public getLabs(course_id : string){
       var course;
-
       if(typeof (course = super.findOne({ _id: course_id })) !== "undefined"){
         return Labs.observable.find({ _id : { '$in' : course.labs }});
       }
     }
 
-    public reorderLabs(course_id : string, labs : string[]) : Promise<any>{
-      return new Promise((resolve, reject) => {
-        super.rawCollection().findAndModify({ _id : course_id, labs : { $all : labs }},{},{ $set : { labs : labs } }, (err, res) => {
-          if(err){
-            reject(err);
-          } else {
-            resolve();
-          }
-        });
-      })
-    }
+
 
   }
   export const Courses = new CourseCollection();

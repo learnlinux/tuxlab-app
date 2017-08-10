@@ -100,18 +100,8 @@
 
 			this.labs = this.course
 			.mergeMap((course) => {
-				return Observable.fromPromise(
-					new Promise((resolve, reject) => {
-						Meteor.subscribe('labs.course', course._id, () => {
-							var labs = Labs.find({ course_id : course._id });
-							if(_.isNull(labs)){
-								reject("Course Record Not Found");
-							} else {
-								resolve(labs.fetch());
-							}
-						});
-					})
-				);
+				Meteor.subscribe('labs.course', course._id);
+				return Labs.observable.find({ course_id : course._id });
 			});
     }
 
@@ -134,13 +124,25 @@
 		private dragActive = false;
 		@HostListener('drop', ['$event'])
 		onDrop(event) {
+			 event.stopPropagation();
 			 event.preventDefault();
 			 this.dragActive = false;
 
 			 // Get File
-			 var fileReader = new FileReader();
-			 _.each(event.dataTransfer.files, (file) => {
-				 	var lab_file =  fileReader.readAsText(file);
+			 _.each(event.dataTransfer.files, (fileTarget) => {
+				 var fileReader = new FileReader();
+				 fileReader.onload = (fileEvent) => {
+					 var lab_file = ((<any>fileEvent.target).result);
+					 Meteor.call('Courses.createLab',{ course_id : this.route.snapshot.params['course_id'], lab_file : lab_file }, (err, res) => {
+						 if(err){
+							 console.error("COULD NOT UPLOAD LAB");
+							 console.error(err);
+						 } else {
+
+						 }
+					 })
+				 }
+				 fileReader.readAsText(fileTarget,"UTF-8");
 			 });
 		}
 

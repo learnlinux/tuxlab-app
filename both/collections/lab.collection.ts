@@ -2,6 +2,7 @@
 /**
   IMPORTS
 **/
+  import * as _ from 'lodash';
   import { Meteor } from 'meteor/meteor';
   import { Mongo } from 'meteor/mongo'
   import { MongoObservable } from 'meteor-rxjs';
@@ -24,15 +25,13 @@
       // Create Observable
       this.observable = new MongoObservable.Collection(this);
 
-      // Set Editing Permissions
-      let isAuthorized = function(user_id : string, lab : Lab){
-          return Users.getRoleFor(lab.course_id, user_id) >= Role.course_admin;
-      }
-
+      // Permissions
+      const allowed_fields = ['name', 'description', 'status'];
       super.allow({
-        insert: isAuthorized,
-        update: isAuthorized,
-        remove: isAuthorized,
+        update: (user_id : string, lab : Lab, fields : string[]) => {
+          return _.intersection(fields, allowed_fields).length === 0 &&
+          Users.getRoleFor(user_id, lab.course_id) >= Role.instructor;
+        },
         fetch: ["course_id"]
       });
     }

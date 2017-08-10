@@ -91,11 +91,11 @@
     }
 
 		private delete(){
-			Labs.remove(this.lab._id, (err, res) => {
+			Meteor.call('Courses.removeLab', this.lab._id, this.lab.course_id, (err, res) => {
 				if(err){
 					console.error(err);
 				}
-			});
+			})
 		}
 
   }

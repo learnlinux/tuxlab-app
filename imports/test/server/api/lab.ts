@@ -10,9 +10,9 @@
   import { DefaultFixtures } from '../../../fixtures';
   import { Example1 } from '../../../fixtures/example_labs';
 
-  import { Lab } from '../../../../both/models/lab.model';
+  import { Lab, LabFileImportOpts } from '../../../../both/models/lab.model';
   import { Labs } from '../../../../both/collections/lab.collection';
-  import { LabRuntime, LabFileImportOpts } from '../../../../server/imports/runtime/lab_runtime';
+  import { LabRuntime } from '../../../../server/imports/runtime/lab_runtime';
 
   export function LabRuntimeTests(){
     describe('Lab Runtime', function(){

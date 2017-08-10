@@ -11,7 +11,7 @@
  import { Cache } from '../service/cache';
  import { log } from '../service/log';
 
- import { Lab as LabModel, Task as TaskModel, LabStatus } from '../../../both/models/lab.model';
+ import { Lab as LabModel, Task as TaskModel, LabStatus, LabFileImportOpts } from '../../../both/models/lab.model';
  import { Labs } from '../../../both/collections/lab.collection';
 
  import { VMConfig, VMResolveConfig, VMConfigCustom } from '../api/vmconfig';
@@ -28,16 +28,6 @@
    Lab: {},
    Environment: {},
    console: console
- }
-
- /*
-  labFileImportOpts
-  Sets options for creating a labfile
- */
- export interface LabFileImportOpts{
-   _id?: string;
-   course_id: string;
-   file: string;
  }
 
  export class LabRuntime extends Cache implements LabModel {

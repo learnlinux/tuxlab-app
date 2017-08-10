@@ -17,6 +17,13 @@
     md: string;
   }
 
+  /* LAB FILE IMPORT OPTS */
+  export interface LabFileImportOpts{
+    _id?: string;
+    course_id: string;
+    file: string;
+  }
+
   /* LAB MODEL */
   export interface Lab {
     _id?: string;

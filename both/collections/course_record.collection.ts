@@ -1,6 +1,7 @@
 /**
   IMPORTS
 **/
+  import * as _ from 'lodash';
   import { Mongo } from 'meteor/mongo';
   import { MongoObservable } from 'meteor-rxjs';
 
@@ -24,16 +25,12 @@
       // Create Observable
       this.observable = new MongoObservable.Collection(this);
 
-      // Set Editing Permissions
+      // Permissions
+      const allowed_fields = [];
       super.allow({
-        insert: function(user_id, course) {
-          return Users.getRoleFor(user_id, course._id) >= Role.instructor;
-        },
-        update: function(user_id, course, fields) {
-          return Users.getRoleFor(user_id, course._id) >= Role.instructor;
-        },
-        remove: function(user_id, course) {
-          return Users.getRoleFor(user_id, course._id) >= Role.instructor;
+        update: function(user_id, course_record : CourseRecord, fields) {
+          return _.intersection(fields, allowed_fields).length === 0 &&
+                 Users.getRoleFor(user_id, course_record.course_id) >= Role.instructor;
         },
         fetch: []
       });
