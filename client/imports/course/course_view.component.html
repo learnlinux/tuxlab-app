@@ -20,7 +20,44 @@
       </div>
     </div>
 
+    <!-- Description Block -->
+
     <!-- Actions Block -->
+    <div class="course_actions" fxLayout="row" *ngIf="role >= Role.course_admin">
+      <div class="left"  fxLayout="row" fxLayoutAlign="start center">
+        <div class="view">
+          <span style="margin-right:5px;"><md-icon>{{ getIcon_content((course | async).permissions.content) }}</md-icon></span>
+          <md-select placeholder="View Permissions" [disabled]="!edit_mode" [ngModel]="(course | async)?.permissions.content" (ngModelChange)="update_content($event)">
+             <md-option *ngFor="let content of content_options" [value]="content?.value">{{ content.name }}</md-option>
+          </md-select>
+        </div>
+        <div class="enroll" style="margin-left: 5px;">
+          <span style="margin-right:5px;"><md-icon>{{ getIcon_enroll((course | async).permissions.enroll) }}</md-icon></span>
+          <md-select placeholder="Enroll Permissions" [disabled]="!edit_mode" [ngModel]="(course | async)?.permissions.enroll" (ngModelChange)="update_enroll($event)">
+             <md-option *ngFor="let enroll of enroll_options" [value]="enroll?.value">{{ enroll.name }}</md-option>
+          </md-select>
+        </div>
+      </div>
+
+      <div class="right" fxLayout="row" fxLayoutAlign="end center">
+        <ng-container *ngIf="!edit_mode">
+          <button md-button (click)="edit_mode=true">
+            <md-icon>mode_edit</md-icon>
+            Edit
+          </button>
+        </ng-container>
+        <ng-container *ngIf="edit_mode">
+          <button md-button (click)="addUser()">
+            <md-icon>person_add</md-icon>
+            Add Instructor
+          </button>
+          <button md-button (click)="cancel()">
+            <md-icon>clear</md-icon>
+            Cancel
+          </button>
+        </ng-container>
+      </div>
+    </div>
 
   </md-card>
 

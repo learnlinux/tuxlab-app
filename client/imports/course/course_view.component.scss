@@ -8,7 +8,6 @@ div.course_view{
   margin: 30px auto;
   padding: 45px;
 
-
    h2{
      font-weight: 300;
      font-size: 30px;
@@ -16,6 +15,7 @@ div.course_view{
    }
 
    md-card.info {
+
      div.title{
        font-size: 21px;
        font-weight: 400;
@@ -40,6 +40,15 @@ div.course_view{
           color: #555;
         }
       }
+     }
+
+     div.course_actions {
+       margin-top: 35px;
+       padding: 3px;
+
+       & > div {
+         width: 50%;
+       }
      }
    }
 

@@ -21,7 +21,7 @@
 	import { Users } from '../../../both/collections/user.collection';
 
   import { CourseRecord } from '../../../both/models/course_record.model';
-	import { Course } from '../../../both/models/course.model';
+	import { Course, ContentPermissions, EnrollPermissions } from '../../../both/models/course.model';
 	import { Lab } from '../../../both/models/lab.model';
 
 	import { CourseRecords } from '../../../both/collections/course_record.collection';
@@ -57,7 +57,6 @@
 		}
 
 		ngOnInit(){
-
 			// Get Role
 			this.route.params
 				.map(params => params['course_id'])
@@ -119,8 +118,80 @@
 			});
     }
 
-		/* Sortable */
+		/* Course Editable */
+		private edit_mode : boolean = false;
 
+		private cancel(){
+			this.edit_mode = false;
+		}
+
+		private addUser(){
+
+		}
+
+		private content_options = [
+			{
+				name : 'Anyone',
+				value : ContentPermissions.Any,
+				icon : 'public'
+			},
+			{
+				name : 'Authenticated Users',
+				value : ContentPermissions.None,
+				icon : 'verified_user'
+			},
+			{
+				name : 'No One',
+				value : ContentPermissions.None,
+				icon : 'block'
+			}
+		];
+		private enroll_options = [
+			{
+				name : 'Logged In Users',
+				value : EnrollPermissions.Any,
+				icon : 'verified_user'
+			},
+			{
+				name : 'No One',
+				value : EnrollPermissions.None,
+				icon : 'block'
+			}
+		];
+
+		private getIcon_content(content_value){
+			return _.find(this.content_options, (opt) => {
+				return opt.value === content_value;
+			}).icon;
+		}
+
+		private getIcon_enroll(enroll_value){
+			return _.find(this.enroll_options, (opt) => {
+				return opt.value === enroll_value;
+			}).icon;
+		}
+
+		private update_content(content_value){
+			Courses.update({
+				_id : this.route.snapshot.params['course_id']
+			}, {
+				$set: {
+					"permissions.content" : content_value
+				}
+			});
+		}
+
+		private update_enroll(enroll_value){
+			Courses.update({
+				_id : this.route.snapshot.params['course_id']
+			}, {
+				$set: {
+					"permissions.enroll" : enroll_value
+				}
+			});
+		}
+
+		/* Sortable */
 		private sortableOptions : SortablejsOptions = {
 			dataIdAttr: "labId",
 			store: {

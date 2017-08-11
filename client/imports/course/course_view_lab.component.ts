@@ -66,7 +66,7 @@
 			{
 				name : 'Hidden',
 				value : LabStatus.hidden,
-				icon : 'lock'
+				icon : 'lock_outline'
 			},
 			{
 				name : 'Open',
@@ -76,7 +76,7 @@
 			{
 				name : 'Closed',
 				value : LabStatus.closed,
-				icon : 'lock_outline'
+				icon : 'lock'
 			}
 		];
 

@@ -20,7 +20,7 @@
     <div class="set_status">
       <ng-container *ngIf="role >= Role.course_admin">
         <span style="margin-right:5px;"><md-icon>{{ getIcon(lab.status) }}</md-icon></span>
-        <md-select placeholder="Visibility" [disabled]="!edit_mode" [(ngModel)]="lab.status">
+        <md-select placeholder="Begin Permissions" [disabled]="!edit_mode" [(ngModel)]="lab.status">
            <md-option *ngFor="let status of status_options" [value]="status.value">{{ status.name }}</md-option>
         </md-select>
       </ng-container>
@@ -28,20 +28,16 @@
 
     <!-- Action Buttons -->
     <div *ngIf="!edit_mode">
-      <button *ngIf="role >= Role.course_admin" md-button (click)="edit_mode=true">
-        <md-icon>edit_mode</md-icon>
-        Edit
-      </button>
       <button *ngIf="user" md-button routerLink="./labs/{{lab._id}}">
         <md-icon>assignment</md-icon>
         Start
       </button>
+      <button *ngIf="role >= Role.course_admin" md-button (click)="edit_mode=true">
+        <md-icon>edit_mode</md-icon>
+        Edit
+      </button>
     </div>
     <div *ngIf="edit_mode">
-      <button md-button (click)="cancel()">
-        <md-icon>clear</md-icon>
-        Cancel
-      </button>
       <button md-button (click)="delete()">
         <md-icon>delete</md-icon>
         Delete
@@ -49,6 +45,10 @@
       <button md-button (click)="update()">
         <md-icon>save</md-icon>
         Save
+      </button>
+      <button md-button (click)="cancel()">
+        <md-icon>clear</md-icon>
+        Cancel
       </button>
     </div>
   </md-card-actions>
