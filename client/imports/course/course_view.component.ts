@@ -6,7 +6,6 @@
 	import { Observable } from 'rxjs/Observable';
 	import 'rxjs/add/operator/mergeMap';
 	import 'rxjs/add/operator/distinct';
-	import 'rxjs/add/observable/fromPromise';
 
 // Angular Imports
 	import { HostListener, Component, Input, ViewChildren, QueryList, NgZone } from '@angular/core';
@@ -39,7 +38,9 @@
 
 // Export Dashboard Class
   export default class CourseView extends MeteorComponent {
+		private user : User;
 		private role : Role;
+		private Role = Role;
 
 		private course : Observable<Course>;
 		private course_record : Observable<CourseRecord>;
@@ -64,8 +65,8 @@
 				.subscribe((course_id) => {
 					Tracker.autorun(() => {
 						this.zone.run(() => {
+							this.user = <User>Meteor.user();
 							this.role = Users.getRoleFor(course_id, Meteor.userId())
-							this.sortableOptions = this.sortableOptions.disabled = this.role < Role.instructor;
 						});
 					});
 				})
@@ -75,44 +76,46 @@
 				.map(params => params['course_id'])
 				.distinct()
 				.mergeMap((course_id) => {
-					return Observable.fromPromise(
-						new Promise((resolve, reject) => {
-							Meteor.subscribe('courses.id', course_id, () => {
-								var course = Courses.findOne({ _id : course_id });
-								if(_.isNull(course)){
-									this.router.navigate(['/error','404']);
-									reject("Course Not Found");
-								} else {
-									resolve(course);
-								}
-							});
-						})
-					)
+
+					Meteor.subscribe('courses.id', course_id);
+					return Courses.observable.find({ _id : course_id })
+						.distinct()
+						.map((arr) => {
+							if(arr && arr.length === 1){
+								return arr[0];
+							} else {
+								this.router.navigate(['/error','404']);
+							}
+						});
 				});
 
 			// Get Course Record
 			this.course_record = this.course
 			.mergeMap((course) => {
-				return Observable.fromPromise(
-					new Promise((resolve, reject) => {
-						Meteor.subscribe('course_records.id', course._id, Meteor.userId(), () => {
-							var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
-							if(_.isNull(course_record)){
-								this.router.navigate(['/error','404']);
-								reject("Course Record Not Found");
+					Meteor.subscribe('course_records.id', course._id, Meteor.userId());
+					return CourseRecords.observable.find({ user_id : Meteor.userId(), course_id : course._id})
+						.distinct()
+						.map((arr) => {
+							if(arr && arr.length === 1){
+								return arr[0];
 							} else {
-								resolve(course_record);
+								return null;
 							}
-						});
-					})
-				);
+						})
 			});
 
 			// Get Labs
 			this.labs = this.course
 			.mergeMap((course) => {
 				Meteor.subscribe('labs.course', course._id);
-				return Labs.observable.find({ course_id : course._id });
+				return Labs.observable.find({ course_id : course._id })
+					.map((arr) => {
+						return _.sortBy(arr, (lab) => {
+							return _.findIndex(course.labs, (lab_id) => {
+								return lab_id === lab._id;
+							})
+						})
+					});
 			});
     }
 
@@ -125,7 +128,7 @@
 					return sortable.toArray();
 				},
 				set : (sortable : any) => {
-					Meteor.call('Courses.reorderLabs', this.route.snapshot.params['course_id'], sortable.toArray());
+					Meteor.call('Courses.reorderLabs', { course_id : this.route.snapshot.params['course_id'], labs : sortable.toArray() });
 				}
 			}
 		};
@@ -147,8 +150,6 @@
 						 if(err){
 							 console.error("COULD NOT UPLOAD LAB");
 							 console.error(err);
-						 } else {
-
 						 }
 					 })
 				 }

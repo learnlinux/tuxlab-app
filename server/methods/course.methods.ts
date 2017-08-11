@@ -125,11 +125,13 @@
 
   export function reorderLabs(course_id : string, labs : string[]) : Promise<any>{
     return new Promise((resolve, reject) => {
-      Courses.rawCollection().findAndModify({ _id : course_id, labs : { $all : labs }},{},{ $set : { labs : labs } }, (err, res) => {
+      Courses.rawCollection().findAndModify({ _id : course_id, labs : { $all : labs, $size: labs.length }},{},{ $set : { labs : labs } }, (err, res) => {
         if(err){
           reject(err);
+        } else if (!res.lastErrorObject.updatedExisting){
+          reject(new Error("did not match course record."));
         } else {
-          resolve();
+          resolve(res);
         }
       });
     })

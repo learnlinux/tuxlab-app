@@ -175,8 +175,9 @@
           ]
         })
      };
-     createLab(this.courses['gpi'], this.labs['gpi/git']);
-     createLab(this.courses['gpi'], this.labs['gpi/apache']);
+
+     // Add Labs to Courses
+     Courses.update({ _id : this.courses.gpi }, { $set : { labs : [this.labs["gpi/git"], this.labs["gpi/apache"]]}});
 
    }
 

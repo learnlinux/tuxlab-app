@@ -27,15 +27,24 @@
   <!-- Labs -->
   <section class="labs">
     <h2> Labs </h2>
-    <div [sortablejs]="labs | async" [sortablejsOptions]="sortableOptions">
-      <div *ngFor="let lab of labs | async" [attr.labId]="lab._id">
-        <tuxlab-course-view-lab [lab]="lab"></tuxlab-course-view-lab>
-      </div>
+    <div *ngIf="role >= Role.course_admin; then sortable; else nosortable">
     </div>
+    <ng-template #sortable>
+      <div [sortablejs]="labs | async" [sortablejsOptions]="sortableOptions">
+        <div *ngFor="let lab of labs | async" [attr.labId]="lab._id">
+          <tuxlab-course-view-lab [lab]="lab"></tuxlab-course-view-lab>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #nosortable>
+        <div *ngFor="let lab of labs | async">
+          <tuxlab-course-view-lab [lab]="lab"></tuxlab-course-view-lab>
+        </div>
+    <ng-template>
   </section>
 
   <!-- Add Lab -->
-  <section class="add_lab">
+  <section class="add_lab" *ngIf="role >= Role.course_admin">
     <div fxLayout="row" fxLayoutAlign="center center" class="file_drop"
          (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragenter)="dragActive = true" (dragleave)="dragActive = false"
          [class.active]="dragActive">
