@@ -43,6 +43,7 @@
 		private Role = Role;
 
 		private course : Observable<Course>;
+		private instructors : Observable<User[]>;
 		private course_record : Observable<CourseRecord>;
 		private labs : Observable<Lab[]>;
 
@@ -57,6 +58,7 @@
 		}
 
 		ngOnInit(){
+
 			// Get Role
 			this.route.params
 				.map(params => params['course_id'])
@@ -88,34 +90,44 @@
 						});
 				});
 
+			// Get Instructors
+			this.instructors = this.course
+				.distinct()
+				.mergeMap((course) => {
+					Meteor.subscribe('user.instructors', course._id)
+					return Users.observable.find({ _id : { $in : course.instructors }});
+				})
+
 			// Get Course Record
 			this.course_record = this.course
-			.mergeMap((course) => {
-					Meteor.subscribe('course_records.id', course._id, Meteor.userId());
-					return CourseRecords.observable.find({ user_id : Meteor.userId(), course_id : course._id})
-						.distinct()
-						.map((arr) => {
-							if(arr && arr.length === 1){
-								return arr[0];
-							} else {
-								return null;
-							}
-						})
-			});
+				.distinct()
+				.mergeMap((course) => {
+						Meteor.subscribe('course_records.id', course._id, Meteor.userId());
+						return CourseRecords.observable.find({ user_id : Meteor.userId(), course_id : course._id})
+							.distinct()
+							.map((arr) => {
+								if(arr && arr.length === 1){
+									return arr[0];
+								} else {
+									return null;
+								}
+							})
+				});
 
 			// Get Labs
 			this.labs = this.course
-			.mergeMap((course) => {
-				Meteor.subscribe('labs.course', course._id);
-				return Labs.observable.find({ course_id : course._id })
-					.map((arr) => {
-						return _.sortBy(arr, (lab) => {
-							return _.findIndex(course.labs, (lab_id) => {
-								return lab_id === lab._id;
+				.distinct()
+				.mergeMap((course) => {
+					Meteor.subscribe('labs.course', course._id);
+					return Labs.observable.find({ course_id : course._id })
+						.map((arr) => {
+							return _.sortBy(arr, (lab) => {
+								return _.findIndex(course.labs, (lab_id) => {
+									return lab_id === lab._id;
+								})
 							})
-						})
-					});
-			});
+						});
+				});
     }
 
 		/* Course Editable */
@@ -125,7 +137,11 @@
 			this.edit_mode = false;
 		}
 
-		private addUser(){
+		private addInstructor(){
+
+		}
+
+		private removeInstructor(){
 
 		}
 

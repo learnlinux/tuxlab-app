@@ -58,7 +58,5 @@
       }
     }
 
-
-
   }
   export const Courses = new CourseCollection();

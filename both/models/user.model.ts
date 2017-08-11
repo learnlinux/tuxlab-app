@@ -29,6 +29,7 @@
 
   /* USER MODEL */
   export interface User extends Meteor.User {
+    _id? : string,
     profile: Profile;
     global_admin: boolean,
     roles: Privilege[];

@@ -51,15 +51,6 @@
   }
   Meteor.publish('courses.id', coursesId);
 
-  /* METHODS */
-  export function addInstructor(course_id : string, user_id : string) {
-    Courses.update({ _id: course_id }, { '$addToSet' : { instructors : user_id}});
-  }
-
-  export function removeInstructor(course_id : string, user_id : string){
-    Courses.update({ _id: course_id }, { '$pull' : { instructors : user_id}});
-  }
-
   /* CREATE LAB */
   export function createLab(course_id : string, lab_file : string) : Promise<any>{
 

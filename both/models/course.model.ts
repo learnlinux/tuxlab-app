@@ -28,12 +28,6 @@
     None
   }
 
-  export interface Instructor {
-    id? : string,
-    display_name : string
-  }
-
-
   /* COURSE MODEL */
   export interface Course {
     _id?: string;
@@ -42,6 +36,6 @@
     course_description?: CourseDescription;
     featured: boolean;
     labs: string[];
-    instructors: Instructor[];
+    instructors: String[];
     permissions: Permissions;
   }

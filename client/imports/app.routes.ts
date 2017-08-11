@@ -7,7 +7,7 @@ import { FormsModule }          from '@angular/forms';
 
 // Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule, MdButtonModule, MdSelectModule, MdListModule, MdInputModule, MdGridListModule, MdDialogModule } from '@angular/material';
+import { MaterialModule, MdButtonModule, MdSelectModule, MdListModule, MdInputModule, MdGridListModule, MdDialogModule, MdChipsModule } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 // Imports
@@ -92,6 +92,7 @@ export const AppRoutes : Routes = [
     MdInputModule,
     MdSelectModule,
     MdGridListModule,
+    MdChipsModule,
     MdDialogModule,
     MarkdownModule.forRoot(),
     SortablejsModule
