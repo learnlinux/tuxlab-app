@@ -6,6 +6,13 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
+// https://github.com/aldeed/node-simple-schema/issues/146
+const defaultValue = value => function autoValue() {
+  if (!this.isUpdate && !this.isUpsert && !this.isSet) {
+    return value;
+  }
+};
+
 // Import Models
 import { ContentPermissions, EnrollPermissions } from '../models/course.model'
 import { Labs } from '../collections/lab.collection';
@@ -15,11 +22,11 @@ import { Users } from '../collections/user.collection';
   const descriptionSchema = new SimpleSchema({
     content: {
       type: String,
-      defaultValue: ""
+      autoValue: defaultValue("")
     },
     syllabus: {
       type: String,
-      defaultValue: ""
+      autoValue: defaultValue("")
     }
   });
 
@@ -27,17 +34,17 @@ import { Users } from '../collections/user.collection';
 const permissionsSchema = new SimpleSchema({
     meta: {
       type: Boolean,
-      defaultValue: true
+      autoValue: defaultValue(true)
     },
     content: {
       type: Number,
       allowedValues: ContentPermissions,
-      defaultValue: ContentPermissions.Auth
+      autoValue: defaultValue(ContentPermissions.Auth)
     },
     enroll: {
       type: Number,
       allowedValues: ContentPermissions,
-      defaultValue: ContentPermissions.None
+      autoValue: defaultValue(ContentPermissions.None)
     }
   });
 
@@ -67,7 +74,7 @@ const permissionsSchema = new SimpleSchema({
     },
     featured:{
       type: Boolean,
-      defaultValue: false
+      autoValue: defaultValue(false)
     },
     permissions:{
       type: permissionsSchema,

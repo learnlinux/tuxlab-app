@@ -3,6 +3,7 @@
 	import { Meteor } from 'meteor/meteor';
 	import { Tracker } from 'meteor/tracker';
 	import { MeteorComponent } from 'angular2-meteor';
+	import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 	import { Observable } from 'rxjs/Observable';
 	import 'rxjs/add/operator/mergeMap';
 	import 'rxjs/add/operator/distinct';
@@ -21,7 +22,7 @@
 	import { Users } from '../../../both/collections/user.collection';
 
   import { CourseRecord } from '../../../both/models/course_record.model';
-	import { Course, ContentPermissions, EnrollPermissions } from '../../../both/models/course.model';
+	import { Course, Permissions, ContentPermissions, EnrollPermissions } from '../../../both/models/course.model';
 	import { Lab } from '../../../both/models/lab.model';
 
 	import { CourseRecords } from '../../../both/collections/course_record.collection';
@@ -43,6 +44,9 @@
 		private Role = Role;
 
 		private course : Observable<Course>;
+		private course_model : Course;
+		private course_behaviorSubject : BehaviorSubject<Course>;
+
 		private instructors : Observable<User[]>;
 		private course_record : Observable<CourseRecord>;
 		private labs : Observable<Lab[]>;
@@ -77,18 +81,19 @@
 				.map(params => params['course_id'])
 				.distinct()
 				.mergeMap((course_id) => {
-
 					Meteor.subscribe('courses.id', course_id);
-					return Courses.observable.find({ _id : course_id })
-						.distinct()
-						.map((arr) => {
-							if(arr && arr.length === 1){
-								return arr[0];
-							} else {
-								this.router.navigate(['/error','404']);
-							}
-						});
+					var course = Courses.findOne({ _id : course_id });
+					if(course){
+						this.course_behaviorSubject = new BehaviorSubject(course);
+						return(this.course_behaviorSubject);
+					} else {
+						this.router.navigate(['/error','404']);
+					}
 				});
+
+			this.course.subscribe((course) => {
+				this.course_model = course;
+			})
 
 			// Get Instructors
 			this.instructors = this.course
@@ -103,15 +108,12 @@
 				.distinct()
 				.mergeMap((course) => {
 						Meteor.subscribe('course_records.id', course._id, Meteor.userId());
-						return CourseRecords.observable.find({ user_id : Meteor.userId(), course_id : course._id})
-							.distinct()
-							.map((arr) => {
-								if(arr && arr.length === 1){
-									return arr[0];
-								} else {
-									return null;
-								}
-							})
+						var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
+						if(course_record){
+							return new BehaviorSubject(course_record);
+						} else {
+							return new BehaviorSubject(null);
+						}
 				});
 
 			// Get Labs
@@ -133,6 +135,20 @@
 		/* Course Editable */
 		private edit_mode : boolean = false;
 
+		private update(){
+			Courses.update({
+				_id : this.route.snapshot.params['course_id']
+			},{
+				$set : {
+					"permissions.content" : this.course_model.permissions.content,
+					"permissions.enroll" : this.course_model.permissions.enroll
+				}
+			}, () => {
+				this.course_behaviorSubject.next(Courses.findOne({ _id : this.route.snapshot.params['course_id'] }));
+			});
+			this.edit_mode = false;
+		}
+
 		private cancel(){
 			this.edit_mode = false;
 		}
@@ -153,7 +169,7 @@
 			},
 			{
 				name : 'Authenticated Users',
-				value : ContentPermissions.None,
+				value : ContentPermissions.Auth,
 				icon : 'verified_user'
 			},
 			{
@@ -162,6 +178,7 @@
 				icon : 'block'
 			}
 		];
+
 		private enroll_options = [
 			{
 				name : 'Logged In Users',
@@ -185,26 +202,6 @@
 			return _.find(this.enroll_options, (opt) => {
 				return opt.value === enroll_value;
 			}).icon;
-		}
-
-		private update_content(content_value){
-			Courses.update({
-				_id : this.route.snapshot.params['course_id']
-			}, {
-				$set: {
-					"permissions.content" : content_value
-				}
-			});
-		}
-
-		private update_enroll(enroll_value){
-			Courses.update({
-				_id : this.route.snapshot.params['course_id']
-			}, {
-				$set: {
-					"permissions.enroll" : enroll_value
-				}
-			});
 		}
 
 		/* Sortable */

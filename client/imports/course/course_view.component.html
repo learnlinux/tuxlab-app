@@ -32,14 +32,14 @@
     <div class="course_actions" fxLayout="row" *ngIf="role >= Role.course_admin">
       <div class="left"  fxLayout="row" fxLayoutAlign="start center">
         <div class="view">
-          <span style="margin-right:5px;"><md-icon>{{ getIcon_content((course | async).permissions.content) }}</md-icon></span>
-          <md-select placeholder="View Permissions" [disabled]="!edit_mode" [ngModel]="(course | async)?.permissions.content" (ngModelChange)="update_content($event)">
+          <span style="margin-right:5px;"><md-icon>{{ getIcon_content(course_model?.permissions?.content || (course | async).permissions.content) }}</md-icon></span>
+          <md-select placeholder="View Permissions" [disabled]="!edit_mode" [ngModel]="(course | async)?.permissions.content" (ngModelChange)="course_model.permissions.content = $event">
              <md-option *ngFor="let content of content_options" [value]="content?.value">{{ content.name }}</md-option>
           </md-select>
         </div>
         <div class="enroll" style="margin-left: 5px;">
-          <span style="margin-right:5px;"><md-icon>{{ getIcon_enroll((course | async).permissions.enroll) }}</md-icon></span>
-          <md-select placeholder="Enroll Permissions" [disabled]="!edit_mode" [ngModel]="(course | async)?.permissions.enroll" (ngModelChange)="update_enroll($event)">
+          <span style="margin-right:5px;"><md-icon>{{ getIcon_enroll(course_model?.permissions?.enroll || (course | async).permissions.enroll) }}</md-icon></span>
+          <md-select placeholder="Enroll Permissions" [disabled]="!edit_mode" [ngModel]="(course | async)?.permissions.enroll" (ngModelChange)="course_model.permissions.enroll = $event">
              <md-option *ngFor="let enroll of enroll_options" [value]="enroll?.value">{{ enroll.name }}</md-option>
           </md-select>
         </div>
@@ -56,6 +56,10 @@
           <button md-button (click)="addInstructor()">
             <md-icon>person_add</md-icon>
             Add Instructor
+          </button>
+          <button md-button (click)="update()">
+            <md-icon>save</md-icon>
+            Save
           </button>
           <button md-button (click)="cancel()">
             <md-icon>clear</md-icon>

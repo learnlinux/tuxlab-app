@@ -11,7 +11,7 @@
   }
 
   /* PERMISSIONS */
-  interface Permissions {
+  export interface Permissions {
     meta: boolean; // Is the course visible in searches and explore views?
     content: ContentPermissions; // Who can view content from this course?
     enroll: EnrollPermissions;   // Who is allowed to enroll in the course?
