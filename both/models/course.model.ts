@@ -2,7 +2,7 @@
   COURSE MODEL
 **/
 
-  import { User } from './user.model';
+  import { User, Role } from './user.model';
 
   /* COURSE DESCRIPTION */
   interface CourseDescription {
@@ -36,6 +36,6 @@
     course_description?: CourseDescription;
     featured: boolean;
     labs: string[];
-    instructors: String[];
+    instructors: string[];
     permissions: Permissions;
   }

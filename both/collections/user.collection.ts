@@ -30,6 +30,7 @@
       getCourseRecordFor(course_id : string, user_id : string) : string;
       setRoleFor(course_id: string, user_id: string, role : Role) : void;
       isGlobalAdministrator(user_id: string) : boolean;
+      findByProfileFields(query : string) : ObservableCursor<User>;
     }
 
     var UsersCollection : UsersCollection = (<UsersCollection>Meteor.users);
@@ -62,7 +63,6 @@
       }
     }
 
-
     // getCoursesFor
     UsersCollection.getCoursesFor = function(user_id : string) : ObservableCursor<Course> {
 
@@ -85,9 +85,7 @@
 
       // Map to Find Courses
       return Courses.observable.find({ '_id' : { '$in' : courses }});
-
     }
-
 
     // getCourseRecordFor
     UsersCollection.getCourseRecordFor = function(course_id : string, user_id : string) : string {
@@ -101,7 +99,6 @@
 
     // setRoleFor
     UsersCollection.setRoleFor = function(course_id: string, user_id: string, role : Role) : void {
-
       // Check if Course Record Created
       let course_record_id;
       if (this.getRoleFor(course_id, user_id) == Role.guest) {
@@ -118,7 +115,6 @@
       // Set Role in User Database
       let record : Privilege = {
         course_id : course_id,
-        course_record : course_record_id,
         role: role
       }
 
@@ -130,6 +126,17 @@
     UsersCollection.isGlobalAdministrator = function(user_id : string) : boolean {
       let user : User = this.findOne(user_id);
       return (typeof user !== "undefined") && (user.global_admin);
+    }
+
+    // findByProfileFields
+    UsersCollection.findByProfileFields = function(query : string) : ObservableCursor<User> {
+      return UsersCollection.observable.find({
+        $or : [
+          { "_id" : query },
+          { "profile.name" : { $regex : '/'+query+'/'} },
+          { "profile.email" : { $regex : '/'+query+'/'} }
+        ]
+      })
     }
 
     export const Users = UsersCollection;

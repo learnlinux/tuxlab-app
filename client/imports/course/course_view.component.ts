@@ -47,7 +47,7 @@
 		private course_model : Course;
 		private course_behaviorSubject : BehaviorSubject<Course>;
 
-		private instructors : Observable<User[]>;
+		private instructors : Observable<{ id : string; name : string; role : Role;}[]>;
 		private course_record : Observable<CourseRecord>;
 		private labs : Observable<Lab[]>;
 
@@ -99,8 +99,20 @@
 			this.instructors = this.course
 				.distinct()
 				.mergeMap((course) => {
-					Meteor.subscribe('user.instructors', course._id)
-					return Users.observable.find({ _id : { $in : course.instructors }});
+					Meteor.subscribe('user.instructors', course._id);
+					return Users.observable
+					.find({ _id : { $in : course.instructors }})
+					.map(users => {
+						return _.map(users, (user) => {
+							return {
+								id : user._id,
+								name : user.profile.name,
+								role : _.find(user.roles, (priv) => {
+									return priv.course_id === course._id
+								}).role
+							};
+						});
+					})
 				})
 
 			// Get Course Record
@@ -135,7 +147,7 @@
 		/* Course Editable */
 		private edit_mode : boolean = false;
 
-		private update(){
+		private updatePermissions(){
 			Courses.update({
 				_id : this.route.snapshot.params['course_id']
 			},{
@@ -153,12 +165,28 @@
 			this.edit_mode = false;
 		}
 
-		private addInstructor(){
-
+		private addRole(user_id : string, role : string){
+			Meteor.call('Users.addRoleForCourse',{
+				user_id : user_id,
+				course_id : this.route.snapshot.params['course_id'],
+				role : role
+			},(err, res) => {
+				if(err){
+					console.error(err);
+				}
+			})
 		}
 
-		private removeInstructor(){
-
+		private removeRole(user_id : string, role : string){
+			Meteor.call('Users.removeRoleForCourse',{
+				user_id : user_id,
+				course_id : this.route.snapshot.params['course_id'],
+				role : role
+			},(err, res) => {
+				if(err){
+					console.error(err);
+				}
+			})
 		}
 
 		private content_options = [

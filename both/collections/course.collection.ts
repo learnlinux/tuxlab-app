@@ -3,7 +3,7 @@
   IMPORTS
 **/
   import { Mongo } from 'meteor/mongo'
-  import { MongoObservable } from 'meteor-rxjs';
+  import { MongoObservable, ObservableCursor } from 'meteor-rxjs';
 
   import { CourseSchema } from '../schemas/course.schema';
   import { Course } from '../models/course.model';
@@ -19,7 +19,6 @@
     'course_name',
     'course_number',
     'course_description',
-    'instructors',
     'permissions',
     'labs'
   ];
@@ -51,12 +50,13 @@
       });
     }
 
-    public getLabs(course_id : string){
+    public getLabs(course_id : string) : ObservableCursor<Lab> {
       var course;
       if(typeof (course = super.findOne({ _id: course_id })) !== "undefined"){
         return Labs.observable.find({ _id : { '$in' : course.labs }});
       }
     }
+
 
   }
   export const Courses = new CourseCollection();

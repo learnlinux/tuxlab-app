@@ -22,6 +22,7 @@
 
  import { User, Role } from '../../both/models/user.model';
  import { Users } from '../../both/collections/user.collection';
+ import { addRoleForCourse } from '../../server/methods/user.methods';
 
 
  /*
@@ -126,8 +127,7 @@
                    featured: false,
                    labs: [
                    ],
-                   instructors: [
-                   ],
+                   instructors: [],
                    permissions: {
                      meta: true,
                      content: ContentPermissions.Any,
@@ -178,6 +178,10 @@
 
      // Add Labs to Courses
      Courses.update({ _id : this.courses.gpi }, { $set : { labs : [this.labs["gpi/git"], this.labs["gpi/apache"]]}});
+
+     // Add Instructors to Courses
+     addRoleForCourse(this.courses.gpi, this.users.course_admin, Role.course_admin);
+     addRoleForCourse(this.courses.gpi, this.users.instructor, Role.instructor);
 
    }
 

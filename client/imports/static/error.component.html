@@ -1,5 +1,5 @@
-<div id="tuxlab-error" class="static_page">
+<div id="tuxlab-error" class="static_page" *ngIf="(error_code | async) as error">
 
-  <span class="error_code"> {{ error_code | async }}</span>
+  <span class="error_code"> {{ error }}</span>
   <h1>Error</h1>
 </div>

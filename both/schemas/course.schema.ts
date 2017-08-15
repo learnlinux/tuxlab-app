@@ -15,8 +15,11 @@ const defaultValue = value => function autoValue() {
 
 // Import Models
 import { ContentPermissions, EnrollPermissions } from '../models/course.model'
+
 import { Labs } from '../collections/lab.collection';
+
 import { Users } from '../collections/user.collection';
+import { Role } from '../models/user.model';
 
 /* Description Schema */
   const descriptionSchema = new SimpleSchema({
@@ -60,13 +63,7 @@ const permissionsSchema = new SimpleSchema({
       type: Array
     },
     'instructors.$': {
-      type: String,
-      regEx: SimpleSchema.RegEx.Id,
-      custom: function(){
-        if (Meteor.isServer && typeof Users.findOne({ _id: this.value }) === undefined){
-          return "invalidUser";
-        }
-      }
+      type: String
     },
     course_description: {
       type: descriptionSchema,

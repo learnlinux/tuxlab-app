@@ -15,14 +15,14 @@
         <span class="course_name">{{ (course | async)?.course_name }}</span>
 
         <!-- Instructors -->
-        <span class="instructors" *ngIf="(instructors | async)" >
+        <div class="instructors" *ngIf="(instructors | async)" >
           <md-chip-list>
-            <md-chip *ngFor="let instructor of (instructors | async)">
-              {{ instructor?.profile?.name }}
-              <a (click)="removeInstructor(instructor._id)"><md-icon>clear</md-icon></a>
+            <md-chip *ngFor="let instructor of (instructors | async)" [class.instructor]="instructor.role === Role.instructor" [class.course-admin]="instructor.role === Role.course_admin">
+              {{ instructor?.name }}
+              <a md-icon-button *ngIf="role >= instructor.role" (click)="removeRole(instructor.id, instructor.role)"><md-icon>clear</md-icon></a>
             </md-chip>
           </md-chip-list>
-        </span>
+        </div>
       </div>
     </div>
 
@@ -57,7 +57,7 @@
             <md-icon>person_add</md-icon>
             Add Instructor
           </button>
-          <button md-button (click)="update()">
+          <button md-button (click)="updatePermissions()">
             <md-icon>save</md-icon>
             Save
           </button>
