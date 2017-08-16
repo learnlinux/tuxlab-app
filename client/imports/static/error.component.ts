@@ -27,7 +27,6 @@
 		ngOnInit(){
 			this.error_code = this.route.params
 				.map(params => params['error_code'])
-				.distinct()
 				.map((x) => {
 					return x.toString();
 				});

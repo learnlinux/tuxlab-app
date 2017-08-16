@@ -141,6 +141,17 @@ Meteor.publish("user.instructors", (course_id) => {
 
 
   Meteor.methods({
+    'Users.searchByProfileFields'({query}){
+      return Users.find({
+        $or : [
+          { "_id" : query },
+          { "profile.name" : { $regex : query, $options : 'i' } },
+          { "profile.email" : { $regex : query, $options : 'i' } }
+        ]
+      },{
+        fields : {"_id" : 1, "profile.name" : 1}
+      }).fetch();
+    },
     'Users.addRoleForCourse'({course_id, user_id, role}){
 
       // Check Privilege

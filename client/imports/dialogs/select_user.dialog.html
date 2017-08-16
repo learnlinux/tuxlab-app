@@ -1,0 +1,27 @@
+<input #searchInput id="searchInput" md-input type="search" placeholder="Username, E-Mail" [(ngModel)]="query" (keyup)="onUpdate()" />
+
+<div *ngIf="results && results.length > 0; then UserResults; else NoUserResults">
+</div>
+<!-- No User Results -->
+<ng-template #NoUserResults>
+  <div class="message" fxLayout="column" fxLayoutAlign="center center">
+    <div><span><md-icon class="emoji">mood_bad</md-icon></span></div>
+    <div><h1> No Users Found </h1></div>
+  </div>
+</ng-template>
+
+<!-- User Results -->
+<ng-template #UserResults>
+  <md-list disableRipple="false" >
+    <md-list-item *ngFor="let user of results;" (click)="select(user)">
+      <h4 md-line>{{ user.profile.name }}</h4>
+      <p md-line>{{ user.profile.email }}</p>
+    </md-list-item>
+  </md-list>
+</ng-template>
+
+<div fxLayout="row" fxLayoutAlign="flex-end flex-end">
+  <div>
+    <button md-button [md-dialog-close]="null"><md-icon>clear</md-icon>Cancel</button>
+  </div>
+</div>

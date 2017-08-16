@@ -15,11 +15,11 @@
         <span class="course_name">{{ (course | async)?.course_name }}</span>
 
         <!-- Instructors -->
-        <div class="instructors" *ngIf="(instructors | async)" >
+        <div class="instructors" *ngIf="instructors | async" >
           <md-chip-list>
             <md-chip *ngFor="let instructor of (instructors | async)" [class.instructor]="instructor.role === Role.instructor" [class.course-admin]="instructor.role === Role.course_admin">
               {{ instructor?.name }}
-              <a md-icon-button *ngIf="role >= instructor.role" (click)="removeRole(instructor.id, instructor.role)"><md-icon>clear</md-icon></a>
+              <a md-icon-button *ngIf="edit_mode && role >= instructor.role" (click)="removeRole(instructor.id, instructor.role)"><md-icon>clear</md-icon></a>
             </md-chip>
           </md-chip-list>
         </div>
@@ -53,6 +53,10 @@
           </button>
         </ng-container>
         <ng-container *ngIf="edit_mode">
+          <button md-button (click)="addCourseAdmin()">
+            <md-icon>person_add</md-icon>
+            Add Admin
+          </button>
           <button md-button (click)="addInstructor()">
             <md-icon>person_add</md-icon>
             Add Instructor

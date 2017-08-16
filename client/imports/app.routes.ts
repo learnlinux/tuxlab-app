@@ -14,6 +14,9 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { MarkdownModule } from 'angular2-markdown';
 import { SortablejsModule } from 'angular-sortablejs';
 
+// Dialogs
+import SelectUser from './dialogs/select_user.dialog';
+
 // Account
 import AccountService from './account/account.service';
 import AuthGuard from './account/auth-guard.service';
@@ -25,6 +28,7 @@ import { Users } from '../../both/collections/user.collection';
 import CourseList from './course/course_list.component';
 import CourseView from './course/course_view.component';
 import CourseViewLabItem from './course/course_view_lab.component';
+
 // Lab
 import { LabView } from './lab/lab_view.component';
 import { ConnectionDetailsDialog } from './lab/lab_view_connection.dialog';
@@ -73,7 +77,8 @@ export const AppRoutes : Routes = [
     LabTerminal,
     ConnectionDetailsDialog,
     MessageDialog,
-    CourseViewLabItem
+    CourseViewLabItem,
+    SelectUser
   ],
   imports: [
     RouterModule.forRoot(
@@ -106,6 +111,7 @@ export const AppRoutes : Routes = [
   ],
   entryComponents: [
     ConnectionDetailsDialog,
+    SelectUser,
     MessageDialog
   ]
 })

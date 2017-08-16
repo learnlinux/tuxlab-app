@@ -11,6 +11,7 @@
 // Angular Imports
 	import { HostListener, Component, Input, ViewChildren, QueryList, NgZone } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
+	import { MdDialog } from '@angular/material';
 	import { SortablejsOptions } from 'angular-sortablejs';
 
 // Define Course List Component
@@ -29,7 +30,9 @@
 	import { Courses } from '../../../both/collections/course.collection';
 	import { Labs } from '../../../both/collections/lab.collection';
 
+// SubComponents
 	import CourseViewLabItem from './course_view_lab.component';
+	import SelectUser from '../dialogs/select_user.dialog';
 
   @Component({
     selector: 'tuxlab-course-view',
@@ -56,7 +59,8 @@
 		constructor(private accountService : AccountService,
 								private zone : NgZone,
 								private router : Router,
-								private route: ActivatedRoute
+								private route: ActivatedRoute,
+								private dialog : MdDialog
 							 ) {
 			super();
 		}
@@ -103,15 +107,33 @@
 					return Users.observable
 					.find({ _id : { $in : course.instructors }})
 					.map(users => {
-						return _.map(users, (user) => {
+
+						// Filter for Roles
+						users = _.filter(users, (user) => {
+							var priv = _.find(user.roles, (priv) => {
+								return priv.course_id === course._id
+							});
+
+							return priv && _.has(priv, "role") && priv.role >= Role.instructor;
+						});
+
+						// Map Roles
+						var instructors = _.map(users, (user) => {
 							return {
 								id : user._id,
 								name : user.profile.name,
 								role : _.find(user.roles, (priv) => {
 									return priv.course_id === course._id
 								}).role
-							};
+							}
 						});
+
+						// Sort by Roles
+						instructors = _.sortBy(instructors, (user) => {
+							return ((-1) * user.role);
+						});
+
+						return instructors;
 					})
 				})
 
@@ -147,6 +169,10 @@
 		/* Course Editable */
 		private edit_mode : boolean = false;
 
+		private update(){
+			this.course_behaviorSubject.next(Courses.findOne({ _id : this.route.snapshot.params['course_id'] }));
+		}
+
 		private updatePermissions(){
 			Courses.update({
 				_id : this.route.snapshot.params['course_id']
@@ -156,7 +182,7 @@
 					"permissions.enroll" : this.course_model.permissions.enroll
 				}
 			}, () => {
-				this.course_behaviorSubject.next(Courses.findOne({ _id : this.route.snapshot.params['course_id'] }));
+				this.update();
 			});
 			this.edit_mode = false;
 		}
@@ -165,7 +191,25 @@
 			this.edit_mode = false;
 		}
 
-		private addRole(user_id : string, role : string){
+		private addInstructor(){
+			var dialogRef = this.dialog.open(SelectUser, { width: '600px' });
+			dialogRef.afterClosed().subscribe((user) => {
+				if(!_.isNull(user)){
+					this.addRole(user._id, Role.instructor);
+				}
+			})
+		}
+
+		private addCourseAdmin(){
+			var dialogRef = this.dialog.open(SelectUser, { width: '600px' });
+			dialogRef.afterClosed().subscribe((user) => {
+				if(!_.isNull(user)){
+					this.addRole(user._id, Role.course_admin);
+				}
+			})
+		}
+
+		private addRole(user_id : string, role : Role){
 			Meteor.call('Users.addRoleForCourse',{
 				user_id : user_id,
 				course_id : this.route.snapshot.params['course_id'],

@@ -128,15 +128,4 @@
       return (typeof user !== "undefined") && (user.global_admin);
     }
 
-    // findByProfileFields
-    UsersCollection.findByProfileFields = function(query : string) : ObservableCursor<User> {
-      return UsersCollection.observable.find({
-        $or : [
-          { "_id" : query },
-          { "profile.name" : { $regex : '/'+query+'/'} },
-          { "profile.email" : { $regex : '/'+query+'/'} }
-        ]
-      })
-    }
-
     export const Users = UsersCollection;
