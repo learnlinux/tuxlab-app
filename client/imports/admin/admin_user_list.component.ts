@@ -15,8 +15,8 @@
 	import { MdDialog } from '@angular/material';
 
 // Define Course List Component
-  import template from "./user_list.component.html";
-  import style from "./user_list.component.scss";
+  import template from "./admin_user_list.component.html";
+  import style from "./admin_user_list.component.scss";
 
 // Import Course Data
 	import { Course } from '../../../both/models/course.model';
@@ -41,39 +41,80 @@
 		@Component({
 			selector: 'tuxlab-user-session-item',
 			template : `
-				<div class="tuxlab-user-session-item" fxLayout="row" fxLayoutAlign="flex-start center">
+				<div class="tuxlab-user-session-item" fxLayout="column">
 
-					<div fxLayout="row" fxLayoutAlign="flex-start center">
-						<!-- Status Icon -->
-						<ng-container [ngSwitch]="session.status">
-							<md-chip *ngSwitchCase="SessionStatus.creating" style="background-color:#3498db;">Active</md-chip>
-							<md-chip *ngSwitchCase="SessionStatus.active" style="background-color:#3498db;">Active</md-chip>
-							<md-chip *ngSwitchCase="SessionStatus.completed" style="background-color:#2ecc71;">Completed</md-chip>
-							<md-chip *ngSwitchCase="SessionStatus.failed" style="background-color:#e74c3c">Failed</md-chip>
-							<md-chip *ngSwitchCase="SessionStatus.destroyed" style="background-color:#e67e22">Destroyed</md-chip>
-						</ng-container>
+					<div class="expand_title" fxLayout="row" fxLayoutAlign="start center">
+							<!-- Expand Button -->
+							<button md-icon-button (click)="expand = !expand" [ngSwitch]="expand">
+								<md-icon *ngSwitchCase="true">expand_less</md-icon>
+								<md-icon *ngSwitchCase="false">expand_more</md-icon>
+							</button>
 
-						<!-- Lab Name -->
-						<h5>{{ lab?.name }}</h5>
+							<!-- Status Icon -->
+							<ng-container [ngSwitch]="session.status">
+								<md-chip *ngSwitchCase="SessionStatus.creating" style="background-color:#3498db;">Active</md-chip>
+								<md-chip *ngSwitchCase="SessionStatus.active" style="background-color:#3498db;">Active</md-chip>
+								<md-chip *ngSwitchCase="SessionStatus.completed" style="background-color:#2ecc71;">Completed</md-chip>
+								<md-chip *ngSwitchCase="SessionStatus.failed" style="background-color:#e74c3c">Failed</md-chip>
+								<md-chip *ngSwitchCase="SessionStatus.destroyed" style="background-color:#e67e22">Destroyed</md-chip>
+							</ng-container>
+
+							<!-- Lab Name -->
+							<h3>{{ lab?.name }}</h3>
 					</div>
 
-					<div fxLayout="row" fxLayoutAlign="flex-end center">
-						<!-- Connection Info -->
-						<div class="connection" fxLayout="row" fxLayoutAlign="center center">
+					<div class="expand_container" *ngIf="expand" fxLayout="column">
+						<br>
+
+						<!-- Connection Details -->
+						<h5> VMs: </h5>
+						<br>
+						<div fxLayout="row">
 							<md-icon>dns</md-icon>
-							<md-select placeholder="VMs" floatPlaceholder="never" (change)="connectionDetails($event)">
+							<md-select [ngModel]="container_index">
 								 <md-option *ngFor="let container of session?.containers; let i = index" [value]="i">{{ (container)?.name ? container.name : "Server " + i + 1 }}</md-option>
 							</md-select>
 						</div>
 
+						<br>
+
+						<div class="connection" *ngIf="session?.containers[container_index] as container">
+							<table>
+								<tr>
+									<td> Host: </td>
+									<td>{{ container?.container_ip }}</td>
+								</tr>
+								<tr>
+									<td> Username: </td>
+									<td>{{ container?.proxy_username }}</td>
+								</tr>
+								<tr>
+									<td> Password: </td>
+									<td> {{ container?.container_pass }} </td>
+								</tr>
+							</table>
+						</div>
+
+						<br>
+
+						<!-- Session Record -->
+						<h5> Session Record: </h5>
+						<br>
+						<textarea [ngModel]="getCourseRecordJSON((course_record | async))" [disabled]="!edit_mode"></textarea>
 					</div>
 
 				</div>
 			`,
 			styles: [ style, `
 
-				div.tuxlab-user-session-item div{
-					width: 50%;
+				div.expand_title{
+					height: 20px;
+				}
+
+				div.expand_container{
+					margin-left: 40px;
+					padding-top: 4px;
+					padding-bottom: 10px;
 				}
 
 				md-chip{
@@ -83,11 +124,32 @@
 				}
 
 				div.connection{
-					align-self: flex-end;
-					margin-left: 3px;
-					padding: 4px;
+				  padding: 20px;
 
-					background-color: #ddd;
+				  background-color: #333;
+				  color:#efefef;
+
+				  table{
+				    margin:0 auto;
+
+				    tr{
+				      td{
+				        padding: 5px;
+
+				        &:first-child{
+				          font-weight: bold;
+				        }
+				      }
+				    }
+				  }
+				}
+
+				textarea{
+					width: 100%;
+					min-height: 300px;
+					border: none;
+					background-color: transparent;
+					color: #000 !important;
 				}
 
 			` ],
@@ -95,30 +157,36 @@
 		})
 
 		export class UserSessionItem extends MeteorComponent {
+			@Input('course_record') course_record : Observable<CourseRecord>;
+
 			@Input('session') session : Session;
 			private SessionStatus = SessionStatus;
+			private container_index = 0;
 
 			private lab : Lab;
 
-			constructor(private zone : NgZone, private dialog : MdDialog, private ref: ChangeDetectorRef){
+			private expand : boolean = false;
+			private edit_mode : boolean = false;
+
+			constructor(private zone : NgZone, private ref: ChangeDetectorRef){
 				super();
 			}
 
 			ngOnInit(){
+				// Get Lab
 				Meteor.subscribe('labs.course', this.session.course_id, () => {
 					this.zone.run(() => {
 						this.lab = Labs.findOne({ "_id" : this.session.lab_id });
 						this.ref.markForCheck();
 					});
 				});
-
 			}
 
-			private connectionDetails({value}){
-				var dialogRef = this.dialog.open(ConnectionDetailsDialog, { width: '600px' });
-				dialogRef.componentInstance.container = this.session.containers[value];
+			private getCourseRecordJSON(record){
+				if(record && _.has(record, "labs."+this.lab._id+"."+this.session._id)){
+					return JSON.stringify(record.labs[this.lab._id][this.session._id],null,2);
+				}
 			}
-
 		}
 
 	/** USER -> COURSE LIST **/
@@ -137,11 +205,6 @@
 
 					<div class="expand_container" *ngIf="expand" fxLayout="column">
 
-						<!-- Course Record -->
-						<h5> Course Record </h5>
-						<textarea md-input [disabled]="!edit_mode" [ngModel]="JSON.stringify((course_record | async),null,2)" ></textarea>
-						<br>
-
 						<!-- Sessions -->
 						<ng-container [ngSwitch]="(sessions | async)?.length > 0">
 							<ng-container *ngSwitchCase="false">
@@ -149,10 +212,11 @@
 							</ng-container>
 							<ng-container *ngSwitchCase="true">
 								<h5> Sessions: </h5>
+								<br>
 
 								<ul fxLayout="column" class="sessions">
 									<li *ngFor="let session of (sessions | async);">
-										<tuxlab-user-session-item [session]="session"></tuxlab-user-session-item>
+										<tuxlab-user-session-item [session]="session" [course_record]="course_record"></tuxlab-user-session-item>
 									</li>
 								</ul>
 							</ng-container>
@@ -184,13 +248,6 @@
 					padding: 10px !important;
 				}
 
-				textarea{
-					width: 100%;
-					border: none;
-					background-color: transparent;
-					color: #000 !important;
-				}
-
 			` ],
 			changeDetection: ChangeDetectionStrategy.OnPush
 		})
@@ -203,7 +260,6 @@
 			private course_record : Observable<CourseRecord>;
 
 			private expand : boolean = false;
-			private edit_mode : boolean = false;
 
 			constructor( private router : Router,
 									 private route : ActivatedRoute,
@@ -346,17 +402,20 @@
 			  max-width: 960px;
 			  min-height: 900px;
 
-			  margin: 30px auto;
-			  padding: 45px;
-
-			  background-color: #fff;
-			  box-shadow:
-			   0 -1px 1px rgba(0,0,0,0.15),
-			   0 -10px 0 -5px #eee,
-			   0 -10px 1px -4px rgba(0,0,0,0.15),
-			   0 -20px 0 -10px #eee,
-			   0 -20px 1px -9px rgba(0,0,0,0.15);
+			  margin: 5px;
 			}
+
+			input#searchInput{
+			  width: 100%;
+			  height: 40px;
+
+			  padding-left: 4px;
+			  margin-top: 10px;
+
+			  line-height: 40px;
+			  font-size: 16px;
+			}
+
 
 		` ],
 		changeDetection: ChangeDetectionStrategy.OnPush
@@ -365,15 +424,27 @@
   export class UserList extends MeteorComponent {
 		private users : ObservableCursor<User>;
 
-    constructor( private router : Router,
-								 private route : ActivatedRoute,
-							   private zone : NgZone ) {
+		private query : string = "";
+
+    constructor( private zone : NgZone ) {
 			super();
     }
 
 		ngOnInit(){
 			Meteor.subscribe('users.all');
 			Meteor.subscribe('courses.all');
-			this.users = Users.observable.find({});
+			this.onSearch();
+		}
+
+		onSearch(){
+			this.zone.run(() => {
+				this.users = Users.observable.find({
+					$or : [
+						{ "_id" : this.query },
+						{ "profile.name" : { $regex : this.query, $options : 'i' } },
+						{ "profile.email" : { $regex : this.query, $options : 'i' } }
+					]
+				});
+			});
 		}
   }

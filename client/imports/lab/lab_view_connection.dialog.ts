@@ -1,6 +1,6 @@
 // Imports
 	import { MeteorComponent } from 'angular2-meteor';
-	import { Component } from '@angular/core';
+	import { Component, Input } from '@angular/core';
 
 // Define Dialog Component
 	import style_dialog from "./lab_view_connection.dialog.scss";
@@ -16,5 +16,5 @@
 		styles: [ style_dialog ]
 	})
 	export class ConnectionDetailsDialog extends MeteorComponent {
-		public container : Container;
+		@Input('container') container : Container;
 	}

@@ -1,8 +1,7 @@
 <div class="user_list">
-  <h1> Users </h1>
-
+  
   <!-- Search Items -->
-
+  <input #searchInput id="searchInput" mdInput type="text" placeholder="Search by Name, Username, E-Mail" [(ngModel)]="query" (keyup)="onSearch()" />
 
   <!-- List of Users -->
   <ul fxLayout="column">

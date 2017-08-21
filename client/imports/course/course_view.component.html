@@ -29,7 +29,7 @@
     <!-- Description Block -->
     <div class="description">
       <h4> Description </h4>
-      <textarea mdInput [disabled]="!edit_mode" [ngModel]="(course | async)?.course_description?.content" (ngModelChange)="course_model.course_description.content = $event"></textarea>
+      <textarea mdInput class="syllabus" [disabled]="!edit_mode" [ngModel]="(course | async)?.course_description?.content" (ngModelChange)="course_model.course_description.content = $event"></textarea>
 
       <h4> Syllabus </h4>
       <div class="syllabus" *ngIf="edit_mode; then syllabusEdit; else syllabusMarkdown"></div>

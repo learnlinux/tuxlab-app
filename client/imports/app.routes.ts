@@ -7,7 +7,7 @@ import { FormsModule }          from '@angular/forms';
 
 // Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule, MdButtonModule, MdSelectModule, MdListModule, MdInputModule, MdGridListModule, MdDialogModule, MdChipsModule } from '@angular/material';
+import { MaterialModule, MdButtonModule, MdSelectModule, MdListModule, MdInputModule, MdGridListModule, MdDialogModule, MdChipsModule, MdTabsModule } from '@angular/material';
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 // Imports
@@ -25,7 +25,8 @@ import Login from './account/login.component';
 import { Users } from '../../both/collections/user.collection';
 
 // Admin
-import { UserList, UserItem, UserCourseItem, UserSessionItem } from './admin/user_list.component';
+import { AdminView } from './admin/admin_view.component';
+import { UserList, UserItem, UserCourseItem, UserSessionItem } from './admin/admin_user_list.component';
 
 // Course
 import CourseList from './course/course_list.component';
@@ -56,7 +57,7 @@ export const AppRoutes : Routes = [
   { path: 'error/:error_code', component: ErrorPage },
 
   // Admin
-  { path: 'admin/users', component: UserList },
+  { path: 'admin', component: AdminView, canActivate: [AuthGuard] },
 
   // Courses
   { path: 'explore', component: CourseList },
@@ -72,12 +73,19 @@ export const AppRoutes : Routes = [
 
 @NgModule({
   declarations: [
+
+    // Static
     Dashboard,
     Help,
     ErrorPage,
     Legal,
     Login,
+
+    // Dialogs
     SelectUser,
+
+    // Admin
+    AdminView,
 
     // Course
     CourseList,
@@ -115,6 +123,7 @@ export const AppRoutes : Routes = [
     MdGridListModule,
     MdChipsModule,
     MdDialogModule,
+    MdTabsModule,
     MarkdownModule.forRoot(),
     SortablejsModule
   ],
