@@ -67,6 +67,27 @@ div.course_view{
       }
      }
 
+     div.description{
+       h4{
+         margin:10px 0px;
+       }
+
+       input,textarea{
+         width: 100%;
+         border: none;
+         background-color: transparent;
+         color: #000 !important;
+       }
+
+       textarea{
+         resize: none;
+       }
+
+       div.syllabus textarea{
+          font-family: "Courier New", courier, monospace;
+       }
+     }
+
      div.course_actions {
        margin-top: 35px;
        padding: 3px;

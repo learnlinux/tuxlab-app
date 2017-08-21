@@ -36,6 +36,7 @@ import { LabRuntime } from './lab_runtime';
 interface SessionObj{
   _id? : string,
   user_id : string,
+  course_id : string,
   lab_id : string,
   lab : LabRuntime,
   tasks : SessionTask[],
@@ -56,6 +57,9 @@ export class Session extends Cache {
   private static constructSessionID(user_id : string, lab_id : string){
     return user_id + '-' + lab_id;
   }
+
+  // Course
+  public course_id : string;
 
   // Lab
   private lab : LabRuntime;
@@ -92,6 +96,7 @@ export class Session extends Cache {
      return {
        _id : this._id,
        user_id : this.user_id,
+       course_id : this.course_id,
        lab_id: this.lab_id,
        status: this.status,
        expires: this.expires,
@@ -202,6 +207,7 @@ export class Session extends Cache {
             return new Session({
               _id : session_record._id,
               user_id : session_record.user_id,
+              course_id : session_record.course_id,
               lab_id : session_record.lab_id,
               lab : lab,
               tasks : session_record.tasks,
@@ -250,6 +256,7 @@ export class Session extends Cache {
         session = new Session({
           _id : session_id,
           user_id : user_id,
+          course_id : lab.course_id,
           lab_id : lab_id,
           lab : lab,
           containers : containers,
@@ -358,6 +365,7 @@ export class Session extends Cache {
       let record : SessionModel = {
         // Details
         user_id : this.user_id,
+        course_id : this.course_id,
         lab_id : this.lab_id,
 
         // Session Status

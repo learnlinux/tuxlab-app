@@ -28,6 +28,7 @@ export interface Session {
   _id? : string,
 
   user_id : string,
+  course_id : string,
   lab_id: string,
 
   // Status

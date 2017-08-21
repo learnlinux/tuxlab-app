@@ -24,6 +24,9 @@ import Dashboard from './account/dashboard.component';
 import Login from './account/login.component';
 import { Users } from '../../both/collections/user.collection';
 
+// Admin
+import { UserList, UserItem, UserCourseRecordItem, UserSessionItem } from './admin/user_list.component';
+
 // Course
 import CourseList from './course/course_list.component';
 import CourseView from './course/course_view.component';
@@ -52,6 +55,9 @@ export const AppRoutes : Routes = [
   { path: 'legal', component: Legal },
   { path: 'error/:error_code', component: ErrorPage },
 
+  // Admin
+  { path: 'admin/users', component: UserList },
+
   // Courses
   { path: 'explore', component: CourseList },
   { path: 'courses', component: CourseList, canActivate: [AuthGuard] },
@@ -71,14 +77,24 @@ export const AppRoutes : Routes = [
     ErrorPage,
     Legal,
     Login,
+    SelectUser,
+
+    // Course
     CourseList,
     CourseView,
+    CourseViewLabItem,
+
+    // Lab
     LabView,
     LabTerminal,
     ConnectionDetailsDialog,
     MessageDialog,
-    CourseViewLabItem,
-    SelectUser
+
+    // Admin
+    UserList,
+    UserItem,
+    UserCourseRecordItem,
+    UserSessionItem
   ],
   imports: [
     RouterModule.forRoot(

@@ -7,6 +7,8 @@ import { Users } from "../../both/collections/user.collection";
 import { Courses } from '../../both/collections/course.collection';
 
 /* PUBLICATIONS */
+
+// PERSONAL DATA
 Meteor.publish("userData", () => {
     return Meteor.users.find({
       _id: Meteor.userId()
@@ -15,6 +17,7 @@ Meteor.publish("userData", () => {
     });
 });
 
+// INSTRUCTORS
 Meteor.publish("user.instructors", (course_id) => {
   var course = Courses.findOne({ _id : course_id });
   if(course){
@@ -27,6 +30,17 @@ Meteor.publish("user.instructors", (course_id) => {
     throw new Meteor.Error("Could not find course");
   }
 })
+
+// ALL USERS
+Meteor.publish("user.all", () => {
+  if(!Meteor.userId()){
+    throw new Meteor.Error("Not Authorized");
+  } else if(Users.isGlobalAdministrator(Meteor.userId())) {
+      return Users.find({});
+  } else {
+      throw new Meteor.Error("Unauthorized");
+  }
+});
 
 /* ROLE GRANTING */
 
@@ -43,7 +57,6 @@ Meteor.publish("user.instructors", (course_id) => {
   }
 
   export function addRoleForCourse(course_id : string, user_id : string, role : Role) : Promise<any>{
-
     // Add to User Roles
     return new Promise((resolve, reject) => {
       Users.update({

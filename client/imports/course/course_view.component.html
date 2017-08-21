@@ -27,6 +27,19 @@
     </div>
 
     <!-- Description Block -->
+    <div class="description">
+      <h4> Description </h4>
+      <textarea mdInput [disabled]="!edit_mode" [ngModel]="(course | async)?.course_description?.content" (ngModelChange)="course_model.course_description.content = $event"></textarea>
+
+      <h4> Syllabus </h4>
+      <div class="syllabus" *ngIf="edit_mode; then syllabusEdit; else syllabusMarkdown"></div>
+      <ng-template #syllabusMarkdown>
+        <markdown *ngIf="(course | async)?.course_description?.syllabus" [data]="(course | async)?.course_description?.syllabus"></markdown>
+      </ng-template>
+      <ng-template #syllabusEdit>
+        <textarea mdInput [ngModel]="(course | async)?.course_description?.syllabus" (ngModelChange)="course_model.course_description.syllabus = $event"></textarea>
+      </ng-template>
+    </div>
 
     <!-- Actions Block -->
     <div class="course_actions" fxLayout="row" *ngIf="role >= Role.course_admin">
@@ -53,15 +66,15 @@
           </button>
         </ng-container>
         <ng-container *ngIf="edit_mode">
-          <button md-button (click)="addCourseAdmin()">
+          <button md-button *ngIf="role >= Role.course_admin" (click)="addCourseAdmin()">
             <md-icon>person_add</md-icon>
             Add Admin
           </button>
-          <button md-button (click)="addInstructor()">
+          <button md-button *ngIf="role >= Role.instructor" (click)="addInstructor()">
             <md-icon>person_add</md-icon>
             Add Instructor
           </button>
-          <button md-button (click)="updatePermissions()">
+          <button md-button (click)="update()">
             <md-icon>save</md-icon>
             Save
           </button>

@@ -6,8 +6,8 @@
 
   /* COURSE DESCRIPTION */
   interface CourseDescription {
-    content: string;
-    syllabus: string;
+    content: string; // Markdown Not Supported
+    syllabus: string; // Markdown Supported
   }
 
   /* PERMISSIONS */

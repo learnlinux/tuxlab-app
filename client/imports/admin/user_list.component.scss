@@ -1,0 +1,59 @@
+div.user_list{
+  width: 100%;
+  max-width: 960px;
+  min-height: 900px;
+
+  margin: 30px auto;
+  padding: 45px;
+
+  background-color: #fff;
+  box-shadow:
+   0 -1px 1px rgba(0,0,0,0.15),
+   0 -10px 0 -5px #eee,
+   0 -10px 1px -4px rgba(0,0,0,0.15),
+   0 -20px 0 -10px #eee,
+   0 -20px 1px -9px rgba(0,0,0,0.15);
+}
+
+ul {
+  list-style: none !important;
+  padding: 20px 10px !important;
+  background-color: #fff !important;
+}
+
+h1{
+  font-weight: 300 !important;
+  margin: 0px !important;
+}
+
+h3{
+  font-size: 16px;
+  font-weight: 400 !important;
+  margin: 0px !important;
+}
+
+h4{
+  font-size: 16px;
+  font-weight: 300 !important;
+  margin: 0px !important;
+}
+
+h5{
+  font-size: 14px;
+  font-weight: 700 !important;
+  margin: 0px !important;
+}
+
+.tuxlab_user_item{
+  padding:5px 0px;
+  border-bottom: 1px solid #ccc;
+}
+
+div.expand_title{
+  height: 40px;
+}
+
+div.expand_container{
+  margin-left: 40px;
+  padding-bottom: 10px;
+}

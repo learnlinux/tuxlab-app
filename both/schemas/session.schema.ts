@@ -41,6 +41,9 @@ export const SessionSchema : SimpleSchema = new SimpleSchema({
   user_id: {
     type: String
   },
+  course_id: {
+    type: String
+  },
   lab_id: {
     type: String
   },

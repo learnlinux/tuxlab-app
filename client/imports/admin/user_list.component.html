@@ -1,0 +1,15 @@
+<div class="user_list">
+  <h1> Users </h1>
+
+  <!-- Search Items -->
+
+
+  <!-- List of Users -->
+  <ul fxLayout="column">
+    <li *ngFor="let user of (users | async);">
+      <tuxlab-user-item [user]="user"></tuxlab-user-item>
+    </li>
+  </ul>
+
+  <!-- Pagination -->
+</div>

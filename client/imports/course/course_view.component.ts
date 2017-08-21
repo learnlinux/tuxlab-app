@@ -170,19 +170,17 @@
 		private edit_mode : boolean = false;
 
 		private update(){
-			this.course_behaviorSubject.next(Courses.findOne({ _id : this.route.snapshot.params['course_id'] }));
-		}
-
-		private updatePermissions(){
 			Courses.update({
 				_id : this.route.snapshot.params['course_id']
 			},{
 				$set : {
+					"course_description.content" : this.course_model.course_description.content,
+					"course_description.syllabus" : this.course_model.course_description.syllabus,
 					"permissions.content" : this.course_model.permissions.content,
 					"permissions.enroll" : this.course_model.permissions.enroll
 				}
 			}, () => {
-				this.update();
+				this.course_behaviorSubject.next(Courses.findOne({ _id : this.route.snapshot.params['course_id'] }));
 			});
 			this.edit_mode = false;
 		}

@@ -9,6 +9,10 @@ html, body, main {
   font-family: 'Roboto', sans-serif;
 }
 
+h1, h2, h3, h4, h5{
+  font-family: 'Roboto', sans-serif !important;
+}
+
 // Override
 // https://github.com/angular/material2/issues/2112
 .mat-card-header-text {
