@@ -34,7 +34,7 @@
     <md-toolbar>
 
       <md-select placeholder="Machine" *ngIf="session?.containers?.length > 1" [(ngModel)]="container_index">
-         <md-option *ngFor="let container of session?.containers; let i = index" [value]="i">{{ (container)?.name ? container.name : i + 1 }}</md-option>
+         <md-option *ngFor="let container of session?.containers; let i = index" [value]="i">{{ (container)?.name ? container.name : "Server" + i + 1 }}</md-option>
       </md-select>
       <span *ngIf="session?.containers?.length == 1">
         {{ session?.containers[0]?.name ? session.containers[0].name : LabVM }}

@@ -13,6 +13,18 @@
   import { Users } from '../../both/collections/user.collection';
 
   /* PUBLICATION */
+
+  function coursesAll(){
+    if(!Meteor.userId()){
+        throw new Meteor.Error("Unauthorized");
+    } else if(Users.isGlobalAdministrator(Meteor.userId())) {
+        return Courses.find({});
+    } else {
+        throw new Meteor.Error("Unauthorized");
+    }
+  }
+  Meteor.publish('courses.all', coursesAll);
+
   const explore_limit = 20;
   function coursesExplore(skip){
     return Courses.find({
@@ -34,7 +46,7 @@
     if(!Meteor.userId()){
       throw new Meteor.Error("Not Authorized");
     }
-    
+
     switch(Users.getRoleFor(course_id, Meteor.userId())){
       case Role.guest:
         return Courses.find({

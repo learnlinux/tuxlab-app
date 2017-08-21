@@ -103,7 +103,7 @@
 			this.instructors = this.course
 				.distinct()
 				.mergeMap((course) => {
-					Meteor.subscribe('user.instructors', course._id);
+					Meteor.subscribe('users.instructors', course._id);
 					return Users.observable
 					.find({ _id : { $in : course.instructors }})
 					.map(users => {

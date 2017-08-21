@@ -25,7 +25,7 @@ import Login from './account/login.component';
 import { Users } from '../../both/collections/user.collection';
 
 // Admin
-import { UserList, UserItem, UserCourseRecordItem, UserSessionItem } from './admin/user_list.component';
+import { UserList, UserItem, UserCourseItem, UserSessionItem } from './admin/user_list.component';
 
 // Course
 import CourseList from './course/course_list.component';
@@ -93,7 +93,7 @@ export const AppRoutes : Routes = [
     // Admin
     UserList,
     UserItem,
-    UserCourseRecordItem,
+    UserCourseItem,
     UserSessionItem
   ],
   imports: [

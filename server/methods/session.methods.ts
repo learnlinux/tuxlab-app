@@ -37,6 +37,14 @@ Meteor.methods({
 
       if(user_id){
         return Session.getSession(user_id, lab_id)
+
+        // Ensure User is registered as a Student
+        .then((session) => {
+            Users.ensureRoleFor(session.course_id, user_id, Role.student);
+            return session;
+        })
+
+        // Return Session JSON
         .then((session) => {
           return session.getJSON();
         })
@@ -49,10 +57,13 @@ Meteor.methods({
     const user_id = Meteor.userId();
 
     if(user_id){
+
+      // Get Session
       return Session.getSession(user_id, lab_id)
       .then((session) => {
         return session.renew();
       });
+
     } else {
       throw new Meteor.Error("Authorization Required");
     }

@@ -18,7 +18,7 @@ Meteor.publish("userData", () => {
 });
 
 // INSTRUCTORS
-Meteor.publish("user.instructors", (course_id) => {
+Meteor.publish("users.instructors", (course_id) => {
   var course = Courses.findOne({ _id : course_id });
   if(course){
     return Users.find({
@@ -32,9 +32,9 @@ Meteor.publish("user.instructors", (course_id) => {
 })
 
 // ALL USERS
-Meteor.publish("user.all", () => {
+Meteor.publish("users.all", () => {
   if(!Meteor.userId()){
-    throw new Meteor.Error("Not Authorized");
+    throw new Meteor.Error("Unauthorized");
   } else if(Users.isGlobalAdministrator(Meteor.userId())) {
       return Users.find({});
   } else {

@@ -28,6 +28,7 @@
       getCoursesFor(user_id : string) : ObservableCursor<Course>;
       getRoleFor(course_id : string, user_id : string) : Role;
       getCourseRecordFor(course_id : string, user_id : string) : string;
+      ensureRoleFor(course_id: string, user_id: string, role : Role) : void;
       setRoleFor(course_id: string, user_id: string, role : Role) : void;
       isGlobalAdministrator(user_id: string) : boolean;
       findByProfileFields(query : string) : ObservableCursor<User>;
@@ -66,22 +67,15 @@
     // getCoursesFor
     UsersCollection.getCoursesFor = function(user_id : string) : ObservableCursor<Course> {
 
-      // Get Student Courses
-      const courses_student = CourseRecords.find({
-        user_id: user_id
-      }).map(function(course_record){
-        return course_record.course_id;
-      });
+      // Get User
+      const user = Users.observable.findOne({ '_id' : user_id });
 
-      // Get Instructor Courses
-      const courses_instructor = Courses.find({
-        instructors: user_id
-      }).map(function(course){
-        return course._id;
+      // Iterate over Roles to get Courses
+      const courses = _.map(_.filter(user.roles, (priv : Privilege) => {
+        return priv.role >= Role.student;
+      }), (priv : Privilege) => {
+        return priv.course_id;
       });
-
-      // Merge Course Lists
-      const courses : string[] = _.union(courses_student, courses_instructor);
 
       // Map to Find Courses
       return Courses.observable.find({ '_id' : { '$in' : courses }});
@@ -97,12 +91,52 @@
       }
     }
 
+    // ensureRoleFor
+    // Ensures the user has AT LEAST the given permissions level
+    UsersCollection.ensureRoleFor = function(course_id: string, user_id: string, role : Role) : void {
+
+      // Check if Course Record Created
+      let course_record_id;
+      if (this.getRoleFor(course_id, user_id) == Role.guest) {
+        course_record_id = CourseRecords.insert({
+          user_id : user_id,
+          course_id: course_id,
+          labs: {}
+        });
+      } else {
+        course_record_id = this.getCourseRecordFor(course_id, user_id);
+      }
+
+      // Add Role if not Found
+      this.update({
+        _id : user_id,
+        "roles" : {
+          "$not" : {
+            "$elemMatch" : {
+              "course_id" : course_id,
+              "role" : {
+                "$gte" : role
+              }
+            }
+          }
+        }
+      }, {
+        "$push" : {
+          "roles" : {
+            course_id : course_id,
+            role: role
+          }
+        }
+      });
+
+
+    }
+
     // setRoleFor
     UsersCollection.setRoleFor = function(course_id: string, user_id: string, role : Role) : void {
       // Check if Course Record Created
       let course_record_id;
       if (this.getRoleFor(course_id, user_id) == Role.guest) {
-
         course_record_id = CourseRecords.insert({
           user_id : user_id,
           course_id: course_id,
