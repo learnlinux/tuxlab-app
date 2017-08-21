@@ -118,9 +118,9 @@
      // Courses
      this.courses = ({
        "gpi" : Courses.insert({
-                   course_name: "Great Practical Ideas for Computer Scientists",
+                   name: "Great Practical Ideas for Computer Scientists",
                    course_number: "15-131",
-                   course_description: {
+                   description: {
                      content: "Some stuff about content of the course.  Markdown allowed.",
                      syllabus: "Some stuff about the syllabus.  Markdown allowed."
                    },

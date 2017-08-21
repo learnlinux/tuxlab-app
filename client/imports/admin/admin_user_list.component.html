@@ -1,7 +1,24 @@
 <div class="user_list">
-  
+
   <!-- Search Items -->
-  <input #searchInput id="searchInput" mdInput type="text" placeholder="Search by Name, Username, E-Mail" [(ngModel)]="query" (keyup)="onSearch()" />
+  <div class="search_bar" fxLayout="row">
+    <div fxFlex="2 0 auto">
+      <md-input-container floatPlaceholder="always">
+        <input mdInput class="search_input" type="search" placeholder="Search by Name, Username, E-Mail" [(ngModel)]="user_query" (ngModelChange)="onSearch()" />
+      </md-input-container>
+    </div>
+    <div fxFlex="1 0 auto">
+      <md-input-container floatPlaceholder="always">
+        <input mdInput class="search_input" placeholder="Course" [mdAutocomplete]="auto" [(ngModel)]="course_query" (ngModelChange)="onSearch()" />
+      </md-input-container>
+
+      <md-autocomplete #auto="mdAutocomplete" [displayWith]="courseNameMap">
+        <md-option *ngFor="let course of courses | async" [value]="course">
+          {{ course.name }}
+        </md-option>
+      </md-autocomplete>
+    </div>
+  </div>
 
   <!-- List of Users -->
   <ul fxLayout="column">

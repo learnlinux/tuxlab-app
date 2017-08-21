@@ -145,6 +145,16 @@
   }
 
   Meteor.methods({
+    'Courses.search'({query}){
+      return Courses.find({
+        $or : [
+          { "_id" : query },
+          { "name" : { $regex : query, $options : 'i' }},
+          { "course_number" : { $regex : query, $options : 'i' }}
+        ]
+      }).fetch();
+    },
+
     'Courses.createLab'({course_id, lab_file}){
       return createLab(course_id, lab_file)
       .catch((err) => {

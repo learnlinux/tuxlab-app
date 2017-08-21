@@ -154,7 +154,7 @@ Meteor.publish("users.all", () => {
 
 
   Meteor.methods({
-    'Users.searchByProfileFields'({query}){
+    'Users.search'({query}){
       return Users.find({
         $or : [
           { "_id" : query },

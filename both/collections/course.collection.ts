@@ -16,9 +16,9 @@
 
   // Array of Fields that can be Updated
   const allowed = [
-    'course_name',
+    'name',
     'course_number',
-    'course_description',
+    'description',
     'permissions',
     'labs'
   ];

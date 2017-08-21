@@ -53,7 +53,7 @@ const permissionsSchema = new SimpleSchema({
 
 /* Course Schema */
   export const CourseSchema = new SimpleSchema({
-    course_name: {
+    name: {
       type: String
     },
     course_number: {
@@ -65,7 +65,7 @@ const permissionsSchema = new SimpleSchema({
     'instructors.$': {
       type: String
     },
-    course_description: {
+    description: {
       type: descriptionSchema,
       optional: true
     },

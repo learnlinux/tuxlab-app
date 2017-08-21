@@ -10,24 +10,24 @@
 	import { MdDialogRef } from "@angular/material";
 
 // Define Dialog Component
-	import style from "./select_user.dialog.scss";
-	import template from "./select_user.dialog.html";
+	import style from "./select_course.dialog.scss";
+	import template from "./select_course.dialog.html";
 
 // Collections
-	import { User } from '../../../both/models/user.model';
+	import { Course } from '../../../both/models/course.model';
 
   //  ConnectionDialog Class
 	@Component({
-		selector: 'tuxlab-select-user',
+		selector: 'tuxlab-select-course',
 		template: template,
 		styles: [ style ]
 	})
-	export default class SelectUser extends MeteorComponent {
+	export default class SelectCourse extends MeteorComponent {
 		private search : BehaviorSubject<string>;
 		private query : string = "";
-		private results : User[];
+		private results : Course[];
 
-		constructor(public dialogRef: MdDialogRef<SelectUser>, private zone : NgZone){
+		constructor(public dialogRef: MdDialogRef<SelectCourse>, private zone : NgZone){
 			super();
 		}
 
@@ -37,7 +37,7 @@
 				.distinct()
 				.debounce(function (x) { return Observable.timer(700); })
 				.subscribe((query) => {
-					Meteor.call("Users.search",{query : query},(err, res) => {
+					Meteor.call("Courses.search",{query : query},(err, res) => {
 						this.zone.run(() => {
 							if(err){
 								console.error(err);

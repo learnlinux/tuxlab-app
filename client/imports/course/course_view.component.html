@@ -12,7 +12,7 @@
       <div class="right" fxLayout="column" fxLayoutAlign="center">
 
         <!-- Course Name -->
-        <span class="course_name">{{ (course | async)?.course_name }}</span>
+        <span class="name">{{ (course | async)?.name }}</span>
 
         <!-- Instructors -->
         <div class="instructors" *ngIf="instructors | async" >
@@ -29,15 +29,15 @@
     <!-- Description Block -->
     <div class="description">
       <h4> Description </h4>
-      <textarea mdInput class="syllabus" [disabled]="!edit_mode" [ngModel]="(course | async)?.course_description?.content" (ngModelChange)="course_model.course_description.content = $event"></textarea>
+      <textarea mdInput class="syllabus" [disabled]="!edit_mode" [ngModel]="(course | async)?.description?.content" (ngModelChange)="course_model.description.content = $event"></textarea>
 
       <h4> Syllabus </h4>
       <div class="syllabus" *ngIf="edit_mode; then syllabusEdit; else syllabusMarkdown"></div>
       <ng-template #syllabusMarkdown>
-        <markdown *ngIf="(course | async)?.course_description?.syllabus" [data]="(course | async)?.course_description?.syllabus"></markdown>
+        <markdown *ngIf="(course | async)?.description?.syllabus" [data]="(course | async)?.description?.syllabus"></markdown>
       </ng-template>
       <ng-template #syllabusEdit>
-        <textarea mdInput [ngModel]="(course | async)?.course_description?.syllabus" (ngModelChange)="course_model.course_description.syllabus = $event"></textarea>
+        <textarea mdInput [ngModel]="(course | async)?.description?.syllabus" (ngModelChange)="course_model.description.syllabus = $event"></textarea>
       </ng-template>
     </div>
 

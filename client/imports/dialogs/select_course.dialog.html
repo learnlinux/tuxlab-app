@@ -1,0 +1,26 @@
+<input #searchInput id="searchInput" mdInput type="search" placeholder="Search by Name, Username, E-Mail" [(ngModel)]="query" (keyup)="onUpdate()" />
+
+<div *ngIf="results && results.length > 0; then CourseResults; else NoCourseResults">
+</div>
+<!-- No User Results -->
+<ng-template #NoCourseResults>
+  <div class="message" fxLayout="column" fxLayoutAlign="center center">
+    <div><span><md-icon class="emoji">mood_bad</md-icon></span></div>
+    <div><h1> No Courses Found </h1></div>
+  </div>
+</ng-template>
+
+<!-- User Results -->
+<ng-template #CourseResults>
+  <md-list disableRipple="false" >
+    <md-list-item *ngFor="let course of results;" (click)="select(course)">
+      <h4 md-line>{{ course.course_number }} | {{ course.name }}</h4>
+    </md-list-item>
+  </md-list>
+</ng-template>
+
+<div fxLayout="row" fxLayoutAlign="flex-end flex-end">
+  <div>
+    <button md-button [md-dialog-close]="null"><md-icon>clear</md-icon>Cancel</button>
+  </div>
+</div>

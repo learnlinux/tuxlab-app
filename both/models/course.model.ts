@@ -31,9 +31,9 @@
   /* COURSE MODEL */
   export interface Course {
     _id?: string;
-    course_name: string;
+    name: string;
     course_number?: string;
-    course_description?: CourseDescription;
+    description?: CourseDescription;
     featured: boolean;
     labs: string[];
     instructors: string[];

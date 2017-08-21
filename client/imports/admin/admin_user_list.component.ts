@@ -200,7 +200,7 @@
 							<md-icon *ngSwitchCase="true">expand_less</md-icon>
 							<md-icon *ngSwitchCase="false">expand_more</md-icon>
 						</button>
-						<h3>{{ course?.course_name }}</h3>
+						<h3>{{ course?.name }}</h3>
 					</div>
 
 					<div class="expand_container" *ngIf="expand" fxLayout="column">
@@ -231,6 +231,10 @@
 
 					&:first-child{
 						border-top: 1px solid #ccc;
+					}
+
+					&:last-child{
+						border-top: none;
 					}
 				}
 
@@ -324,7 +328,6 @@
 			selector: 'tuxlab-user-item',
 			template : `
 					<div class="tuxlab_user_item" fxLayout="column">
-
 						<div class="expand_title" fxLayout="row" fxLayoutAlign="start center">
 							<button md-icon-button (click)="expand = !expand" [ngSwitch]="expand">
 								<md-icon *ngSwitchCase="true">expand_less</md-icon>
@@ -353,7 +356,6 @@
 								</ng-container>
 							</ng-container>
 						</div>
-
 					</div>
 			`,
 			styles: [ style, `
@@ -361,6 +363,10 @@
 				div.tuxlab_user_item{
 				  padding:5px 0px;
 				  border-bottom: 1px solid #ccc;
+
+					&:last-child{
+						border-bottom: none;
+					}
 				}
 
 				div.expand_title{
@@ -402,20 +408,43 @@
 			  max-width: 960px;
 			  min-height: 900px;
 
-			  margin: 5px;
+				margin: 30px auto;
+				padding: 45px;
+
+				background-color: #fff;
+				box-shadow:
+				 0 -1px 1px rgba(0,0,0,0.15),
+				 0 -10px 0 -5px #eee,
+				 0 -10px 1px -4px rgba(0,0,0,0.15),
+				 0 -20px 0 -10px #eee,
+				 0 -20px 1px -9px rgba(0,0,0,0.15);
+
 			}
 
-			input#searchInput{
-			  width: 100%;
-			  height: 40px;
-
-			  padding-left: 4px;
-			  margin-top: 10px;
-
-			  line-height: 40px;
-			  font-size: 16px;
+			div.search_bar > div{
+					padding:0px 12px;
 			}
 
+			md-input-container{
+				width: 100%;
+			}
+
+			input.search_input{
+				width: 100%;
+				height: 40px;
+
+				padding-left: 4px;
+				margin-top: 10px;
+
+				line-height: 40px;
+				font-size: 16px;
+
+				border: 1px solid #ddd;
+			}
+
+			ul{
+				margin-top:0px !important;
+			}
 
 		` ],
 		changeDetection: ChangeDetectionStrategy.OnPush
@@ -423,8 +452,10 @@
 
   export class UserList extends MeteorComponent {
 		private users : ObservableCursor<User>;
+		private courses : ObservableCursor<Course>;
 
-		private query : string = "";
+		private user_query : string;
+		private course_query : Course;
 
     constructor( private zone : NgZone ) {
 			super();
@@ -433,18 +464,46 @@
 		ngOnInit(){
 			Meteor.subscribe('users.all');
 			Meteor.subscribe('courses.all');
+			this.courses = Courses.observable.find({});
 			this.onSearch();
+		}
+
+		courseNameMap(course){
+			return course ? course.name : course;
 		}
 
 		onSearch(){
 			this.zone.run(() => {
-				this.users = Users.observable.find({
-					$or : [
-						{ "_id" : this.query },
-						{ "profile.name" : { $regex : this.query, $options : 'i' } },
-						{ "profile.email" : { $regex : this.query, $options : 'i' } }
-					]
-				});
+
+				if(this.course_query){
+					this.users = Users.observable.find({
+						$and: [
+							{
+								"roles" : {
+									"$elemMatch" : {
+										"course_id" : this.course_query._id
+									}
+								}
+							},
+							{
+								$or : [
+									{ "_id" : this.user_query || "" },
+									{ "profile.name" : { $regex : this.user_query || "", $options : 'i' } },
+									{ "profile.email" : { $regex : this.user_query || "", $options : 'i' } }
+								]
+							}
+						]
+					});
+				} else {
+					this.users = Users.observable.find({
+						$or : [
+							{ "_id" : this.user_query || "" },
+							{ "profile.name" : { $regex : this.user_query || "", $options : 'i' } },
+							{ "profile.email" : { $regex : this.user_query || "", $options : 'i' } }
+						]
+					});
+				}
+
 			});
 		}
   }
