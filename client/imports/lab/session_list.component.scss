@@ -1,0 +1,16 @@
+.session_list{
+  h1 {
+    font-weight: 300;
+    font-size: 36px;
+  }
+  
+  .message{
+    width: 100%;
+
+    .emoji{
+      height: 180px;
+      width: 180px;
+      font-size: 180px !important;
+    }
+  }
+}

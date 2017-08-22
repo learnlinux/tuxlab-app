@@ -38,6 +38,7 @@ import { LabView } from './lab/lab_view.component';
 import { ConnectionDetailsDialog } from './lab/lab_view_connection.dialog';
 import { MessageDialog } from './lab/lab_view_messages.dialog';
 import LabTerminal from './lab/lab_terminal.component';
+import { SessionList, SessionListItem } from './lab/session_list.component';
 
 // Static
 import ErrorPage from './static/error.component';
@@ -97,6 +98,8 @@ export const AppRoutes : Routes = [
     LabTerminal,
     ConnectionDetailsDialog,
     MessageDialog,
+    SessionList,
+    SessionListItem,
 
     // Admin
     UserList,

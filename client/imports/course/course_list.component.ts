@@ -36,8 +36,9 @@
 
 		private title : string;
 		private courses : ObservableCursor<Course>;
-
 		private user : User;
+
+		private cols : number = 2;
 		private is_editable : boolean = false;
 		private is_global_admin : boolean;
 
@@ -82,6 +83,8 @@
 				Meteor.subscribe('courses.all');
 
 			} else if (this.type === "my_courses") {
+				this.cols = 1;
+				
 				this.title = null;
 				this.courses = Users.getCoursesFor(Meteor.userId());
 				Meteor.subscribe('courses.user');

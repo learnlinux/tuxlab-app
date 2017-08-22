@@ -12,9 +12,21 @@ import { Role } from '../../both/models/user.model';
 import { Users } from '../../both/collections/user.collection';
 
 /* PUBLICATION */
+
+function sessionsUser(){
+  if(!Meteor.userId()){
+    throw new Meteor.Error("Unauthorized");
+  }
+
+  return Sessions.find({
+    user_id : Meteor.userId()
+  })
+}
+Meteor.publish('Sessions.user', sessionsUser);
+
 function sessionsUserCourse(user_id : string, course_id : string){
   if(!Meteor.userId()){
-    throw new Meteor.Error("Not Authorized");
+    throw new Meteor.Error("Unauthorized");
   }
 
   switch(Users.getRoleFor(course_id, Meteor.userId())){
@@ -27,7 +39,7 @@ function sessionsUserCourse(user_id : string, course_id : string){
       throw new Meteor.Error("Unauthorized");
   }
 }
-Meteor.publish('Sessions.userCourse',sessionsUserCourse);
+Meteor.publish('Sessions.userCourse', sessionsUserCourse);
 
 /* LAB METHODS */
 Meteor.methods({

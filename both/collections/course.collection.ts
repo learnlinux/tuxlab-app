@@ -124,11 +124,13 @@
         });
       })
 
-      // Delete Sessions
+      // Mark Sessions as Expired
       .then(() => {
         return new Promise((resolve, reject) => {
-          Sessions.remove({
+          Sessions.update({
             course_id : course_id
+          },{
+            expires : (new Date())
           }, (err, res) => {
             if(err){
               reject(err);

@@ -1,0 +1,15 @@
+<div class="session_list" fxLayout="column" fxLayoutAlign="flex-start center">
+
+  <div *ngIf="!(sessions | async)" class="message" fxLayout="column" fxLayoutAlign="center center">
+    <div><span><md-icon class="emoji">mood_bad</md-icon></span></div>
+    <div><h1> No Sessions Found </h1></div>
+  </div>
+
+  <!-- Session List -->
+  <md-grid-list cols="1" rowHeight="150px" gutterSize="15px">
+    <md-grid-tile *ngFor="let session of sessions | async">
+      <tuxlab-session-list-item></tuxlab-session-list-item>
+    </md-grid-tile>
+  </md-grid-list>
+
+</div>

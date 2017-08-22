@@ -21,13 +21,13 @@
   </div>
 
   <!-- Course List -->
-  <md-grid-list cols="2" rowHeight="150px" gutterSize="15px">
+  <md-grid-list [cols]="cols" rowHeight="150px" gutterSize="15px">
     <md-grid-tile *ngFor="let course of courses | async">
       <md-card>
+
         <!-- Header Information -->
         <md-card-header>
           <md-card-title>{{ course.name }}</md-card-title>
-          <md-card-subtitle></md-card-subtitle>
         </md-card-header>
 
         <!-- Action Buttons -->
