@@ -26,7 +26,7 @@
       this.observable = new MongoObservable.Collection(this);
 
       // Permissions
-      const allowed_fields = [];
+      const allowed_fields = ["labs"];
       super.allow({
         update: function(user_id, course_record : CourseRecord, fields) {
           return _.reject(fields, key => _.includes(allowed_fields, key)).length === 0 &&

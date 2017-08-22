@@ -100,7 +100,25 @@
 						<!-- Session Record -->
 						<h5> Session Record: </h5>
 						<br>
-						<textarea [ngModel]="getCourseRecordJSON((course_record | async))" [disabled]="!edit_mode"></textarea>
+						<textarea mdInput mdTextareaAutosize [(ngModel)]="session_record" [disabled]="!edit_mode"></textarea>
+
+						<!-- Actions -->
+						<br>
+						<div class="actions" fxLayout="row" fxLayoutAlign="end center">
+
+							<!-- Edit Mode -->
+							<ng-container *ngIf="(course_record | async)?._id as id"[ngSwitch]="edit_mode">
+								<button md-raised-button (click)="edit_mode = true" *ngSwitchCase="false">
+									<md-icon>edit</md-icon>
+									Edit
+								</button>
+								<button md-raised-button (click)="update(id)" *ngSwitchCase="true">
+									<md-icon>save</md-icon>
+									Save
+								</button>
+							</ng-container>
+
+						</div>
 					</div>
 
 				</div>
@@ -146,24 +164,28 @@
 
 				textarea{
 					width: 100%;
-					min-height: 300px;
 					border: none;
 					background-color: transparent;
 					color: #000 !important;
+					font-family: "Courier New", courier, monospace;
 				}
+
 
 			` ],
 			changeDetection: ChangeDetectionStrategy.OnPush
 		})
 
 		export class UserSessionItem extends MeteorComponent {
+			@Input('user') user : User;
+			@Input('course') course : Course;
 			@Input('course_record') course_record : Observable<CourseRecord>;
-
 			@Input('session') session : Session;
 			private SessionStatus = SessionStatus;
-			private container_index = 0;
 
+			private container_index = 0;
 			private lab : Lab;
+
+			private session_record;
 
 			private expand : boolean = false;
 			private edit_mode : boolean = false;
@@ -173,19 +195,42 @@
 			}
 
 			ngOnInit(){
+
 				// Get Lab
-				Meteor.subscribe('labs.course', this.session.course_id, () => {
-					this.zone.run(() => {
-						this.lab = Labs.findOne({ "_id" : this.session.lab_id });
-						this.ref.markForCheck();
+				new Promise((resolve, reject) => {
+					Meteor.subscribe('labs.course', this.session.course_id, () => {
+						this.zone.run(() => {
+							this.lab = Labs.findOne({ "_id" : this.session.lab_id });
+							this.ref.markForCheck();
+							resolve();
+						})
 					});
-				});
+				})
+
+				// Get Course Record for Lab
+				.then(() => {
+					new Promise((resolve, reject) => {
+						this.course_record.subscribe((record) => {
+							if(record && _.has(record, "labs."+this.lab._id+"."+this.session._id)){
+								this.session_record = JSON.stringify(record.labs[this.lab._id][this.session._id],null,2);
+								this.ref.markForCheck();
+								resolve();
+							}
+						})
+					})
+				})
+
 			}
 
-			private getCourseRecordJSON(record){
-				if(record && _.has(record, "labs."+this.lab._id+"."+this.session._id)){
-					return JSON.stringify(record.labs[this.lab._id][this.session._id],null,2);
-				}
+			update(id){
+				CourseRecords.update({
+					"_id" : id
+				},{
+					"$set" : {
+						["labs."+this.lab._id+"."+this.session._id] : JSON.parse(this.session_record)
+					}
+				})
+				this.edit_mode = false;
 			}
 		}
 
@@ -208,14 +253,15 @@
 					<div class="expand_container" *ngIf="expand" fxLayout="column">
 
 						<!-- Actions -->
-						<br>
-						<h5> Role: </h5>
-						<div fxLayout="row">
-							<md-select class="role_select">
-								 <md-option [value]="Role.student">Student</md-option>
-								 <md-option [value]="Role.instructor">Instructor</md-option>
-								 <md-option [value]="Role.course_admin">Course Admin</md-option>
-							</md-select>
+						<div class="actions" fxLayout="row">
+							<div *ngIf="role < Role.global_admin && role > Role.guest" class="mat-raised-button" fxLayout="row" fxLayoutAlign="space-evenly center">
+								Role: &nbsp;
+								<md-select class="role_select" [(ngModel)]="role" (ngModelChanges)="update()">
+									 <md-option [value]="Role.student">Student</md-option>
+									 <md-option [value]="Role.instructor">Instructor</md-option>
+									 <md-option [value]="Role.course_admin">Course Admin</md-option>
+								</md-select>
+							</div>
 						</div>
 
 						<!-- Sessions -->
@@ -230,7 +276,7 @@
 
 								<ul fxLayout="column" class="sessions">
 									<li *ngFor="let session of (sessions | async);">
-										<tuxlab-user-session-item [session]="session" [course_record]="course_record"></tuxlab-user-session-item>
+										<tuxlab-user-session-item [user]="user" [course]="course" [course_record]="course_record" [session]="session"></tuxlab-user-session-item>
 									</li>
 								</ul>
 							</ng-container>
@@ -266,6 +312,21 @@
 					padding: 10px !important;
 				}
 
+				div.actions{
+					padding: 4px;
+
+					font-weight: 500;
+					background-color: #ddd;
+
+					mat-raised-button{
+						padding: 4px;
+
+						md-select{
+							font-size: 14px !important;
+						}
+					}
+				}
+
 			` ],
 			changeDetection: ChangeDetectionStrategy.OnPush
 		})
@@ -275,6 +336,7 @@
 			@Input('course') course : Course;
 
 			private Role = Role;
+			private role : Role;
 
 			private sessions : ObservableCursor<Session>;
 			private course_record : Observable<CourseRecord>;
@@ -300,6 +362,7 @@
 					// Get Course
 					.then(() => {
 						this.course = Courses.findOne({ _id : this.course._id });
+						this.role = Users.getRoleFor(this.course._id, this.user._id);
 					})
 
 					// Get Sub-Items
@@ -311,6 +374,7 @@
 								Meteor.subscribe('course_records.id', this.course._id, this.user._id, () => {
 									resolve();
 								});
+
 							}).then(() => {
 								this.course_record = CourseRecords.observable.find({
 									user_id: this.user._id,
@@ -334,8 +398,12 @@
 								});
 							})
 						])
-					})
-				})
+					});
+				});
+			}
+
+			update(){
+				Users.setRoleFor(this.course._id, this.user._id, this.role);
 			}
 		}
 
@@ -359,7 +427,6 @@
 							<br>
 
 							<!-- Actions -->
-							<h5> Actions: </h5>
 							<div class="actions" fxLayout="row" style="margin-bottom:10px;">
 
 								<!-- Global Admin -->
@@ -517,12 +584,14 @@
 		private user_query : string;
 		private course_query : Course;
 
-    constructor( private zone : NgZone ) {
+    constructor( private zone : NgZone, private ref : ChangeDetectorRef ) {
 			super();
     }
 
 		ngOnInit(){
-			Meteor.subscribe('users.all');
+			Meteor.subscribe('users.all', () => {
+				this.ref.markForCheck();
+			});
 			Meteor.subscribe('courses.all');
 			this.courses = Courses.observable.find({});
 			this.onSearch();
