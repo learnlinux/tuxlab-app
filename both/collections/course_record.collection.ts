@@ -32,6 +32,7 @@
           return _.reject(fields, key => _.includes(allowed_fields, key)).length === 0 &&
                  Users.getRoleFor(course_record.course_id, user_id) >= Role.instructor;
         },
+        remove: function(user_id) { return Users.isGlobalAdministrator(user_id) },
         fetch: []
       });
     }

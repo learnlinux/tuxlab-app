@@ -1,4 +1,6 @@
-<input #searchInput id="searchInput" mdInput type="search" placeholder="Search by Name, Username, E-Mail" [(ngModel)]="query" (keyup)="onUpdate()" />
+<md-input-container floatPlaceholder="always">
+  <input mdInput type="search" placeholder="Search by Name, Username, E-Mail" [(ngModel)]="query" (keyup)="onUpdate()" />
+</md-input-container>
 
 <div *ngIf="results && results.length > 0; then UserResults; else NoUserResults">
 </div>

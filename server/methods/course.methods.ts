@@ -37,14 +37,29 @@
   }
   Meteor.publish('courses.explore', coursesExplore);
 
+  const featured_limit = 20;
+  function coursesFeatured(skip){
+    return Courses.find({
+      "permissions.meta" : true,
+      "permissions.content" : ContentPermissions.Any
+    }, {
+      skip : skip,
+      limit: featured_limit
+    });
+  }
+  Meteor.publish('courses.featured', coursesFeatured);
+
   function coursesUser(){
+    if(!Meteor.userId()){
+      throw new Meteor.Error("Unauthorized");
+    }
     return Users.getCoursesFor(Meteor.userId());
   }
   Meteor.publish('courses.user', coursesUser);
 
   function coursesId(course_id){
     if(!Meteor.userId()){
-      throw new Meteor.Error("Not Authorized");
+      throw new Meteor.Error("Unauthorized");
     }
 
     switch(Users.getRoleFor(course_id, Meteor.userId())){
@@ -145,6 +160,10 @@
   }
 
   Meteor.methods({
+    'Courses.remove'({course_id}){
+      return Courses.deleteCourse(course_id);
+    },
+
     'Courses.search'({query}){
       return Courses.find({
         $or : [
@@ -153,6 +172,10 @@
           { "course_number" : { $regex : query, $options : 'i' }}
         ]
       }).fetch();
+    },
+
+    'Courses.setFeatured'({ course_id, featured }){
+      return Courses.setFeatured(course_id, featured);
     },
 
     'Courses.createLab'({course_id, lab_file}){

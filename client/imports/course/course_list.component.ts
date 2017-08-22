@@ -32,10 +32,13 @@
 
 // Export Dashboard Class
   export default class CourseList extends MeteorComponent {
+		@Input('type') type : string;
+
 		private title : string;
 		private courses : ObservableCursor<Course>;
 
 		private user : User;
+		private is_editable : boolean = false;
 		private is_global_admin : boolean;
 
     constructor(private router : Router, private zone : NgZone) {
@@ -72,9 +75,23 @@
 				Meteor.subscribe('courses.explore', 0);
 
 			} else if (this.router.url === "/admin"){
+				this.is_editable = true;
+
 				this.title = null;
 				this.courses = Courses.observable.find({});
 				Meteor.subscribe('courses.all');
+
+			} else if (this.type === "my_courses") {
+				this.title = null;
+				this.courses = Users.getCoursesFor(Meteor.userId());
+				Meteor.subscribe('courses.user');
+
+			} else if (this.type === "featured_courses") {
+				this.title = null;
+				this.courses = Courses.observable.find({
+					featured: true
+				});
+				Meteor.subscribe('courses.featured');
 
 			} else {
 				this.router.navigate(['error','404']);
@@ -82,7 +99,6 @@
 		}
 
 		createCourse(){
-
 			// Insert Courses
 			new Promise((resolve, reject) => {
 				Courses.insert({
@@ -109,7 +125,19 @@
 			.then((id) => {
 				this.router.navigate(['courses', id]);
 			})
+		}
 
+		featureCourse(course_id , featured){
+			Meteor.call('Courses.setFeatured',{
+				course_id : course_id,
+				featured : featured
+			})
+		}
+
+		deleteCourse(course_id){
+			Meteor.call('Courses.remove', {
+				course_id : course_id
+			})
 		}
 
   }

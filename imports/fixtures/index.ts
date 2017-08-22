@@ -124,7 +124,7 @@
                      content: "Some stuff about content of the course.  Markdown allowed.",
                      syllabus: "Some stuff about the syllabus.  Markdown allowed."
                    },
-                   featured: false,
+                   featured: true,
                    labs: [
                    ],
                    instructors: [],

@@ -1,8 +1,19 @@
-tuxlab-dashboard{
-  h2 {
+div.tuxlab-dashboard{
+  width: 100%;
+  max-width: 960px;
+
+  margin:0 auto;
+
+  h2, h3 {
     font-weight: 300;
   }
 
-  width: 100%;
-  max-width: 960px;
+  div.featured_courses{
+    height: 30vh;
+    max-height: 500px;
+  }
+
+  div.split_courses{
+    margin-top: 30px;
+  }
 }

@@ -1,7 +1,38 @@
 @import 'static';
 @import '../app.theme';
 
-.error_code{
-  font-size: 80px;
-  color: mat-color($tuxlab-app-primary);
+div.tuxlab-error{
+  width: 100%;
+  max-width: 640px !important;
+  margin:0 auto;
+
+  min-height: 100vh;
+
+  span.error{
+    font-weight: 300;
+    font-size: 80px;
+
+    span.code{
+      color: mat-color($tuxlab-app-primary);
+    }
+  }
+
+  p {
+    width: 100%;
+    font-size: 18px;
+  }
+
+  div.actions{
+    margin:0px 5px;
+
+    a md-icon{
+      margin-right: 3px;
+    }
+  }
+
+  iframe.gif{
+    width: 640px;
+    height: 480px;
+  }
+
 }

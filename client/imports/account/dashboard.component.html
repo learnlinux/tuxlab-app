@@ -1,5 +1,21 @@
 <div class="tuxlab-dashboard">
-  
-  <h2> Welcome to TuxLab! </h2>
+
+  <div class="featured_courses">
+    <h2> Featured Courses </h2>
+    <tuxlab-course-list type="featured_courses"></tuxlab-course-list>
+
+  </div>
+
+
+  <div class="split_courses" fxLayout="row">
+    <div fxFlex="1 0 auto">
+      <h3> My Sessions </h3>
+    </div>
+    <div fxFlex="1 0 auto">
+      <h3> My Courses </h3>
+
+      <tuxlab-course-list type="my_courses"></tuxlab-course-list>
+    </div>
+  </div>
 
 </div>

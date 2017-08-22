@@ -80,28 +80,40 @@
 					});
 				})
 
+			// Course Behavior Subject
+			this.course_behaviorSubject = new BehaviorSubject(null);
+			this.course_behaviorSubject
+				.subscribe((course) => {
+					this.zone.run(() => {
+						if(!_.isNull(course)){
+							this.course_model = course;
+						}
+					});
+				});
+
 			// Get Course
 			this.course = this.route.params
 				.map(params => params['course_id'])
 				.distinct()
 				.mergeMap((course_id) => {
-					Meteor.subscribe('courses.id', course_id);
-					var course = Courses.findOne({ _id : course_id });
-					if(course){
-						this.course_behaviorSubject = new BehaviorSubject(course);
-						return(this.course_behaviorSubject);
-					} else {
-						this.router.navigate(['/error','404']);
-					}
-				});
+					Meteor.subscribe('courses.id', course_id, () => {
+						var course = Courses.findOne({ _id : course_id });
+						if(course){
+							this.zone.run(() => {
+								this.course_behaviorSubject.next(course);
+							});
+						} else {
+							this.router.navigate(['/error','404']);
+						}
+					});
 
-			this.course.subscribe((course) => {
-				this.course_model = course;
-			})
+					return this.course_behaviorSubject;
+				});
 
 			// Get Instructors
 			this.instructors = this.course
 				.distinct()
+				.filter(x => !_.isNull(x))
 				.mergeMap((course) => {
 					Meteor.subscribe('users.instructors', course._id);
 					return Users.observable
@@ -140,6 +152,7 @@
 			// Get Course Record
 			this.course_record = this.course
 				.distinct()
+				.filter(x => !_.isNull(x))
 				.mergeMap((course) => {
 						Meteor.subscribe('course_records.id', course._id, Meteor.userId());
 						var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
@@ -153,6 +166,7 @@
 			// Get Labs
 			this.labs = this.course
 				.distinct()
+				.filter(x => !_.isNull(x))
 				.mergeMap((course) => {
 					Meteor.subscribe('labs.course', course._id);
 					return Labs.observable.find({ course_id : course._id })
@@ -298,7 +312,7 @@
 			 this.dragActive = false;
 
 			 // Get File
-			 _.each(event.dataTransfer.files, (fileTarget) => {
+			 _.each(event.dataTransfer.files, (fileTarget : Blob) => {
 				 var fileReader = new FileReader();
 				 fileReader.onload = (fileEvent) => {
 					 var lab_file = ((<any>fileEvent.target).result);

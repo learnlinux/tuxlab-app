@@ -9,6 +9,8 @@
   import { SessionSchema } from '../schemas/session.schema';
   import { Session } from '../models/session.model';
 
+  import { Users } from './user.collection';
+
 /**
   CREATE SESSION COLLECTION
 **/
@@ -18,6 +20,13 @@
     constructor(){
       super('sessions');
       this.attachSchema(SessionSchema);
+
+      // Set Permissions
+      super.allow({
+        insert: function(user_id : string) { return Users.isGlobalAdministrator(user_id) },
+        update: function(user_id : string) { return Users.isGlobalAdministrator(user_id) },
+        remove: function(user_id) { return Users.isGlobalAdministrator(user_id) }
+      });
 
       // Create Observable
       this.observable = new MongoObservable.Collection(this);

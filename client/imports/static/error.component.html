@@ -1,5 +1,30 @@
-<div id="tuxlab-error" class="static_page" *ngIf="(error_code | async) as error">
+<div class="tuxlab-error" *ngIf="(error_code | async) as error" fxLayout="column" fxLayoutAlign="center center">
 
-  <span class="error_code"> {{ error }}</span>
-  <h1>Error</h1>
+  <span class="error">
+    Error <span class="code">{{ error }}</span>
+  </span>
+
+  <p [ngSwitch]="error">
+    <ng-container *ngSwitchCase="404">
+      Whoops! Looks like we couldn't find the page you were looking for.  It is possible
+      you misspelled the link to the page you are looking for, that the content
+      doesn't exist, or has been deleted.  If you believe this to be in error,
+      contact your TuxLab administrator, or report an error below.
+    </ng-container>
+    <ng-container *ngSwitchCase="500">
+      Whoops! Looks like something went wrong on the server. Contact your TuxLab
+      administrator, or submit an issue below for further assistance.
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      Whoops! Something unexpected went wrong.  Contact your TuxLab
+      administrator, or submit an issue below for further assistance.
+    </ng-container>
+
+    <div class="actions">
+      <a [routerLink]="['/']" md-raised-button><md-icon>home</md-icon>Back Home</a>
+      <a href="https://github.com/learnlinux/tuxlab-app/issues" md-raised-button><md-icon>error</md-icon>Report Error</a>
+    </div>
+  </p>
+
+  <iframe class="gif" src='https://gfycat.com/ifr/UncommonTimelyFurseal' frameborder='0' scrolling='no' allowfullscreen></iframe>
 </div>

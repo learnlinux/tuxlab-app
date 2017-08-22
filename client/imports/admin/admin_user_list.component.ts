@@ -208,8 +208,10 @@
 					<div class="expand_container" *ngIf="expand" fxLayout="column">
 
 						<!-- Actions -->
+						<br>
+						<h5> Role: </h5>
 						<div fxLayout="row">
-							<md-select placeholder="Role" class="role_select">
+							<md-select class="role_select">
 								 <md-option [value]="Role.student">Student</md-option>
 								 <md-option [value]="Role.instructor">Instructor</md-option>
 								 <md-option [value]="Role.course_admin">Course Admin</md-option>
@@ -217,6 +219,7 @@
 						</div>
 
 						<!-- Sessions -->
+						<br>
 						<ng-container [ngSwitch]="(sessions | async)?.length > 0">
 							<ng-container *ngSwitchCase="false">
 								<h5> No Sessions Found </h5>
@@ -356,18 +359,19 @@
 							<br>
 
 							<!-- Actions -->
-							<div fxLayout="row" style="margin-bottom:10px;">
+							<h5> Actions: </h5>
+							<div class="actions" fxLayout="row" style="margin-bottom:10px;">
 
 								<!-- Global Admin -->
 								<ng-container [ngSwitch]="user?.global_admin">
 									<ng-container *ngSwitchCase="false">
-										<button md-button (click)="setGlobalAdministrator(true)">
+										<button md-raised-button (click)="setGlobalAdministrator(true)">
 											<md-icon>vpn_lock</md-icon>
-											Promote Global Admin
+											Make Global Admin
 										</button>
 									</ng-container>
 									<ng-container *ngSwitchCase="true">
-										<button md-button (click)="setGlobalAdministrator(false)">
+										<button md-raised-button (click)="setGlobalAdministrator(false)">
 											<md-icon>vpn_lock</md-icon>
 											Demote Global Admin
 										</button>
@@ -412,6 +416,22 @@
 				div.expand_container{
 				  margin-left: 40px;
 				  padding-bottom: 10px;
+				}
+
+				div.actions{
+					padding: 4px;
+					background-color: #ddd;
+
+					button{
+						height: 30px;
+						font-size: 12px;
+						line-height: 30px;
+
+						md-icon{
+							line-height: 30px;
+							font-size: 18px;
+						}
+					}
 				}
 
 			` ],

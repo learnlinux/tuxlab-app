@@ -24,7 +24,7 @@
 	})
 	export default class SelectUser extends MeteorComponent {
 		private search : BehaviorSubject<string>;
-		private query : string = "";
+		private query : string;
 		private results : User[];
 
 		constructor(public dialogRef: MdDialogRef<SelectUser>, private zone : NgZone){

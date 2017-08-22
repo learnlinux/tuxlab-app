@@ -4,11 +4,11 @@
   <h1 *ngIf="title">{{ title }}</h1>
 
   <!-- Actions -->
-  <div class="actions" fxLayout="row" fxLayoutAlign="start" *ngIf="is_global_admin">
+  <div class="actions" fxLayout="row" fxLayoutAlign="start" *ngIf="is_global_admin && is_editable">
 
     <!-- Create Course -->
     <button md-raised-button (click)="createCourse()">
-        <md-icon>book</md-icon>
+        <md-icon>add</md-icon>
         Create Course
     </button>
 
@@ -31,10 +31,30 @@
         </md-card-header>
 
         <!-- Action Buttons -->
-        <md-card-actions>
+        <md-card-actions fxLayout="row" fxLayoutAlign="start">
+
+          <!-- View -->
           <a [routerLink]="['/courses', course._id ]" md-button>
             <md-icon>class</md-icon>
-            View Course
+            View
+          </a>
+
+          <!-- Feature -->
+          <ng-container *ngIf="is_global_admin && is_editable" [ngSwitch]="course.featured">
+            <a (click)="featureCourse(course._id, true)" md-button *ngSwitchCase="false">
+              <md-icon>star_border</md-icon>
+              Feature
+            </a>
+            <a (click)="featureCourse(course._id, false)" md-button *ngSwitchCase="true">
+              <md-icon>star</md-icon>
+              Unfeature
+            </a>
+          </ng-container>
+
+          <!-- Remove -->
+          <a *ngIf="is_global_admin && is_editable" (click)="deleteCourse(course._id)" md-button>
+            <md-icon>delete</md-icon>
+            Delete
           </a>
         </md-card-actions>
       </md-card>
