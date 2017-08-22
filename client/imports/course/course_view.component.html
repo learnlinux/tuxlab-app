@@ -1,4 +1,4 @@
-<div class="course_view" *ngIf="course | async" >
+<div class="course_view" *ngIf="course | async; else loading" >
 
   <!-- Info -->
   <md-card class="info">
@@ -117,5 +117,10 @@
       Upload Lab
     </div>
   </section>
-
 </div>
+
+<ng-template #loading>
+  <div class="loading" fxLayout="column" fxLayoutAlign="center center">
+    <md-progress-spinner color="primary" mode="indeterminate"></md-progress-spinner>
+  </div>
+</ng-template>

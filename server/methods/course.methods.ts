@@ -58,10 +58,6 @@
   Meteor.publish('courses.user', coursesUser);
 
   function coursesId(course_id){
-    if(!Meteor.userId()){
-      throw new Meteor.Error("Unauthorized");
-    }
-
     switch(Users.getRoleFor(course_id, Meteor.userId())){
       case Role.guest:
         return Courses.find({
