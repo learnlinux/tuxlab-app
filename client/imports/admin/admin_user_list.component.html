@@ -4,12 +4,12 @@
   <div class="search_bar" fxLayout="row">
     <div fxFlex="2 0 auto">
       <md-input-container floatPlaceholder="always">
-        <input mdInput class="search_input" type="search" placeholder="Search by Name, Username, E-Mail" [(ngModel)]="user_query" (ngModelChange)="onSearch()" />
+        <input mdInput class="search_input" type="search" placeholder="Search Users by Name, Username, E-Mail" [(ngModel)]="user_query" (ngModelChange)="onSearch()" />
       </md-input-container>
     </div>
     <div fxFlex="1 0 auto">
       <md-input-container floatPlaceholder="always">
-        <input mdInput class="search_input" placeholder="Course" [mdAutocomplete]="auto" [(ngModel)]="course_query" (ngModelChange)="onSearch()" />
+        <input mdInput class="search_input" placeholder="Search Courses by Name" [mdAutocomplete]="auto" [(ngModel)]="course_query" (ngModelChange)="onSearch()" />
       </md-input-container>
 
       <md-autocomplete #auto="mdAutocomplete" [displayWith]="courseNameMap">

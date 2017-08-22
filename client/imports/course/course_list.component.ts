@@ -9,15 +9,17 @@
 
 // Angular Imports
   import { Router } from "@angular/router";
-	import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+	import { Component, Input, ChangeDetectionStrategy, NgZone } from '@angular/core';
 
 // Define Course List Component
   import template from "./course_list.component.html";
   import style from "./course_list.component.scss";
 
 // Import Course Data
-	import { Course } from '../../../both/models/course.model';
+	import { Course, ContentPermissions, EnrollPermissions } from '../../../both/models/course.model';
 	import { Courses } from '../../../both/collections/course.collection';
+
+	import { User, Role } from '../../../both/models/user.model';
 	import { Users } from '../../../both/collections/user.collection';
 
 // Export Data Interface
@@ -33,11 +35,24 @@
 		private title : string;
 		private courses : ObservableCursor<Course>;
 
-    constructor(private router : Router) {
+		private user : User;
+		private is_global_admin : boolean;
+
+    constructor(private router : Router, private zone : NgZone) {
 			super();
     }
 
 		ngOnInit(){
+
+			// Get User Roles
+			Tracker.autorun(() => {
+				this.zone.run(() => {
+					this.user = <User>Meteor.user();
+					if(this.user){
+						this.is_global_admin = Users.isGlobalAdministrator(this.user._id);
+					}
+				});
+			});
 
 			// My Courses Page
 			if(this.router.url === "/courses"){
@@ -55,8 +70,46 @@
 				this.title = "Explore";
 				this.courses = Courses.observable.find();
 				Meteor.subscribe('courses.explore', 0);
+
+			} else if (this.router.url === "/admin"){
+				this.title = null;
+				this.courses = Courses.observable.find({});
+				Meteor.subscribe('courses.all');
+
 			} else {
 				this.router.navigate(['error','404']);
 			}
 		}
+
+		createCourse(){
+
+			// Insert Courses
+			new Promise((resolve, reject) => {
+				Courses.insert({
+					name : "New Course",
+					course_number : "101",
+					featured: false,
+					instructors: [],
+					labs: [],
+					permissions: {
+						meta: false,
+						content: ContentPermissions.None,
+						enroll: EnrollPermissions.None
+					}
+				}, (err, res) => {
+					if(err){
+						reject(err);
+					} else {
+						resolve(res);
+					}
+				});
+			})
+
+			// Navigate to new Course
+			.then((id) => {
+				this.router.navigate(['courses', id]);
+			})
+
+		}
+
   }

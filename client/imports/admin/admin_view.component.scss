@@ -1,11 +1,11 @@
 div.admin-view{
-  width: 100%;
-  max-width: 1100px;
+  div.admin-view-title, md-tab-header{
+    width: 100%;
+    max-width: 960px;
+    margin:0 auto;
 
-  margin: 0px auto;
-
-  h1 {
-    font-weight: 300;
+    h1 {
+      font-weight: 300;
+    }
   }
-
 }

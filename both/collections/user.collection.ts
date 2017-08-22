@@ -31,6 +31,7 @@
       ensureRoleFor(course_id: string, user_id: string, role : Role) : void;
       setRoleFor(course_id: string, user_id: string, role : Role) : void;
       isGlobalAdministrator(user_id: string) : boolean;
+      setGlobalAdministrator(user_id: string, is_global_admin : boolean) : void;
       findByProfileFields(query : string) : ObservableCursor<User>;
     }
 
@@ -154,6 +155,17 @@
 
       this.update({ _id : user_id }, { '$pull' : {'roles' : {'course_id' : course_id}}});
       this.update({ _id : user_id }, { '$push' : {'roles' : record}});
+    }
+
+    // setGlobalAdministrator
+    UsersCollection.setGlobalAdministrator = function(user_id : string, is_global_admin : boolean) : void {
+      this.update({
+        "_id" : user_id
+      }, {
+        "$set" : {
+          "global_admin" : is_global_admin
+        }
+      });
     }
 
     // isGlobalAdministrator

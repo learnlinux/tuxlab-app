@@ -174,6 +174,8 @@
 				_id : this.route.snapshot.params['course_id']
 			},{
 				$set : {
+					"name" : this.course_model.name,
+					"course_number" : this.course_model.course_number,
 					"description.content" : this.course_model.description.content,
 					"description.syllabus" : this.course_model.description.syllabus,
 					"permissions.content" : this.course_model.permissions.content,

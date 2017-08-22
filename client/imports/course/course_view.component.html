@@ -6,13 +6,13 @@
     <!-- Title Block -->
     <div class="title" fxLayout fxLayoutAlign="flex-start">
       <div class="left">
-        {{ (course | async)?.course_number }}
+        <input class="name" mdInput type="text" [disabled]="!edit_mode" [ngModel]="(course | async)?.course_number" (ngModelChange)="course_model.course_number = $event" />
       </div>
 
       <div class="right" fxLayout="column" fxLayoutAlign="center">
 
         <!-- Course Name -->
-        <span class="name">{{ (course | async)?.name }}</span>
+        <input class="name" mdInput type="text" [disabled]="!edit_mode" [ngModel]="(course | async)?.name" (ngModelChange)="course_model.name = $event" />
 
         <!-- Instructors -->
         <div class="instructors" *ngIf="instructors | async" >
@@ -29,7 +29,7 @@
     <!-- Description Block -->
     <div class="description">
       <h4> Description </h4>
-      <textarea mdInput class="syllabus" [disabled]="!edit_mode" [ngModel]="(course | async)?.description?.content" (ngModelChange)="course_model.description.content = $event"></textarea>
+      <textarea mdInput [disabled]="!edit_mode" [ngModel]="(course | async)?.description?.content" (ngModelChange)="course_model.description.content = $event"></textarea>
 
       <h4> Syllabus </h4>
       <div class="syllabus" *ngIf="edit_mode; then syllabusEdit; else syllabusMarkdown"></div>

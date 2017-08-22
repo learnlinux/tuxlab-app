@@ -31,7 +31,7 @@
 	import { Session, SessionStatus } from '../../../both/models/session.model';
 	import { Sessions } from '../../../both/collections/session.collection';
 
-	import { User } from '../../../both/models/user.model';
+	import { User, Role } from '../../../both/models/user.model';
 	import { Users } from '../../../both/collections/user.collection';
 
 // Import ConnectionDetailsDialog
@@ -193,17 +193,28 @@
 		@Component({
 			selector: 'tuxlab-user-course-item',
 			template : `
-				<div class="tuxlab-user-session-item" fxLayout="column">
+				<div class="tuxlab-user-course-item" fxLayout="column">
 
 					<div class="expand_title" fxLayout="row" fxLayoutAlign="start center">
 						<button md-icon-button (click)="expand = !expand" [ngSwitch]="expand">
 							<md-icon *ngSwitchCase="true">expand_less</md-icon>
 							<md-icon *ngSwitchCase="false">expand_more</md-icon>
 						</button>
+
+						<!-- Course Name -->
 						<h3>{{ course?.name }}</h3>
 					</div>
 
 					<div class="expand_container" *ngIf="expand" fxLayout="column">
+
+						<!-- Actions -->
+						<div fxLayout="row">
+							<md-select placeholder="Role" class="role_select">
+								 <md-option [value]="Role.student">Student</md-option>
+								 <md-option [value]="Role.instructor">Instructor</md-option>
+								 <md-option [value]="Role.course_admin">Course Admin</md-option>
+							</md-select>
+						</div>
 
 						<!-- Sessions -->
 						<ng-container [ngSwitch]="(sessions | async)?.length > 0">
@@ -259,6 +270,8 @@
 		export class UserCourseItem extends MeteorComponent {
 			@Input('user') user : User;
 			@Input('course') course : Course;
+
+			private Role = Role;
 
 			private sessions : ObservableCursor<Session>;
 			private course_record : Observable<CourseRecord>;
@@ -341,13 +354,36 @@
 
 						<div class="expand_container courses" *ngIf="expand" fxLayout="column">
 							<br>
+
+							<!-- Actions -->
+							<div fxLayout="row" style="margin-bottom:10px;">
+
+								<!-- Global Admin -->
+								<ng-container [ngSwitch]="user?.global_admin">
+									<ng-container *ngSwitchCase="false">
+										<button md-button (click)="setGlobalAdministrator(true)">
+											<md-icon>vpn_lock</md-icon>
+											Promote Global Admin
+										</button>
+									</ng-container>
+									<ng-container *ngSwitchCase="true">
+										<button md-button (click)="setGlobalAdministrator(false)">
+											<md-icon>vpn_lock</md-icon>
+											Demote Global Admin
+										</button>
+									</ng-container>
+								</ng-container>
+							</div>
+
+							<br>
+
+							<!-- Course List -->
 							<ng-container [ngSwitch]="(courses | async)?.length > 0">
 								<ng-container *ngSwitchCase="false">
 									<h5> No Courses Found </h5>
 								</ng-container>
 								<ng-container *ngSwitchCase="true">
 									<h5> Courses: </h5>
-
 									<ul fxLayout="column" class="courses">
 										<li *ngFor="let course of courses | async">
 											<tuxlab-user-course-item [course]="course" [user]="user"></tuxlab-user-course-item>
@@ -394,6 +430,10 @@
 
 			ngOnInit(){
 				this.courses = Users.getCoursesFor(this.user._id);
+			}
+
+			setGlobalAdministrator(is_global_admin){
+				Meteor.call('Users.setGlobalAdministrator', {user_id : this.user._id, is_global_admin : is_global_admin});
 			}
 		}
 

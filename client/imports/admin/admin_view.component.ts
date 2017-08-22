@@ -3,7 +3,7 @@
 	import { MeteorComponent } from 'angular2-meteor';
 
 // Angular Imports
-	import { Component } from '@angular/core';
+	import { Component, ViewEncapsulation } from '@angular/core';
 
 // Define Dashboard Component
   import template from "./admin_view.component.html";
@@ -12,7 +12,8 @@
   @Component({
     selector: 'tuxlab-admin-view',
     template,
-    styles: [ style ]
+    styles: [ style ],
+		encapsulation: ViewEncapsulation.None
   })
 
   export class AdminView extends MeteorComponent {

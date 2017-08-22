@@ -1,6 +1,18 @@
 <div class="course_list" fxLayout="column" fxLayoutAlign="flex-start center">
 
-  <h1>{{ this.title }}</h1>
+  <!-- Title -->
+  <h1 *ngIf="title">{{ title }}</h1>
+
+  <!-- Actions -->
+  <div class="actions" fxLayout="row" fxLayoutAlign="start" *ngIf="is_global_admin">
+
+    <!-- Create Course -->
+    <button md-raised-button (click)="createCourse()">
+        <md-icon>book</md-icon>
+        Create Course
+    </button>
+
+  </div>
 
   <!-- No Courses Message -->
   <div *ngIf="!(courses | async)" class="message" fxLayout="column" fxLayoutAlign="center center">

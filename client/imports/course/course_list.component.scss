@@ -1,6 +1,13 @@
 div.course_list{
   min-height: 80vh;
 
+  .actions{
+    width: 100%;
+    max-width: 960px;
+
+    padding: 10px;
+  }
+
   .message{
     width: 100%;
     height: 60vh !important;

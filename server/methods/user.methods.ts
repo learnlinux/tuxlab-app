@@ -165,6 +165,7 @@ Meteor.publish("users.all", () => {
         fields : {"_id" : 1, "profile.name" : 1}
       }).fetch();
     },
+
     'Users.addRoleForCourse'({course_id, user_id, role}){
 
       // Check Privilege
@@ -206,5 +207,15 @@ Meteor.publish("users.all", () => {
       }).catch((err) => {
         throw new Meteor.Error("Could not add role for course");
       })
+    },
+
+    'Users.setGlobalAdministrator'({user_id, is_global_admin}){
+      if(!Meteor.userId()){
+        throw new Meteor.Error("Unauthorized");
+      } else if(Users.isGlobalAdministrator(Meteor.userId())) {
+        Users.setGlobalAdministrator(user_id, is_global_admin);
+      } else {
+        throw new Meteor.Error("Unauthorized");
+      }
     }
   })

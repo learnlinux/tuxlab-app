@@ -20,21 +20,36 @@ div.course_view{
        font-size: 21px;
        font-weight: 400;
 
+       .name{
+         width: 100%;
+       }
+
+      div.left, div.right{
+        width: 100%;
+      }
+
       $left-size: 90px;
       div.left{
         width: $left-size;
         height: $left-size;
 
-        color: #fff;
-        line-height: $left-size;
-        text-align: center;
-
         background-color: mat-color($tuxlab-app-primary);
         flex-shrink: 0;
+
+        input{
+          color: #fff !important;
+          line-height: $left-size;
+          text-align: center;
+        }
+
       }
 
       div.right{
         margin-left: 15px;
+
+        input{
+          color: #000 !important;
+        }
 
         div.instructors{
           margin-top: 10px;
