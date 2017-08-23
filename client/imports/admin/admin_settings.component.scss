@@ -1,0 +1,30 @@
+.tuxlab-admin-settings{
+  width: 100%;
+  max-width: 960px !important;
+  min-height: 80vh;
+
+  margin:0 auto;
+
+  h1{
+    font-weight: 300;
+    width: 100%;
+  }
+
+  textarea{
+    width: 100%;
+    min-height: 800px;
+    padding: 15px;
+    
+    color: #000 !important;
+    background-color: #fff;
+    font-family: "Courier New", courier, monospace;
+  }
+
+  div.fab{
+    width: 100%;
+    position: relative;
+    top: -100px;
+
+    padding: 10px;
+  }
+}

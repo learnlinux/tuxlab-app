@@ -1,0 +1,18 @@
+<div class="tuxlab-admin-settings" fxLayout="column" fxLayoutAlign="flex-start center">
+
+  <h1> Settings </h1>
+
+  <textarea mdInput mdTextareaAutosize *ngIf="settings" [(ngModel)]="settings" [disabled]="!edit_mode"></textarea>
+
+  <div class="fab" fxLayout="row" fxLayoutAlign="flex-end center">
+    <ng-container [ngSwitch]="edit_mode">
+      <button md-fab *ngSwitchCase="true" (click)="update()">
+        <md-icon>save</md-icon>
+      </button>
+      <button md-fab *ngSwitchCase="false" (click)="edit_mode = true">
+        <md-icon>edit</md-icon>
+      </button>
+    </ng-container>
+  </div>
+
+</div>

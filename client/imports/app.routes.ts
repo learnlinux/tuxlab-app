@@ -29,6 +29,7 @@ import CreateUser from './account/create.component';
 // Admin
 import { AdminView } from './admin/admin_view.component';
 import { UserList, UserItem, UserCourseItem, UserSessionItem } from './admin/admin_user_list.component';
+import { AdminSettings } from './admin/admin_settings.component';
 
 // Course
 import CourseList from './course/course_list.component';
@@ -98,6 +99,11 @@ export const AppRoutes : Routes = [
 
     // Admin
     AdminView,
+    AdminSettings,
+    UserList,
+    UserItem,
+    UserCourseItem,
+    UserSessionItem,
 
     // Course
     CourseList,
@@ -112,11 +118,6 @@ export const AppRoutes : Routes = [
     SessionList,
     SessionListItem,
 
-    // Admin
-    UserList,
-    UserItem,
-    UserCourseItem,
-    UserSessionItem
   ],
   imports: [
     RouterModule.forRoot(
