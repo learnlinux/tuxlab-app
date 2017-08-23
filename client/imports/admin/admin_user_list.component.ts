@@ -494,16 +494,18 @@
 				div.actions{
 					padding: 4px;
 					background-color: #ddd;
+				}
 
-					button{
-						height: 30px;
-						font-size: 12px;
+				button{
+					height: 30px;
+					font-size: 12px;
+					line-height: 30px;
+
+					margin:0px 3px !important;
+
+					md-icon{
 						line-height: 30px;
-
-						md-icon{
-							line-height: 30px;
-							font-size: 18px;
-						}
+						font-size: 18px;
 					}
 				}
 

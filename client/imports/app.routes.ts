@@ -18,11 +18,12 @@ import { SortablejsModule } from 'angular-sortablejs';
 import SelectUser from './dialogs/select_user.dialog';
 
 // Account
+import { AccountView } from './account/account.component';
 import AccountService from './account/account.service';
 import AuthGuard from './account/auth-guard.service';
 import Dashboard from './account/dashboard.component';
 import Login from './account/login.component';
-import { Users } from '../../both/collections/user.collection';
+import Reset from './account/reset.component';
 
 // Admin
 import { AdminView } from './admin/admin_view.component';
@@ -51,6 +52,8 @@ export const AppRoutes : Routes = [
   // Account
   { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
   { path: 'login', component: Login },
+  { path: 'account', component: AccountView, canActivate: [AuthGuard] },
+  { path: 'reset', component: Reset },
 
   // Static
   { path: 'help', component: Help },
@@ -75,12 +78,15 @@ export const AppRoutes : Routes = [
 @NgModule({
   declarations: [
 
-    // Static
+    // Account
+    AccountView,
     Dashboard,
+    Login,
+
+    // Static
     Help,
     ErrorPage,
     Legal,
-    Login,
 
     // Dialogs
     SelectUser,

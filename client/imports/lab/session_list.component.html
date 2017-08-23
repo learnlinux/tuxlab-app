@@ -8,7 +8,7 @@
   <!-- Session List -->
   <md-grid-list cols="1" rowHeight="150px" gutterSize="15px">
     <md-grid-tile *ngFor="let session of sessions | async">
-      <tuxlab-session-list-item></tuxlab-session-list-item>
+      <tuxlab-session-list-item [session]="session"></tuxlab-session-list-item>
     </md-grid-tile>
   </md-grid-list>
 

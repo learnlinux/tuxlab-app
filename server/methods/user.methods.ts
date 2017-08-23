@@ -108,8 +108,6 @@ Meteor.publish("users.all", () => {
         })
       });
     })
-
-
   }
 
   export function removeRoleForCourse(course_id : string, user_id : string, role : Role) : Promise<any>{
@@ -154,6 +152,47 @@ Meteor.publish("users.all", () => {
     })
   }
 
+  export function removeFromCourse(course_id, user_id){
+
+      // Remove from Course Instructors List
+      return new Promise((resolve, reject) => {
+        Users.update({
+          _id : user_id
+        }, {
+          $pull : {
+            roles : {
+              $and : [
+                { course_id : course_id }
+              ]
+            }
+          }
+        }, (err, res) => {
+          if(err){
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        })
+      })
+
+      // Remove from User Roles
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          Courses.update({
+            _id : course_id
+          }, {
+            $pull : { instructors : user_id }
+          }, (err, res) => {
+            if(err){
+              reject(err);
+            } else {
+              resolve(res);
+            }
+          });
+        })
+      })
+  }
+
 /* METEOR METHODS */
 
 
@@ -173,7 +212,8 @@ Meteor.publish("users.all", () => {
     'Users.remove'({user_id}){
       if(!Meteor.userId()){
         throw new Meteor.Error("Unauthorized");
-      } else if(Users.isGlobalAdministrator(Meteor.userId())) {
+
+      } else if(Users.isGlobalAdministrator(Meteor.userId()) || Meteor.userId() === user_id) {
 
         // Delete User
         Users.remove({ _id : user_id });
@@ -217,6 +257,38 @@ Meteor.publish("users.all", () => {
 
     },
 
+    'Users.removeFromCourse'({course_id, user_id}){
+
+      // Check Privilege
+      return new Promise((resolve, reject) => {
+        if(!Meteor.userId()){
+          throw new Meteor.Error("Unauthorized");
+        }
+
+        if (user_id === Meteor.userId()){
+          return resolve();
+        } else {
+          switch(Users.getRoleFor(course_id, Meteor.userId())){
+            case Role.global_admin:
+              return resolve();
+            case Role.course_admin:
+            case Role.instructor:
+            case Role.student:
+            case Role.guest:
+              throw new Meteor.Error("Unauthorized");
+          }
+        }
+      })
+
+      // Remove Role
+      .then(() => {
+        return removeFromCourse(course_id, user_id);
+      }).catch((err) => {
+        throw new Meteor.Error("Co");
+      })
+
+    },
+
     'Users.removeRoleForCourse'({course_id, user_id, role}){
 
       // Check Privilege
@@ -230,11 +302,11 @@ Meteor.publish("users.all", () => {
         throw new Meteor.Error("Insufficient Privilege");
       })
 
-      // Add Role
+      // Remove Role
       .then(() => {
         return removeRoleForCourse(course_id, user_id, role);
       }).catch((err) => {
-        throw new Meteor.Error("Could not add role for course");
+        throw new Meteor.Error("Could not remove role for course");
       })
     },
 

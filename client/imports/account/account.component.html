@@ -1,0 +1,29 @@
+<div class="tuxlab-account" *ngIf="user" fxLayout="column" fxLayoutAlign="start center">
+
+  <h1>Account</h1>
+
+  <!-- Profile -->
+  <md-card>
+    <md-card-header>
+      <img md-card-avatar [src]="user?.profile?.picture" />
+      <md-card-title>{{ user?.profile?.name }}</md-card-title>
+      <md-card-subtitle>{{ user?.profile?.email }}</md-card-subtitle>
+    </md-card-header>
+  </md-card>
+
+  <!-- Actions -->
+  <div class="actions" fxLayout="row">
+
+    <!-- Change Password -->
+    <button md-raised-button>
+      <md-icon>security</md-icon>
+      Change Password
+    </button>
+
+    <!-- Delete Account -->
+    <button md-raised-button (click)="deleteAccount()">
+      <md-icon>delete_forever</md-icon>
+      Delete Account
+    </button>
+  </div>
+</div>

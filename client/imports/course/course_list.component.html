@@ -4,14 +4,12 @@
   <h1 *ngIf="title">{{ title }}</h1>
 
   <!-- Actions -->
-  <div class="actions" fxLayout="row" fxLayoutAlign="start" *ngIf="is_global_admin && is_editable">
-
+  <div class="actions" fxLayout="row" fxLayoutAlign="start" *ngIf="is_global_admin && admin_edit_mode">
     <!-- Create Course -->
     <button md-raised-button (click)="createCourse()">
         <md-icon>add</md-icon>
         Create Course
     </button>
-
   </div>
 
   <!-- No Courses Message -->
@@ -40,7 +38,7 @@
           </a>
 
           <!-- Feature -->
-          <ng-container *ngIf="is_global_admin && is_editable" [ngSwitch]="course.featured">
+          <ng-container *ngIf="is_global_admin && admin_edit_mode" [ngSwitch]="course.featured">
             <a (click)="featureCourse(course._id, true)" md-button *ngSwitchCase="false">
               <md-icon>star_border</md-icon>
               Feature
@@ -52,7 +50,12 @@
           </ng-container>
 
           <!-- Remove -->
-          <a *ngIf="is_global_admin && is_editable" (click)="deleteCourse(course._id)" md-button>
+          <a md-button *ngIf="user_edit_mode" (click)="removeUserFromCourse()">
+              <md-icon>delete</md-icon>
+              Leave Course
+          </a>
+
+          <a *ngIf="is_global_admin && admin_edit_mode" (click)="deleteCourse(course._id)" md-button>
             <md-icon>delete</md-icon>
             Delete
           </a>

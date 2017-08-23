@@ -9,7 +9,7 @@
 
 // Angular Imports
   import { Router } from "@angular/router";
-	import { Component, Input, ChangeDetectionStrategy, NgZone } from '@angular/core';
+	import { Component, Input, ChangeDetectionStrategy, NgZone, ChangeDetectorRef } from '@angular/core';
 
 // Define Course List Component
   import template from "./course_list.component.html";
@@ -39,10 +39,11 @@
 		private user : User;
 
 		private cols : number = 2;
-		private is_editable : boolean = false;
+		private admin_edit_mode : boolean = false;
+		private user_edit_mode : boolean = false;
 		private is_global_admin : boolean;
 
-    constructor(private router : Router, private zone : NgZone) {
+    constructor(private router : Router, private zone : NgZone, private ref : ChangeDetectorRef ) {
 			super();
     }
 
@@ -55,6 +56,7 @@
 					if(this.user){
 						this.is_global_admin = Users.isGlobalAdministrator(this.user._id);
 					}
+					this.ref.markForCheck();
 				});
 			});
 
@@ -64,6 +66,8 @@
 					this.router.navigate(['/login']);
 
 				} else {
+					this.user_edit_mode = true;
+
 					this.title = "My Courses";
 					this.courses = Users.getCoursesFor(Meteor.userId());
 					Meteor.subscribe('courses.user');
@@ -76,13 +80,14 @@
 				Meteor.subscribe('courses.explore', 0);
 
 			} else if (this.router.url === "/admin"){
-				this.is_editable = true;
+				this.admin_edit_mode = true;
 
 				this.title = null;
 				this.courses = Courses.observable.find({});
 				Meteor.subscribe('courses.all');
 
 			} else if (this.type === "my_courses") {
+
 				this.cols = 1;
 				this.title = null;
 
@@ -142,6 +147,13 @@
 
 		deleteCourse(course_id){
 			Meteor.call('Courses.remove', {
+				course_id : course_id
+			})
+		}
+
+		removeUserFromCourse(course_id){
+			Meteor.call('Users.removeFromCourse', {
+				user_id : Meteor.userId(),
 				course_id : course_id
 			})
 		}

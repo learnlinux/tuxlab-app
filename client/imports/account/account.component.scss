@@ -1,0 +1,51 @@
+div.tuxlab-account{
+  width: 100%;
+  min-height: 80vh;
+
+  h1, h2, h3{
+    width: 100%;
+    max-width: 960px;
+
+    margin-bottom: 5px !important;
+
+    text-align: left;
+    font-weight: 300;
+  }
+
+  md-card{
+    width: 100%;
+    max-width: 960px;
+
+    margin:12px 0px;
+
+    &:first-child{
+      margin-top:0px;
+    }
+
+    md-card-title{
+      font-size: 20px;
+    }
+
+    md-card-subtitle{
+      font-size: 16px;
+    }
+
+    md-card-avatar{
+      height: 40px;
+      width: 40px;
+    }
+  }
+
+  div.actions{
+    width: 100%;
+    max-width: 960px;
+
+    padding: 8px;
+
+    background-color: #ddd;
+
+    button {
+      margin:0px 5px;
+    }
+  }
+}
