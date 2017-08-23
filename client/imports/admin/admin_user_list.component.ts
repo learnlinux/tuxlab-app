@@ -429,6 +429,12 @@
 							<!-- Actions -->
 							<div class="actions" fxLayout="row" style="margin-bottom:10px;">
 
+								<!-- Delete -->
+								<button md-raised-button (click)="removeUser()">
+									<md-icon>delete</md-icon>
+									Remove User
+								</button>
+
 								<!-- Global Admin -->
 								<ng-container [ngSwitch]="user?.global_admin">
 									<ng-container *ngSwitchCase="false">
@@ -517,6 +523,10 @@
 
 			ngOnInit(){
 				this.courses = Users.getCoursesFor(this.user._id);
+			}
+
+			removeUser(){
+				Meteor.call('Users.remove', { user_id : this.user._id });
 			}
 
 			setGlobalAdministrator(is_global_admin){

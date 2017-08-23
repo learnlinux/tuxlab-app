@@ -1,4 +1,7 @@
+// Import
+import { Export } from '../imports/record/export';
 
+// Collections
 import { CourseRecord } from '../../both/models/course_record.model';
 import { CourseRecords } from '../../both/collections/course_record.collection';
 
@@ -8,6 +11,7 @@ import { Courses } from '../../both/collections/course.collection';
 import { Role } from '../../both/models/user.model';
 import { Users } from '../../both/collections/user.collection';
 
+/* PUBLICATION */
 function courseRecordsId(course_id, user_id){
   if(!Meteor.userId()){
     throw new Meteor.Error("Not Authorized");
@@ -39,3 +43,23 @@ function courseRecordsUser(user_id){
   }
 }
 Meteor.publish('course_records.user', courseRecordsUser);
+
+/* METHODS */
+Meteor.methods({
+
+  'CourseRecords.exportRecordsJSON'({course_id}){
+    if(!Meteor.userId()){
+      throw new Meteor.Error("Unauthorized");
+    }
+
+    switch(Users.getRoleFor(course_id, Meteor.userId())){
+      case Role.instructor:
+      case Role.course_admin:
+      case Role.global_admin:
+        return Export.exportRecordsJSON(course_id);
+      case Role.student:
+      case Role.guest:
+        throw new Meteor.Error("Unauthorized");
+    }
+  }
+})

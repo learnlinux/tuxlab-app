@@ -84,9 +84,12 @@
 
 			} else if (this.type === "my_courses") {
 				this.cols = 1;
-				
 				this.title = null;
-				this.courses = Users.getCoursesFor(Meteor.userId());
+
+				if(Meteor.userId()){
+					this.courses = Users.getCoursesFor(Meteor.userId());
+				}
+
 				Meteor.subscribe('courses.user');
 
 			} else if (this.type === "featured_courses") {

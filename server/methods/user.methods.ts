@@ -6,6 +6,10 @@ import { Users } from "../../both/collections/user.collection";
 
 import { Courses } from '../../both/collections/course.collection';
 
+import { CourseRecords } from '../../both/collections/course_record.collection';
+
+import { Sessions } from '../../both/collections/session.collection';
+
 /* PUBLICATIONS */
 
 // PERSONAL DATA
@@ -164,6 +168,31 @@ Meteor.publish("users.all", () => {
       },{
         fields : {"_id" : 1, "profile.name" : 1}
       }).fetch();
+    },
+
+    'Users.remove'({user_id}){
+      if(!Meteor.userId()){
+        throw new Meteor.Error("Unauthorized");
+      } else if(Users.isGlobalAdministrator(Meteor.userId())) {
+
+        // Delete User
+        Users.remove({ _id : user_id });
+
+        // Delete Course Records
+        CourseRecords.remove({ user_id : user_id });
+
+        // Expire Sessions
+        Sessions.update({
+          user_id : user_id
+        }, {
+          "$set" : {
+            expires : new Date()
+          }
+        })
+
+      } else {
+        throw new Meteor.Error("Unauthorized");
+      }
     },
 
     'Users.addRoleForCourse'({course_id, user_id, role}){

@@ -60,6 +60,10 @@
 
       <div class="right" fxLayout="row" fxLayoutAlign="end center">
         <ng-container *ngIf="!edit_mode">
+          <button md-button (click)="exportAsJSON()">
+            <md-icon>get_app</md-icon>
+            Export
+          </button>
           <button md-button (click)="edit_mode=true">
             <md-icon>mode_edit</md-icon>
             Edit

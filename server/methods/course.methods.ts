@@ -157,7 +157,19 @@
 
   Meteor.methods({
     'Courses.remove'({course_id}){
-      return Courses.deleteCourse(course_id);
+      if(!Meteor.userId()){
+        throw new Meteor.Error("Unauthorized");
+      }
+
+      switch(Users.getRoleFor(course_id, Meteor.userId())){
+        case Role.global_admin:
+          return Courses.deleteCourse(course_id);
+        case Role.course_admin:
+        case Role.instructor:
+        case Role.student:
+        case Role.guest:
+          throw new Meteor.Error("Unauthorized");
+      }
     },
 
     'Courses.search'({query}){
@@ -171,27 +183,75 @@
     },
 
     'Courses.setFeatured'({ course_id, featured }){
-      return Courses.setFeatured(course_id, featured);
+      if(!Meteor.userId()){
+        throw new Meteor.Error("Unauthorized");
+      }
+
+      switch(Users.getRoleFor(course_id, Meteor.userId())){
+        case Role.global_admin:
+          return Courses.setFeatured(course_id, featured);
+        case Role.course_admin:
+        case Role.instructor:
+        case Role.student:
+        case Role.guest:
+          throw new Meteor.Error("Unauthorized");
+      }
     },
 
     'Courses.createLab'({course_id, lab_file}){
-      return createLab(course_id, lab_file)
-      .catch((err) => {
-        throw new Meteor.Error("Could not add lab.")
-      })
+      if(!Meteor.userId()){
+        throw new Meteor.Error("Unauthorized");
+      }
+
+      switch(Users.getRoleFor(course_id, Meteor.userId())){
+        case Role.global_admin:
+        case Role.course_admin:
+          return createLab(course_id, lab_file)
+          .catch((err) => {
+            throw new Meteor.Error("Could not add lab.")
+          })
+        case Role.instructor:
+        case Role.student:
+        case Role.guest:
+          throw new Meteor.Error("Unauthorized");
+      }
     },
 
     'Courses.removeLab'({course_id, lab_id}){
-      return removeLab(course_id, lab_id)
-      .catch((err) => {
-        throw new Meteor.Error("Could not remove lab.")
-      })
+      if(!Meteor.userId()){
+        throw new Meteor.Error("Unauthorized");
+      }
+
+      switch(Users.getRoleFor(course_id, Meteor.userId())){
+        case Role.global_admin:
+        case Role.course_admin:
+          return removeLab(course_id, lab_id)
+          .catch((err) => {
+            throw new Meteor.Error("Could not remove lab.")
+          })
+        case Role.instructor:
+        case Role.student:
+        case Role.guest:
+          throw new Meteor.Error("Unauthorized");
+      }
     },
 
     'Courses.reorderLabs'({course_id, labs}){
-      return reorderLabs(course_id, labs)
-      .catch((err) => {
-        throw new Meteor.Error("Could not reorder labs.");
-      });
+      if(!Meteor.userId()){
+        throw new Meteor.Error("Unauthorized");
+      }
+
+      switch(Users.getRoleFor(course_id, Meteor.userId())){
+        case Role.global_admin:
+        case Role.course_admin:
+          return reorderLabs(course_id, labs)
+          .catch((err) => {
+            throw new Meteor.Error("Could not reorder labs.");
+          });
+        case Role.instructor:
+        case Role.student:
+        case Role.guest:
+          throw new Meteor.Error("Unauthorized");
+      }
     }
   })

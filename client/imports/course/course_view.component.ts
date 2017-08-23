@@ -12,7 +12,9 @@
 	import { HostListener, Component, Input, ViewChildren, QueryList, NgZone } from '@angular/core';
 	import { Router, ActivatedRoute } from "@angular/router";
 	import { MdDialog } from '@angular/material';
+
 	import { SortablejsOptions } from 'angular-sortablejs';
+	import { saveAs } from 'file-saver';
 
 // Define Course List Component
   import template from "./course_view.component.html";
@@ -203,6 +205,13 @@
 
 		private cancel(){
 			this.edit_mode = false;
+		}
+
+		private exportAsJSON(){
+			Meteor.call('CourseRecords.exportRecordsJSON',{ course_id : this.course_model._id }, (err, res) => {
+				var blob = new Blob([res], {type : 'application/zip'});
+				saveAs(blob, this.course_model.name + ".zip");
+			});
 		}
 
 		private addInstructor(){
