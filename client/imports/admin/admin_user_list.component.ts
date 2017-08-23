@@ -497,7 +497,6 @@
 				}
 
 				button{
-					height: 30px;
 					font-size: 12px;
 					line-height: 30px;
 
@@ -596,15 +595,45 @@
 		private user_query : string;
 		private course_query : Course;
 
-    constructor( private zone : NgZone, private ref : ChangeDetectorRef ) {
+    constructor(private zone : NgZone,
+								private ref : ChangeDetectorRef,
+								private route : ActivatedRoute) {
 			super();
     }
 
 		ngOnInit(){
-			Meteor.subscribe('users.all', () => {
-				this.ref.markForCheck();
-			});
-			Meteor.subscribe('courses.all');
+
+			// Get Course Filter
+			this.route.params
+				.map(params => params['course_id'])
+				.subscribe((course_id) => {
+
+					if(course_id){
+
+						// Get Course
+						Meteor.subscribe('courses.id', course_id, () => {
+							this.course_query = Courses.findOne({ _id : course_id });
+							this.onSearch();
+						})
+
+						// Get Users for Course
+						Meteor.subscribe('users.course', course_id, () => {
+							this.ref.markForCheck();
+						});
+
+					} else {
+
+						// Get All Courses
+						Meteor.subscribe('courses.all');
+
+						// Get All Users
+						Meteor.subscribe('users.all', () => {
+							this.ref.markForCheck();
+						});
+
+					}
+				})
+
 			this.courses = Courses.observable.find({});
 			this.onSearch();
 		}

@@ -1,5 +1,6 @@
 import * as _ from "lodash";
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
 import { User, Role } from "../../both/models/user.model";
 import { Users } from "../../both/collections/user.collection";
@@ -32,6 +33,29 @@ Meteor.publish("users.instructors", (course_id) => {
     });
   } else {
     throw new Meteor.Error("Could not find course");
+  }
+})
+
+// COURSE USERS
+Meteor.publish("users.course", (course_id) => {
+  if(!Meteor.userId()){
+    throw new Meteor.Error("Unauthorized");
+  }
+
+  switch(Users.getRoleFor(course_id, Meteor.userId())){
+    case Role.instructor:
+    case Role.course_admin:
+    case Role.global_admin:
+      return Users.find({
+        "roles" : {
+          "$elemMatch" : {
+            "course_id" : course_id
+          }
+        }
+      })
+    case Role.student:
+    case Role.guest:
+      throw new Meteor.Error("Unauthorized");
   }
 })
 
@@ -207,6 +231,23 @@ Meteor.publish("users.all", () => {
       },{
         fields : {"_id" : 1, "profile.name" : 1}
       }).fetch();
+    },
+
+    'Users.sendPasswordEmail'({query}){
+
+      var user = Users.findOne({
+        $or : [
+          { "_id" : query },
+          { "profile.email " : query }
+        ]
+      })
+
+      if(user){
+        Accounts.sendResetPasswordEmail(user._id);
+      } else {
+        throw new Meteor.Error("No Matching User Found");
+      }
+
     },
 
     'Users.remove'({user_id}){

@@ -76,6 +76,15 @@
 			})
 		}
 
+		private sendResetEmail(query){
+			Meteor.call('Users.sendPasswordEmail', query, (err) => {
+				if(err){
+					this.error = true;
+					this.errorText = err;
+				}
+			});
+		}
+
 		private LoginWithGoogle(){
 			this.accountService.loginWithGoogle()
 			.then(() => {

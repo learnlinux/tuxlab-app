@@ -72,11 +72,14 @@
       const user = Users.observable.findOne({ '_id' : user_id });
 
       // Iterate over Roles to get Courses
-      const courses = _.map(_.filter(user.roles, (priv : Privilege) => {
-        return priv.role >= Role.student;
-      }), (priv : Privilege) => {
-        return priv.course_id;
-      });
+      var courses = [];
+      if(user){
+        courses = _.map(_.filter(user.roles, (priv : Privilege) => {
+          return priv.role >= Role.student;
+        }), (priv : Privilege) => {
+          return priv.course_id;
+        });
+      }
 
       // Map to Find Courses
       return Courses.observable.find({ '_id' : { '$in' : courses }});

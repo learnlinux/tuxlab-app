@@ -58,18 +58,22 @@
         </div>
       </div>
 
-      <div class="right" fxLayout="row" fxLayoutAlign="end center">
-        <ng-container *ngIf="!edit_mode">
+      <div class="right" fxLayout="row" fxLayoutAlign="end center" [ngSwitch]="edit_mode">
+        <ng-container *ngSwitchCase="false">
+          <button md-button routerLink="./users">
+            <md-icon>people</md-icon>
+            User View
+          </button>
           <button md-button (click)="exportAsJSON()">
             <md-icon>get_app</md-icon>
-            Export
+            Export Grades
           </button>
           <button md-button (click)="edit_mode=true">
             <md-icon>mode_edit</md-icon>
             Edit
           </button>
         </ng-container>
-        <ng-container *ngIf="edit_mode">
+        <ng-container *ngSwitchCase="true">
           <button md-button *ngIf="role >= Role.course_admin" (click)="addCourseAdmin()">
             <md-icon>person_add</md-icon>
             Add Admin

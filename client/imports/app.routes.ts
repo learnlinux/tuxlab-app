@@ -69,6 +69,7 @@ export const AppRoutes : Routes = [
   { path: 'explore', component: CourseList },
   { path: 'courses', component: CourseList, canActivate: [AuthGuard] },
   { path: 'courses/:course_id', component: CourseView },
+  { path: 'courses/:course_id/users', component: UserList },
 
   // Labs
   { path: 'courses/:course_id/labs/:lab_id', component: LabView, canActivate: [AuthGuard] },

@@ -16,6 +16,13 @@ div.course_view{
 
    md-card.info {
 
+     input,textarea{
+       width: 100%;
+       border: none;
+       background-color: transparent;
+       color: #000 !important;
+     }
+
      div.title{
        font-size: 21px;
        font-weight: 400;
@@ -85,13 +92,6 @@ div.course_view{
      div.description{
        h4{
          margin:10px 0px;
-       }
-
-       input,textarea{
-         width: 100%;
-         border: none;
-         background-color: transparent;
-         color: #000 !important;
        }
 
        textarea{
