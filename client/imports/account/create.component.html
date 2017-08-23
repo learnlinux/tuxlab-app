@@ -1,0 +1,48 @@
+<div class="tuxlab-create" fxLayout="row" fxLayoutAlign="center center">
+  <div class="page">
+
+    <h1>Create Account</h1>
+
+    <form #f="ngForm" (ngSubmit)="createAccount(f.value)">
+
+      <md-list>
+        <md-list-item>
+          <md-input-container>
+            <input mdInput name="username" type="text" placeholder="Username" />
+          </md-input-container>
+        </md-list-item>
+
+        <md-list-item>
+          <md-input-container>
+            <input mdInput name="email" type="email" placeholder="E-Mail" />
+          </md-input-container>
+        </md-list-item>
+
+        <md-list-item>
+          <md-input-container>
+            <input mdInput name="name" type="text" placeholder="Name" />
+          </md-input-container>
+        </md-list-item>
+
+        <md-list-item>
+          <md-input-container>
+            <input mdInput name="newPass" type="password" placeholder="Password" />
+          </md-input-container>
+        </md-list-item>
+
+        <md-list-item>
+          <md-input-container>
+            <input mdInput name="confirmPass" type="password" placeholder="Confirm Password" />
+          </md-input-container>
+        </md-list-item>
+      </md-list>
+
+      <br>
+      <div fxLayout fxLayoutAlign="center">
+          <button md-raised-button><md-icon>person_add</md-icon>Create Account</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

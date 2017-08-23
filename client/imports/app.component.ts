@@ -1,7 +1,7 @@
 // Angular Component
 import { Component, ViewEncapsulation, ViewChild, Renderer2, NgZone  } from "@angular/core";
 import { MdSidenav, MdButton } from "@angular/material";
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 // Meteor
 import { Meteor } from "meteor/meteor";
@@ -27,7 +27,7 @@ export class AppComponent {
   private renderer : Renderer2;
   private user : Meteor.User;
 
-  constructor(private accountService : AccountService, private render: Renderer2, zone : NgZone){
+  constructor(private accountService : AccountService, private render: Renderer2, zone : NgZone, private router : Router){
     this.renderer = render;
 
     // Handle User Updates
@@ -37,9 +37,16 @@ export class AppComponent {
       });
     });
 
-    // Subscribe to Users
+    // Subscribe to User
     Meteor.startup(() => {
       Meteor.subscribe("userData");
+    })
+
+    // Handle Password Reset
+    Meteor.startup(() => {
+      Accounts.onResetPasswordLink((token, done) => {
+        this.router.navigate(['/account','reset'], { queryParams : { token : token }});
+      })
     })
   }
 

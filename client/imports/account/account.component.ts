@@ -38,7 +38,7 @@
     }
 
 		resetPassword(){
-			this.route.navigate(['']);
+			this.router.navigate(['/account','reset']);
 		}
 
 		deleteAccount(){

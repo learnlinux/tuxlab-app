@@ -1,7 +1,6 @@
 /*
  * Cleanup
  * destroys containers from sessions which are destroyed
- *
  */
 
   import * as _ from 'lodash';

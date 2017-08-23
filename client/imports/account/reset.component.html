@@ -1,31 +1,39 @@
-<div class="tuxlab-reset">
+<div class="tuxlab-reset" fxLayout="row" fxLayoutAlign="center center">
   <div class="page">
 
     <h1>Reset Password</h1>
 
-    <md-list>
-      <md-list-item>
-        <md-input-container>
-          <input mdInput type="password" placeholder="Old Password" />
-        </md-input-container>
-      </md-list-item>
+    <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+      <md-list>
+        <md-list-item *ngIf="!token">
+          <md-input-container>
+            <input mdInput name="oldPass" type="password" placeholder="Old Password" />
+          </md-input-container>
+        </md-list-item>
 
-      <md-list-item>
-        <md-input-container>
-          <input mdInput type="password" placeholder="New Password" />
-        </md-input-container>
-      </md-list-item>
+        <md-list-item>
+          <md-input-container>
+            <input mdInput name="newPass" type="password" placeholder="New Password" />
+          </md-input-container>
+        </md-list-item>
 
-      <md-list-item>
-        <md-input-container>
-          <input mdInput type="password" placeholder="New Password (Confirm)" />
-        </md-input-container>
-      </md-list-item>
-    </md-list>
+        <md-list-item>
+          <md-input-container>
+            <input mdInput name="confirmPass" type="password" placeholder="New Password (Confirm)" />
+          </md-input-container>
+        </md-list-item>
+      </md-list>
 
-    <md-divider></md-divider>
 
-    <button md-raised-button><md-icon>settings_backup_restore</md-icon>Reset Password</button>
+      <br>
+      <div fxLayout fxLayoutAlign="center">
+        <ng-container [ngSwitch]="token?.length > 0">
+          <button md-raised-button *ngSwitchCase="true"><md-icon>settings_backup_restore</md-icon>Reset Password</button>
+          <button md-raised-button *ngSwitchCase="false"><md-icon>settings_backup_restore</md-icon>Change Password</button>
+        </ng-container>
+      </div>
+
+    </form>
 
   </div>
 </div>

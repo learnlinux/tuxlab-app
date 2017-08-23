@@ -24,6 +24,7 @@ import AuthGuard from './account/auth-guard.service';
 import Dashboard from './account/dashboard.component';
 import Login from './account/login.component';
 import Reset from './account/reset.component';
+import CreateUser from './account/create.component';
 
 // Admin
 import { AdminView } from './admin/admin_view.component';
@@ -53,7 +54,8 @@ export const AppRoutes : Routes = [
   { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
   { path: 'login', component: Login },
   { path: 'account', component: AccountView, canActivate: [AuthGuard] },
-  { path: 'reset', component: Reset },
+  { path: 'account/reset', component: Reset },
+  { path: 'account/create', component: CreateUser },
 
   // Static
   { path: 'help', component: Help },
@@ -82,6 +84,8 @@ export const AppRoutes : Routes = [
     AccountView,
     Dashboard,
     Login,
+    Reset,
+    CreateUser,
 
     // Static
     Help,
