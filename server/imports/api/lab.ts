@@ -11,16 +11,16 @@
     import { InitObject, SetupObject, VerifyObject } from './environment';
 
     /* TASK INTERFACE */
-    type InitFunction = (init : InitObject) => void;
-    type SetupFunction = (setup : SetupObject) => void;
-    type VerifyFunction = (verfiy : VerifyObject) => void;
-    interface Task {
+    export type InitFunction = (init : InitObject) => void;
+    export type SetupFunction = (setup : SetupObject) => void;
+    export type VerifyFunction = (verfiy : VerifyObject) => void;
+    export interface Task {
       setup : SetupFunction;
       verify : VerifyFunction;
     }
 
     /* LAB CLASS */
-    interface LabConstr {
+    export interface LabConstr {
       name: string;
       description? : string;
       vm: VMConfig | VMConfig[];

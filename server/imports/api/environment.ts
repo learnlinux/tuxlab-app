@@ -9,7 +9,7 @@
  import { Profile } from '../../../both/models/user.model';
  import { VM } from './vm';
 
- abstract class Environment implements VM {
+ export abstract class Environment implements VM {
 
    // Lab Data Interface
    setLabData : (data : any) => void;
@@ -63,7 +63,7 @@
  }
 
  /* CLASSES FOR OBJECTS PASSED TO SETUP AND VERIFY FUNCTIONS */
- abstract class TaskObject extends Environment {
+ export abstract class TaskObject extends Environment {
 
    // Task Data Interface
    setTaskData : (data : string) => void;

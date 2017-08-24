@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "postinstall": "$(meteor npm bin)/typings install;",
+    "postinstall": "meteor npm run install-typings && meteor npm run generate-typings",
+    "generate-typings": "$(meteor npm bin)/dts-generator --name tuxlab-api --project ./server/imports/api --out ./imports/api/tuxlab-api.d.ts",
+    "install-typings": "$(meteor npm bin)/typings install;",
     "test": "TEST_CLIENT=0 meteor test --settings ./private/settings.json --once --driver-package=meteortesting:mocha"
   },
   "devDependencies": {
@@ -24,6 +26,7 @@
     "@types/xterm": "^2.0.3",
     "adm-zip": "^0.4.7",
     "chai": "^4.0.2",
+    "dts-generator": "^2.1.0",
     "typings": "^2.1.1"
   },
   "dependencies": {
