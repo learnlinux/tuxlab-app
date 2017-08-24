@@ -5,12 +5,11 @@ declare module 'tuxlab-api/vm' {
 
 }
 declare module 'tuxlab-api/environment' {
-	import { Profile } from '../../both/models/user.model';
 	import { VM } from 'tuxlab-api/vm';
 	export abstract class Environment implements VM {
 	    setLabData: (data: any) => void;
 	    getLabData: () => void;
-	    getUserProfile: () => Profile;
+	    getUserProfile: () => any;
 	    getUserID(): string;
 	    getName(): string;
 	    getOrg(): string;
