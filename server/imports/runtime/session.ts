@@ -658,16 +658,20 @@ export class Session extends Cache {
                                        this.getTaskObject(),
       {
         setGrade: (n : number, d : number) => {
-          var session_key = "labs." + this.lab_id + "." + this._id + ".";
+          return new Promise((resolve, reject) => {
+            var session_key = "labs." + this.lab_id + "." + this._id + ".";
 
-          CourseRecords.update({
-            "user_id" : this.user_id,
-            "course_id" : this.lab.course_id
-          }, {
-            [ session_key + "tasks." + this.current_task + ".grade" ] : [n,d]
-          });
-
+            CourseRecords.update({
+              "user_id" : this.user_id,
+              "course_id" : this.lab.course_id
+            }, {
+              [ session_key + "tasks." + this.current_task + ".grade" ] : [n,d]
+            }, () => {
+              resolve();
+            });
+          })
         },
+
         error: error,
         next: next,
         fail: fail,

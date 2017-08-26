@@ -45,7 +45,7 @@ declare module 'tuxlab-api/environment' {
 	    fail: () => void;
 	    retry: () => void;
 	    error: (error?: Error) => void;
-	    setGrade: (n: number, d: number) => void;
+	    setGrade: (n: number, d: number) => Promise<void>;
 	    constructor(obj: any);
 	}
 

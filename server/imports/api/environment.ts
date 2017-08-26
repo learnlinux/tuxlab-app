@@ -101,7 +101,7 @@
    error: (error? : Error) => void; // Continuation Function: Marks Lab as having Erred.
 
    // Lab Grade Interface
-   setGrade : (n : number, d : number) => void; // n : numerator, d: denom
+   setGrade : (n : number, d : number) => Promise<void>; // n : numerator, d: denom
 
    // Constructor from Object
    constructor(obj){
