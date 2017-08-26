@@ -1,22 +1,21 @@
 declare module 'tuxlab-api/vm' {
 	export interface VM {
-	    shell: (command: string[]) => Promise<[String, String]>;
+	    shell: (command: string | string[]) => Promise<[String, String]>;
 	}
 
 }
 declare module 'tuxlab-api/environment' {
-	import { Profile } from '../../both/models/user.model';
 	import { VM } from 'tuxlab-api/vm';
 	export abstract class Environment implements VM {
 	    setLabData: (data: any) => void;
 	    getLabData: () => void;
-	    getUserProfile: () => Profile;
+	    getUserProfile: () => any;
 	    getUserID(): string;
 	    getName(): string;
 	    getOrg(): string;
 	    vm: VM[];
 	    private getDefaultVM();
-	    shell(command: string[]): Promise<[String, String]>;
+	    shell(command: string | string[]): Promise<[String, String]>;
 	    constructor(obj: any);
 	}
 	export class InitObject extends Environment {

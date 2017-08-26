@@ -10,6 +10,7 @@
 
  import { Cache } from '../service/cache';
  import { log } from '../service/log';
+ import { ClientConsole } from '../service/console';
 
  import { Lab as LabModel, Task as TaskModel, LabStatus, LabFileImportOpts } from '../../../both/models/lab.model';
  import { Labs } from '../../../both/collections/lab.collection';
@@ -18,6 +19,10 @@
  import { Lab, isValidLabObject } from '../api/lab'
  import { InitObject, SetupObject, VerifyObject } from '../api/environment';
 
+  /*
+  ClientConsole forwarding Setup
+  */
+  const clientConsole = new ClientConsole();
 
  /*
   LabSandbox
@@ -31,7 +36,7 @@
    Environment: {},
 
    // Standard Library
-   console: console,
+   console: clientConsole,
    Promise : Promise,
 
    // Extended Library
@@ -39,6 +44,7 @@
  }
 
  export class LabRuntime extends Cache implements LabModel {
+
     // LabCache Elements
     protected static _TTL : number = Meteor.settings['private']['labvm']['labruntime_idle_timeout'];
 
@@ -245,6 +251,7 @@
           try {
             vm.runInContext("Lab._init(Environment)",this._context, this.LabContextOptions());
           } catch (e){
+            clientConsole.error(e);
             obj.error(e);
           }
         } else {
@@ -265,6 +272,7 @@
           try {
             vm.runInContext("Lab._destroy(Environment)",this._context, this.LabContextOptions());
           } catch (e) {
+            clientConsole.error(e);
             obj.error(e);
           }
         } else {
@@ -289,6 +297,7 @@
            try {
              vm.runInContext("Lab._tasks["+task_id+"].setup(Environment);",this._context, this.TaskContextOptions(task_id.toString()));
            } catch (e){
+             clientConsole.error(e);
              obj.error(e);
            }
          }
@@ -311,6 +320,7 @@
           try {
             vm.runInContext("Lab._tasks["+task_id+"].verify(Environment)",this._context, this.TaskContextOptions(task_id.toString()));
           } catch (e){
+            clientConsole.error(e);
             obj.error(e);
           }
         }
