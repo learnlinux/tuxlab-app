@@ -60,6 +60,8 @@ export class AppComponent {
       consoleCollection.find().observe({
         added : function(doc : ConsoleOutput){
 
+          doc.args = JSON.parse(doc.args);
+
           switch(doc.type){
             case ConsoleOutputType.info:
               console.info("Lab Runtime (" + doc.createdAt.toUTCString() + "):");

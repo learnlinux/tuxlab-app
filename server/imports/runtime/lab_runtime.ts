@@ -10,7 +10,7 @@
 
  import { Cache } from '../service/cache';
  import { log } from '../service/log';
- import { ClientConsole } from '../service/console';
+ import { clientConsole } from '../service/console';
 
  import { Lab as LabModel, Task as TaskModel, LabStatus, LabFileImportOpts } from '../../../both/models/lab.model';
  import { Labs } from '../../../both/collections/lab.collection';
@@ -18,11 +18,6 @@
  import { VMConfig, VMResolveConfig, VMConfigCustom } from '../api/vmconfig';
  import { Lab, isValidLabObject } from '../api/lab'
  import { InitObject, SetupObject, VerifyObject } from '../api/environment';
-
-  /*
-  ClientConsole forwarding Setup
-  */
-  const clientConsole = new ClientConsole();
 
  /*
   LabSandbox
@@ -98,7 +93,7 @@
           try {
             let code = (UglifyJS.minify(opts.file, {fromString: true})).code;
           } catch (e){
-            reject(e);
+            return reject(e);
           }
 
           // Create LabRuntime
@@ -111,6 +106,7 @@
           }));
 
         }).then((runtime) => {
+
           return runtime.ready();
 
         }).then((runtime) => {
@@ -160,10 +156,10 @@
         } else {
           return new Promise((resolve, reject) => {
 
-            let lab_model = Labs.findOne({ _id : lab_id});
+            let lab_model = Labs.findOne({ _id : lab_id });
 
             if (typeof lab_model === "undefined"){
-              reject(new Error("LabNotFound"));
+              reject(new Error("Lab Not Found"));
 
             } else {
               let runtime = new LabRuntime(lab_model);
@@ -192,7 +188,8 @@
           try{
             this._code = new vm.Script(lab.file, this.LabContextOptions());
           } catch (e){
-            reject(e);
+            log.info("Error in compiling Lab Object", e);
+            return reject(e);
           }
         }
 
@@ -201,7 +198,8 @@
           try{
             this._code.runInContext(this._context, this.LabContextOptions());
           } catch (e) {
-            reject(e);
+            log.info("Error in executing Lab Object", e);
+            return reject(e);
           }
         }
 
@@ -209,7 +207,8 @@
         try {
           isValidLabObject(this._sandbox);
         } catch (e) {
-          reject(e);
+          log.info("Invalid Lab Object", e);
+          return reject(e);
         }
 
         // Copy Variables from Constructor

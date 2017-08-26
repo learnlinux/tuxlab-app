@@ -13,5 +13,5 @@ export interface ConsoleOutput {
   createdAt: Date;
   user_id : string;
   type: ConsoleOutputType;
-  args: Object[];
+  args: string;
 }

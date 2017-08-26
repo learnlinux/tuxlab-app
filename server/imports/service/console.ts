@@ -3,6 +3,7 @@
  * @author Derek Brown
  */
 
+import * as _ from "lodash";
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
@@ -26,27 +27,32 @@ export class ClientConsole {
   }
 
   private emit(type : ConsoleOutputType, args : Object[]){
+
+    args = _.map(args, a => { return a.toString() });
+
     this.consoleCollection.insert({
       createdAt: (new Date()),
       user_id: Meteor.userId(),
       type: type,
-      args: args
+      args: JSON.stringify(args)
     })
   }
 
-  public info(...args : string[]){
-    this.emit(ConsoleOutputType.info, Array.from(arguments));
+  public info(...args : Object[]){
+    this.emit(ConsoleOutputType.info, args);
   }
 
-  public log(...args : string[]){
-    this.emit(ConsoleOutputType.log, Array.from(arguments));
+  public log(...args : Object[]){
+    this.emit(ConsoleOutputType.log, args);
   }
 
-  public warn(...args : string[]){
-    this.emit(ConsoleOutputType.warn, Array.from(arguments));
+  public warn(...args : Object[]){
+    this.emit(ConsoleOutputType.warn, args);
   }
 
-  public error(...args : string[]){
-    this.emit(ConsoleOutputType.error, Array.from(arguments));
+  public error(...args : Object[]){
+    this.emit(ConsoleOutputType.error, args);
   }
 }
+
+export var clientConsole = new ClientConsole();

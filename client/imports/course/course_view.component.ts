@@ -325,12 +325,7 @@
 				 var fileReader = new FileReader();
 				 fileReader.onload = (fileEvent) => {
 					 var lab_file = ((<any>fileEvent.target).result);
-					 Meteor.call('Courses.createLab',{ course_id : this.route.snapshot.params['course_id'], lab_file : lab_file }, (err, res) => {
-						 if(err){
-							 console.error("COULD NOT UPLOAD LAB");
-							 console.error(err);
-						 }
-					 })
+					 Meteor.call('Courses.createLab',{ course_id : this.route.snapshot.params['course_id'], lab_file : lab_file });
 				 }
 				 fileReader.readAsText(fileTarget,"UTF-8");
 			 });

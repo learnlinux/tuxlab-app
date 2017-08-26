@@ -2,6 +2,8 @@
   import { Meteor } from 'meteor/meteor';
   import * as _ from "lodash";
 
+  import { clientConsole } from '../imports/service/console';
+
   import { Course, ContentPermissions } from '../../both/models/course.model';
   import { Courses } from '../../both/collections/course.collection';
 
@@ -85,6 +87,11 @@
     return LabRuntime.createLabRuntime({
       course_id : course_id,
       file: lab_file
+    })
+
+    // Catch Error
+    .catch((err) => {
+      clientConsole.error(err);
     })
 
     // Create Lab Record
