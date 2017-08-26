@@ -1,6 +1,9 @@
 declare module 'tuxlab-api/vm' {
 	export interface VM {
-	    shell: (command: string | string[]) => Promise<[String, String]>;
+	    shell: (command: string | string[]) => Promise<{
+	        stdout: string;
+	        stderr: string;
+	    }>;
 	}
 
 }
@@ -15,7 +18,10 @@ declare module 'tuxlab-api/environment' {
 	    getOrg(): string;
 	    vm: VM[];
 	    private getDefaultVM();
-	    shell(command: string | string[]): Promise<[String, String]>;
+	    shell(command: string | string[]): Promise<{
+	        stdout: string;
+	        stderr: string;
+	    }>;
 	    constructor(obj: any);
 	}
 	export class InitObject extends Environment {
@@ -48,7 +54,8 @@ declare module 'tuxlab-api/vmconfig' {
 	export interface VMConfigCustom {
 	    name?: string;
 	    image: string;
-	    cmd: string[];
+	    entry_cmd: string[];
+	    shell_fn: (cmd: string[]) => string[];
 	    ssh_port: number;
 	    username: string;
 	    password_path: string;

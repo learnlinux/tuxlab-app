@@ -60,7 +60,7 @@
         // Dockerode Create Container
         prepare_containers = Container.docker.createContainer({
           'Image': this.config.image,
-          'Cmd': this.config.cmd,
+          'Cmd': this.config.entry_cmd,
           'AttachStdin': false,
           'AttachStdout': false,
           'AttachStderr': false,
@@ -156,7 +156,7 @@
       const exec_options = {
         AttachStdout: true,
         AttachStderr: true,
-        Cmd: command
+        Cmd: this.config.shell_fn(command)
       }
 
       const start_options = {

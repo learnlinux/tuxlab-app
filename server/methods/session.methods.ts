@@ -3,6 +3,7 @@
 **/
 
 import { Meteor } from 'meteor/meteor';
+import { log } from '../imports/service/log';
 
 import { Session } from '../imports/runtime/session';
 import { Sessions } from '../../both/collections/session.collection';
@@ -59,6 +60,10 @@ Meteor.methods({
         // Return Session JSON
         .then((session) => {
           return session.getJSON();
+        })
+
+        .catch((err) => {
+          log.error(err);
         })
       } else {
         throw new Meteor.Error("Authorization Required");
