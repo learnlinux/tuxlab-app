@@ -10,8 +10,8 @@ declare module 'tuxlab-api/vm' {
 declare module 'tuxlab-api/environment' {
 	import { VM } from 'tuxlab-api/vm';
 	export abstract class Environment implements VM {
-	    setLabData: (data: any) => void;
-	    getLabData: () => void;
+	    setLabData: (data: any) => Promise<void>;
+	    getLabData: () => Promise<any>;
 	    getUserProfile: () => any;
 	    getUserID(): string;
 	    getName(): string;
@@ -30,9 +30,9 @@ declare module 'tuxlab-api/environment' {
 	    constructor(obj: any);
 	}
 	export abstract class TaskObject extends Environment {
-	    setTaskData: (data: string) => void;
-	    getTaskData: () => string;
-	    setFeedback: (md: string) => void;
+	    setTaskData: (data: string) => Promise<void>;
+	    getTaskData: () => Promise<string>;
+	    setFeedback: (md: string) => Promise<void>;
 	    constructor(obj: any);
 	}
 	export class SetupObject extends TaskObject {

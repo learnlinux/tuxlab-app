@@ -564,6 +564,7 @@ export class Session extends Cache {
         return container.getVMInterface();
       }),
       setLabData: (data) => {
+        return new Promise((resolve, reject) => {
           CourseRecords.update({
             "user_id" : this.user_id,
             "course_id" : this.lab.course_id
@@ -571,13 +572,18 @@ export class Session extends Cache {
             $set : {
               [session_key + "data"] : data
             }
+          }, () => {
+            resolve();
           });
+        })
       },
       getLabData: () => {
-        return CourseRecords.findOne({
-          "user_id" : this.user_id,
-          "course_id" : this.lab.course_id
-        })["labs"][this.lab_id][this._id].data;
+        return new Promise((resolve, reject) => {
+          resolve(CourseRecords.findOne({
+              "user_id" : this.user_id,
+              "course_id" : this.lab.course_id
+            })["labs"][this.lab_id][this._id].data);
+        })
       },
       getUserProfile: () => {
         return Users.findOne(this.user_id).profile;
@@ -590,35 +596,48 @@ export class Session extends Cache {
 
     return {
       setTaskData: (data : string) => {
-        CourseRecords.update({
-          "user_id" : this.user_id,
-          "course_id" : this.lab.course_id
-        }, {
-          $set : {
-            [ session_key + "tasks." + this.current_task + ".data" ] : data
-          }
+        return new Promise((resolve, reject) => {
+          CourseRecords.update({
+            "user_id" : this.user_id,
+            "course_id" : this.lab.course_id
+          }, {
+            $set : {
+              [ session_key + "tasks." + this.current_task + ".data" ] : data
+            }
+          }, () => {
+            resolve();
+          });
         });
       },
+
       getTaskData: () => {
-        return CourseRecords.findOne({
-          "user_id" : this.user_id,
-          "course_id" : this.lab.course_id
-        })["labs"][this.lab_id][this._id].tasks[this.current_task].data;
+        return new Promise((resolve, reject) => {
+          resolve(CourseRecords.findOne({
+            "user_id" : this.user_id,
+            "course_id" : this.lab.course_id
+          })["labs"][this.lab_id][this._id].tasks[this.current_task].data);
+        })
       },
 
       setFeedback: (md : string) => {
-        this.tasks[this.current_task].feedback = md;
-        Sessions.update(this._id , {
-          $set : {
-            ["tasks." + this.current_task + ".feedback"] : md
-          }
+        return new Promise((resolve, reject) => {
+          this.tasks[this.current_task].feedback = md;
+
+          // Update in Sessions
+          Sessions.update(this._id , {
+            $set : {
+              ["tasks." + this.current_task + ".feedback"] : md
+            }
+          }, () => {
+            resolve();
+          })
         })
       }
     };
   }
 
   private getInitObject(next, error) : InitObject{
-    return new InitObject(_.extend(this.getEnvironmentObject(),
+    return new InitObject(_.assignIn(this.getEnvironmentObject(),
     {
       next: next,
       error: error
@@ -626,8 +645,8 @@ export class Session extends Cache {
   }
 
   private getSetupObject(next, error) : SetupObject{
-    return new SetupObject(_.extend(this.getEnvironmentObject(),
-                                    this.getTaskObject(),
+    return new SetupObject(_.assignIn(this.getEnvironmentObject(),
+                                      this.getTaskObject(),
     {
       next: next,
       error: error
@@ -635,8 +654,8 @@ export class Session extends Cache {
   }
 
   private getVerifyObject(error, next, fail, retry) : VerifyObject {
-    return new VerifyObject(_.extend(this.getEnvironmentObject(),
-                                     this.getTaskObject(),
+    return new VerifyObject(_.assignIn(this.getEnvironmentObject(),
+                                       this.getTaskObject(),
       {
         setGrade: (n : number, d : number) => {
           var session_key = "labs." + this.lab_id + "." + this._id + ".";
@@ -710,14 +729,12 @@ export class Session extends Cache {
           // Complete Lab
           this.destroy(SessionStatus.completed);
           resolve();
-
         } else {
           // Proceed to Next Task
           this.current_task++;
           this.mongo_update_task();
-          this.lab.exec_setup(this.current_task, next_task_fn);
+          this.lab.exec_setup(this.current_task, next_task_fn)
           this.mongo_update_task_status(TaskStatus.in_progress);
-          resolve();
         }
       }
 
@@ -730,6 +747,7 @@ export class Session extends Cache {
         this.mongo_update_task_status(TaskStatus.failure);
         resolve();
       }
+
       return this.lab.exec_verify(this.current_task, this.getVerifyObject(error, completed, fail, retry));
     }).then(() => {
       return this;

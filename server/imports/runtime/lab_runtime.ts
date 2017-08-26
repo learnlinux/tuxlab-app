@@ -284,7 +284,7 @@
       exec_setup()
     */
     public exec_setup(task_id : number, obj : SetupObject){
-         this.ready().then(() => {
+       this.ready().then(() => {
           log.debug("Lab Runtime | Setting up Task "+task_id);
 
          if (!(this._sandbox.Lab instanceof Lab)){

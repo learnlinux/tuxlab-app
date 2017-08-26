@@ -2,7 +2,7 @@
 <div class="tuxlab-lab-view" fxLayout fxLayoutAlign="center flex-start" *ngIf="session; else loading">
 
   <!-- Markdown Component -->
-  <div>
+  <div fxFlex="1 1 50%">
 
     <!-- Toolbar -->
     <md-toolbar>
@@ -30,7 +30,7 @@
   </div>
 
   <!-- Terminal Component -->
-  <div>
+  <div fxFlex="1 1 50%">
     <md-toolbar>
 
       <md-select placeholder="Machine" *ngIf="session?.containers?.length > 1" [(ngModel)]="container_index">

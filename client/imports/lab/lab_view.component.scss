@@ -9,8 +9,6 @@
 // Sections
 .tuxlab-lab-view{
   & > div {
-    width: 50%;
-
     &:first-child md-toolbar{
         background: #d7d7d7;
     }
@@ -65,5 +63,8 @@
   // Task Content
   .task_content{
     padding: 10px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }

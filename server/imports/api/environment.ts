@@ -12,8 +12,8 @@
  export abstract class Environment implements VM {
 
    // Lab Data Interface
-   setLabData : (data : any) => void;
-   getLabData : () => void;
+   setLabData : (data : any) => Promise<void>;
+   getLabData : () => Promise<any>;
 
    // User Interface
    getUserProfile : () => Profile;
@@ -58,7 +58,7 @@
     // Constructor from Object
     constructor(obj){
       super(obj);
-      _.extend(this, _.pick(obj, ['next', 'error']));
+      _.assignIn(this, _.pick(obj, ['next', 'error']));
     }
  }
 
@@ -66,16 +66,16 @@
  export abstract class TaskObject extends Environment {
 
    // Task Data Interface
-   setTaskData : (data : string) => void;
-   getTaskData : () => string;
+   setTaskData : (data : string) => Promise<void>;
+   getTaskData : () => Promise<string>;
 
    // Markdown Interface
-   setFeedback : (md : string) => void; // Updates the markdown feedback
+   setFeedback : (md : string) => Promise<void>; // Updates the markdown feedback
 
    // Constructor from Object
    constructor(obj){
      super(obj);
-     _.extend(this, _.pick(obj, ['setTaskData', 'getTaskData', 'setMarkdown', 'setStatus']));
+     _.assignIn(this, _.pick(obj, ['setTaskData', 'getTaskData', 'setFeedback']));
    }
  }
 
@@ -88,7 +88,7 @@
    // Constructor from Object
    constructor(obj){
      super(obj);
-     _.extend(this, _.pick(obj, ['next', 'error']));
+     _.assignIn(this, _.pick(obj, ['next', 'error']));
    }
  }
 
@@ -106,6 +106,6 @@
    // Constructor from Object
    constructor(obj){
      super(obj);
-     _.extend(this, _.pick(obj, ['next', 'fail', 'retry', 'error', 'setGrade']));
+     _.assignIn(this, _.pick(obj, ['next', 'fail', 'retry', 'error', 'setGrade']));
    }
  }

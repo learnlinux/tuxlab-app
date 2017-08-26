@@ -43,7 +43,7 @@
     <div fxLayout="row" fxLayoutAlign="flex-start">
 
       <!-- Minimized Navbar -->
-      <div id="navbar" *ngIf="!sidenav.opened" fxFlex="64px" fxLayout="column" fxLayoutAlign="flex-start center">
+      <div id="navbar" *ngIf="!sidenav.opened" fxFlex="0 0 64px" fxLayout="column" fxLayoutAlign="flex-start center">
           <a class="menu" (click)="sidenav.toggle()"><md-icon>menu</md-icon></a>
           <a [routerLink]="['/dashboard']"><md-icon>home</md-icon></a>
           <a [routerLink]="['/courses']" ><md-icon>library_books</md-icon></a>
@@ -52,7 +52,7 @@
       </div>
 
       <!-- Content Container -->
-      <div fxFlexFill>
+      <div fxFlex="1 1 100%">
         <div class="router-wrap">
           <router-outlet></router-outlet>
         </div>
