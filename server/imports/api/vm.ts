@@ -14,5 +14,5 @@ export interface VM {
     executes a shell command, returning an array of
     stdout, sterr.
   */
-  shell: (command : string | string[]) => Promise<[String,String]>;
+  shell: (command : string | string[]) => Promise<{ stdout: string; stderr: string; }>;
 }

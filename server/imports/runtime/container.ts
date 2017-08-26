@@ -145,7 +145,7 @@
       return this;
     }
 
-    public shell_stream(command : string | string[]) : Promise<[Readable, Readable]> {
+    public shell_stream(command : string | string[]) : Promise<{ stdout: Readable; stderr: Readable; }> {
 
       // Define Command
       if(typeof command === "string"){
@@ -173,7 +173,7 @@
       })
 
       // Demux Streams
-      .then((obj : any) : [Readable,Readable] => {
+      .then((obj : any) : { stdout: Readable; stderr: Readable; } => {
 
         var stdout = new PassThrough();
         var stderr = new PassThrough();
@@ -186,17 +186,20 @@
           stderr.emit('end');
         })
 
-        return [stdout,stderr];
+        return {
+          stdout : stdout,
+          stderr : stderr
+        };
       })
     }
 
-    public shell(command : string | string[]) : Promise<[string, string]> {
+    public shell(command : string | string[]) : Promise<{ stdout: string; stderr: string; }> {
 
       // Run Shell Stream
       return this.shell_stream(command)
 
       // Await Results
-      .then(([stdout, stderr] : [Readable, Readable]) : Promise<[string, string]> => {
+      .then(({stdout, stderr}) : Promise<{ stdout: string; stderr: string; }> => {
 
         return new Promise((resolve, reject) => {
           var stdout_chunks = [];
@@ -215,17 +218,17 @@
             reject(error);
           })
           stdout.on("end", () => {
-            resolve([
-              stdout_chunks.join('').replace(/\n$/, ""),
-              stderr_chunks.join('').replace(/\n$/, "")
-            ]);
+            resolve({
+              stdout : stdout_chunks.join('').replace(/\n$/, ""),
+              stderr : stderr_chunks.join('').replace(/\n$/, "")
+            });
           })
         });
       });
     }
 
     public getPass() : Promise<string> {
-      return this.shell(["cat",this.config.password_path]).then(([stdout, stderr]) => {
+      return this.shell(["cat",this.config.password_path]).then(({stdout, stderr}) => {
         if (stderr === ""){
           return stdout;
         } else {

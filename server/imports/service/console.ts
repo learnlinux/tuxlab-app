@@ -28,7 +28,7 @@ export class ClientConsole {
 
   private emit(type : ConsoleOutputType, args : Object[]){
 
-    args = _.map(args, a => { return a.toString() });
+    args = _.map(args, a => { return JSON.stringify(a) });
 
     this.consoleCollection.insert({
       createdAt: (new Date()),
