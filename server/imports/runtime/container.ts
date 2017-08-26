@@ -142,9 +142,7 @@
     }
 
     public getVMInterface() : VM {
-      return {
-        shell : this.shell
-      };
+      return this;
     }
 
     public shell_stream(command : string | string[]) : Promise<[Readable, Readable]> {
@@ -199,6 +197,7 @@
 
       // Await Results
       .then(([stdout, stderr] : [Readable, Readable]) : Promise<[string, string]> => {
+
         return new Promise((resolve, reject) => {
           var stdout_chunks = [];
           var stderr_chunks = [];

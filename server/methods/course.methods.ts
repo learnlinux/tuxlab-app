@@ -97,7 +97,7 @@
         Courses.update({
           _id: course_id
         }, {
-          '$addToSet' : { labs :  lab_id}
+          '$addToSet' : { labs :  lab_id }
         }, (err, res) => {
           if(err){
             reject(err);
@@ -208,7 +208,7 @@
         case Role.course_admin:
           return createLab(course_id, lab_file)
           .catch((err) => {
-            throw new Meteor.Error("Could not add lab.")
+            throw new Meteor.Error("Could Not Add Lab", "Failed to Compile", err);
           })
         case Role.instructor:
         case Role.student:

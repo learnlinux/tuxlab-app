@@ -6,7 +6,7 @@
 
  import * as _ from "lodash";
  import * as vm from 'vm';
- import * as UglifyJS from 'uglify-js';
+ import * as UglifyJS from 'uglify-es';
 
  import { Cache } from '../service/cache';
  import { log } from '../service/log';
@@ -24,10 +24,18 @@
   Exports Modules for use by Instructors in Labfile
  */
  export const LabSandbox = {
+
+   // TuxLab Resources
    TuxLab: Lab,
    Lab: {},
    Environment: {},
-   console: console
+
+   // Standard Library
+   console: console,
+   Promise : Promise,
+
+   // Extended Library
+   _ : _
  }
 
  export class LabRuntime extends Cache implements LabModel {
@@ -84,7 +92,7 @@
           try {
             let code = (UglifyJS.minify(opts.file, {fromString: true})).code;
           } catch (e){
-            reject("uglifyError");
+            reject(e);
           }
 
           // Create LabRuntime
@@ -269,7 +277,7 @@
       exec_setup()
     */
     public exec_setup(task_id : number, obj : SetupObject){
-        this.ready().then(() => {
+         this.ready().then(() => {
           log.debug("Lab Runtime | Setting up Task "+task_id);
 
          if (!(this._sandbox.Lab instanceof Lab)){

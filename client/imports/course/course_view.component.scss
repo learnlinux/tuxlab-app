@@ -17,6 +17,8 @@ div.course_view{
    md-card.info {
 
      input,textarea{
+       font-family: 'Roboto', sans-serif !important;
+
        width: 100%;
        border: none;
        background-color: transparent;
@@ -24,11 +26,10 @@ div.course_view{
      }
 
      div.title{
-       font-size: 21px;
-       font-weight: 400;
-
        .name{
          width: 100%;
+         font-size: 21px !important;
+         font-weight: 400 !important;
        }
 
       div.left, div.right{
@@ -44,6 +45,9 @@ div.course_view{
         flex-shrink: 0;
 
         input{
+          font-size: 24px;
+          font-weight: 400;
+
           color: #fff !important;
           line-height: $left-size;
           text-align: center;
@@ -55,6 +59,7 @@ div.course_view{
         margin-left: 15px;
 
         input{
+          font-size: 18px;
           color: #000 !important;
         }
 

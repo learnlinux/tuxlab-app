@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "postinstall": "meteor npm run install-typings && meteor npm run generate-typings",
+    "postinstall": "meteor npm run install-typings",
     "generate-typings": "$(meteor npm bin)/dts-generator --name tuxlab-api --project ./server/imports/api --out ./imports/api/tuxlab-api.d.ts",
     "install-typings": "$(meteor npm bin)/typings install;",
     "test": "TEST_CLIENT=0 meteor test --settings ./private/settings.json --once --driver-package=meteortesting:mocha"
@@ -24,7 +24,6 @@
     "@types/uglify-js": "^2.6.29",
     "@types/winston": "^2.3.3",
     "@types/xterm": "^2.0.3",
-    "adm-zip": "^0.4.7",
     "chai": "^4.0.2",
     "dts-generator": "^2.1.0",
     "typings": "^2.1.1"
@@ -63,7 +62,7 @@
     "simpl-schema": "^0.3.2",
     "socket.io": "^2.0.3",
     "sortablejs": "^1.6.0",
-    "uglify-js": "^2.7.5",
+    "uglify-es": "^3.0.28",
     "utf-8-validate": "^3.0.3",
     "winston": "^2.3.1",
     "xterm": "^2.8.1",

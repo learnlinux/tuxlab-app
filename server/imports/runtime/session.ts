@@ -556,7 +556,7 @@ export class Session extends Cache {
 /************************
 *  ENVIRONMENT OBJECT  *
 ************************/
-  private getEnvironmentObject(){
+  private getEnvironmentObject() {
     var session_key = "labs." + this.lab_id + "." + this._id + ".";
 
     return {

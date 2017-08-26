@@ -33,12 +33,12 @@
      if (_.isArray(this.vm) && this.vm.length > 0){
        return this.vm[0];
      } else {
-       throw new Error("NoVMs");
+       throw new Error("No VMs");
      }
    }
 
    // Convenience Methods for Accessing the Default VM
-   shell(command : string[]) : Promise<[String,String]> {
+   shell(command : string | string[]) : Promise<[String,String]> {
      return this.getDefaultVM().shell(command);
    }
 
