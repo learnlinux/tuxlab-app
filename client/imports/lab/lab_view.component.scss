@@ -1,5 +1,6 @@
 @import '../app.theme';
 
+
 // Loading
 .loading{
   width: 100%;
@@ -66,5 +67,24 @@
 
     overflow-x: hidden;
     overflow-y: auto;
+
+    .feedback{
+      margin-top: 20px;
+
+      div.icon{
+        width: 50px;
+        padding: 10px;
+
+        md-icon{
+          line-height: 50px;
+          font-size: 50px;
+
+          color:mat-color($tuxlab-app-primary);
+        }
+      }
+
+      markdown{
+      }
+    }
   }
 }

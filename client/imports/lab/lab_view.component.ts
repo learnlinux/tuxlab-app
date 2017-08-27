@@ -14,6 +14,7 @@
 	import { Router, ActivatedRoute } from "@angular/router";
 	import { MdDialog } from '@angular/material';
 	import { ObservableCursor } from 'meteor-rxjs';
+	import { MarkdownService } from 'angular2-markdown';
 
 // Define Lab View Component
 	import template from "./lab_view.component.html";
@@ -52,16 +53,16 @@
     constructor( private router : Router,
 								 private route: ActivatedRoute,
 							 	 private dialog : MdDialog,
-							 	 private zone : NgZone ) {
+							 	 private zone : NgZone,
+							   private markdownService : MarkdownService ) {
 			super();
 			prism_style;
     }
 
 
-		// Load Data
 		ngOnInit(){
 
-				// Lab
+				// Get Lab
 				this.lab = this.route.params
 					.map(params => [params['course_id'], params['lab_id']])
 					.distinct()
@@ -80,6 +81,7 @@
 						);
 					});
 
+				// Get Session
 				this.lab
 				.filter((x) => { return _.has(x, "_id")})
 				.distinct(x => x._id)
@@ -103,6 +105,8 @@
 						});
 					}
 				});
+
+
     }
 
 		// Bind to Terminal Init

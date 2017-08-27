@@ -136,7 +136,12 @@
           // Add to Cache
           LabRuntime._cache.set(runtime._id, runtime, LabRuntime._TTL);
           return runtime;
-        });
+        })
+
+        .catch((e) => {
+          clientConsole.error(e);
+          return e;
+        })
     }
 
     public static getLabRuntime(lab_id : string) : Promise<LabRuntime> {

@@ -89,11 +89,6 @@
       file: lab_file
     })
 
-    // Catch Error
-    .catch((err) => {
-      clientConsole.error(err);
-    })
-
     // Create Lab Record
     .then((labRuntime : LabRuntime) => {
       return labRuntime._id;

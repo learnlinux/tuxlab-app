@@ -20,11 +20,15 @@
 
     <!-- Content -->
     <div class="task_content">
+
       <!-- Task Instructions -->
       <markdown [data]="(lab | async)?.tasks[task_index]?.md || ''"></markdown>
 
       <!-- Feedback -->
-      <markdown [data]="session?.tasks[task_index]?.feedback || ''"></markdown>
+      <md-card *ngIf="session?.tasks[task_index]?.feedback" class="feedback" fxLayout="row" fxLayoutAlign="flex-start center">
+        <div class="icon"><md-icon>error</md-icon></div>
+        <markdown fxFlex="1" [data]="session?.tasks[task_index]?.feedback || ''"></markdown>
+      </md-card>
     </div>
 
   </div>
