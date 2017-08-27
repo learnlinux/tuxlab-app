@@ -1,4 +1,2 @@
-# TuxLab-App
+# [TuxLab App](http://tuxlab.org)
 Platform for creating Interactive Linux Courses.
-
-## [Documentation Here](tuxlab.org)
