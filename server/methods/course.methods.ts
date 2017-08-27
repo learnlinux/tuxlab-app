@@ -175,13 +175,65 @@
     },
 
     'Courses.search'({query}){
-      return Courses.find({
-        $or : [
-          { "_id" : query },
-          { "name" : { $regex : query, $options : 'i' }},
-          { "course_number" : { $regex : query, $options : 'i' }}
-        ]
-      }).fetch();
+      // Unauthenticated
+      if(!Meteor.userId()){
+        return Courses.find({
+          $or : [
+            { "_id" : query },
+            { "name" : { $regex : query, $options : 'i' }},
+            { "course_number" : { $regex : query, $options : 'i' }}
+          ],
+          permissions: {
+            content: ContentPermissions.Any,
+            meta: true
+          }
+        }).fetch();
+      }
+
+      // Global Admin
+      else if(Users.isGlobalAdministrator(Meteor.userId())){
+        return Courses.find({
+          $or : [
+            { "_id" : query },
+            { "name" : { $regex : query, $options : 'i' }},
+            { "course_number" : { $regex : query, $options : 'i' }}
+          ]
+        }).fetch();
+      }
+
+      // Role
+      else {
+        return Courses.find({
+          $and: [
+            {
+              $or : [
+                { "_id" : query },
+                { "name" : { $regex : query, $options : 'i' }},
+                { "course_number" : { $regex : query, $options : 'i' }}
+              ],
+            },
+            {
+              $or : [
+
+                // Any
+                {
+                  permissions: {
+                    content: ContentPermissions.Any,
+                    meta: true
+                  }
+                },
+
+                // Authenticated Instructor or Course Admin
+                {
+                  instructors: { $elemMatch : Meteor.userId() }
+                }
+              ]
+            }
+          ]
+        }).fetch();
+      }
+
+
     },
 
     'Courses.setFeatured'({ course_id, featured }){
