@@ -17,7 +17,7 @@
 
  import { VMConfig, VMResolveConfig, VMConfigCustom } from '../api/vmconfig';
  import { Lab, isValidLabObject } from '../api/lab'
- import { InitObject, SetupObject, VerifyObject } from '../api/environment';
+ import { InitObject, SetupObject, VerifyObject } from '../api/environment'; 
 
  /*
   LabSandbox
@@ -35,7 +35,9 @@
    Promise : Promise,
 
    // Extended Library
-   _ : _
+   _ : _, // Lodash
+   rp : require('request-promise') // Request-Promise
+
  }
 
  export class LabRuntime extends Cache implements LabModel {
