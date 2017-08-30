@@ -20,6 +20,19 @@
     </div>
   </div>
 
+  <!-- Action Bar -->
+  <div class="actions" fxLayout="row" fxLayoutAlign="end center">
+
+    <!-- Edit Mode -->
+    <ng-container *ngIf="course_query">
+      <button md-raised-button (click)="addUserToCourse()">
+        <md-icon>add</md-icon>
+        Add User to Course
+      </button>
+    </ng-container>
+
+  </div>
+
   <!-- List of Users -->
   <ul fxLayout="column">
     <li *ngFor="let user of (users | async);">

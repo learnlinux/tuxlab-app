@@ -36,6 +36,7 @@
 
 // Import ConnectionDetailsDialog
 	import { ConnectionDetailsDialog } from '../lab/lab_view_connection.dialog';
+	import SelectUser from '../dialogs/select_user.dialog';
 
 	/** USER -> COURSE -> SESSION **/
 		@Component({
@@ -232,6 +233,7 @@
 				})
 				this.edit_mode = false;
 			}
+
 		}
 
 	/** USER -> COURSE LIST **/
@@ -597,7 +599,8 @@
 
     constructor(private zone : NgZone,
 								private ref : ChangeDetectorRef,
-								private route : ActivatedRoute) {
+								private route : ActivatedRoute,
+								private dialog: MdDialog ) {
 			super();
     }
 
@@ -675,5 +678,22 @@
 				}
 
 			});
+		}
+
+
+		addUserToCourse(){
+			var dialogRef = this.dialog.open(SelectUser, { width: '600px' });
+			dialogRef
+				.afterClosed()
+				.first()
+				.subscribe((user) => {
+					if(!_.isNull(user)){
+						Meteor.call('Users.addRoleForCourse', {
+							course_id : this.course_query._id,
+							user_id :user._id,
+							role : Role.student
+						});
+					}
+				})
 		}
   }
