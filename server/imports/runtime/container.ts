@@ -66,7 +66,11 @@
           'AttachStderr': false,
           'Tty': true,
           'OpenStdin': false,
-          'StdinOnce': false
+          'StdinOnce': false,
+          'HostConfig': {
+            Memory : this.config.host_config.Memory || 128 * 1024 * 1024 // Enforce Memory Limit,
+            DiskQuota: this.config.host_config.Disk || 1024 * 1024 * 1024 // Enforce Disk Limit
+          }
         })
 
         // Start Container

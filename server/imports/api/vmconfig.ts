@@ -16,6 +16,11 @@
     shell_fn : (cmd : string[]) => string[]; // Shell to prepend
     ssh_port: number; // SSH Port
 
+    // HOST DETAILS
+    host_config?: {
+      Memory?: number;
+    };
+
     // USER DETAILS
     username : string; // User to login. Defaults to root.
     password_path : string; // Path to randomly-generated SSH Password.
