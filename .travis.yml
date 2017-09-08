@@ -31,4 +31,4 @@ cache:
 notifications:
   webhooks:
     urls:
-      - https://webhooks.gitter.im/e/b6345b667960e107bba8
+      - https://webhooks.gitter.im/e/522ca26d625961d84e24
