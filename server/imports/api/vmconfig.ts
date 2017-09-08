@@ -19,6 +19,7 @@
     // HOST DETAILS
     host_config?: {
       Memory?: number;
+      Disk? : number;
     };
 
     // USER DETAILS
@@ -35,6 +36,7 @@
       return ['/bin/bash', '-c', cmd.join(" ").replace('"','\"')];
     },
     ssh_port: 22,
+
     username: "root",
     password_path: "/pass"
   }
@@ -47,6 +49,7 @@
       return ['/bin/bash', '-c', cmd.join(" ").replace('"','\"')];
     },
     ssh_port: 22,
+
     username: "root",
     password_path: "/pass"
   }

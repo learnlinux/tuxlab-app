@@ -1,0 +1,12 @@
+version: '3'
+services:
+
+  docker:
+    image: docker:dind
+    privileged: true
+    network_mode: host
+
+  etcd:
+    image: elcolio/etcd
+    ports:
+      - "2379:2379"

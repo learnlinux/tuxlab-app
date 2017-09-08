@@ -1,6 +1,3 @@
-## TuxLab Config
-private/settings.*
-
 ## Meteor
 .meteor/local
 .meteor/meteorite

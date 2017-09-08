@@ -5,17 +5,16 @@
 
 import { expect } from 'chai';
 
-import { DefaultFixtures, cleanupDatabase } from '../../../fixtures';
+import { DefaultFixtures, cleanupDatabase } from '../../../test/fixtures';
 
-import { SessionStatus } from '../../../../both/models/session.model';
-import { Session } from '../../../../server/imports/runtime/session';
-import { Sessions } from '../../../../both/collections/session.collection';
+import { SessionStatus } from '../../../both/models/session.model';
+import { Session } from '../../../server/imports/runtime/session';
+import { Sessions } from '../../../both/collections/session.collection';
 
-import { TaskStatus } from '../../../../both/models/course_record.model';
-import { CourseRecords } from '../../../../both/collections/course_record.collection';
+import { TaskStatus } from '../../../both/models/course_record.model';
+import { CourseRecords } from '../../../both/collections/course_record.collection';
 
-export function SessionTests(){
-
+export function runTest(){
   describe('Session', () => {
     var fixtures : DefaultFixtures;
     var user : string;
@@ -32,7 +31,7 @@ export function SessionTests(){
       fixtures.destructor();
     });
 
-    it('Example1 | Create Session',() => {
+    it('Example1 | Create Session', function(){
 
       return Session.getSession(user, lab)
 
@@ -66,7 +65,7 @@ export function SessionTests(){
       })
     });
 
-    it('Example 1 | Should complete task 0', () => {
+    it('Example 1 | Should complete task 0', function(){
       return session.nextTask()
 
       .then(() => {
@@ -93,14 +92,14 @@ export function SessionTests(){
       })
     });
 
-    it('Example 1 | Get Session from Cache', () => {
+    it('Example 1 | Get Session from Cache', function(){
       return Session.getSession(user,lab)
       .then((res) => {
         session = res;
       });
     });
 
-    it('Example 1 | Should fail on task 1', () => {
+    it('Example 1 | Should fail on task 1', function(){
 
       // Task Promise Should Fail
       return session.nextTask()

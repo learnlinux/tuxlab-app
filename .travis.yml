@@ -1,0 +1,34 @@
+language: bash
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  # Docker-Compose ETCD and DIND
+  - docker-compose -f ./test/docker-compose.yml up -d
+
+  # Start TuxLab Proxy
+  - docker -H tcp://localhost:2375 run --net=host -v $PWD/test/docker/proxy-settings.json:/usr/lib/tuxlab/settings.json:ro -v $PWD/test/docker/snakeoil.key:/usr/lib/tuxlab/ssl/host.key:ro tuxlab/ssh-proxy
+
+  # Get LabVM Images
+  - docker -H tcp://localhost:2375 pull tuxlab/labvm-alpine
+
+  # Install Meteor
+  - curl https://install.meteor.com | /bin/sh
+  - export PATH="$HOME/.meteor:$PATH"
+
+install:
+  - meteor npm install
+
+script:
+  - meteor npm test --settings ./private/settings.json
+
+cache:
+  directories:
+    - node_modules
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/b6345b667960e107bba8

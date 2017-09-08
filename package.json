@@ -8,11 +8,11 @@
     "postinstall": "meteor npm run install-typings",
     "generate-typings": "$(meteor npm bin)/dts-generator --name tuxlab-api --project ./server/imports/api --out ./imports/api/tuxlab-api.d.ts",
     "install-typings": "$(meteor npm bin)/typings install;",
-    "test": "TEST_CLIENT=0 meteor test --settings ./private/settings.json --once --driver-package=meteortesting:mocha"
+    "test": "TEST_CLIENT=0 meteor test --full-app --once --settings ./private/settings.json --driver-package=meteortesting:mocha"
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",
-    "@types/dockerode": "^2.4.3",
+    "@types/dockerode": "^2.4.6",
     "@types/file-saver": "0.0.1",
     "@types/lodash": "^4.14.68",
     "@types/meteor": "^1.4.2",

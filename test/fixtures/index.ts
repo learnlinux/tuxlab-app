@@ -109,11 +109,12 @@
                         roles: []
                      })
      };
+
+
      Accounts.setPassword(this.users["global_admin"], "global_admin");
      Accounts.setPassword(this.users["course_admin"], "course_admin");
      Accounts.setPassword(this.users["instructor"], "instructor");
      Accounts.setPassword(this.users["student"], "student");
-
 
      // Courses
      this.courses = ({

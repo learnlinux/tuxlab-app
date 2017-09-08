@@ -28,12 +28,12 @@
 
     // Dockerode Instance
     private static docker = new Dockerode({
-      protocol: 'https',
+      protocol:  Meteor.settings['private']['env']['swarm_node_proto'].toString(),
       host: Meteor.settings['private']['env']['swarm_node_ip'].toString(),
       port: Meteor.settings['private']['env']['swarm_node_port'].toString(),
-      ca: fs.readFileSync(Meteor.settings['private']['domain']['ssl_ca']).toString(),
-      cert: fs.readFileSync(Meteor.settings['private']['domain']['ssl_cert']).toString(),
-      key: fs.readFileSync(Meteor.settings['private']['domain']['ssl_key']).toString()
+      ca: (Meteor.settings['private']['env']['swarm_node_proto'] === "https") ? fs.readFileSync(Meteor.settings['private']['domain']['ssl_ca']).toString() : null,
+      cert: (Meteor.settings['private']['env']['swarm_node_proto'] === "https") ? fs.readFileSync(Meteor.settings['private']['domain']['ssl_cert']).toString() : null,
+      key: (Meteor.settings['private']['env']['swarm_node_proto'] === "https") ? fs.readFileSync(Meteor.settings['private']['domain']['ssl_key']).toString() : null
     });
 
     // Container Objects
@@ -57,20 +57,25 @@
       // Create Container
       if (typeof id === "undefined") {
 
+        // Pull Image
+        prepare_containers = Container.docker.pull(this.config.image, {})
+
         // Dockerode Create Container
-        prepare_containers = Container.docker.createContainer({
-          'Image': this.config.image,
-          'Cmd': this.config.entry_cmd,
-          'AttachStdin': false,
-          'AttachStdout': false,
-          'AttachStderr': false,
-          'Tty': true,
-          'OpenStdin': false,
-          'StdinOnce': false,
-          'HostConfig': {
-            Memory : this.config.host_config.Memory || 128 * 1024 * 1024 // Enforce Memory Limit,
-            DiskQuota: this.config.host_config.Disk || 1024 * 1024 * 1024 // Enforce Disk Limit
-          }
+        .then(() => {
+          return Container.docker.createContainer({
+            'Image': this.config.image,
+            'Cmd': this.config.entry_cmd,
+            'AttachStdin': false,
+            'AttachStdout': false,
+            'AttachStderr': false,
+            'Tty': true,
+            'OpenStdin': false,
+            'StdinOnce': false,
+            'HostConfig': {
+              Memory : _.has(this, "config.host_config.Memory") ? this.config.host_config.Memory : 128 * 1024 * 1024 // Enforce Memory Limit,
+              // DiskQuota: this.config.host_config.Disk || 1024 * 1024 * 1024 // Enforce Disk Limit
+            }
+          })
         })
 
         // Start Container
@@ -94,7 +99,17 @@
 
         // Set Container IP and IP
         }).then((details) => {
-          this.container_ip = (<any>details).Node.IP; //TOOD https://github.com/DefinitelyTyped/DefinitelyTyped/pull/18322
+
+
+          if(_.has(details, "Node.IP")){
+            this.container_ip = (<any>details).Node.IP; //TOOD https://github.com/DefinitelyTyped/DefinitelyTyped/pull/18322
+
+          } else if (_.has(details, "NetworkSettings.IPAddress")) {
+            this.container_ip = details.NetworkSettings.IPAddress
+          } else {
+
+            throw "IP Address not set."
+          }
           this.container_id = details.Id;
 
         // Get Password
