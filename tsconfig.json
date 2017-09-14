@@ -20,6 +20,7 @@
     "both/**/*.ts",
     "client/**/*.ts",
     "server/**/*.ts",
+    "imports/**/*.ts",
     "typings/index.d.ts"
   ],
   "compileOnSave": false,

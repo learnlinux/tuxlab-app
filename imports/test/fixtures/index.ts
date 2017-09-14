@@ -8,21 +8,21 @@
  import { Meteor } from 'meteor/meteor';
 
  // Collections Objects
- import { Sessions } from '../../both/collections/session.collection';
+ import { Sessions } from '../../../both/collections/session.collection';
 
- import { CourseRecords } from '../../both/collections/course_record.collection';
+ import { CourseRecords } from '../../../both/collections/course_record.collection';
 
- import { Course, ContentPermissions, EnrollPermissions } from '../../both/models/course.model';
- import { Courses } from '../../both/collections/course.collection';
- import { createLab } from '../../server/methods/course.methods';
+ import { Course, ContentPermissions, EnrollPermissions } from '../../../both/models/course.model';
+ import { Courses } from '../../../both/collections/course.collection';
+ import { createLab } from '../../../server/methods/course.methods';
 
- import { Lab, LabStatus } from '../../both/models/lab.model';
- import { Labs } from '../../both/collections/lab.collection';
+ import { Lab, LabStatus } from '../../../both/models/lab.model';
+ import { Labs } from '../../../both/collections/lab.collection';
  import { Example1 } from "./example_labs";
 
- import { User, Role } from '../../both/models/user.model';
- import { Users } from '../../both/collections/user.collection';
- import { addRoleForCourse } from '../../server/methods/user.methods';
+ import { User, Role } from '../../../both/models/user.model';
+ import { Users } from '../../../both/collections/user.collection';
+ import { addRoleForCourse } from '../../../server/methods/user.methods';
 
 
  /*

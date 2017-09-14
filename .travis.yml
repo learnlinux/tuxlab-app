@@ -6,10 +6,10 @@ services:
 
 before_install:
   # Docker-Compose ETCD and DIND
-  - docker-compose -f ./test/docker-compose.yml up -d
+  - docker-compose -f ./imports/test/docker-compose.yml up -d
 
   # Start TuxLab Proxy
-  - docker -H tcp://localhost:2375 run --net=host -v $PWD/test/docker/proxy-settings.json:/usr/lib/tuxlab/settings.json:ro -v $PWD/test/docker/snakeoil.key:/usr/lib/tuxlab/ssl/host.key:ro tuxlab/ssh-proxy
+  - docker -H tcp://localhost:2375 run --net=host -v $PWD/imports/test/docker/proxy-settings.json:/usr/lib/tuxlab/settings.json:ro -v $PWD/imports/test/docker/snakeoil.key:/usr/lib/tuxlab/ssl/host.key:ro tuxlab/ssh-proxy
 
   # Get LabVM Images
   - docker -H tcp://localhost:2375 pull tuxlab/labvm-alpine
