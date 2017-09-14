@@ -24,7 +24,6 @@
  import { Users } from '../../../both/collections/user.collection';
  import { addRoleForCourse } from '../../../server/methods/user.methods';
 
-
  /*
   * cleanupDatabase
   * cleans up databases
@@ -71,6 +70,8 @@
                             },
                             global_admin: true,
                             roles: []
+                         }, () => {
+                           Accounts.setPassword(this.users["global_admin"], "global_admin");
                          }),
 
        "course_admin":  Users.insert({
@@ -83,6 +84,8 @@
                           },
                           global_admin: false,
                           roles: []
+                        }, () => {
+                          Accounts.setPassword(this.users["course_admin"], "course_admin");
                         }),
 
         "instructor": Users.insert({
@@ -95,6 +98,8 @@
                           },
                           global_admin: false,
                           roles: []
+                        }, () => {
+                          Accounts.setPassword(this.users["instructor"], "instructor");
                         }),
 
          "student":  Users.insert({
@@ -107,14 +112,10 @@
                         },
                         global_admin: false,
                         roles: []
+                     }, () => {
+                       Accounts.setPassword(this.users["student"], "student");
                      })
      };
-
-
-     Accounts.setPassword(this.users["global_admin"], "global_admin");
-     Accounts.setPassword(this.users["course_admin"], "course_admin");
-     Accounts.setPassword(this.users["instructor"], "instructor");
-     Accounts.setPassword(this.users["student"], "student");
 
      // Courses
      this.courses = ({

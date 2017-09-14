@@ -24,6 +24,7 @@ export function runTest(){
     let lab_id_mongo : string;
 
     before(function(){
+      cleanupDatabase();
       fixtures = new DefaultFixtures();
     });
 

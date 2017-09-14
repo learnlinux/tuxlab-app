@@ -43,5 +43,5 @@ jspm_packages
 .vagrant
 *.retry
 
-#gagarin
-.gagarin
+# Build Directory
+build

@@ -22,6 +22,7 @@ export function runTest(){
     var session : Session;
 
     before(() => {
+      cleanupDatabase();
       fixtures = new DefaultFixtures();
       user = fixtures.users["course_admin"];
       lab = fixtures.labs["gpi/git"];
