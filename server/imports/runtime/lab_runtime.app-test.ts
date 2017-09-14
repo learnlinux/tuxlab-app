@@ -7,8 +7,8 @@
   import { expect } from 'chai';
   import * as _ from 'lodash';
 
-  import { DefaultFixtures, cleanupDatabase } from '../../../test/fixtures';
-  import { Example1 } from '../../../test/fixtures/example_labs';
+  import { DefaultFixtures, cleanupDatabase } from '../../../imports/test/fixtures';
+  import { Example1 } from '../../../imports/test/fixtures/example_labs';
 
   import { Lab, LabFileImportOpts } from '../../../both/models/lab.model';
   import { Labs } from '../../../both/collections/lab.collection';

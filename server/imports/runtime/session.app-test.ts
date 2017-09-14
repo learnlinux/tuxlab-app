@@ -5,7 +5,7 @@
 
 import { expect } from 'chai';
 
-import { DefaultFixtures, cleanupDatabase } from '../../../test/fixtures';
+import { DefaultFixtures, cleanupDatabase } from '../../../imports/test/fixtures';
 
 import { SessionStatus } from '../../../both/models/session.model';
 import { Session } from '../../../server/imports/runtime/session';
