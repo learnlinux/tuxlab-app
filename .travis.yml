@@ -1,34 +1,38 @@
 language: bash
 sudo: required
-
 services:
-  - docker
-
+- docker
 before_install:
-  # Docker-Compose ETCD and DIND
-  - docker-compose -f ./imports/test/docker-compose.yml up -d
-
-  # Start TuxLab Proxy
-  - docker -H tcp://localhost:2375 run --net=host -v $PWD/imports/test/docker/proxy-settings.json:/usr/lib/tuxlab/settings.json:ro -v $PWD/imports/test/docker/snakeoil.key:/usr/lib/tuxlab/ssl/host.key:ro tuxlab/ssh-proxy
-
-  # Get LabVM Images
-  - docker -H tcp://localhost:2375 pull tuxlab/labvm-alpine
-
-  # Install Meteor
-  - curl https://install.meteor.com | /bin/sh
-  - export PATH="$HOME/.meteor:$PATH"
+- docker-compose -f ./imports/test/docker-compose.yml up -d
+- docker -H tcp://localhost:2375 run --net=host -v $PWD/imports/test/docker/proxy-settings.json:/usr/lib/tuxlab/settings.json:ro
+  -v $PWD/imports/test/docker/snakeoil.key:/usr/lib/tuxlab/ssl/host.key:ro tuxlab/ssh-proxy
+- docker -H tcp://localhost:2375 pull tuxlab/labvm-alpine
+- curl https://install.meteor.com | /bin/sh
+- export PATH="$HOME/.meteor:$PATH"
 
 install:
-  - meteor npm install
+- meteor npm install
 
 script:
-  - meteor npm test --settings ./private/settings.json
+- meteor npm test --settings ./private/settings.json
+
+before_deploy:
+- mkdir -p /tmp/tuxlab-${TRAVIS_TAG}
+- meteor build /tmp/tuxlab-${TRAVIS_TAG}
+
+deploy:
+  provider: releases
+  api_key:
+    secure: 2cm2u+wDMpfRL7+CL+dGfoAEApQnIW44nMjhHnlqo1wvznc4cuvXD7NVlFt03XcODFxi3eFTwd8d7ol3leWwqdnt2kmd/Nw6miGAhXaEt/HJ8QFC6nmBBJ2uGnKY/pzHwvK0FRs5L0lr4YNnUfdR8Jr/12bmhk6yAW6kA5WvbWbVO7yf1Gg9z1AKoxEwMbqrOdUFp/ToD7sSA/pxnMjDHpvHqZf3ubMtr4be1KugaxLylnEXrgkN1wcIeeeGhBEf5q8ft4Dv1I6LFMgAGo5K2E/xNJsjfDgnYNARD4wGljexVKzhx2ww/UhlVPNcEQQNdvjBb+AvfQfiR+V7uGAswEpxk9wXsDyaKB/KfDqZuo6bR52ISOV6UUdOXtSbK9t4qqgR5Kn7yiy+VW4OBmsh0fHzcETCnDcwey6x+7tRNDc3F1xYtInNZNPHQXCGxRBiq0XgU4jcvzNroZRL34q0GRzEz5Mp0xQJ2vgJHbOYdtuzKm2lxIeXUbvedm0atzoHdnOrsTyB4ZKMRXSmfc5FbsxutNXvn61/62ljy0G9jvRu0sNkrD1RM4LOfrtFp0B8imizxSCZI7C8wsD/bjGnvHqftpthW+idJm1UEJkiCngIs61gRTqJVloTeL+JFD98M4OIagp9BWmYr+87TFDu65b/hppU4oJ29hbLrhcKrBs=
+  file: "/tmp/tuxlab-${TRAVIS_TAG}/tuxlab-app.tar.gz"
+  skip_cleanup: true
+  on:
+    tags: true
 
 cache:
   directories:
-    - node_modules
-
+  - node_modules
 notifications:
   webhooks:
     urls:
-      - https://webhooks.gitter.im/e/522ca26d625961d84e24
+    - https://webhooks.gitter.im/e/522ca26d625961d84e24

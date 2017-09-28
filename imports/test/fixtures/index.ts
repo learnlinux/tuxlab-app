@@ -6,6 +6,7 @@
  // Imports
  import * as _ from "lodash";
  import { Meteor } from 'meteor/meteor';
+ import { Accounts } from 'meteor/accounts-base';
 
  // Collections Objects
  import { Sessions } from '../../../both/collections/session.collection';
