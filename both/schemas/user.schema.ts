@@ -15,9 +15,6 @@ import { Role } from '../models/user.model';
     organization: {
       type: String
     },
-    email: {
-      type: String
-    },
     picture: {
       type: String
     }
@@ -38,19 +35,49 @@ import { Role } from '../models/user.model';
 
 /* User Schema */
   export const UserSchema : SimpleSchema = new SimpleSchema({
+    _id: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id
+    },
+    username: {
+        type: String,
+        regEx: /^[a-z0-9A-Z_]{3,15}$/
+    },
+    emails: {
+        optional: true,
+        type: Array
+    },
+    "emails.$": {
+        type: new SimpleSchema({
+          address: {
+            type: String,
+            regEx: SimpleSchema.RegEx.Email
+          },
+          verified: {
+            optional: true,
+            type: Boolean
+          }
+        })
+    },
+    createdAt: {
+      type: Date
+    },
+    profile: {
+      type: profileSchema,
+      optional: true
+    },
     services: {
       type: Object,
       optional: true,
       blackbox: true
     },
-    profile: {
-      type: profileSchema
-    },
     global_admin: {
-      type: Boolean
+      type: Boolean,
+      optional: true
     },
     roles: {
-      type: Array
+      type: Array,
+      optional: true
     },
     'roles.$': {
       type: privilegeSchema

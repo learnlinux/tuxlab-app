@@ -7,8 +7,3 @@ import { DefaultFixtures } from "../imports/test/fixtures";
 Meteor.startup(() => {
   SetupAuthentication();
 })
-
-// Setup Fixtures
-Meteor.startup(() => {
-  new DefaultFixtures();
-})

@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 // Meteor
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { Accounts } from "meteor/accounts-base";
 
 // User Model
 import { User } from '../../both/models/user.model';

@@ -5,7 +5,7 @@
 
 import { expect } from 'chai';
 
-import { DefaultFixtures, cleanupDatabase } from '../../../imports/test/fixtures';
+import { DefaultFixtures } from '../../../imports/test/fixtures';
 
 import { SessionStatus } from '../../../both/models/session.model';
 import { Session } from '../../../server/imports/runtime/session';
@@ -16,20 +16,18 @@ import { CourseRecords } from '../../../both/collections/course_record.collectio
 
 export function runTest(){
   describe('Session', () => {
-    var fixtures : DefaultFixtures;
+
+    let fixtures : DefaultFixtures;
+
     var user : string;
     var lab : string;
     var session : Session;
 
     before(() => {
-      cleanupDatabase();
       fixtures = new DefaultFixtures();
+
       user = fixtures.users["course_admin"];
       lab = fixtures.labs["gpi/git"];
-    });
-
-    after(() => {
-      fixtures.destructor();
     });
 
     it('Example1 | Create Session', function(){

@@ -9,7 +9,6 @@
   export interface Profile {
     name: string;
     organization: string;
-    email: string;
     picture?: string;
   }
 
@@ -28,8 +27,9 @@
 
   /* USER MODEL */
   export interface User extends Meteor.User {
-    _id? : string,
+    _id? : string;
+    username: string;
     profile: Profile;
-    global_admin: boolean,
+    global_admin: boolean;
     roles: Privilege[];
   }

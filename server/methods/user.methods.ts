@@ -226,7 +226,7 @@ Meteor.publish("users.all", () => {
         $or : [
           { "_id" : query },
           { "profile.name" : { $regex : query, $options : 'i' } },
-          { "profile.email" : { $regex : query, $options : 'i' } }
+          { "emails.address" : { $regex : query, $options : 'i' } }
         ]
       },{
         fields : {"_id" : 1, "profile.name" : 1}
@@ -238,7 +238,8 @@ Meteor.publish("users.all", () => {
       var user = Users.findOne({
         $or : [
           { "_id" : query },
-          { "profile.email " : query }
+          { "profile.name" : { $regex : query, $options : 'i' } },
+          { "emails.address " : query }
         ]
       })
 

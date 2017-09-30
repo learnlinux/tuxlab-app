@@ -7,7 +7,7 @@
   import { expect } from 'chai';
   import * as _ from 'lodash';
 
-  import { DefaultFixtures, cleanupDatabase } from '../../../imports/test/fixtures';
+  import { DefaultFixtures } from '../../../imports/test/fixtures';
   import { Example1 } from '../../../imports/test/fixtures/example_labs';
 
   import { Lab, LabFileImportOpts } from '../../../both/models/lab.model';
@@ -24,12 +24,7 @@ export function runTest(){
     let lab_id_mongo : string;
 
     before(function(){
-      cleanupDatabase();
       fixtures = new DefaultFixtures();
-    });
-
-    after(function(){
-      fixtures.destructor();
     });
 
     it('should import from file', function(){

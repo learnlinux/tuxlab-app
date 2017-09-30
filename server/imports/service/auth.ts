@@ -3,6 +3,9 @@ import * as _ from "lodash";
 
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+
+import { UserSchema } from '../../../both/schemas/user.schema';
+
 declare var ServiceConfiguration : any;
 
 function SetupAuthentication(){
@@ -20,6 +23,14 @@ function SetupAuthentication(){
     }
 
   /*
+   *  Schema Validation
+   */
+   Accounts.validateNewUser((user) => {
+     UserSchema.validate(user);
+     return true;
+   })
+
+  /*
    * Google Authentication
    */
    Accounts.validateNewUser(function (user) {
@@ -28,6 +39,8 @@ function SetupAuthentication(){
              return true;
          }
          throw new Meteor.Error(403, "You must sign in using a "+Meteor.settings['private'].oAuth.google.domain+" account");
+       } else {
+         return true;
        }
    });
 
