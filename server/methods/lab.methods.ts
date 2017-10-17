@@ -12,7 +12,7 @@
   function labsCourse(course_id){
 
     let course = Courses.findOne(course_id);
-    if (_.isNull(course) || _.isUndefined(course)){
+    if (_.isNil(course) || _.isUndefined(course)){
       throw new Meteor.Error("Course not Found");
     }
 

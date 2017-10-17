@@ -71,15 +71,15 @@
     }
 
     export function isValidLabObject (sandbox : any) : sandbox is { Lab : typeof Lab } {
-       if (typeof sandbox === "undefined") {
+       if (_.isNil(sandbox)) {
          throw new Error("SandboxUndefined");
-       } else if (typeof sandbox.Lab === "undefined"){
+       } else if (!_.has(sandbox, "Lab")){
          throw new Error("LabUndefined");
-       } else if (typeof sandbox.Lab.name === "undefined"){
+       } else if (!_.has(sandbox, "Lab.name")){
          throw new Error("LabNameUndefined");
-       } else if (typeof sandbox.Lab._vm === "undefined"){
+       } else if (!_.has(sandbox, "Lab._vm")){
          throw new Error("VMUndefined");
-       } else if (typeof sandbox.Lab._tasks === "undefined") {
+       } else if (!_.has(sandbox, "Lab._tasks")) {
          throw new Error("TaskUndefined");
        } else if (_.every(sandbox.Lab._vm, isValidTaskObject)){
          throw new Error("InvalidTask");

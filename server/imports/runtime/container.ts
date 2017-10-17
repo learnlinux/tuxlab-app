@@ -55,7 +55,7 @@
       let prepare_containers : Promise<Dockerode.Container>;
 
       // Create Container
-      if (typeof id === "undefined") {
+      if (_.isNil(id)) {
 
         // Pull Image
         prepare_containers = Container.docker.pull(this.config.image, {})
@@ -83,11 +83,18 @@
           return container.start();
         })
 
-      } else if (typeof id === "string"){
+      } else if (typeof id === "string") {
         // Get Container
         prepare_containers = new Promise((resolve, reject) => {
-          resolve(Container.docker.getContainer(id));
+          if (_.isNil(Container.docker.getContainer(id))){
+            reject(new Meteor.Error("Could not find Docker Container."));
+          } else {
+            resolve(Container.docker.getContainer(id));
+          }
         });
+        
+      } else {
+        throw new Meteor.Error("Invalid id argument");
       }
 
       this._ready = prepare_containers

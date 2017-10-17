@@ -17,7 +17,7 @@
 
  import { VMConfig, VMResolveConfig, VMConfigCustom } from '../api/vmconfig';
  import { Lab, isValidLabObject } from '../api/lab'
- import { InitObject, SetupObject, VerifyObject } from '../api/environment'; 
+ import { InitObject, SetupObject, VerifyObject } from '../api/environment';
 
  /*
   LabSandbox
@@ -165,7 +165,7 @@
 
             let lab_model = Labs.findOne({ _id : lab_id });
 
-            if (typeof lab_model === "undefined"){
+            if (_.isNil(lab_model)){
               reject(new Error("Lab Not Found"));
 
             } else {

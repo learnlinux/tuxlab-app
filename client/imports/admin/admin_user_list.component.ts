@@ -687,7 +687,7 @@
 				.afterClosed()
 				.first()
 				.subscribe((user) => {
-					if(!_.isNull(user)){
+					if(!_.isNil(user)){
 						Meteor.call('Users.addRoleForCourse', {
 							course_id : this.course_query._id,
 							user_id :user._id,

@@ -87,7 +87,7 @@
 			this.course_behaviorSubject
 				.subscribe((course) => {
 					this.zone.run(() => {
-						if(!_.isNull(course)){
+						if(!_.isNil(course)){
 							this.course_model = course;
 						}
 					});
@@ -115,7 +115,7 @@
 			// Get Instructors
 			this.instructors = this.course
 				.distinct()
-				.filter(x => !_.isNull(x))
+				.filter(x => !_.isNil(x))
 				.mergeMap((course) => {
 					Meteor.subscribe('users.instructors', course._id);
 					return Users.observable
@@ -154,7 +154,7 @@
 			// Get Course Record
 			this.course_record = this.course
 				.distinct()
-				.filter(x => !_.isNull(x))
+				.filter(x => !_.isNil(x))
 				.mergeMap((course) => {
 						Meteor.subscribe('course_records.id', course._id, Meteor.userId());
 						var course_record = CourseRecords.findOne({ user_id : Meteor.userId(), course_id : course._id });
@@ -168,7 +168,7 @@
 			// Get Labs
 			this.labs = this.course
 				.distinct()
-				.filter(x => !_.isNull(x))
+				.filter(x => !_.isNil(x))
 				.mergeMap((course) => {
 					Meteor.subscribe('labs.course', course._id);
 					return Labs.observable.find({ course_id : course._id })
@@ -217,7 +217,7 @@
 		private addInstructor(){
 			var dialogRef = this.dialog.open(SelectUser, { width: '600px' });
 			dialogRef.afterClosed().subscribe((user) => {
-				if(!_.isNull(user)){
+				if(!_.isNil(user)){
 					this.addRole(user._id, Role.instructor);
 				}
 			})
@@ -226,7 +226,7 @@
 		private addCourseAdmin(){
 			var dialogRef = this.dialog.open(SelectUser, { width: '600px' });
 			dialogRef.afterClosed().subscribe((user) => {
-				if(!_.isNull(user)){
+				if(!_.isNil(user)){
 					this.addRole(user._id, Role.course_admin);
 				}
 			})

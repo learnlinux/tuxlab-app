@@ -71,7 +71,7 @@
 							new Promise((resolve, reject) => {
 								Meteor.subscribe('labs.course',course_id, () => {
 									var lab = Labs.findOne({ _id : lab_id });
-									if(_.isNull(lab)){
+									if(_.isNil(lab)){
 										this.router.navigate(['/error','404']);
 									} else {
 										resolve(lab);

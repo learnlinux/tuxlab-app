@@ -36,7 +36,7 @@
     }
 
 		onResize(){
-			if(!_.isNull(this.xterm)){
+			if(!_.isNil(this.xterm)){
 				this.xterm.fit();
 			}
 		}

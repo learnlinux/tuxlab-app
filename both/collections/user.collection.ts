@@ -60,7 +60,7 @@
 
       if (this.isGlobalAdministrator(user_id)){
         return Role.global_admin;
-      } else if (_.isUndefined(res) || _.isNull(res)) {
+      } else if (_.isUndefined(res) || _.isNil(res)) {
         return Role.guest;
       } else {
         return res.role;
@@ -90,7 +90,7 @@
     // getCourseRecordFor
     UsersCollection.getCourseRecordFor = function(course_id : string, user_id : string) : string {
       let res = this.getPrivilegeFor(course_id, user_id);
-      if (typeof res === "undefined") {
+      if (_.isNil(res)) {
         return undefined;
       } else {
         return res.course_record;

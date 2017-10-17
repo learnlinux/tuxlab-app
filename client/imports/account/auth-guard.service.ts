@@ -12,7 +12,7 @@ export default class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(_.isNull(Meteor.userId())){
+    if(_.isNil(Meteor.userId())){
       this.router.navigate(['/login'], { queryParams : { redirect_url: state.url }});
       return false;
     } else {
