@@ -1,5 +1,5 @@
 <div class="tuxlab-login"  fxLayout="row" fxLayoutAlign="center center">
-  <div class="page">
+  <div class="page" fxLayout="column" fxLayoutAlign="center center">
     <h1> Login </h1>
 
      <form #f="ngForm" (ngSubmit)="login(f.value)">
@@ -36,14 +36,17 @@
        </md-list>
      </form>
 
-     <!-- Divider -->
-     <md-divider></md-divider>
+     <!-- Selectively Display Organization -->
+     <ng-container *ngIf="google">
+       <!-- Divider -->
+       <md-divider></md-divider>
 
-     <!-- 3rd Party Logins -->
-     <h2> Organization Login <h2>
-     <div fxLayout fxLayoutAlign="center">
-       <button md-raised-button *ngIf="google" (click)="LoginWithGoogle()"><md-icon>account_balance</md-icon>Google Login</button>
-     </div>
+       <!-- 3rd Party Logins -->
+       <h2> Organization Login <h2>
+       <div fxLayout fxLayoutAlign="center">
+         <button md-raised-button *ngIf="google" (click)="LoginWithGoogle()"><md-icon>account_balance</md-icon>Google Login</button>
+       </div>
+     </ng-container>
 
   </div>
 </div>
