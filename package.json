@@ -65,7 +65,7 @@
     "simpl-schema": "^0.3.2",
     "socket.io": "^2.0.3",
     "sortablejs": "^1.6.0",
-    "uglify-es": "^3.0.28",
+    "uglify-es": "^3.3.10",
     "utf-8-validate": "^4.0.0",
     "winston": "^2.3.1",
     "xterm": "^2.8.1",
