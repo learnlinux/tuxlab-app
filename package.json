@@ -40,7 +40,7 @@
     "@angular/material": "2.0.0-beta.10",
     "@angular/platform-browser": "4.3.6",
     "@angular/platform-browser-dynamic": "4.3.6",
-    "@angular/router": "4.3.6",
+    "@angular/router": "5.2.8",
     "adm-zip": "^0.4.7",
     "angular-sortablejs": "^2.0.6",
     "angular2-markdown": "^1.6.0",
