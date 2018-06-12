@@ -67,7 +67,7 @@
     "sortablejs": "^1.6.0",
     "uglify-es": "^3.0.28",
     "utf-8-validate": "^4.0.0",
-    "winston": "^2.3.1",
+    "winston": "^3.0.0",
     "xterm": "^2.8.1",
     "zone.js": "0.8.18"
   }
