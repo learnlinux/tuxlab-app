@@ -66,7 +66,7 @@
     "socket.io": "^2.0.3",
     "sortablejs": "^1.6.0",
     "uglify-es": "^3.0.28",
-    "utf-8-validate": "^4.0.0",
+    "utf-8-validate": "^5.0.0",
     "winston": "^2.3.1",
     "xterm": "^2.8.1",
     "zone.js": "0.8.18"
