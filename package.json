@@ -42,7 +42,7 @@
     "@angular/platform-browser-dynamic": "4.3.6",
     "@angular/router": "4.3.6",
     "adm-zip": "^0.4.7",
-    "angular-sortablejs": "^2.0.6",
+    "angular-sortablejs": "^2.6.0",
     "angular2-markdown": "^1.6.0",
     "angular2-meteor": "0.7.1",
     "angular2-meteor-polyfills": "0.2.0",
