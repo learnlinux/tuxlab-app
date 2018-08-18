@@ -22,7 +22,7 @@
     "@types/socket.io-client": "^1.4.29",
     "@types/sortablejs": "^1.3.31",
     "@types/uglify-js": "^2.6.29",
-    "@types/winston": "^2.3.3",
+    "@types/winston": "^2.4.4",
     "@types/xterm": "^2.0.3",
     "chai": "^4.0.2",
     "dts-generator": "^2.1.0",
