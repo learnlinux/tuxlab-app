@@ -51,7 +51,7 @@
     "bcrypt": "^1.0.2",
     "bufferutil": "^3.0.2",
     "dockerode": "^2.5.1",
-    "file-saver": "^1.3.3",
+    "file-saver": "^2.0.1",
     "lodash": "^4.17.4",
     "meteor-node-stubs": "^0.2.11",
     "meteor-rxjs": "0.4.7",
