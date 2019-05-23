@@ -14,7 +14,7 @@
     "@types/chai": "^4.0.1",
     "@types/dockerode": "^2.4.6",
     "@types/file-saver": "0.0.1",
-    "@types/lodash": "^4.14.68",
+    "@types/lodash": "^4.14.132",
     "@types/meteor": "1.4.8",
     "@types/node": "^8.0.15",
     "@types/node-cache": "^4.1.0",
