@@ -11,7 +11,7 @@
     "test": "TEST_CLIENT=0 meteor test --full-app --once --settings ./private/settings.json --driver-package=meteortesting:mocha"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.1",
+    "@types/chai": "^4.2.3",
     "@types/dockerode": "^2.4.6",
     "@types/file-saver": "0.0.1",
     "@types/lodash": "^4.14.68",
