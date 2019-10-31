@@ -55,7 +55,7 @@
     "lodash": "^4.17.4",
     "meteor-node-stubs": "^0.2.11",
     "meteor-rxjs": "0.4.7",
-    "node-cache": "^4.1.1",
+    "node-cache": "^5.0.1",
     "node-etcd": "^5.1.0",
     "prismjs": "^1.6.0",
     "reflect-metadata": "0.1.10",
