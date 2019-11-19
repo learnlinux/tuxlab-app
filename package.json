@@ -16,7 +16,7 @@
     "@types/file-saver": "0.0.1",
     "@types/lodash": "^4.14.68",
     "@types/meteor": "1.4.8",
-    "@types/node": "^8.0.15",
+    "@types/node": "^12.12.10",
     "@types/node-cache": "^4.1.0",
     "@types/node-fibers": "0.0.28",
     "@types/socket.io-client": "^1.4.29",
