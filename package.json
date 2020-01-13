@@ -57,7 +57,7 @@
     "meteor-rxjs": "0.4.7",
     "node-cache": "^4.1.1",
     "node-etcd": "^5.1.0",
-    "prismjs": "^1.6.0",
+    "prismjs": "^1.19.0",
     "reflect-metadata": "0.1.10",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
