@@ -21,7 +21,7 @@
     "@types/node-fibers": "0.0.28",
     "@types/socket.io-client": "^1.4.29",
     "@types/sortablejs": "^1.3.31",
-    "@types/uglify-js": "^2.6.29",
+    "@types/uglify-js": "^3.9.1",
     "@types/winston": "^2.3.3",
     "@types/xterm": "^2.0.3",
     "chai": "^4.0.2",
