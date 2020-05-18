@@ -62,7 +62,7 @@
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "rxjs": "^5.4.2",
-    "simpl-schema": "^0.3.2",
+    "simpl-schema": "^1.7.2",
     "socket.io": "^2.0.3",
     "sortablejs": "^1.6.0",
     "uglify-es": "^3.0.28",
